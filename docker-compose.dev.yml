@@ -1,0 +1,32 @@
+# yml 파일 포맷의 version 설정
+version: '3.9'
+
+# 띄울 컨테이너 목록
+services:
+  frontend:
+    container_name: frontend
+    # 환경 설정 부분
+    # env_file:
+    #   - ./.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # command: ['yarn', 'start']
+    # command : 컨테이너가 띄워질 때 실행하는 명령어 / 서버실행
+    # restart: always
+    ports:
+      - 5173:5173
+    volumes:
+      - .:/frontend/
+      - /frontend/node_modules
+      # - ./node_modules:/frontend/node_modules 배포용
+    # networks:
+    #   - gtd
+    tty: true
+    stdin_open: true
+    # depends_on:
+    #   - backend
+
+networks:
+  gtd:
+    driver: bridge
