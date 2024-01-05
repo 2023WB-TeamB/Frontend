@@ -1,20 +1,21 @@
-import {useState} from 'react'
-import Register from '../components/Register';
+import { useState } from 'react'
+import Register from '../components/Register'
+import Header from '../components/Header'
 
 function MainPage() {
-  
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleModalOpen = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
 
   const handleModalClose = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   return (
     <div>
+      <Header />
       <h1>GiToDoc</h1>
       <p>Join us to change github repository to file!</p>
 
@@ -26,4 +27,3 @@ function MainPage() {
 }
 
 export default MainPage
-
