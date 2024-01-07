@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import imgDrakMode from '../assets/images/dark_mode.png'
+import imgDarkMode from '../assets/images/dark_mode.png'
 import imgWhiteMode from '../assets/images/white_mode.png'
 import imgLogo from '../assets/images/LOGO1.png'
 import imgSignIn from '../assets/images/signin.png'
@@ -78,7 +78,7 @@ const Header = ({ isLogin, onLogout }: HeaderProps) => {
           width="60px"
           top="12px"
           right="80px"
-          alt="Logo Icon"
+          alt="SignOut Icon"
           onClick={onLogout}
         />
       ) : (
@@ -88,13 +88,13 @@ const Header = ({ isLogin, onLogout }: HeaderProps) => {
           width="50px"
           top="12px"
           right="80px"
-          alt="Logout Icon"
+          alt="SignIn Icon"
           onClick={onLogout}
         />
       )}
       {/* 다크모드 아이콘 */}
       <Icon
-        src={isDarkMode ? imgWhiteMode : imgDrakMode}
+        src={isDarkMode ? imgWhiteMode : imgDarkMode}
         height="30px"
         width="30px"
         top="5px"
