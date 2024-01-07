@@ -4,9 +4,15 @@ import imgWhiteMode from '../assets/images/white_mode.png'
 import imgLogo from '../assets/images/LOGO1.png'
 import imgSignIn from '../assets/images/signin.png'
 import imgSignInDark from '../assets/images/signin_dark.png'
+import imgSignOut from '../assets/images/signout.png'
+import imgSignOutDark from '../assets/images/signout_dark.png'
 import { useState } from 'react'
 
 /*** Header 타입 지정을 위한 인터페이스 ***/
+interface HeaderProps {
+  isLogin: boolean
+  onLogout?: () => void
+}
 interface LayoutProps {
   isDarkMode: boolean
 }
@@ -44,7 +50,7 @@ const Icon = styled.img<IconProps>`
 `
 
 /*** 메인 ***/
-const Header = () => {
+const Header = ({ isLogin, onLogout }: HeaderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   const handleLogo = () => {
@@ -64,17 +70,28 @@ const Header = () => {
     <Layout isDarkMode={isDarkMode}>
       {/* 로고 아이콘 */}
       <Icon src={imgLogo} height="30px" width="30px" top="5px" left="15px" alt="Logo Icon" />
-
-      {/* 로그인 아이콘 */}
-      <Icon
-        src={isDarkMode ? imgSignInDark : imgSignIn}
-        height="15px"
-        width="50px"
-        top="12px"
-        right="80px"
-        alt="Logo Icon"
-      />
-
+      {/* 로그인 또는 로그아웃 아이콘 */}
+      {isLogin ? (
+        <Icon
+          src={isDarkMode ? imgSignOutDark : imgSignOut}
+          height="15px"
+          width="60px"
+          top="12px"
+          right="80px"
+          alt="Logo Icon"
+          onClick={onLogout}
+        />
+      ) : (
+        <Icon
+          src={isDarkMode ? imgSignInDark : imgSignIn}
+          height="15px"
+          width="50px"
+          top="12px"
+          right="80px"
+          alt="Logout Icon"
+          onClick={onLogout}
+        />
+      )}
       {/* 다크모드 아이콘 */}
       <Icon
         src={isDarkMode ? imgWhiteMode : imgDrakMode}
