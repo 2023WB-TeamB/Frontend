@@ -6,7 +6,7 @@ import searchIcon from "../../assets/images/search.png";
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div`
     position: relative;
-    width: 382px;
+    min-width: 382px;
     height: 100vh;
     display: flex;
     flex-direction: column;
