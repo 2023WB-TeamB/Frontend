@@ -125,7 +125,7 @@ function Register({ isOpen, onClose }: RegisterProps) {
 
     try {
       // API 호출
-      const response = await axios.post('api/v1/register/', {
+      const response = await axios.post('http://localhost:8000/api/v1/register/', {
         email: data.email,
         nickname: data.nickname,
         password: data.password,
