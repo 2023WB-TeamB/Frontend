@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useState } from 'react'
+import Register from '../components/Register'
+import Header from '../components/Header'
 
 const Container = styled.div`
   scroll-snap-type: y mandatory;
@@ -32,6 +35,18 @@ const Main = styled.h1`
 const Smalli = styled.span`
   font-size: 7rem;
 `
+
+const [isOpen, setIsOpen] = useState(false)
+/* 모달 이벤트 핸들러 */
+// 모달 열기
+const handleModalOpen = () => {
+  setIsOpen(true)
+}
+// 모달 닫기
+const handleModalClose = () => {
+  setIsOpen(false)
+}
+const isLogin: boolean = false // 기본값은 로그아웃 상태
 
 const Sub = styled.h1`
   font-size: 1.2rem;
@@ -151,6 +166,7 @@ const MainPage: React.FC = () => {
   return (
     <Container>
       <Section>
+        <Header isLogin={isLogin} />
         <Main>
           G<Smalli>i</Smalli>ToDoc
         </Main>
@@ -191,6 +207,16 @@ const MainPage: React.FC = () => {
         </MonoText>
       </Section>
     </Container>
+
+    // <div>
+    //   <Header isLogin={isLogin} />
+    //   <h1>GiToDoc</h1>
+    //   <p>Join us to change github repository to file!</p>
+
+    //   {/* Resister 모달을 띄우기 위한 임시 버튼 */}
+    //   <button onClick={handleModalOpen}>모달 테스트 버튼</button>
+    //   <Register isOpen={isOpen} onClose={handleModalClose} />
+    // </div>
   )
 }
 
