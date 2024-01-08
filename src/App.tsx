@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import MainPage from './pages/MainPage'
-import MyDocPage from './pages/MyDocPage'
+import MyDocsPage from './pages/MyDocsPage'
 import ViewerPage from './pages/ViewerPage'
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/mydoc" element={<MyDocPage />} />
+        <Route path="/mydocs" element={<MyDocsPage />} />
         <Route path="/viewer" element={<ViewerPage />} />
       </Routes>
     </Router>
