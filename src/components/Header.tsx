@@ -6,6 +6,7 @@ import imgSignIn from '../assets/images/signin.png'
 import imgSignInDark from '../assets/images/signin_dark.png'
 import imgSignOut from '../assets/images/signout.png'
 import imgSignOutDark from '../assets/images/signout_dark.png'
+import Signin from './Signin'
 import { useState } from 'react'
 
 /*** Header 타입 지정을 위한 인터페이스 ***/
@@ -52,13 +53,10 @@ const Icon = styled.img<IconProps>`
 /*** 메인 ***/
 const Header = ({ isLogin, onLogout }: HeaderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isSigninOpen, setIsSigninOpen] = useState(false) // SignIn 모달 상태 추가
 
   const handleLogo = () => {
     // 로고 클릭 시에 필요한 이벤트 처리
-  }
-
-  const handleSignIn = () => {
-    // 로그인 아이콘 클릭 시에 필요한 이벤트 처리
   }
 
   const handleDarkMode = () => {
@@ -67,42 +65,46 @@ const Header = ({ isLogin, onLogout }: HeaderProps) => {
   }
 
   return (
-    <Layout isDarkMode={isDarkMode}>
-      {/* 로고 아이콘 */}
-      <Icon src={imgLogo} height="30px" width="30px" top="5px" left="15px" alt="Logo Icon" />
-      {/* 로그인 또는 로그아웃 아이콘 */}
-      {isLogin ? (
+    <>
+      <Layout isDarkMode={isDarkMode}>
+        {/* 로고 아이콘 */}
+        <Icon src={imgLogo} height="30px" width="30px" top="5px" left="15px" alt="Logo Icon" />
+        {/* 로그인 또는 로그아웃 아이콘 */}
+        {isLogin ? (
+          <Icon
+            src={isDarkMode ? imgSignOutDark : imgSignOut}
+            height="15px"
+            width="60px"
+            top="12px"
+            right="80px"
+            alt="SignOut Icon"
+            onClick={onLogout}
+          />
+        ) : (
+          <Icon
+            src={isDarkMode ? imgSignInDark : imgSignIn}
+            height="15px"
+            width="50px"
+            top="12px"
+            right="80px"
+            alt="SignIn Icon"
+            onClick={() => setIsSigninOpen(true)} // Signin 클릭하면 로그인 모달 오픈
+          />
+        )}
+        {/* 다크모드 아이콘 */}
         <Icon
-          src={isDarkMode ? imgSignOutDark : imgSignOut}
-          height="15px"
-          width="60px"
-          top="12px"
-          right="80px"
-          alt="SignOut Icon"
-          onClick={onLogout}
+          src={isDarkMode ? imgWhiteMode : imgDarkMode}
+          height="30px"
+          width="30px"
+          top="5px"
+          right="15px"
+          alt="DarkMode Icon"
+          onClick={handleDarkMode}
         />
-      ) : (
-        <Icon
-          src={isDarkMode ? imgSignInDark : imgSignIn}
-          height="15px"
-          width="50px"
-          top="12px"
-          right="80px"
-          alt="SignIn Icon"
-          onClick={onLogout}
-        />
-      )}
-      {/* 다크모드 아이콘 */}
-      <Icon
-        src={isDarkMode ? imgWhiteMode : imgDarkMode}
-        height="30px"
-        width="30px"
-        top="5px"
-        right="15px"
-        alt="DarkMode Icon"
-        onClick={handleDarkMode}
-      />
-    </Layout>
+      </Layout>
+      {/* 로그인 모달 */}
+      {isSigninOpen && <Signin isOpen={isSigninOpen} onClose={() => setIsSigninOpen(false)} />}
+    </>
   )
 }
 
