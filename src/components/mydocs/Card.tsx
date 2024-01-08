@@ -15,7 +15,7 @@ const Card = styled.div<CardProps>`
   background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 15%;
   text-align: center;
-  top: 125%;
+  top: 120%;
   left: 50%;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};

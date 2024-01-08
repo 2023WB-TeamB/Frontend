@@ -13,10 +13,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   height: 200vh;
-  width: 100vw;
-  margin: 0 auto;
+  width: 98.9vw;
 `
 
 // 페이지 상단부

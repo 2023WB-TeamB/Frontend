@@ -13,15 +13,15 @@ dummy.sort((a, b) => {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 100vw;
-  height: 40vh;
-  margin: 1vh auto auto auto;
+  width: 100%;
+  height: 50vh;
+  margin: 2vh auto auto auto;
 `
 const Carousel = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: visible; // 카드가 캐러셀 밖으로 나가면 보이게 함
+  overflow: hidden; // 카드가 캐러셀 밖으로 나가면 안보이게 함
 `
 
 const Button = styled.button`
