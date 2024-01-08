@@ -4,6 +4,7 @@ import Header from '../components/Header'
 
 function MainPage() {
   const [isOpen, setIsOpen] = useState(false)
+
   /* 모달 이벤트 핸들러 */
   // 모달 열기
   const handleModalOpen = () => {

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ReactModal from 'react-modal'
 import imgCloseBtn from '../assets/images/close.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
+import axios from 'axios'
 
 ReactModal.setAppElement('#root')
 
@@ -118,10 +119,27 @@ function Register({ isOpen, onClose }: RegisterProps) {
       [name]: value,
     }))
   }
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form:', data)
-    onClose()
+
+    try {
+      // API 호출
+      const response = await axios.post('api/v1/register/', {
+        email: data.email,
+        nickname: data.nickname,
+        password: data.password,
+      })
+      console.log('API Response: ', response.status)
+      if (response.status === 200) {
+        alert('Register Success!')
+        // 동작 수행후 모달 닫기
+        onClose()
+      }
+    } catch (error) {
+      // API 호출 중 오류 발생 시 에러 표시
+      console.error('API ERROR: ', error)
+    }
   }
 
   return (
@@ -131,7 +149,6 @@ function Register({ isOpen, onClose }: RegisterProps) {
       shouldCloseOnOverlayClick={false}
       style={CustomModal}>
       <CloseBtn onClick={onClose} />
-
       <RegisterForm onSubmit={handleSubmit}>
         <Title>Register</Title>
         <Name>Email</Name>
