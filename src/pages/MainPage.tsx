@@ -1,8 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
-import { useState } from 'react'
-import Register from '../components/Register'
+import styled, { keyframes } from 'styled-components'
+//import { useState } from 'react'
+//import Register from '../components/Register'
 import Header from '../components/Header'
+import { GlobalStyle } from '../styles/global.ts'
 
 const Container = styled.div`
   scroll-snap-type: y mandatory;
@@ -21,9 +22,9 @@ const Section = styled.div`
 
 //page1
 const Main = styled.h1`
-  font-size: 8.5rem;
+  font-size: 8rem;
   font-weight: 700;
-  font-family: 'DM Serif Display-Regular', serif;
+  font-family: 'DMSerif', serif;
   color: transparent;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
   -webkit-background-clip: text;
@@ -36,22 +37,22 @@ const Smalli = styled.span`
   font-size: 7rem;
 `
 
-const [isOpen, setIsOpen] = useState(false)
+//const [isOpen, setIsOpen] = useState(false)
 /* 모달 이벤트 핸들러 */
 // 모달 열기
-const handleModalOpen = () => {
+/*const handleModalOpen = () => {
   setIsOpen(true)
 }
 // 모달 닫기
 const handleModalClose = () => {
   setIsOpen(false)
-}
+}*/
 const isLogin: boolean = false // 기본값은 로그아웃 상태
 
 const Sub = styled.h1`
   font-size: 1.2rem;
   font-weight: 300;
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
   color: black;
   position: absolute;
   top: 45%;
@@ -77,7 +78,6 @@ const InputBoxWrapper = styled.div`
     z-index: -1;
   }
 `
-
 const InputBox = styled.input`
   background-color: #ffffff;
   border: solid 0.063rem transparent;
@@ -112,23 +112,23 @@ interface ConsoleBox {
 const Dont = styled.h1<DontProps>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
-  font-family: 'DM Serif Display-Regular', serif;
+  font-family: 'DMSerif', serif;
   color: #000000;
   position: absolute;
-  top: ${(props) => props.top || '10%'};
-  left: 3%;
+  top: ${(props) => props.top || '12%'};
+  left: 5%;
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
 `
 const MonoText = styled.h1<MonoProps>`
-  font-size: ${(props) => props.fontSize || '1.2rem'};
+  font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
-  font-family: 'Andale Mono-Regular', Helvetica;
+  font-family: monospace;
   color: #000000;
   position: absolute;
   top: ${(props) => props.top || '55%'};
-  left: ${(props) => props.left || '3%'};
+  left: ${(props) => props.left || '5%'};
   letter-spacing: 0.5px;
   line-height: 2;
   white-space: nowrap;
@@ -144,7 +144,6 @@ const ConsoleBox = styled.div<ConsoleBox>`
   display: flex;
   align-items: center;
   position: relative;
-  font-size: 0.9rem;
   width: ${(props) => props.width || '100vw'};
   height: ${(props) => props.height || '2.7rem'};
   top: ${(props) => props.top || '48%'};
@@ -156,58 +155,95 @@ const ConsoleText = styled.h1`
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   align-items: center;
-  left: 3%;
+  left: 3rem;
   font-size: 0.9rem;
   color: #0957d0;
+`
+const blink = keyframes`
+  0%, 100% {visibility: visible;}
+  50% {visibility: hidden;}
+  `
+const BlinkText = styled.p`
+  display: inline;
+  animation: ${blink} 1s step-start infinite;
 `
 
 //Publishing
 const MainPage: React.FC = () => {
   return (
-    <Container>
-      <Section>
+    <>
+      <GlobalStyle />
+      <Container>
         <Header isLogin={isLogin} />
-        <Main>
-          G<Smalli>i</Smalli>ToDoc
-        </Main>
-        <Sub>Join us to change github repository to file!</Sub>
-        <InputBoxWrapper>
-          <InputBox type="text" />
-        </InputBoxWrapper>
-      </Section>
-      <Section>
-        <Dont>Don't just code.</Dont>
-        <Dont fontSize="3rem" top="20%">
-          Document. Refine. Archive. Share.
-        </Dont>
-        <ConsoleBox>
-          <ConsoleText>GiToDoc</ConsoleText>
-        </ConsoleBox>
-        <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
-        <ConsoleBox width="10vw" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
-        <ConsoleBox
-          width="0.1rem"
-          height="1.7rem"
-          top="43.2%"
-          left="80%"
-          background="#D3E2FD"></ConsoleBox>
-        <MonoText>
-          <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
-          <br />
-          <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
-          <br />
-          <br />
-          <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
-          <br />
-          <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is not
-          just done, but perfected. <Hilight>&ensp;</Hilight>
-        </MonoText>
-        <MonoText fontSize="1rem" top="88%" left="50%" centered>
-          Keep scrolling if you want to make your project perfect
-        </MonoText>
-      </Section>
-    </Container>
-
+        <Section>
+          <Main>
+            G<Smalli>i</Smalli>ToDoc
+          </Main>
+          <Sub>Join us to change github repository to file!</Sub>
+          <InputBoxWrapper>
+            <InputBox type="text" />
+          </InputBoxWrapper>
+        </Section>
+        <Section>
+          <Dont>Don't just code.</Dont>
+          <Dont fontSize="3rem" top="22%">
+            Document. Refine. Archive. Share.
+          </Dont>
+          <ConsoleBox>
+            <ConsoleText>GiToDoc</ConsoleText>
+          </ConsoleBox>
+          <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
+          <ConsoleBox width="9rem" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
+          <ConsoleBox
+            width="0.1rem"
+            height="1.7rem"
+            top="43.2%"
+            left="80rem"
+            background="#D3E2FD"></ConsoleBox>
+          <MonoText>
+            <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
+            <br />
+            <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
+            <br />
+            <br />
+            <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
+            <br />
+            <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is
+            not just done, but perfected.{' '}
+            <BlinkText>
+              <Hilight>&ensp;</Hilight>
+            </BlinkText>
+          </MonoText>
+          <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
+            Keep scrolling if you want to make your project perfect
+          </MonoText>
+        </Section>
+        <Section>
+          <Dont font-size="3rem">
+            <Blue>&gt; </Blue>step1;
+          </Dont>
+          <MonoText top="27%" left="8%">
+            <Blue>&gt; </Blue>&ensp;Paste
+          </MonoText>
+        </Section>
+        <Section>
+          <Dont font-size="3rem">
+            <Blue>&gt; </Blue>step2;
+          </Dont>
+          <MonoText top="27%" left="8%">
+            <Blue>&gt; </Blue>&ensp;Automatically generate the document based on your URL
+          </MonoText>
+        </Section>
+        <Section>
+          <Dont font-size="3rem">
+            <Blue>&gt; </Blue>step3;
+          </Dont>
+          <MonoText top="27%" left="8%">
+            <Blue>&gt; </Blue>&ensp;Make
+          </MonoText>
+        </Section>
+      </Container>
+    </>
     // <div>
     //   <Header isLogin={isLogin} />
     //   <h1>GiToDoc</h1>
