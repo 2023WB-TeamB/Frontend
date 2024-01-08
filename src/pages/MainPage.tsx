@@ -167,8 +167,8 @@ const MainPage: React.FC = () => {
         <ConsoleBox>
           <ConsoleText>GiToDoc</ConsoleText>
         </ConsoleBox>
-        <ConsoleBox width="100vw" height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
-        <ConsoleBox width="11%" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
+        <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
+        <ConsoleBox width="10vw" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
         <ConsoleBox
           width="0.1rem"
           height="1.7rem"
