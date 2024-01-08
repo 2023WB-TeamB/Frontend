@@ -78,16 +78,12 @@ interface ModalConfirmProps {
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({ isOpenConfirm, icon, label, confirmOption }) => {
-    const disappearModal = {
-        transform: isOpenConfirm ? 'scale(1)' : 'scale(0)',
-    }
-    
     return (
         <>
             {isOpenConfirm && (
                 <>
                     <BackDrop />
-                    <ModalWrapper style={disappearModal}>
+                    <ModalWrapper>
                         <ContextWrapper>
                             <img src={icon || ConfirmIcon}></img>
                             <label>{label}</label>
