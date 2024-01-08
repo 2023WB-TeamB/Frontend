@@ -12,10 +12,14 @@ const StyledButton = styled.button`
     width: 280px;
     height: 60px;
     min-height: 45px;
-    background-color: white;
-    border: 1px solid;
+    border: 1px solid transparent;
     border-radius: 50px;
-    transition: background-image 1s;
+    background-image: linear-gradient(#fff, #fff),
+    linear-gradient(#202020, #202020);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.20);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    transition: linear .5s;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -27,26 +31,10 @@ const StyledButton = styled.button`
         text-align: center;
     }
 
-    &:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: linear-gradient(to bottom right, #76CAE8, #AD51DE);
-        opacity: 0;
-        transition: opacity 0.25s;
-    }
-
-    &:focus:before {
-        opacity: 1;
-    }
-
-    &:focus {
-        ${Icon} {
-            filter: brightness(0) invert(100%) sepia(100%) saturate(0) hue-rotate(0deg);;
-        }
+    &:hover {
+        background-image: linear-gradient(#fff, #fff),
+        linear-gradient(to bottom right, #76CAE8, #AD51DE);
+        transition: linear .5s;
     }
 `;
 

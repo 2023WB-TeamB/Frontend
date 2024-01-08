@@ -6,18 +6,21 @@ import SaveIcon from "../assets/images/save.png"
 import CancelIcon from "../assets/images/cancel.png"
 
 const ViewerWrapper = styled.div`
-    min-width: 600px;
-    height: 100%;
     position: relative;
+    min-width: 640px;
+    width: 90vw;
+    max-width: 1280px;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
 `
 
 const DocTitle = styled.h2`
     width: 95%;
     text-align: left;
-    font-size: 2em;
+    font-size: 2rem;
 `
 
 const Icon = styled.img`
@@ -64,19 +67,21 @@ const ViewArea = styled.div`
     height: 100%;
     
     & p {
-        font-size: .9em;
+        width: 100%;
+        height: 100vh;
+        font-size: 1rem;
         font-family: sans-serif;
     }
 
     & textarea {
         width: 100%;
-        height: 70vh;
-        font-size: .9em;
+        height: 100vh;
+        font-size: 1rem;
         font-family: sans-serif;
         border: 0;
         padding: 0;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
+        margin-block-start: 1rem;
+        margin-block-end: 1rem;
         line-height: 1.5;
         font-weight: 400;
     }
@@ -86,7 +91,8 @@ interface MarkdownViewerProps {
     isOpenSidePanel: boolean;
 }
 
-let testText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+// 임시 테스트용 데이터
+const testText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
     const [isViewer, setIsViewer] = useState(true);
@@ -97,7 +103,7 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
 
     const sideOnStyle = {
         margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
-        width: isOpenSidePanel ? 'calc(100vw - 484px)' : 'calc(100vw - 102px)',
+        left: isOpenSidePanel ? '450px' : '20px',
     };
     return (
         <ViewerWrapper style={sideOnStyle}>

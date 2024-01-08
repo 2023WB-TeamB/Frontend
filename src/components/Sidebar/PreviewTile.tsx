@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Preview from "./Preview";
+import LeftArrowIcon from "../../assets/images/arrow_left.png";
+import RightArrowIcon from "../../assets/images/arrow_right.png";
 
 const PreviewWrapper = styled.div`
-  width: 100%;
+  width: 382px;
   margin: 3px 0 3px 0;
   position: relative;
   text-align: center;
@@ -24,15 +26,16 @@ const PreviewWrapper = styled.div`
     background-image: linear-gradient(to right, #76CAE8, #AD51DE);
     border: none;
   }
-
-  & span {
-    max-width: 382px;
-    height: 145px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 `;
+
+const SlideWrapper = styled.span`
+  max-width: 382px;
+  height: 145px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+`
 
 const Button = styled.button<{ imageUrl: string }>`
   padding: 0;
@@ -54,11 +57,17 @@ const Button = styled.button<{ imageUrl: string }>`
 const PageWrapper = styled.div`
   position: relative;
   width: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  transition: ease .5s;
+`;
+
+const Slider = styled.span`
+  position: relative;
+  width: 100%;
+  transition: transform .5s;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface PreviewTileProps {
@@ -68,8 +77,10 @@ interface PreviewTileProps {
 
 // 프로젝트 미리보기 타일
 const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
-
   const [currentPage, setCurrentPage] = useState(0);
+  const style = {
+    transform: `translateX(${((pages.length / 2) - currentPage) * 100 - 150}px)`,
+  }
 
   // 이전
   const goToPreviousPage = () => {
@@ -81,36 +92,30 @@ const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
     setCurrentPage((prevPage) => (prevPage + 1) % pages.length);
   };
 
-  const visiblePages: string[] = [
-    pages[(currentPage + pages.length - 1) % pages.length],
-    pages[currentPage],
-    pages[(currentPage + 1) % pages.length],
-    pages[(currentPage + 2) % pages.length],
-    pages[(currentPage + 3) % pages.length]
-  ];
-
   return (
     <PreviewWrapper>
       <h3>{title}</h3>
       <hr></hr>
-      <span>
+      <SlideWrapper>
         <Button
           onClick={goToPreviousPage} 
-          imageUrl="https://cdn-icons-png.flaticon.com/512/109/109618.png">
+          imageUrl={LeftArrowIcon}>
         </Button>
         <PageWrapper>
-          {visiblePages.map((page, index) => (
-            <Preview
-              key={index}
-              content={page}
-            />
-          ))}
+          <Slider style={style}>
+            {pages.map((page, index) => (
+              <Preview
+                key={index}
+                content={page}
+              />
+            ))}
+          </Slider>
         </PageWrapper>
         <Button 
           onClick={goToNextPage}
-          imageUrl="https://cdn-icons-png.flaticon.com/512/109/109617.png">
+          imageUrl={RightArrowIcon}>
         </Button>
-      </span>
+      </SlideWrapper>
     </PreviewWrapper>
   );
 };

@@ -10,8 +10,9 @@ import BackDrop from "./BackDrop";
 
 const ModalWrapper = styled.div`
     position: fixed;
-    top: 20vh;
-    left: 30vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
     width: 400px;
     height: 500px;
     background-color: rgba(243, 243, 243);

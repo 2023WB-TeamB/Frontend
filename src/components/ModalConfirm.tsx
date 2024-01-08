@@ -6,8 +6,9 @@ import BackDrop from "./BackDrop";
 
 const ModalWrapper = styled.div`
     position: fixed;
-    top: 20vh;
-    left: 30vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
     width: 500px;
     height: 250px;
     background-color: rgba(243, 243, 243);
@@ -18,6 +19,7 @@ const ModalWrapper = styled.div`
     align-items: center;
     overflow: hidden;
     z-index: 10000;
+    transition: all ease-in-out .5s;
 `;
 
 const ContextWrapper = styled.div`
@@ -76,12 +78,16 @@ interface ModalConfirmProps {
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({ isOpenConfirm, icon, label, confirmOption }) => {
+    const disappearModal = {
+        transform: isOpenConfirm ? 'scale(1)' : 'scale(0)',
+    }
+    
     return (
         <>
             {isOpenConfirm && (
                 <>
                     <BackDrop />
-                    <ModalWrapper>
+                    <ModalWrapper style={disappearModal}>
                         <ContextWrapper>
                             <img src={icon || ConfirmIcon}></img>
                             <label>{label}</label>

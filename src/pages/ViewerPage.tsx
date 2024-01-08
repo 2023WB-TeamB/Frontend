@@ -14,10 +14,11 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const StyledForm = styled.div`
+  min-width: 90vw;
+  min-height: 90vh;
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: start;
 `;
 
 function ViewerPage() {
@@ -86,7 +87,8 @@ function ViewerPage() {
         [""], 
         [""], 
         [""], 
-        [exit, handleExitClick]]}>
+        [exit, handleExitClick]]}
+        isOpedSidePanel={isOpenSidePanel}>
       </Sidebar>
       <SidebarPanel isOpenSidePanel={isOpenSidePanel} onClose={closeSidePanel}/>
       <ModalOptions isOpenOptions={isOpenOptions} onClose={closeOptions}/>
@@ -96,7 +98,7 @@ function ViewerPage() {
           ["Yes", handleConfirmYes],
           ["No", closeConfirm]
         ]}/>
-      <MarkdownArea isOpenSidePanel={isOpenSidePanel}></MarkdownArea>
+      <MarkdownArea isOpenSidePanel={isOpenSidePanel}/>
     </StyledForm>
   )
 }
