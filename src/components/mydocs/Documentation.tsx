@@ -4,13 +4,15 @@ import githubIcon from '../../assets/images/github.svg'
 import documentIcon from '../../assets/images/document.svg'
 import arrow from '../../assets/images/arrow.svg'
 
-const BoxWrapper = styled.div`
+// Github -> Document 아이콘 도식화
+
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 200px;
   height: 50px;
-  margin-top: 20px;
+  margin-top: 4.5vh;
 `
 const StyledArrow = styled.img`
   width: 120px;
@@ -23,10 +25,10 @@ const StyledImg = styled.img`
 
 export const Documentation: React.FC = () => {
   return (
-    <BoxWrapper>
+    <Wrapper>
       <StyledImg src={githubIcon} alt="Left Icon" />
       <StyledArrow src={arrow} alt="Arrow Icon" />
       <StyledImg src={documentIcon} alt="Right Icon" />
-    </BoxWrapper>
+    </Wrapper>
   )
 }

@@ -9,7 +9,7 @@ const LocalFont = createGlobalStyle`
 `
 
 const LabelDiv = styled.div`
-  height: 30px;
+  height: 20px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -19,13 +19,11 @@ const LabelDiv = styled.div`
 const TextWrapper = styled.p`
   color: #000000;
   font-family: 'EB Garamond', serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
-  height: 30px;
-  left: 0;
-  letter-spacing: 0;
+  height: 20px;
   line-height: normal;
-  position: relative;
+  margin: 0 auto;
 `
 
 export const Description: React.FC = () => {

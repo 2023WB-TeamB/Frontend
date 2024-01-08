@@ -8,6 +8,7 @@ const LocalFont = createGlobalStyle`
   }
 `
 
+// GiToDoc 로고 스타일
 const StyledDiv = styled.div`
   position: relative;
   display: flex;

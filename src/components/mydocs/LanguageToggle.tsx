@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-const LanguageToggleWrapper = styled.div`
+// 토글 스타일
+const Toggle = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -14,7 +15,8 @@ const LanguageToggleWrapper = styled.div`
   position: relative;
 `
 
-const ToggleBox = styled.div`
+// 스위치 스타일
+const Switch = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,12 +35,14 @@ interface ToggleTextProps {
   selected: boolean
 }
 
-const ToggleText = styled.p<ToggleTextProps>`
-  color: ${(props) => (props.selected ? '#FFFFFF' : '#00000048')};
+// 스위치가 옮겨진 쪽의 글씨는 흰색, 그렇지 않은 쪽은 회색.
+const Text = styled.p<ToggleTextProps>`
+  color: ${(props) => (props.selected ? '#FFFFFF' : '#0000002d')};
   z-index: 2;
   margin: 7px;
 `
 
+// isEnglish에 영어/한글 상태 저장
 const LanguageToggle = () => {
   const [isEnglish, setIsEnglish] = useState(false)
 
@@ -46,12 +50,13 @@ const LanguageToggle = () => {
     setIsEnglish(!isEnglish)
   }
 
+  // translateX를 사용하여 스위치 이동
   return (
-    <LanguageToggleWrapper onClick={toggleLanguage}>
-      <ToggleText selected={!isEnglish}>KOR</ToggleText>
-      <ToggleBox style={{ transform: isEnglish ? 'translateX(46px)' : 'translateX(0)' }} />
-      <ToggleText selected={isEnglish}>ENG</ToggleText>
-    </LanguageToggleWrapper>
+    <Toggle onClick={toggleLanguage}>
+      <Text selected={!isEnglish}>KOR</Text>
+      <Switch style={{ transform: isEnglish ? 'translateX(46px)' : 'translateX(0)' }} />
+      <Text selected={isEnglish}>ENG</Text>
+    </Toggle>
   )
 }
 

@@ -1,13 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Box = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70px;
-  width: 680px;
-  margin-top: 25px;
+  height: 8vh;
+  max-height: 70px;
+  min-height: 60px;
+  width: 50vw;
+  max-width: 800px;
+  min-width: 660px;
+  margin-top: 2vh;
 `
 
 const StyledInput = styled.input`
@@ -15,7 +19,7 @@ const StyledInput = styled.input`
   border: 1px solid rgb(165, 101, 224);
   border-radius: 65.5px;
   height: 100%;
-  width: 80vw;
+  width: 100%;
   padding: 0 20px;
   font-size: 16px;
   appearance: none;
@@ -26,8 +30,8 @@ const StyledInput = styled.input`
 
 export const URLInput: React.FC = () => {
   return (
-    <Box>
+    <Wrapper>
       <StyledInput type="text" placeholder="Please enter your GitHub repository URL here..." />
-    </Box>
+    </Wrapper>
   )
 }

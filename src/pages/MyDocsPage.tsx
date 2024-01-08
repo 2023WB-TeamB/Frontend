@@ -17,7 +17,16 @@ const Container = styled.div`
   height: 200vh;
   width: 100vw;
   margin: 0 auto;
-  overflow: auto;
+`
+
+// 페이지 상단부
+const Upper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 50%;
+  width: 100%;
 `
 
 const MyDocsPage: React.FC = () => {
@@ -30,15 +39,26 @@ const MyDocsPage: React.FC = () => {
     navigate('/') // 메인페이지로 이동
   }
 
+  /*
+  GiToDoc 로고 (GiToDoc)
+  로고 하단 설명 (Description)
+  문서화 아이콘 (Documentation)
+  언어 토글 (LanguageToggle)
+  URL 입력창 (URLInput)
+  캐러셀 (RoundCarousel, Card)
+  */
+
   return (
     <Container>
       <Header isLogin={isLogin} onLogout={handleLogout} />
-      <GiToDoc />
-      <Description />
-      <Documentation />
-      <LanguageToggle />
-      <URLInput />
-      <RoundCarousel />
+      <Upper>
+        <GiToDoc />
+        <Description />
+        <Documentation />
+        <LanguageToggle />
+        <URLInput />
+        <RoundCarousel />
+      </Upper>
     </Container>
   )
 }
