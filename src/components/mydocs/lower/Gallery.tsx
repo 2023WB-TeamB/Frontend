@@ -20,6 +20,7 @@ const Collection = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-top: 40px;
   width: 90vw;
   height: 800vh;
 `
