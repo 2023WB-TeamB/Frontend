@@ -22,6 +22,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/styles/global.ts"],
+  "include": ["src", "src/styles/global.ts", "reacp-app.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

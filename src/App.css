@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+
+.arrow {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+}

@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 //import { useState } from 'react'
 //import Register from '../components/Register'
 import Header from '../components/Header'
-import { GlobalStyle } from '../styles/global.ts'
+// import { GlobalStyle } from '../styles/global.ts'
 
 const Container = styled.div`
   scroll-snap-type: y mandatory;
@@ -171,79 +171,81 @@ const BlinkText = styled.p`
 //Publishing
 const MainPage: React.FC = () => {
   return (
-    <>
-      <GlobalStyle />
-      <Container>
-        <Header isLogin={isLogin} />
-        <Section>
-          <Main>
-            G<Smalli>i</Smalli>ToDoc
-          </Main>
-          <Sub>Join us to change github repository to file!</Sub>
-          <InputBoxWrapper>
-            <InputBox type="text" />
-          </InputBoxWrapper>
-        </Section>
-        <Section>
-          <Dont>Don't just code.</Dont>
-          <Dont fontSize="3rem" top="22%">
-            Document. Refine. Archive. Share.
-          </Dont>
-          <ConsoleBox>
-            <ConsoleText>GiToDoc</ConsoleText>
-          </ConsoleBox>
-          <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
-          <ConsoleBox width="9rem" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
-          <ConsoleBox
-            width="0.1rem"
-            height="1.7rem"
-            top="43.2%"
-            left="80rem"
-            background="#D3E2FD"></ConsoleBox>
-          <MonoText>
-            <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
-            <br />
-            <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
-            <br />
-            <br />
-            <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
-            <br />
-            <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is
-            not just done, but perfected.{' '}
-            <BlinkText>
-              <Hilight>&ensp;</Hilight>
-            </BlinkText>
-          </MonoText>
-          <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
-            Keep scrolling if you want to make your project perfect
-          </MonoText>
-        </Section>
-        <Section>
-          <Dont font-size="3rem">
-            <Blue>&gt; </Blue>step1;
-          </Dont>
-          <MonoText top="27%" left="8%">
-            <Blue>&gt; </Blue>&ensp;Paste
-          </MonoText>
-        </Section>
-        <Section>
-          <Dont font-size="3rem">
-            <Blue>&gt; </Blue>step2;
-          </Dont>
-          <MonoText top="27%" left="8%">
-            <Blue>&gt; </Blue>&ensp;Automatically generate the document based on your URL
-          </MonoText>
-        </Section>
-        <Section>
-          <Dont font-size="3rem">
-            <Blue>&gt; </Blue>step3;
-          </Dont>
-          <MonoText top="27%" left="8%">
-            <Blue>&gt; </Blue>&ensp;Make
-          </MonoText>
-        </Section>
-      </Container>
-    </>
+    <Container>
+      <Header isLogin={isLogin} />
+      <Section>
+        <Main>
+          G<Smalli>i</Smalli>ToDoc
+        </Main>
+        <Sub>Join us to change github repository to file!</Sub>
+        <InputBoxWrapper>
+          <InputBox type="text" />
+        </InputBoxWrapper>
+      </Section>
+      {/* page2 */}
+      <Section>
+        <Dont>Don't just code.</Dont>
+        <Dont fontSize="3rem" top="22%">
+          Document. Refine. Archive. Share.
+        </Dont>
+        <ConsoleBox>
+          <ConsoleText>GiToDoc</ConsoleText>
+        </ConsoleBox>
+        <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
+        <ConsoleBox width="9rem" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
+        <ConsoleBox
+          width="0.1rem"
+          height="1.7rem"
+          top="43.2%"
+          left="80rem"
+          background="#D3E2FD"></ConsoleBox>
+        <MonoText>
+          <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
+          <br />
+          <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
+          <br />
+          <br />
+          <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
+          <br />
+          <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is not
+          just done, but perfected.{' '}
+          <BlinkText>
+            <Hilight>&ensp;</Hilight>
+          </BlinkText>
+        </MonoText>
+        <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
+          Keep scrolling if you want to make your project perfect
+        </MonoText>
+      </Section>
+      {/* Page3 */}
+      <Section>
+        <Dont font-size="3rem">
+          <Blue>&gt; </Blue>step1;
+        </Dont>
+        <MonoText top="27%" left="8%">
+          <Blue>&gt; </Blue>&ensp;Paste
+        </MonoText>
+      </Section>
+      {/* Page4 */}
+      <Section>
+        <Dont font-size="3rem">
+          <Blue>&gt; </Blue>step2;
+        </Dont>
+        <MonoText top="27%" left="8%">
+          <Blue>&gt; </Blue>&ensp;Automatically generate the document based on your URL
+        </MonoText>
+      </Section>
+      {/* Page5 */}
+      <Section>
+        <Dont font-size="3rem">
+          <Blue>&gt; </Blue>step3;
+        </Dont>
+        <MonoText top="27%" left="8%">
+          <Blue>&gt; </Blue>&ensp;Make
+        </MonoText>
+      </Section>
+    </Container>
+
     // <div>
     //   <Header isLogin={isLogin} />
     //   <h1>GiToDoc</h1>
