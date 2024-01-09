@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ReactModal from 'react-modal'
 import imgCloseBtn from '../assets/images/close.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
+import axios from 'axios'
 
 ReactModal.setAppElement('#root')
 
@@ -117,9 +118,31 @@ function Register({ isOpen, onClose }: RegisterProps) {
       [name]: value,
     }))
   }
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onClose()
+
+    try {
+      // API 호출
+      const response = await axios.post('http://gtd.kro.kr:8000/api/v1/register/', {
+        email: data.email,
+        nickname: data.nickname,
+        password: data.password,
+      })
+      // 회원가입 성공 시
+      if (response.status === 200) {
+        console.log('API Response: ', response.status)
+        alert('회원가입 성공!')
+
+        onClose() // 동작 수행후 모달 닫기
+      }
+      // 회원가입 실패 시
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        console.error('API Response: ', error.response.status)
+        alert('회원가입 실패!')
+      }
+    }
   }
 
   return (
