@@ -28,13 +28,21 @@ interface ModalContentProps {
   width?: string
 }
 
-interface ModalWrapperProps {
+interface ModalProps {
   modalOpen: boolean
   modalContent: ModalContentProps | null
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  width?: string
+  fontSize?: string
 }
 
-const Modal: React.FC<ModalWrapperProps> = ({ modalOpen, modalContent, setModalOpen }) => {
+const Modal: React.FC<ModalProps> = ({
+  modalOpen,
+  modalContent,
+  setModalOpen,
+  width,
+  fontSize,
+}) => {
   return (
     <ModalWrapper modalOpen={modalOpen} onClick={() => setModalOpen(false)}>
       {modalContent && (
@@ -43,6 +51,8 @@ const Modal: React.FC<ModalWrapperProps> = ({ modalOpen, modalContent, setModalO
           title={modalContent.title}
           content={modalContent.content}
           updated_at={modalContent.updated_at}
+          width={width}
+          fontSize={fontSize}
         />
       )}
     </ModalWrapper>

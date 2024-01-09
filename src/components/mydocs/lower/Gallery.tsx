@@ -16,13 +16,13 @@ const Wrapper = styled.div`
 const Collection = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   position: relative;
-  margin-top: 40px;
-  width: 90vw;
-  height: 800vh;
+  height: 90vh;
+  width: 70rem;
+  margin: 2.5rem auto auto auto;
 `
 
 const Card = styled.div`
@@ -32,9 +32,10 @@ const Card = styled.div`
   box-sizing: border-box;
   position: relative;
   text-align: center;
-  width: 20rem;
+  font-size: 1.3rem;
+  width: 13.5rem;
   height: 18rem;
-  margin: 1rem 2rem;
+  margin: 0.5rem 2rem;
   overflow: hidden;
 `
 
@@ -48,11 +49,8 @@ const Gallery: React.FC = () => {
     color: string
   } | null>(null)
 
-  const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
   const cardsPerPage = 8 // 한 페이지당 카드 수
-
-  const fontSize = '1rem'
-  const width = '200px'
 
   const handleCardClick = (item: {
     id: number
@@ -75,15 +73,20 @@ const Gallery: React.FC = () => {
           <Card
             key={i}
             onClick={() => handleCardClick(item)}
-            style={{ fontSize: fontSize, width: width, backgroundColor: item.color }}>
+            style={{ backgroundColor: item.color }}>
             <h3>{item.title}</h3>
           </Card>
         ))}
       </Collection>
       {modalOpen && modalContent && (
-        <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
+        <Modal
+          modalOpen={modalOpen}
+          modalContent={modalContent}
+          setModalOpen={setModalOpen}
+          width="30rem"
+          fontSize="1.3rem"
+        />
       )}
-      {/* 버튼을 양쪽에 배치 */}
       <div>
         <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Prev
