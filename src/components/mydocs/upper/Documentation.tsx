@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import githubIcon from '../../assets/images/github.svg'
-import documentIcon from '../../assets/images/document.svg'
-import arrow from '../../assets/images/arrow.svg'
+import githubIcon from '../../../assets/images/mydocs/github.svg'
+import documentIcon from '../../../assets/images/mydocs/document.svg'
+import arrow from '../../../assets/images/mydocs/arrow.svg'
 
 // Github -> Document 아이콘 도식화
 
@@ -32,3 +32,4 @@ export const Documentation: React.FC = () => {
     </Wrapper>
   )
 }
+export default Documentation

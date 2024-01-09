@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ConfirmButton from "./ConfirmButton";
-import ConfirmIcon from "../assets/images/confirm.png";
+import ConfirmIcon from "../../assets/images/confirm.png";
 import BackDrop from "./BackDrop";
 
 const ModalWrapper = styled.div`

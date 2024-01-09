@@ -36,3 +36,4 @@ export const Description: React.FC = () => {
     </LabelDiv>
   )
 }
+export default Description

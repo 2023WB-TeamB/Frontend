@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ list, isOpedSidePanel }) => {
     const handleMouseLeave = () => {
         setTimeout(() => {
         setIsCursorInArea(false);
-    }, 1500);
+    }, 2000);
     };
 
     return (
