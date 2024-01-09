@@ -162,19 +162,21 @@ function Signin({ isOpen, onClose }: SigninProps) {
         email: data.email,
         password: data.password,
       })
-      console.log('API Response: ', response.status)
-      // 응답 확인
+      // 로그인 성공 시
       if (response.status === 200) {
-        alert('Signin Success!')
-        // 동작 수행후 모달 닫기
-        onClose()
-        // 마이독스 페이지로 이동
-        navigate('/mydocs')
+        console.log('API Response: ', response.status)
+        alert('로그인 성공!')
+
+        onClose() // 동작 수행후 모달 닫기
+        navigate('/mydocs') // 마이독스 페이지로 이동
       }
-    } catch (error) {
-      // API 호출 중 오류 발생 시 에러 표시
-      console.error('API ERROR: ', error)
-      alert('Signin Error!')
+      // 로그인 실패 시
+    } catch (error: any) {
+      // error의 타입을 any로 명시해야함
+      if (error.response.status === 400) {
+        console.error('API Response: ', error.response.status)
+        alert('로그인 실패!')
+      }
     }
   }
   // 체크박스 상태관리
