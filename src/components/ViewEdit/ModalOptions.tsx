@@ -7,7 +7,6 @@ import qrCreateIcon from "../../assets/images/qr-code-add.png"
 import closeIcon from "../../assets/images/closeIcon.png"
 import OptionButton from "./OptionButton";
 import BackDrop from "./BackDrop";
-import axios from 'axios';
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -61,23 +60,6 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-    const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-    
-    const handleUrlShare = async () => {
-        try {     
-            const response = await axios.post(`${apiUrl}share/`, {
-                docs_id : '0'
-            });
-            if (response.status === 201)
-                alert("URL이 생성되었습니다!")
-
-            return response.data.share_url;
-        } catch (error: any) {
-            console.error('API Response: ', error.response.status)
-            alert(error.response.data.message)
-        }
-    }
-    
     return (
         <>
             {isOpenOptions && (
@@ -91,7 +73,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
                     <OptionsWrapper>
                         <OptionButton icon={pdfIcon} context="Download as PDF"/>
                         <OptionButton icon={cloudIcon} context="Upload to Cloud"/>
-                        <OptionButton icon={urlIcon} context="Copy a URL" onClick={handleUrlShare}/>
+                        <OptionButton icon={urlIcon} context="Copy a URL"/>
                         <OptionButton icon={qrCreateIcon} context="Make a QR code"/>
                     </OptionsWrapper>
                     </ModalWrapper>
