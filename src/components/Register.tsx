@@ -102,7 +102,6 @@ interface FormProps {
   password: string
   confirmPassword: string
 }
-
 /**** 메인 ****/
 function Register({ isOpen, onClose }: RegisterProps) {
   const [data, setData] = useState<FormProps>({
@@ -120,7 +119,6 @@ function Register({ isOpen, onClose }: RegisterProps) {
   }
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form:', data)
     onClose()
   }
 
