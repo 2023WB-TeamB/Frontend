@@ -1,8 +1,9 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-//import { useState } from 'react'
-//import Register from '../components/Register'
+import { useState } from 'react'
+import Register from '../components/Register'
 import Header from '../components/Header'
+import { Page3 } from '../components/MainPage/page3'
 // import { GlobalStyle } from '../styles/global.ts'
 
 const Container = styled.div`
@@ -36,18 +37,6 @@ const Main = styled.h1`
 const Smalli = styled.span`
   font-size: 7rem;
 `
-
-//const [isOpen, setIsOpen] = useState(false)
-/* 모달 이벤트 핸들러 */
-// 모달 열기
-/*const handleModalOpen = () => {
-  setIsOpen(true)
-}
-// 모달 닫기
-const handleModalClose = () => {
-  setIsOpen(false)
-}*/
-const isLogin: boolean = false // 기본값은 로그아웃 상태
 
 const Sub = styled.h1`
   font-size: 1.2rem;
@@ -109,7 +98,7 @@ interface ConsoleBox {
   left?: string
 }
 
-const Dont = styled.h1<DontProps>`
+export const Dont = styled.h1<DontProps>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
   font-family: 'DMSerif', serif;
@@ -121,7 +110,7 @@ const Dont = styled.h1<DontProps>`
   line-height: normal;
   white-space: nowrap;
 `
-const MonoText = styled.h1<MonoProps>`
+export const MonoText = styled.h1<MonoProps>`
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
@@ -134,7 +123,7 @@ const MonoText = styled.h1<MonoProps>`
   white-space: nowrap;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 `
-const Blue = styled.span`
+export const Blue = styled.span`
   color: #1c6ef3;
 `
 const Hilight = styled.span<MonoProps>`
@@ -170,6 +159,18 @@ const BlinkText = styled.p`
 
 //Publishing
 const MainPage: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  /* 모달 이벤트 핸들러 */
+  // 모달 열기
+  const handleModalOpen = () => {
+    setIsOpen(true)
+  }
+  // 모달 닫기
+  const handleModalClose = () => {
+    setIsOpen(false)
+  }
+  const isLogin: boolean = false // 기본값은 로그아웃 상태
+
   return (
     <Container>
       <Header isLogin={isLogin} />
@@ -181,6 +182,10 @@ const MainPage: React.FC = () => {
         <InputBoxWrapper>
           <InputBox type="text" />
         </InputBoxWrapper>
+        <div>
+          <button onClick={handleModalOpen}>모달 테스트 버튼</button>
+          <Register isOpen={isOpen} onClose={handleModalClose} />
+        </div>
       </Section>
       {/* page2 */}
       <Section>
@@ -219,12 +224,7 @@ const MainPage: React.FC = () => {
       </Section>
       {/* Page3 */}
       <Section>
-        <Dont font-size="3rem">
-          <Blue>&gt; </Blue>step1;
-        </Dont>
-        <MonoText top="27%" left="8%">
-          <Blue>&gt; </Blue>&ensp;Paste
-        </MonoText>
+        <Page3 />
       </Section>
       {/* Page4 */}
       <Section>
