@@ -125,7 +125,7 @@ function Register({ isOpen, onClose }: RegisterProps) {
 
     try {
       // API 호출
-      const response = await axios.post('http://localhost:8000/api/v1/register/', {
+      const response = await axios.post('http://gtd.kro.kr:8000/api/v1/register/', {
         email: data.email,
         nickname: data.nickname,
         password: data.password,
@@ -135,6 +135,9 @@ function Register({ isOpen, onClose }: RegisterProps) {
         alert('Register Success!')
         // 동작 수행후 모달 닫기
         onClose()
+      }
+      if (response.status === 400) {
+        alert('Register Error!')
       }
     } catch (error) {
       // API 호출 중 오류 발생 시 에러 표시
