@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import pdfIcon from "../assets/images/pdf.png"
-import cloudIcon from "../assets/images/upload-cloud.png"
-import urlIcon from "../assets/images/url.png"
-import qrCreateIcon from "../assets/images/qr-code-add.png"
-import closeIcon from "../assets/images/closeIcon.png"
+import pdfIcon from "../../assets/images/pdf.png"
+import cloudIcon from "../../assets/images/upload-cloud.png"
+import urlIcon from "../../assets/images/url.png"
+import qrCreateIcon from "../../assets/images/qr-code-add.png"
+import closeIcon from "../../assets/images/closeIcon.png"
 import OptionButton from "./OptionButton";
 import BackDrop from "./BackDrop";
 

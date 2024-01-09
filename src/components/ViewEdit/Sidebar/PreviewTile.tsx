@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Preview from "./Preview";
-import LeftArrowIcon from "../../assets/images/arrow_left.png";
-import RightArrowIcon from "../../assets/images/arrow_right.png";
+import LeftArrowIcon from "../../../assets/images/arrow_left.png";
+import RightArrowIcon from "../../../assets/images/arrow_right.png";
 
 const PreviewWrapper = styled.div`
   width: 382px;
