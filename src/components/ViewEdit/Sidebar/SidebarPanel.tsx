@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PreviewTile from "./PreviewTile";
-import searchIcon from "../../assets/images/search.png";
+import searchIcon from "../../../assets/images/search.png";
 
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean }>`
