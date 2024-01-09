@@ -7,6 +7,8 @@ import imgGithub from '../assets/images/logo_github.png'
 import imgMeta from '../assets/images/logo_meta.png'
 import imgNaver from '../assets/images/logo_naver.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
+import { useNavigate } from 'react-router-dom'
+import Register from './Register'
 
 ReactModal.setAppElement('#root')
 
@@ -106,6 +108,7 @@ const StyledFont = styled.span`
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => props.color};
+  cursor: pointer; /* 마우스를 손가락 형태로 변환 */
 
   margin-bottom: 20px;
 `
@@ -128,11 +131,13 @@ interface FormProps {
 }
 /**** 메인 ****/
 function Signin({ isOpen, onClose }: SigninProps) {
+  const navigate = useNavigate()
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false) // 회원가입 모달 상태
+  const [rememberMe, setRememberMe] = useState(false) // remember me 상태
   const [data, setData] = useState<FormProps>({
     email: '',
     password: '',
   })
-  const [rememberMe, setRememberMe] = useState(false)
   // input 상태관리
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target //
@@ -141,15 +146,22 @@ function Signin({ isOpen, onClose }: SigninProps) {
       [name]: value, // key값을 기준으로 value를 가져옴
     }))
   }
+  const handleCloseModal = () => {
+    setIsRegisterModalOpen(false)
+  }
+  const handleJoinUsClick = () => {
+    setIsRegisterModalOpen(true) // 회원가입 모달 open
+  }
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form:', data)
-    // TODO: 데이터 유효성 검사
+    // 마이독스 페이지로 이동
+    navigate('/mydocs')
     onClose()
   }
   // 체크박스 상태관리
   const handleCheckboxChange = () => {
     setRememberMe(!rememberMe)
+    // true면 로그인 유지가 되게끔 api 연동
   }
   return (
     <ReactModal
@@ -200,13 +212,15 @@ function Signin({ isOpen, onClose }: SigninProps) {
         </div>
         {/* forgot password */}
         <div>
-          <StyledFont color="#000">Forgot</StyledFont>
-          <StyledFont color="#7AC4E8"> password?</StyledFont>
-          {/* 기능구현 안함 */}
+          <StyledFont color="#000">Join </StyledFont>
+          <StyledFont color="#7AC4E8" onClick={handleJoinUsClick}>
+            us?
+          </StyledFont>
         </div>
         {/* 데코 */}
         <img src={imgDecoBar} style={{ marginTop: '20px' }} />
       </SigninForm>
+      {isRegisterModalOpen && <Register isOpen={isRegisterModalOpen} onClose={handleCloseModal} />}
     </ReactModal>
   )
 }
