@@ -9,6 +9,7 @@ import imgNaver from '../assets/images/logo_naver.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
 import { useNavigate } from 'react-router-dom'
 import Register from './Register'
+import axios from 'axios'
 
 ReactModal.setAppElement('#root')
 
@@ -152,11 +153,29 @@ function Signin({ isOpen, onClose }: SigninProps) {
   const handleJoinUsClick = () => {
     setIsRegisterModalOpen(true) // 회원가입 모달 open
   }
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // 마이독스 페이지로 이동
-    navigate('/mydocs')
-    onClose()
+
+    try {
+      // API 호출
+      const response = await axios.post('http://gtd.kro.kr:8000/api/v1/auth/', {
+        email: data.email,
+        password: data.password,
+      })
+      console.log('API Response: ', response.status)
+      // 응답 확인
+      if (response.status === 200) {
+        alert('Signin Success!')
+        // 동작 수행후 모달 닫기
+        onClose()
+        // 마이독스 페이지로 이동
+        navigate('/mydocs')
+      }
+    } catch (error) {
+      // API 호출 중 오류 발생 시 에러 표시
+      console.error('API ERROR: ', error)
+      alert('Signin Error!')
+    }
   }
   // 체크박스 상태관리
   const handleCheckboxChange = () => {
