@@ -1,9 +1,12 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { useState } from 'react'
 import Register from '../components/Register'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
+import { Page4 } from '../components/MainPage/page4'
+import { Page5 } from '../components/MainPage/page5'
+import { Page2 } from '../components/MainPage/page2'
 // import { GlobalStyle } from '../styles/global.ts'
 
 const Container = styled.div`
@@ -14,11 +17,11 @@ const Container = styled.div`
   overflow-x: hidden;
 `
 
-const Section = styled.div`
+const Section = styled.section`
   scroll-snap-align: start;
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `
 
 //page1
@@ -38,7 +41,7 @@ const Smalli = styled.span`
   font-size: 7rem;
 `
 
-const Sub = styled.h1`
+export const Sub = styled.h1`
   font-size: 1.2rem;
   font-weight: 300;
   font-family: Inter, sans-serif;
@@ -90,13 +93,6 @@ interface MonoProps {
   centered?: boolean
   hilight?: string
 }
-interface ConsoleBox {
-  background?: string
-  height?: string
-  width?: string
-  top?: string
-  left?: string
-}
 
 export const Dont = styled.h1<DontProps>`
   font-size: ${(props) => props.fontSize || '4rem'};
@@ -126,36 +122,6 @@ export const MonoText = styled.h1<MonoProps>`
 export const Blue = styled.span`
   color: #1c6ef3;
 `
-const Hilight = styled.span<MonoProps>`
-  background-color: ${(props) => props.hilight || '#000000'};
-`
-const ConsoleBox = styled.div<ConsoleBox>`
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: ${(props) => props.width || '100vw'};
-  height: ${(props) => props.height || '2.7rem'};
-  top: ${(props) => props.top || '48%'};
-  left: ${(props) => props.left || '0'};
-  background: ${(props) => props.background || '#edeff6'};
-`
-const ConsoleText = styled.h1`
-  position: absolute;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  align-items: center;
-  left: 3rem;
-  font-size: 0.9rem;
-  color: #0957d0;
-`
-const blink = keyframes`
-  0%, 100% {visibility: visible;}
-  50% {visibility: hidden;}
-  `
-const BlinkText = styled.p`
-  display: inline;
-  animation: ${blink} 1s step-start infinite;
-`
 
 //Publishing
 const MainPage: React.FC = () => {
@@ -172,7 +138,7 @@ const MainPage: React.FC = () => {
   const isLogin: boolean = false // 기본값은 로그아웃 상태
 
   return (
-    <Container>
+    <Container className="scroll">
       <Header isLogin={isLogin} />
       <Section>
         <Main>
@@ -189,60 +155,16 @@ const MainPage: React.FC = () => {
       </Section>
       {/* page2 */}
       <Section>
-        <Dont>Don't just code.</Dont>
-        <Dont fontSize="3rem" top="22%">
-          Document. Refine. Archive. Share.
-        </Dont>
-        <ConsoleBox>
-          <ConsoleText>GiToDoc</ConsoleText>
-        </ConsoleBox>
-        <ConsoleBox height="0.1rem" top="48%" background="#D3E2FD"></ConsoleBox>
-        <ConsoleBox width="9rem" height="0.1rem" top="47.8%" background="#0957D0"></ConsoleBox>
-        <ConsoleBox
-          width="0.1rem"
-          height="1.7rem"
-          top="43.2%"
-          left="80rem"
-          background="#D3E2FD"></ConsoleBox>
-        <MonoText>
-          <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
-          <br />
-          <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
-          <br />
-          <br />
-          <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
-          <br />
-          <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is not
-          just done, but perfected.{' '}
-          <BlinkText>
-            <Hilight>&ensp;</Hilight>
-          </BlinkText>
-        </MonoText>
-        <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
-          Keep scrolling if you want to make your project perfect
-        </MonoText>
+        <Page2 />
       </Section>
-      {/* Page3 */}
       <Section>
         <Page3 />
       </Section>
-      {/* Page4 */}
       <Section>
-        <Dont font-size="3rem">
-          <Blue>&gt; </Blue>step2;
-        </Dont>
-        <MonoText top="27%" left="8%">
-          <Blue>&gt; </Blue>&ensp;Automatically generate the document based on your URL
-        </MonoText>
+        <Page4 />
       </Section>
-      {/* Page5 */}
       <Section>
-        <Dont font-size="3rem">
-          <Blue>&gt; </Blue>step3;
-        </Dont>
-        <MonoText top="27%" left="8%">
-          <Blue>&gt; </Blue>&ensp;Make
-        </MonoText>
+        <Page5 />
       </Section>
     </Container>
 

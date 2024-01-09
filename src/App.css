@@ -41,8 +41,6 @@
   color: #888;
 }
 
-.arrow {
-  position: absolute;
-  left: 50%;
-  top: 80%;
+.scroll::-webkit-scrollbar {
+  display: none;
 }
