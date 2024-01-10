@@ -2,9 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import styled from 'styled-components'
 import ReactModal from 'react-modal'
 import axios from 'axios'
-/*-----------------------------------------------------------*/
 import imgCloseBtn from '../assets/images/close.png'
-import imgDecoBar from '../assets/images/deco_bar.png'
 
 ReactModal.setAppElement('#root')
 
@@ -21,12 +19,12 @@ const CustomModal = {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 }
-const RegisterForm = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
 `
-const Title = styled.div`
+const StyledTitle = styled.div`
   font-size: 30px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
@@ -34,16 +32,39 @@ const Title = styled.div`
   margin-top: 50px;
   margin-bottom: 10px;
 `
-const Name = styled.div`
-  width: 80%;
-  font-size: 20px;
+const StyledNameWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const StyledName = styled.span<NameProps>`
+  width: 170px;
+  float: left;
+
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: #000;
-  /* margin-left: 80px; */
-  margin-bottom: 5px;
+  text-align: left;
+  font-size: 20px;
+  color: black;
+
+  margin-bottom: 3px;
 `
-const Input = styled.input`
+const StyledName2 = styled.span<NameProps>`
+  width: 170px;
+  height: 20px;
+  float: right;
+
+  font-weight: 400;
+  font-family: 'Inter-Regular', Helvetica;
+  text-align: right;
+  font-size: 13px;
+  color: red;
+
+  visibility: ${(props) => props.visibility};
+  padding-top: 10px;
+  margin-bottom: 3px;
+`
+const StyledInput = styled.input`
   height: 40px;
   width: 350px;
   font-size: 15px;
@@ -53,11 +74,9 @@ const Input = styled.input`
   border-color: #000;
   border-radius: 20px;
   background-color: #fff;
-
   padding-left: 20px;
-  margin-bottom: 20px;
 `
-const Button = styled.button`
+const StyledButton = styled.button`
   height: 46px;
   width: 150px;
   border: none;
@@ -69,14 +88,13 @@ const Button = styled.button`
   font-size: 20px;
   color: #fff;
 
-  margin-bottom: 30px;
   cursor: pointer;
 
   &:hover {
     background: linear-gradient(to right, #7f58ab, #4e95b6);
   }
 `
-const CloseBtn = styled.button`
+const StyledCloseBtn = styled.button`
   position: absolute;
   top: 30px;
   right: 50px;
@@ -104,6 +122,9 @@ interface FormProps {
   password: string
   confirmPassword: string
 }
+interface NameProps {
+  visibility?: string // 비지블
+}
 /**** 메인 ****/
 function Register({ isOpen, onClose }: RegisterProps) {
   const [data, setData] = useState<FormProps>({
@@ -112,16 +133,38 @@ function Register({ isOpen, onClose }: RegisterProps) {
     password: '',
     confirmPassword: '',
   })
+  const [showError, setShowError] = useState(false)
+  // 비밀번호 불일치 시에러 메시지와 표시스타일 변경
+  const handlePasswordMismatch = () => {
+    setShowError(true)
+  }
+  // input 상태 이벤트 헨들러
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
+
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }))
+    // 비밀번호가 일치하지 않으면 상태 업데이트
+    if (name === 'confirmPassword' && data.password !== value) {
+      // 비밀번호 확인의 onChange일때만
+      // password의 value와 confirmPassword의 value와 다르면
+      handlePasswordMismatch()
+    } else {
+      // 비밀번호가 다시 일치하면 에러를 숨긴다
+      setShowError(false)
+    }
   }
-
+  // submit 이벤트 핸들러
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault() // form요소에서 발생하는 페이지를 다시 로드하는 새로고침 방지
+
+    // 비밀번호와 비밀번호 확인의 일치 여부 확인
+    if (data.password !== data.confirmPassword) {
+      handlePasswordMismatch()
+      return // submit 중단
+    }
 
     try {
       // API 호출
@@ -132,6 +175,7 @@ function Register({ isOpen, onClose }: RegisterProps) {
       })
       // 회원가입 성공 시
       if (response.status === 200) {
+        console.log(response.data)
         console.log('API Response: ', response.status)
         alert('회원가입 성공!')
 
@@ -152,45 +196,65 @@ function Register({ isOpen, onClose }: RegisterProps) {
       onRequestClose={onClose}
       shouldCloseOnOverlayClick={false}
       style={CustomModal}>
-      <CloseBtn onClick={onClose} />
-
-      <RegisterForm onSubmit={handleSubmit}>
-        <Title>Register</Title>
-        <Name>Email</Name>
-        <Input
+      <StyledCloseBtn onClick={onClose} />
+      <StyledForm onSubmit={handleSubmit}>
+        <StyledTitle>Register</StyledTitle>
+        <StyledNameWrapper>
+          <StyledName>Email</StyledName>
+          <StyledName2 visibility="hidden">Worng Email</StyledName2>
+        </StyledNameWrapper>
+        <StyledInput
           type="email"
           name="email"
           value={data.email}
           onChange={handleChange}
           placeholder="Enter Email"
         />
-        <Name>Nickname</Name>
-        <Input
+
+        <div style={{ margin: 10 }}></div>
+        <StyledNameWrapper>
+          <StyledName>Nickname</StyledName>
+          <StyledName2 visibility="hidden">Worng Nickname</StyledName2>
+        </StyledNameWrapper>
+        <StyledInput
           type="text"
           name="nickname"
           value={data.nickname}
           onChange={handleChange}
           placeholder="Enter Nickname"
         />
-        <Name>Password</Name>
-        <Input
+
+        <div style={{ margin: 10 }}></div>
+        <StyledNameWrapper>
+          <StyledName>Password</StyledName>
+          <StyledName2 visibility="hidden">Worng Password</StyledName2>
+        </StyledNameWrapper>
+        <StyledInput
           type="password"
           name="password"
           value={data.password}
           onChange={handleChange}
           placeholder="Enter Password"
         />
-        <Name>Confirm Password</Name>
-        <Input
+
+        <div style={{ margin: 10 }}></div>
+        <StyledNameWrapper>
+          <StyledName>ConfirmPassword</StyledName>
+          <StyledName2 visibility={showError ? 'visible' : 'hidden'}>Worng Password</StyledName2>
+        </StyledNameWrapper>
+        <StyledInput
           type="password"
           name="confirmPassword"
           value={data.confirmPassword}
           onChange={handleChange}
           placeholder="Enter Confirm Password"
+          style={{
+            border: showError ? '2px solid red' : '1px solid',
+          }}
         />
-        <Button>Submit</Button>
-        <img src={imgDecoBar} alt="" />
-      </RegisterForm>
+        <div style={{ margin: 20 }}></div>
+        <StyledButton>Submit</StyledButton>
+      </StyledForm>
     </ReactModal>
   )
 }
