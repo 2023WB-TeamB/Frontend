@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import React, { useState } from 'react'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
@@ -14,7 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: 80vh; // 헤더랑 겹쳐서 20vh 내림
   width: 100vw;
 `
 const ScrollSnap = styled.div`
@@ -48,13 +47,7 @@ const Lower = styled.div`
 
 const MyDocsPage: React.FC = () => {
   /* 로그인 이벤트 핸들러 */
-  const [isLogin, setIsLogin] = useState(true) // 기본값은 로그인이 된 상태
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    setIsLogin(false) // 로그아웃
-    navigate('/') // 메인페이지로 이동
-  }
+  const isLogin: boolean = true // 기본값은 로그인이 된 상태
 
   /* Upper
   GiToDoc 로고 (GiToDoc)
@@ -67,7 +60,7 @@ const MyDocsPage: React.FC = () => {
 
   return (
     <Container>
-      <Header isLogin={isLogin} onLogout={handleLogout} />
+      <Header isLogin={isLogin} />
       <ScrollSnap>
         <Upper>
           <GiToDoc />
