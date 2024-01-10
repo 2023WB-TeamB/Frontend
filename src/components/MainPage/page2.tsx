@@ -1,7 +1,43 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
 import downarrow from '../../assets/images/MainPage/down_arrow.svg'
+
+function useOnScreen(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+
+const slideUpFade = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  100%{
+    opacity: 1;
+    transform: trasnlateY(0);
+  }
+`
 
 interface Styledicon {
   top?: string
@@ -10,7 +46,6 @@ interface Styledicon {
   height?: string
   centered?: boolean
 }
-
 interface MonoProps {
   fontSize?: string
   top?: string
@@ -25,7 +60,6 @@ interface ConsoleBox {
   top?: string
   left?: string
 }
-
 const Styledicon = styled.img<Styledicon>`
   width: 5rem;
   height: 3rem;
@@ -46,7 +80,7 @@ interface MonoProps {
   hilight?: string
 }
 
-export const Dont = styled.h1<DontProps>`
+export const Dont = styled.h1<DontProps & { visible: boolean }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
   font-family: 'DMSerif', serif;
@@ -57,6 +91,12 @@ export const Dont = styled.h1<DontProps>`
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideUpFade} 1s ease-out
+        `
+      : 'none'};
 `
 export const MonoText = styled.h1<MonoProps>`
   font-size: ${(props) => props.fontSize || '1rem'};
@@ -105,10 +145,14 @@ const BlinkText = styled.p`
 `
 
 export const Page2: React.FC = () => {
+  const [ref, visible] = useOnScreen({ threshold: 0.3 })
+
   return (
     <div>
-      <Dont>Don't just code.</Dont>
-      <Dont fontSize="3rem" top="22%">
+      <Dont ref={ref} visible={visible}>
+        Don't just code.
+      </Dont>
+      <Dont ref={ref} fontSize="3rem" top="22%" visible={visible}>
         Document. Refine. Archive. Share.
       </Dont>
       <ConsoleBox>
