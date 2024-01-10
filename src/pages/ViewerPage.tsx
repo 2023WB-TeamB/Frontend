@@ -19,86 +19,90 @@ const StyledForm = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-`;
+`
 
 function ViewerPage() {
-  const [isOpenSidePanel, setIsOpenSidePanel] = useState(false);
-  const [isOpenOptions, setIsOpenOptions] = useState(false);
-  const [isOpenConfirm, setIsOpenConfirm] = useState(false);
-  const [confirmLabel, setConfirmLabel] = useState('');
-  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-  const navigate = useNavigate();
+  const [isOpenSidePanel, setIsOpenSidePanel] = useState(false)
+  const [isOpenOptions, setIsOpenOptions] = useState(false)
+  const [isOpenConfirm, setIsOpenConfirm] = useState(false)
+  const [confirmLabel, setConfirmLabel] = useState('')
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
+  const navigate = useNavigate()
 
   // isOpenSidePanel ~
   // 사이드 확장 패널 여부
   const openSidePanel = () => {
-    setIsOpenSidePanel(true);
+    setIsOpenSidePanel(true)
   }
   const closeSidePanel = () => {
-    setIsOpenSidePanel(false);
+    setIsOpenSidePanel(false)
   }
-  
+
   // isOpenOptions ~
   // Export 모달창 여부
   const openOptions = () => {
-    setIsOpenOptions(true);
-    setIsOpenSidePanel(false);
-  };
+    setIsOpenOptions(true)
+    setIsOpenSidePanel(false)
+  }
   const closeOptions = () => {
-    setIsOpenOptions(false);
-  };
-  
+    setIsOpenOptions(false)
+  }
+
   // isOpenConfirm ~
   // 확인 모달창 여부
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
-    setConfirmLabel('정말로 이 문서를 삭제하실껀가요?');
+    setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
     setConfirmAction(() => {
       // 문서 삭제 로직
-    });
-    setIsOpenConfirm(true);
-    setIsOpenSidePanel(false);
-  };
+    })
+    setIsOpenConfirm(true)
+    setIsOpenSidePanel(false)
+  }
   // 뷰어 종료 확인
   const handleExitClick = () => {
-    setConfirmLabel('나가기');
+    setConfirmLabel('나가기')
     setConfirmAction(() => () => {
-      navigate('/');
-    });
-    setIsOpenConfirm(true);
-  };
+      navigate('/')
+    })
+    setIsOpenConfirm(true)
+  }
   const closeConfirm = () => {
-    setIsOpenConfirm(false);
+    setIsOpenConfirm(false)
   }
   // 확인 모달창 핸들러
   const handleConfirmYes = () => {
-    confirmAction && confirmAction();
-    setIsOpenConfirm(false);
-  };
-  
+    confirmAction && confirmAction()
+    setIsOpenConfirm(false)
+  }
+
   return (
     <StyledForm>
-      <Sidebar list={[[profile, closeSidePanel],
-        [gallery, openSidePanel], 
-        [version, openSidePanel], 
-        [exportBtn, openOptions], 
-        [deleteBtn, openConfirmWithDelete], 
-        [""], 
-        [""], 
-        [""], 
-        [""], 
-        [exit, handleExitClick]]}
-        isOpedSidePanel={isOpenSidePanel}>
-      </Sidebar>
-      <SidebarPanel isOpenSidePanel={isOpenSidePanel} onClose={closeSidePanel}/>
-      <ModalOptions isOpenOptions={isOpenOptions} onClose={closeOptions}/>
-      <ModalConfirm isOpenConfirm={isOpenConfirm}
+      <Sidebar
+        list={[
+          [profile, closeSidePanel],
+          [gallery, openSidePanel],
+          [version, openSidePanel],
+          [exportBtn, openOptions],
+          [deleteBtn, openConfirmWithDelete],
+          [''],
+          [''],
+          [''],
+          [''],
+          [exit, handleExitClick],
+        ]}
+        isOpedSidePanel={isOpenSidePanel}></Sidebar>
+      <SidebarPanel isOpenSidePanel={isOpenSidePanel} onClose={closeSidePanel} />
+      <ModalOptions isOpenOptions={isOpenOptions} onClose={closeOptions} />
+      <ModalConfirm
+        isOpenConfirm={isOpenConfirm}
         label={confirmLabel}
         confirmOption={[
-          ["Yes", handleConfirmYes],
-          ["No", closeConfirm]
-        ]}/>
-      <MarkdownArea isOpenSidePanel={isOpenSidePanel}/>
+          ['Yes', handleConfirmYes],
+          ['No', closeConfirm],
+        ]}
+      />
+      <MarkdownArea isOpenSidePanel={isOpenSidePanel} />
     </StyledForm>
   )
 }

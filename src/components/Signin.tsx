@@ -1,15 +1,17 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import styled from 'styled-components'
 import ReactModal from 'react-modal'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+/*-----------------------------------------------------------*/
+import Register from './Register'
+/*-----------------------------------------------------------*/
 import imgStyledCloseBtn from '../assets/images/close.png'
 import imgGoogle from '../assets/images/logo_google.png'
 import imgGithub from '../assets/images/logo_github.png'
 import imgMeta from '../assets/images/logo_meta.png'
 import imgNaver from '../assets/images/logo_naver.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
-import { useNavigate } from 'react-router-dom'
-import Register from './Register'
-import axios from 'axios'
 
 ReactModal.setAppElement('#root')
 
@@ -164,6 +166,10 @@ function Signin({ isOpen, onClose }: SigninProps) {
       })
       // 로그인 성공 시
       if (response.status === 200) {
+        // 로컬 스토리지에 토큰 저장, response.data.token.[토큰이름] 은 서버에서 전달됨
+        localStorage.setItem('accessToken', response.data.token.access)
+        localStorage.setItem('refreshToken', response.data.token.refresh)
+
         console.log('API Response: ', response.status)
         alert('로그인 성공!')
 
