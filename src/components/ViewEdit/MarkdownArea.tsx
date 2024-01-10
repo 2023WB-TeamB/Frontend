@@ -1,9 +1,9 @@
 // 마크다운 뷰어 컴포넌트
 import React, { useState } from "react"
 import styled from "styled-components"
-import EditIcon from "../assets/images/edit.png"
-import SaveIcon from "../assets/images/save.png"
-import CancelIcon from "../assets/images/cancel.png"
+import EditIcon from "../../assets/images/edit.png"
+import SaveIcon from "../../assets/images/save.png"
+import CancelIcon from "../../assets/images/cancel.png"
 
 const ViewerWrapper = styled.div`
     position: relative;

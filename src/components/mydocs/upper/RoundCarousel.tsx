@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Card from './Card'
-import dummy from './data.json'
+import Card from '../Card'
+import dummy from '../data.json'
+import Modal from '../Modal'
 
 // 카드에 내용을 넣기 위한 더미 데이터. 더미데이터를 불러와서 최근 수정된 문서가 앞으로 오게 정렬함.
 dummy.sort((a, b) => {
@@ -64,33 +65,6 @@ const NextButton = styled(Button)`
   &:after {
     transform: rotate(90deg) translate(-30%, 200%);
   }
-`
-
-// 모달 컴포넌트 스타일링
-const Modal = styled.div<{ modalOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  display: flex; // 항상 flex를 유지
-  opacity: ${({ modalOpen }) => (modalOpen ? 1 : 0)}; // modalOpen 상태에 따라 opacity 조절
-  visibility: ${({ modalOpen }) =>
-    modalOpen ? 'visible' : 'hidden'}; // modalOpen 상태에 따라 visibility 조절
-  transition: opacity 0.3s ease, visibility 0.3s ease; // opacity와 visibility에 transition 효과 적용
-  justify-content: center;
-  align-items: center;
-  z-index: 3;
-`
-
-const ModalContent = styled.div`
-  background: ${({ color }) => color || 'rgba(0, 0, 0, 1)'};
-  color: white;
-  width: 20rem;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5); // 그림자 효과 추가
 `
 
 const RoundCarousel: React.FC = () => {
@@ -160,17 +134,7 @@ const RoundCarousel: React.FC = () => {
         <PrevButton onClick={handlePrev} style={{ visibility: canPrev ? 'visible' : 'hidden' }} />
         <NextButton onClick={handleNext} style={{ visibility: canNext ? 'visible' : 'hidden' }} />
       </Carousel>
-      <Modal
-        modalOpen={modalOpen}
-        onClick={() => setModalOpen(false) /*모달 창 외부를 클릭하면 창이 닫힘 */}>
-        {modalContent && ( // modalContent가 null이 아닐 때만 모달 창의 내용을 보여줌
-          <ModalContent color={modalContent.color} onClick={(e) => e.stopPropagation()}>
-            <h2>{modalContent.title}</h2>
-            <p>{modalContent.updated_at}</p>
-            <p>{modalContent.content}</p>
-          </ModalContent>
-        )}
-      </Modal>
+      <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </Wrapper>
   )
 }

@@ -9,7 +9,7 @@ type CardProps = {
 const Card = styled.div<CardProps>`
   position: absolute;
   width: 10rem;
-  height: 12rem;
+  height: 13rem;
   line-height: 1rem;
   color: white;
   background-color: ${({ backgroundColor }) => backgroundColor};

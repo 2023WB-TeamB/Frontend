@@ -80,3 +80,5 @@ export const URLInput: React.FC = () => {
     </Wrapper>
   )
 }
+
+export default URLInput
