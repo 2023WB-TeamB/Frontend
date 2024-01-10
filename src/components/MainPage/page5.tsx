@@ -1,9 +1,67 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+import styled, { keyframes, css } from 'styled-components'
 import gitodocpage2 from '../../assets/images/MainPage/gitodocpage2.svg'
-import { Dont } from '../../components/MainPage/page2'
-import { MonoText } from '../../components/MainPage/page2'
 import { Blue } from '../../components/MainPage/page2'
+
+function useOnScreen(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+const slideUpFade = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  100%{
+    opacity: 1;
+    transform: trasnlateY(0);
+  }
+`
+
+interface DontProps {
+  fontSize?: string
+  top?: string
+  fontfamily?: string
+  left?: string
+}
+const Dont = styled.h1<DontProps & { visible: boolean }>`
+  font-size: ${(props) => props.fontSize || '4rem'};
+  font-weight: 400;
+  font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
+  color: #000000;
+  position: absolute;
+  top: ${(props) => props.top || '20rem'};
+  left: ${(props) => props.left || '4rem'};
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideUpFade} 1s ease-out
+        `
+      : 'none'};
+`
 
 interface Page {
   top?: string
@@ -68,14 +126,22 @@ const Startbutton = styled.button`
 `
 
 export const Page5: React.FC = () => {
+  const [ref, visible] = useOnScreen({ threshold: 0.1 })
+
   return (
     <div>
-      <Dont fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step3;
+      <Dont ref={ref} visible={visible} fontSize="3rem" top="10%">
+        <Blue>&gt; </Blue>step 3;
       </Dont>
-      <MonoText top="20%" left="8%">
-        <Blue>&gt; </Blue>&ensp;Check your document
-      </MonoText>
+      <Dont
+        ref={ref}
+        visible={visible}
+        top="10.4rem"
+        left="6.2rem"
+        fontSize="1.2rem"
+        fontfamily="monospace">
+        Check your document
+      </Dont>
       <Startbutton>Sign up and get started!</Startbutton>
       <Styledpage
         src={gitodocpage2}

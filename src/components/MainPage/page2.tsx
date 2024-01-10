@@ -1,7 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
-import downarrow from '../../assets/images/MainPage/down_arrow.svg'
+import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 
 function useOnScreen(
   options: IntersectionObserverInit,
@@ -28,17 +28,6 @@ function useOnScreen(
   return [ref, visible]
 }
 
-const slideUpFade = keyframes`
-  0%{
-    opacity: 0;
-    transform: translateY(3rem);
-  }
-  100%{
-    opacity: 1;
-    transform: trasnlateY(0);
-  }
-`
-
 interface Styledicon {
   top?: string
   left?: string
@@ -52,6 +41,7 @@ interface MonoProps {
   left?: string
   centered?: boolean
   hilight?: string
+  color?: string
 }
 interface ConsoleBox {
   background?: string
@@ -60,10 +50,11 @@ interface ConsoleBox {
   top?: string
   left?: string
 }
-const Styledicon = styled.img<Styledicon>`
+export const Styledicon = styled.img<Styledicon>`
   width: 5rem;
   height: 3rem;
   position: absolute;
+  z-index: 2;
   top: ${(props) => props.top || '5rem'};
   left: ${(props) => props.left || '3rem'};
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
@@ -71,22 +62,16 @@ const Styledicon = styled.img<Styledicon>`
 interface DontProps {
   fontSize?: string
   top?: string
-}
-interface MonoProps {
-  fontSize?: string
-  top?: string
-  left?: string
-  centered?: boolean
-  hilight?: string
+  fontfamily?: string
 }
 
 export const Dont = styled.h1<DontProps & { visible: boolean }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
-  font-family: 'DMSerif', serif;
+  font-family: 'DMSerifDisplay', serif;
   color: #000000;
   position: absolute;
-  top: ${(props) => props.top || '12%'};
+  top: ${(props) => props.top || '10%'};
   left: 5%;
   letter-spacing: 0;
   line-height: normal;
@@ -94,15 +79,26 @@ export const Dont = styled.h1<DontProps & { visible: boolean }>`
   animation: ${(props) =>
     props.visible
       ? css`
-          ${slideUpFade} 1s ease-out
+          ${slideUpFade} 1s ease-in-out
         `
       : 'none'};
 `
-export const MonoText = styled.h1<MonoProps>`
+const slideUpFade = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  100%{
+    opacity: 1;
+    transform: tralateY(0);
+  }
+`
+
+const MonoText = styled.h1<MonoProps>`
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
-  color: #000000;
+  color: ${(props) => props.color || '#000000'};
   position: absolute;
   top: ${(props) => props.top || '55%'};
   left: ${(props) => props.left || '5%'};
@@ -119,6 +115,7 @@ const Hilight = styled.span<MonoProps>`
   background-color: ${(props) => props.hilight || '#000000'};
 `
 const ConsoleBox = styled.div<ConsoleBox>`
+  display: flex;
   align-items: center;
   position: absolute;
   width: ${(props) => props.width || '100vw'};
@@ -145,14 +142,14 @@ const BlinkText = styled.p`
 `
 
 export const Page2: React.FC = () => {
-  const [ref, visible] = useOnScreen({ threshold: 0.3 })
+  const [ref, visible] = useOnScreen({ threshold: 0.1 })
 
   return (
     <div>
       <Dont ref={ref} visible={visible}>
         Don't just code.
       </Dont>
-      <Dont ref={ref} fontSize="3rem" top="22%" visible={visible}>
+      <Dont fontSize="3rem" top="22%" visible={visible} ref={ref}>
         Document. Refine. Archive. Share.
       </Dont>
       <ConsoleBox>
@@ -181,12 +178,12 @@ export const Page2: React.FC = () => {
           <Hilight>&ensp;</Hilight>
         </BlinkText>
       </MonoText>
-      <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
+      <MonoText fontSize="0.9rem" top="45rem" left="50%" centered color="#8E004B">
         Keep scrolling if you want to make your project perfect
       </MonoText>
       <Styledicon
-        src={downarrow}
-        top="94%"
+        src={down_arrow}
+        top="102%"
         left="50%"
         centered
         width="1rem"

@@ -1,3 +1,4 @@
+import { GlobalStyle } from '../GlobalStyle'
 import React from 'react'
 import styled from 'styled-components'
 // import Signin from '../components/Signin.tsx'
@@ -8,6 +9,10 @@ import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
 
+interface SectionProps {
+  marginTop?: string
+}
+
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -15,17 +20,17 @@ const Container = styled.div`
   overflow-x: hidden;
 `
 
-const Section = styled.div`
+const Section = styled.div<SectionProps>`
   position: relative;
   width: 100vw;
   height: 100vh;
-  margin-top: 50rem;
+  margin-top: ${(props) => props.marginTop || '15rem'};
 `
 
 const Main = styled.h1`
   font-size: 8rem;
   font-weight: 700;
-  font-family: 'DMSerif', serif;
+  font-family: 'DMSerifDisplay', serif;
   color: transparent;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
   -webkit-background-clip: text;
@@ -101,30 +106,33 @@ const MainPage: React.FC = () => {
   // }
 
   return (
-    <Container>
-      <Header isLogin={isLogin} />
-      <Section>
-        <Main>
-          G<Smalli>i</Smalli>ToDoc
-        </Main>
-        <Sub>Join us to change github repository to file!</Sub>
-        <InputBoxWrapper>
-          <InputBox type="text" />
-        </InputBoxWrapper>
-      </Section>
-      <Section>
-        <Page2 />
-      </Section>
-      <Section>
-        <Page3 />
-      </Section>
-      <Section>
-        <Page4 />
-      </Section>
-      <Section>
-        <Page5 />
-      </Section>
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Header isLogin={isLogin} />
+        <Section marginTop="0rem">
+          <Main>
+            G<Smalli>i</Smalli>ToDoc
+          </Main>
+          <Sub>Join us to change github repository to file!</Sub>
+          <InputBoxWrapper>
+            <InputBox type="text" />
+          </InputBoxWrapper>
+        </Section>
+        <Section marginTop="5rem">
+          <Page2 />
+        </Section>
+        <Section>
+          <Page3 />
+        </Section>
+        <Section>
+          <Page4 />
+        </Section>
+        <Section>
+          <Page5 />
+        </Section>
+      </Container>
+    </>
   )
 }
 
