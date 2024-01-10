@@ -1,4 +1,10 @@
 import styled from 'styled-components'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+/*-----------------------------------------------------------*/
+import Signin from './Signin'
+/*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/dark_mode.png'
 import imgWhiteMode from '../assets/images/white_mode.png'
 import imgLogo from '../assets/images/LOGO1.png'
@@ -6,15 +12,12 @@ import imgSignIn from '../assets/images/signin.png'
 import imgSignInDark from '../assets/images/signin_dark.png'
 import imgSignOut from '../assets/images/signout.png'
 import imgSignOutDark from '../assets/images/signout_dark.png'
-import Signin from './Signin'
-import { useState } from 'react'
 
 /*** Header 타입 지정을 위한 인터페이스 ***/
 interface HeaderProps {
   isLogin: boolean
-  onLogout?: () => void
+  // onLogout?: () => void
 }
-
 interface IconProps {
   height: string
   width: string
@@ -31,10 +34,9 @@ const Layout = styled.div<LayoutProps>`
   height: 40px;
   width: 100%;
   // 스타일 위치
-  position: fixed;
+  /* position: fixed;
   top: 0;
-  left: 0;
-  margin-bottom: 0;
+  left: 0; */
   // 조건부로 다크모드 지정, props로 값을 받아옴
   background-color: ${(props) => (props.isDarkMode ? '#000' : '#fff')};
 `
@@ -51,9 +53,10 @@ const Icon = styled.img<IconProps>`
   cursor: pointer;
 `
 /*** 메인 ***/
-const Header = ({ isLogin, onLogout }: HeaderProps) => {
+const Header = ({ isLogin }: HeaderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isSigninOpen, setIsSigninOpen] = useState(false) // SignIn 모달 상태 추가
+  const navigate = useNavigate()
 
   const handleSigninOpen = () => {
     setIsSigninOpen(true)
@@ -62,10 +65,21 @@ const Header = ({ isLogin, onLogout }: HeaderProps) => {
     setIsSigninOpen(false)
   }
   const handleDarkMode = () => {
-    console.log('dark mode state: ', isDarkMode)
-
-    setIsDarkMode((prev: boolean) => !prev) // 다크모드 상태를 토글
-    // prev : 이전 요소의 값
+    // 다크모드 토글
+    setIsDarkMode((prev: boolean) => !prev) // prev: 이전 요소의 값, 다크모드 상태를 토글
+  }
+  const handleClickSignout = async () => {
+    // 로그아웃 API 호출
+    const response = await axios.delete('http://gtd.kro.kr:8000/api/v1/auth/')
+    // 로그아웃 성공 시
+    if (response.status === 202) {
+      console.log('API Response: ', response.status)
+      alert('로그아웃 성공!')
+      // 로그아웃 성공 시, 로컬스토리지에서 토큰 삭제 후 메인페이지 이동
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      navigate('/') // 메인페이지로 이동
+    }
   }
 
   return (
@@ -83,7 +97,7 @@ const Header = ({ isLogin, onLogout }: HeaderProps) => {
             top="12px"
             right="80px"
             alt="SignOut Icon"
-            onClick={onLogout}
+            onClick={handleClickSignout}
           />
         ) : (
           // 로그인
