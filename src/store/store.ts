@@ -1,4 +1,14 @@
-//import create from 'zustand'
+import { create } from 'zustand'
+
+interface Language {
+  isEnglish: boolean
+  setIsEnglish: (isEnglish: boolean) => void
+}
+
+export const isEnglishStore = create<Language>((set) => ({
+  isEnglish: false,
+  setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
+}))
 
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
