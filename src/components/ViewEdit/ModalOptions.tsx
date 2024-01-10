@@ -8,6 +8,7 @@ import closeIcon from "../../assets/images/closeIcon.png"
 import OptionButton from "./OptionButton";
 import BackDrop from "./BackDrop";
 import axios from 'axios';
+import Swal from 'sweetalert2'
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -23,7 +24,7 @@ const ModalWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    z-index: 10000;
+    z-index: 1000;
 
     & label {
         margin: 35px;
@@ -63,20 +64,92 @@ interface ModalOptionsProps {
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
     const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
     
-    const handleUrlShare = async () => {
-        try {     
-            const response = await axios.post(`${apiUrl}share/`, {
-                docs_id : '0'
-            });
-            if (response.status === 201)
-                alert("URL이 생성되었습니다!")
-
-            return response.data.share_url;
-        } catch (error: any) {
-            console.error('API Response: ', error.response.status)
-            alert(error.response.data.message)
-        }
+    // ! docsId : 임시 문서ID 
+    const docsId = 4;
+    
+    // * Toast 알림창
+    const ToastInfor = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1800,
+    });
+    
+    // * URL 할당 -> docUrl
+    let docUrl = ""
+    const handleUrlShare = () => {
+        return new Promise<void>((resolve, reject) => {
+            axios
+              .post(`${apiUrl}share/`, {
+                docs_id: docsId
+              })
+              .then(response => {
+                docUrl = response.data.share_url;
+                resolve();
+              })
+              .catch(error => {
+                if (error.response.status === 409){
+                    docUrl = error.response.data.existing_url;
+                    resolve();
+                }
+                reject(error);
+              });
+          });
     }
+
+    // * URL 클립보드로 복사
+    const handleCopyClipBoardURL = async () => {
+        try {
+            await handleUrlShare()
+            await navigator.clipboard.writeText(docUrl);
+            ToastInfor.fire({
+                icon: "success",
+                title: "URL이 복사되었습니다!"
+            });
+        } catch (err) {
+            ToastInfor.fire({
+                icon: "error",
+                title: "URL 복사 실패"
+            });
+        }
+    };    
+
+    // * QR 로딩창
+    const showQRCode = async () => {
+        if (docUrl === "") {
+          Swal.fire({
+            toast: true,
+            title: 'Loading...',
+            allowOutsideClick: false,
+            didOpen: async () => {
+                try {
+                    await handleUrlShare()
+                    setTimeout(() => {
+                        Swal.close();
+                        showQRCodeModal();
+                    }, 1000)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+          });
+        } else {    
+          showQRCodeModal();
+        }
+    };
+    // * QR 조회창
+    const showQRCodeModal = () => {
+        console.log(docUrl)
+        Swal.fire({
+            toast: true,
+            // ! 문서 제목으로 수정 예정
+            title: docsId,
+            text: docUrl,
+            imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
+            imageAlt: 'QR Code',
+            showConfirmButton: true
+        });
+    };
     
     return (
         <>
@@ -85,14 +158,14 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
                     <BackDrop/>
                     <ModalWrapper>
                     <CloseButton onClick={onClose}>
-                        <img src={closeIcon}></img>
+                        <img src={closeIcon} alt="Close"/>
                     </CloseButton>
                     <label>Export</label>
                     <OptionsWrapper>
                         <OptionButton icon={pdfIcon} context="Download as PDF"/>
                         <OptionButton icon={cloudIcon} context="Upload to Cloud"/>
-                        <OptionButton icon={urlIcon} context="Copy a URL" onClick={handleUrlShare}/>
-                        <OptionButton icon={qrCreateIcon} context="Make a QR code"/>
+                        <OptionButton icon={urlIcon} context="Copy a URL" onClick={handleCopyClipBoardURL}/>
+                        <OptionButton icon={qrCreateIcon} context="Make a QR code" onClick={showQRCode}/>
                     </OptionsWrapper>
                     </ModalWrapper>
                 </>
