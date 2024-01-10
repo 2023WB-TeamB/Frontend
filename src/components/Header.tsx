@@ -34,10 +34,9 @@ const Layout = styled.div<LayoutProps>`
   height: 40px;
   width: 100%;
   // 스타일 위치
-  position: fixed;
+  /* position: fixed;
   top: 0;
-  left: 0;
-  margin-bottom: 0;
+  left: 0; */
   // 조건부로 다크모드 지정, props로 값을 받아옴
   background-color: ${(props) => (props.isDarkMode ? '#000' : '#fff')};
 `

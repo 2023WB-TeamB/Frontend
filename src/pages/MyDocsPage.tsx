@@ -13,7 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80vh; // 헤더랑 겹쳐서 20vh 내림
+  height: 100vh;
   width: 100vw;
 `
 const ScrollSnap = styled.div`
@@ -59,22 +59,24 @@ const MyDocsPage: React.FC = () => {
   */
 
   return (
-    <Container>
+    <div>
       <Header isLogin={isLogin} />
-      <ScrollSnap>
-        <Upper>
-          <GiToDoc />
-          <Description />
-          <Documentation />
-          <LanguageToggle />
-          <URLInput />
-          <RoundCarousel />
-        </Upper>
-        <Lower>
-          <Gallery />
-        </Lower>
-      </ScrollSnap>
-    </Container>
+      <Container>
+        <ScrollSnap>
+          <Upper>
+            <GiToDoc />
+            <Description />
+            <Documentation />
+            <LanguageToggle />
+            <URLInput />
+            <RoundCarousel />
+          </Upper>
+          <Lower>
+            <Gallery />
+          </Lower>
+        </ScrollSnap>
+      </Container>
+    </div>
   )
 }
 

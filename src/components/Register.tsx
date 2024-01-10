@@ -1,9 +1,10 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import styled from 'styled-components'
 import ReactModal from 'react-modal'
+import axios from 'axios'
+/*-----------------------------------------------------------*/
 import imgCloseBtn from '../assets/images/close.png'
 import imgDecoBar from '../assets/images/deco_bar.png'
-import axios from 'axios'
 
 ReactModal.setAppElement('#root')
 
