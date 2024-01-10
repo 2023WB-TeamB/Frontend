@@ -178,7 +178,7 @@ export const Page2: React.FC = () => {
           <Hilight>&ensp;</Hilight>
         </BlinkText>
       </MonoText>
-      <MonoText fontSize="0.9rem" top="45rem" left="50%" centered color="#8E004B">
+      <MonoText fontSize="0.9rem" top="46.5rem" left="50%" centered color="#8E004B">
         Keep scrolling if you want to make your project perfect
       </MonoText>
       <Styledicon

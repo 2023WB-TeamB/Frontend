@@ -76,7 +76,7 @@ const Styledpage = styled.img<Page>`
 `
 
 export const Page4: React.FC = () => {
-  const [ref, visible] = useOnScreen({ threshold: 0.1 })
+  const [ref, visible] = useOnScreen({ threshold: 0.01 })
 
   return (
     <div>

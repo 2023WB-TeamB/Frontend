@@ -4,7 +4,6 @@ import Gitpage from '../../assets/images/MainPage/Gitpage.svg'
 import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
-import { Styledicon } from '../../components/MainPage/page2'
 
 function useOnScreenDiv(
   options: IntersectionObserverInit,
@@ -30,8 +29,31 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
-
 function useOnScreenImg(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLImageElement | null>, boolean] {
+  const ref = useRef<HTMLImageElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
   const ref = useRef<HTMLImageElement | null>(null)
@@ -69,18 +91,45 @@ const slideUpFade = keyframes`
 const slideinFade = keyframes`
   0%{
     opacity: 0;
-    transform: translateX(50rem);
+    transform: translateX(6rem);
   }
-  80%{
-    opacity:0.3;
-    transform: translateX(45rem);
-  }
-  90%{opacity:0.5;
-    transform: translateX(40rem);
+  60%{
+    opacity:0;
+    transform: translateX(6rem);
   }
   100%{
     opacity: 1;
     transform: translateX(0)
+  }
+`
+const movePointer = keyframes`
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50%{
+    transform: translateX(-32rem) translateY(-11rem);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+  `
+const moveURL = keyframes`
+  0%{
+    transform: translateX(0) translateY(0);
+  }
+  100%{
+    transform: translateX(30rem) translateY(11rem);
+  }
+`
+const pasteURL = keyframes`
+  0%{
+    opacity: 0;
+  }
+  99%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
   }`
 
 interface DontProps {
@@ -88,8 +137,9 @@ interface DontProps {
   top?: string
   fontfamily?: string
   left?: string
+  delay?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean }>`
+const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
@@ -98,15 +148,26 @@ const Dont = styled.h1<DontProps & { visible: boolean }>`
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
   letter-spacing: 0;
-  z-index: 1;
+  z-index: 2;
   line-height: normal;
   white-space: nowrap;
   animation: ${(props) =>
     props.visible
-      ? css`
-          ${slideUpFade} 1s ease-in-out
-        `
+      ? props.animationType === 'slideUpFade'
+        ? css`
+            ${slideUpFade} 1s ease-out
+          `
+        : props.animationType === 'moveURL'
+        ? css`
+            ${moveURL} 1s ease-out
+          `
+        : props.animationType === 'pasteURL'
+        ? css`
+            ${pasteURL} 5.3s
+          `
+        : 'none'
       : 'none'};
+  animation-delay: ${(props) => props.delay || 'none'};
 `
 
 interface Page {
@@ -114,44 +175,77 @@ interface Page {
   left?: string
   zindex?: string
 }
-
 const Styledpage = styled.img<Page & { visible: boolean }>`
   width: 47rem;
   height: 27rem;
   position: absolute;
-  z-index: ${(props) => props.zindex || '2'};
+  z-index: ${(props) => props.zindex || '1'};
   top: ${(props) => props.top || '16rem'};
   left: ${(props) => props.left || '6rem'};
   animation: ${(props) =>
     props.visible
       ? css`
-          ${slideinFade} 5s ease-out
+          ${slideinFade} 2.5s ease-out
         `
       : 'none'};
+`
+const Styledpointer = styled.img<{ visible: boolean }>`
+  width: 5rem;
+  height: 3rem;
+  position: absolute;
+  z-index: 2;
+  top: 28rem;
+  left: 66rem;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${movePointer} 2s ease-out
+        `
+      : 'none'};
+  animation-delay: 3s;
 `
 
 export const Page3: React.FC = () => {
   const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
+  const [refp, visiblep] = useOnScreenImg2({ threshold: 1 })
 
   return (
     <div>
-      <Dont ref={refd} visible={visibled} fontSize="3rem" top="10%">
+      <Dont ref={refd} visible={visibled} animationType="slideUpFade" fontSize="3rem" top="10%">
         <Blue>&gt; </Blue>step 1;
       </Dont>
       <Dont
         ref={refd}
         visible={visibled}
+        animationType="slideUpFade"
         top="10.4rem"
         left="6.2rem"
         fontSize="1.2rem"
         fontfamily="monospace">
         Copy your repository URL
       </Dont>
-      <Dont visible={false} fontSize="1rem" top="16.45rem" left="22rem" fontfamily="Inter">
-        https://github.com/2023WB-TeamB'
+      <Dont
+        ref={refd}
+        visible={visibled}
+        animationType="moveURL"
+        delay="4.3s"
+        fontSize="1rem"
+        top="16.45rem"
+        left="22rem"
+        fontfamily="Inter">
+        https://github.com/2023WB-TeamB
       </Dont>
-      <Styledicon src={pointer} alt="pointer" />
+      <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
+      <Dont
+        visible={visibled}
+        animationType="pasteURL"
+        fontSize="1rem"
+        top="27.45rem"
+        left="52rem"
+        fontfamily="Inter">
+        https://github.com/2023WB-TeamB
+      </Dont>
       <Styledpage
         src={gitodocpage}
         top="11rem"

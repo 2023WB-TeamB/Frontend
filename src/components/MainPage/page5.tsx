@@ -27,6 +27,31 @@ function useOnScreen(
 
   return [ref, visible]
 }
+function useOnScreenImg(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLImageElement | null>, boolean] {
+  const ref = useRef<HTMLImageElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -35,6 +60,16 @@ const slideUpFade = keyframes`
   100%{
     opacity: 1;
     transform: trasnlateY(0);
+  }
+`
+const slideinFade = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0)
   }
 `
 
@@ -70,13 +105,19 @@ interface Page {
   height?: string
 }
 
-const Styledpage = styled.img<Page>`
+const Styledpage = styled.img<Page & { visible: boolean }>`
   width: ${(props) => props.width || '50rem'};
   height: ${(props) => props.height || '30rem'};
   position: absolute;
   top: ${(props) => props.top || '14rem'};
   left: ${(props) => props.left || '5rem'};
   z-index: -2;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideinFade} 1s ease-out
+        `
+      : 'none'};
 `
 
 const Startbutton = styled.button`
@@ -126,7 +167,8 @@ const Startbutton = styled.button`
 `
 
 export const Page5: React.FC = () => {
-  const [ref, visible] = useOnScreen({ threshold: 0.1 })
+  const [ref, visible] = useOnScreen({ threshold: 0.01 })
+  const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
 
   return (
     <div>
@@ -150,6 +192,8 @@ export const Page5: React.FC = () => {
         width="55rem"
         height="40rem"
         alt="gitodocpage"
+        ref={refi}
+        visible={visiblei}
       />
     </div>
   )
