@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import styled from 'styled-components'
+import { isEnglishStore } from '../../store/store'
 
 // 토글 스타일
 const Toggle = styled.div`
@@ -43,16 +43,17 @@ const Text = styled.p<ToggleTextProps>`
 `
 
 // isEnglish에 영어/한글 상태 저장
+// store.ts에 저장해놓은 상태관리 함수 호출
 const LanguageToggle = () => {
-  const [isEnglish, setIsEnglish] = useState(false)
+  const { isEnglish, setIsEnglish } = isEnglishStore()
 
-  const toggleLanguage = () => {
+  const onClick = () => {
     setIsEnglish(!isEnglish)
   }
 
   // translateX를 사용하여 스위치 이동
   return (
-    <Toggle onClick={toggleLanguage}>
+    <Toggle onClick={onClick}>
       <Text selected={!isEnglish}>KOR</Text>
       <Switch style={{ transform: isEnglish ? 'translateX(46px)' : 'translateX(0)' }} />
       <Text selected={isEnglish}>ENG</Text>

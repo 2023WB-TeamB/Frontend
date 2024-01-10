@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
+import { isEnglishStore } from '../../store/store'
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,8 +31,9 @@ const StyledInput = styled.input`
 `
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
+  const { isEnglish } = isEnglishStore()
   const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/create/'
-  const language = 'KOR'
+  const language = isEnglish ? 'ENG' : 'KOR'
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,17 +44,16 @@ export const URLInput: React.FC = () => {
     try {
       // API 호출
       const response = await axios.post(`${apiUrl}`, { repository_url: url, language: language })
-      console.log(response.status)
       console.log(response)
       setUrl('')
 
       //문서 생성 성공
       if (response.status === 201) {
         console.log('API Response: ', response.status)
-        alert(response.statusText)
+        isEnglish ? alert('영어 문서 생성!') : alert('한글 문서 생성!')
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+      if (error.response) {
         console.error('API Response: ', error.response.status)
         alert(error.response.message)
         setUrl('')
