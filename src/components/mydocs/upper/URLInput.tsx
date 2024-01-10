@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { isEnglishStore } from '../../store/store'
+import { isEnglishStore } from '../../../store/store'
 
 const Wrapper = styled.div`
   display: flex;

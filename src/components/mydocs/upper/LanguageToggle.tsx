@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { isEnglishStore } from '../../store/store'
+import { isEnglishStore } from '../../../store/store'
 
 // 토글 스타일
 const Toggle = styled.div`
