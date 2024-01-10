@@ -1,7 +1,10 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import gitodocpage2 from '../../assets/images/MainPage/gitodocpage2.svg'
+import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
+import { Styledicon } from '../../components/MainPage/page2'
+import Register from '../Register'
 
 function useOnScreen(
   options: IntersectionObserverInit,
@@ -31,6 +34,30 @@ function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
   const ref = useRef<HTMLImageElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+function useOnScreenImg2(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLButtonElement | null>, boolean] {
+  const ref = useRef<HTMLButtonElement | null>(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -104,7 +131,6 @@ interface Page {
   width?: string
   height?: string
 }
-
 const Styledpage = styled.img<Page & { visible: boolean }>`
   width: ${(props) => props.width || '50rem'};
   height: ${(props) => props.height || '30rem'};
@@ -120,10 +146,10 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
       : 'none'};
 `
 
-const Startbutton = styled.button`
+const Startbutton = styled.button<{ visible: boolean }>`
   position: relative;
-  border: none;
-  background-color: #ffffff;
+  border: #d3e2fd;
+  background-color: #d3e2fd;
   border-radius: 4.09rem;
   top: 33rem;
   left: 44rem;
@@ -131,20 +157,26 @@ const Startbutton = styled.button`
   width: 20rem;
   text-align: center;
   font-size: 1.3rem;
-  font-weight: 200;
+  font-weight: 300;
   color: #1a1a1a;
   overflow: hidden;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideinFade} 1s ease-out
+        `
+      : 'none'};
   z-index: 0;
   &:before {
     content: '';
     position: absolute;
-    top: -0.063rem;
-    left: -0.063rem;
-    right: -0.063rem;
-    bottom: -0.063rem;
-    background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+    top: -0.01rem;
+    left: -0.01rem;
+    right: -0.01rem;
+    bottom: -0.01rem;
+    background: linear-gradient(270deg, rgb(208, 166, 236) 0%, rgb(183, 225, 242) 100%);
     border-radius: 4.09rem;
-    z-index: -1;
+    z-index: -2;
   }
   &:after {
     content: '';
@@ -153,9 +185,9 @@ const Startbutton = styled.button`
     left: 0;
     right: 0;
     bottom: 0;
-    background: #ffffff;
+    background: #edeff6;
     border-radius: 4.09rem;
-    z-index: 1;
+    z-index: -1;
     transition: all 0.3s ease-in-out;
   }
   &:hover:after {
@@ -169,6 +201,15 @@ const Startbutton = styled.button`
 export const Page5: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
+  const [refp, visiblep] = useOnScreenImg2({ threshold: 0.01 })
+
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const handleRegisterOpen = () => {
+    setIsRegisterOpen(true)
+  }
+  const handleRegisterClose = () => {
+    setIsRegisterOpen(false)
+  }
 
   return (
     <div>
@@ -184,10 +225,14 @@ export const Page5: React.FC = () => {
         fontfamily="monospace">
         Check your document
       </Dont>
-      <Startbutton>Sign up and get started!</Startbutton>
+      <Styledicon src={pointer} top="35rem" left="60rem" alt="pointer" />
+      <Startbutton ref={refp} visible={visiblep} onClick={handleRegisterOpen}>
+        Sign up and get started!
+      </Startbutton>
+      <Register isOpen={isRegisterOpen} onClose={handleRegisterClose} />
       <Styledpage
         src={gitodocpage2}
-        top="8rem"
+        top="6rem"
         left="25rem"
         width="55rem"
         height="40rem"

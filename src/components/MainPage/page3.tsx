@@ -118,7 +118,7 @@ const moveURL = keyframes`
     transform: translateX(0) translateY(0);
   }
   100%{
-    transform: translateX(30rem) translateY(11rem);
+    transform: translateX(30rem) translateY(11.2rem);
   }
 `
 const pasteURL = keyframes`
@@ -159,11 +159,11 @@ const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
           `
         : props.animationType === 'moveURL'
         ? css`
-            ${moveURL} 1s ease-out
+            ${moveURL} 0.9s ease-out forwards
           `
         : props.animationType === 'pasteURL'
         ? css`
-            ${pasteURL} 5.3s
+            ${pasteURL} 4.6s
           `
         : 'none'
       : 'none'};
@@ -202,7 +202,7 @@ const Styledpointer = styled.img<{ visible: boolean }>`
           ${movePointer} 2s ease-out
         `
       : 'none'};
-  animation-delay: 3s;
+  animation-delay: 2.5s;
 `
 
 export const Page3: React.FC = () => {
@@ -229,7 +229,7 @@ export const Page3: React.FC = () => {
         ref={refd}
         visible={visibled}
         animationType="moveURL"
-        delay="4.3s"
+        delay="3.7s"
         fontSize="1rem"
         top="16.45rem"
         left="22rem"
@@ -238,10 +238,11 @@ export const Page3: React.FC = () => {
       </Dont>
       <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
       <Dont
+        ref={refd}
         visible={visibled}
         animationType="pasteURL"
         fontSize="1rem"
-        top="27.45rem"
+        top="27.65rem"
         left="52rem"
         fontfamily="Inter">
         https://github.com/2023WB-TeamB

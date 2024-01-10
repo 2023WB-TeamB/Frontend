@@ -45,8 +45,8 @@ const Smalli = styled.span`
 
 export const Sub = styled.h1`
   font-size: 1.2rem;
-  font-weight: 300;
-  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
   color: black;
   position: absolute;
   top: 45%;
