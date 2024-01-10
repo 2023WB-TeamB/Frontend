@@ -47,12 +47,13 @@ export const URLInput: React.FC = () => {
       console.log(response)
       setUrl('')
 
-      //문서 생성 성공
+      // 문서 생성 성공
       if (response.status === 201) {
         console.log('API Response: ', response.status)
         isEnglish ? alert('영어 문서 생성!') : alert('한글 문서 생성!')
       }
     } catch (error: any) {
+      // 문서 생성 실패
       if (error.response) {
         console.error('API Response: ', error.response.status)
         alert(error.response.message)
@@ -61,6 +62,7 @@ export const URLInput: React.FC = () => {
     }
   }
 
+  // input에 내용이 존재하고 엔터키를 눌렀을 때 제출
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (url != '' && e.key === 'Enter') {
       e.preventDefault()
