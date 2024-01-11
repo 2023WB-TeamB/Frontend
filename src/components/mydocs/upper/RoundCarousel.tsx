@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
-import axios from 'axios'
+import { Doc } from '../../../store/types'
 
 const Wrapper = styled.div`
   position: relative;
@@ -59,7 +59,7 @@ const NextButton = styled(Button)`
   }
 `
 
-const RoundCarousel: React.FC = () => {
+const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼을 누를 수 있는지의 상태
   const [canNext, setCanNext] = useState(true) // next 버튼을 누를 수 있는지의 상태
   const [rotate, setRotate] = useState(216)
@@ -70,17 +70,7 @@ const RoundCarousel: React.FC = () => {
     updated_at: string
     color: string
   } | null>(null)
-  const [docs, setDocs] = useState<Doc[]>([])
   const maxCards = 10
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  const userId = 23
-
-  interface Doc {
-    id: number
-    title: string
-    updated_at: string
-    color: string
-  }
 
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
   const handlePrev = () => {
@@ -110,27 +100,7 @@ const RoundCarousel: React.FC = () => {
     setModalOpen(true) // 모달 열기
   }
 
-  const getDocs = async () => {
-    try {
-      // API 호출
-      const response = await axios.get(`${apiUrl}${userId}/`)
-      // 결과 확인
-      // console.log(response)
-      // 최근 10개 문서만 캐러셀에 남기기
-      const docs = response.data.data.docs
-      docs.length = docs.length > 10 ? 10 : docs.length
-      setDocs(docs)
-      console.log(docs)
-    } catch (error) {
-      // API 호출 실패
-      console.error('API Error: ', error)
-      alert('API 호출에 실패하였습니다.')
-    }
-  }
-
-  useEffect(() => {
-    getDocs()
-  }, [])
+  // docs.length = docs.length > 10 ? 10 : docs.length
 
   return (
     <Wrapper>

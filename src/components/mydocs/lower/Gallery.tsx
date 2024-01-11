@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Modal from '../Modal'
-import axios from 'axios'
+import { Doc } from '../../../store/types'
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const Card = styled.div<{ backgroundColor: string }>`
   overflow: hidden;
 `
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState<{
     id: number
@@ -48,36 +48,8 @@ const Gallery: React.FC = () => {
     updated_at: string
     color: string
   } | null>(null)
-  const [docs, setDocs] = useState<Doc[]>([])
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
   const cardsPerPage = 8 // 한 페이지당 카드 수
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  const userId = 23
-
-  interface Doc {
-    id: number
-    title: string
-    updated_at: string
-    color: string
-  }
-
-  const getDocs = async () => {
-    try {
-      // API 호출
-      const response = await axios.get(`${apiUrl}${userId}/`)
-      const docs = response.data.data.docs
-      setDocs(docs)
-      console.log(response.data.data)
-    } catch (error) {
-      // API 호출 실패
-      console.error('API Error: ', error)
-      alert('API 호출에 실패하였습니다.')
-    }
-  }
-
-  useEffect(() => {
-    getDocs()
-  }, [])
 
   const handleCardClick = (item: {
     id: number
