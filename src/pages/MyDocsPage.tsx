@@ -54,11 +54,14 @@ const MyDocsPage: React.FC = () => {
 
   const getDocs = async () => {
     try {
-      // API 호출
-      const response = await axios.get(`${apiUrl}`)
+      // API 호출, 엑세스 토큰
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(`${apiUrl}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
       const docs = response.data.data.docs
       setDocs(docs)
-      console.log(response.data.data)
+      console.log(docs)
     } catch (error) {
       // API 호출 실패
       console.error('API Error: ', error)
