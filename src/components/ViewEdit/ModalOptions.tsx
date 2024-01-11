@@ -77,24 +77,24 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     
     // * URL 할당 -> docUrl
     let docUrl = ""
-    const handleUrlShare = () => {
-        return new Promise<void>((resolve, reject) => {
-            axios
-              .post(`${apiUrl}share/`, {
+    const handleUrlShare = async () => {
+        try {
+            // API 호출, 액세스 토큰
+            const access = localStorage.getItem('accessToken')
+            const response = await axios.post(`${apiUrl}share/`, {
                 docs_id: docsId
-              })
-              .then(response => {
-                docUrl = response.data.share_url;
-                resolve();
-              })
-              .catch(error => {
-                if (error.response.status === 409){
-                    docUrl = error.response.data.existing_url;
-                    resolve();
+                }, {
+                headers: {
+                    Authorization: `Bearer ${access}`
                 }
-                reject(error);
-              });
-          });
+            })
+            docUrl = response.data.share_url
+        } catch (error:any) {
+            // API 호출 실패
+            if (error.response.status === 409)
+                docUrl = error.response.data.existing_url
+            console.error("API Error :", error)
+        }
     }
 
     // * URL 클립보드로 복사
@@ -118,7 +118,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     const showQRCode = async () => {
         if (docUrl === "") {
           Swal.fire({
-            toast: true,
             title: 'Loading...',
             allowOutsideClick: false,
             didOpen: async () => {
@@ -141,9 +140,8 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     const showQRCodeModal = () => {
         console.log(docUrl)
         Swal.fire({
-            toast: true,
             // ! 문서 제목으로 수정 예정
-            title: docsId,
+            title: "문서 제목; docs_id : " + docsId,
             text: docUrl,
             imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
             imageAlt: 'QR Code',
