@@ -169,7 +169,6 @@ const Dont = styled.div<DontProps & { visible: boolean; animationType: string }>
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
-  z-index = 20;
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
@@ -186,7 +185,7 @@ const Dont = styled.div<DontProps & { visible: boolean; animationType: string }>
           `
         : props.animationType === 'progress'
         ? css`
-            ${progress} 9s ease-in-out forwards;
+            ${progress} 8s ease-in-out forwards;
           `
         : 'none'
       : 'none'};
