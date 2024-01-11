@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import dummy from '../data.json'
 import Modal from '../Modal'
+import { Doc } from '../../../store/types'
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,11 +25,12 @@ const Collection = styled.div`
   margin: 2.5rem auto auto auto;
 `
 
-const Card = styled.div`
+const Card = styled.div<{ backgroundColor: string }>`
   border-radius: 1.5rem;
   line-height: 1rem;
   color: white;
   box-sizing: border-box;
+  background-color: ${({ backgroundColor }) => backgroundColor};
   position: relative;
   text-align: center;
   font-size: 1.3rem;
@@ -39,16 +40,14 @@ const Card = styled.div`
   overflow: hidden;
 `
 
-const Gallery: React.FC = () => {
+const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState<{
     id: number
     title: string
     updated_at: string
-    content: string
     color: string
   } | null>(null)
-
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
   const cardsPerPage = 8 // 한 페이지당 카드 수
 
@@ -56,7 +55,6 @@ const Gallery: React.FC = () => {
     id: number
     title: string
     updated_at: string
-    content: string
     color: string
   }) => {
     setModalContent(item)
@@ -64,17 +62,14 @@ const Gallery: React.FC = () => {
   }
 
   // 현재 페이지에 맞는 카드만을 잘라내는 부분
-  const currentCards = dummy.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+  const currentCards = docs.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
 
   return (
     <Wrapper>
       <Collection>
-        {currentCards.map((item, i) => (
-          <Card
-            key={i}
-            onClick={() => handleCardClick(item)}
-            style={{ backgroundColor: item.color }}>
-            <h3>{item.title}</h3>
+        {currentCards.map((doc, i) => (
+          <Card key={i} backgroundColor={doc.color} onClick={() => handleCardClick(doc)}>
+            <h3>{doc.title}</h3>
           </Card>
         ))}
       </Collection>
@@ -93,7 +88,7 @@ const Gallery: React.FC = () => {
         </button>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === Math.ceil(dummy.length / cardsPerPage)}>
+          disabled={currentPage === Math.ceil(docs.length / cardsPerPage)}>
           Next
         </button>
       </div>
