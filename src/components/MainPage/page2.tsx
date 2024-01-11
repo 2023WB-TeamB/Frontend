@@ -1,8 +1,51 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
-import downarrow from '../../assets/images/MainPage/down_arrow.svg'
+import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+function useOnScreen(
+  options: IntersectionObserverInit,
+): [MutableRefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting)
+    }, options)
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [ref, options])
+
+  return [ref, visible]
+}
+
+//keyframes
+const slideUpFade = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  100%{
+    opacity: 1;
+    transform: tralateY(0);
+  }
+`
+const blink = keyframes`
+  0%, 100% {visibility: visible;}
+  50% {visibility: hidden;}
+  `
+
+//icon(svg)
 interface Styledicon {
   top?: string
   left?: string
@@ -10,59 +53,55 @@ interface Styledicon {
   height?: string
   centered?: boolean
 }
-
-interface MonoProps {
-  fontSize?: string
-  top?: string
-  left?: string
-  centered?: boolean
-  hilight?: string
-}
-interface ConsoleBox {
-  background?: string
-  height?: string
-  width?: string
-  top?: string
-  left?: string
-}
-
-const Styledicon = styled.img<Styledicon>`
+export const Styledicon = styled.img<Styledicon>`
   width: 5rem;
   height: 3rem;
   position: absolute;
+  z-index: 2;
   top: ${(props) => props.top || '5rem'};
   left: ${(props) => props.left || '3rem'};
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 `
+
+//Text(DMSerifDisplay)
 interface DontProps {
   fontSize?: string
   top?: string
+  fontfamily?: string
 }
+export const Dont = styled.h1<DontProps & { visible: boolean }>`
+  font-size: ${(props) => props.fontSize || '4rem'};
+  font-weight: 700;
+  font-family: 'DMSerifDisplay', serif;
+  color: #000000;
+  position: absolute;
+  top: ${(props) => props.top || '10%'};
+  left: 5%;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideUpFade} 1s ease-in-out
+        `
+      : 'none'};
+`
+
+//Text(Mono)
 interface MonoProps {
   fontSize?: string
   top?: string
   left?: string
   centered?: boolean
   hilight?: string
+  color?: string
 }
-
-export const Dont = styled.h1<DontProps>`
-  font-size: ${(props) => props.fontSize || '4rem'};
-  font-weight: 700;
-  font-family: 'DMSerif', serif;
-  color: #000000;
-  position: absolute;
-  top: ${(props) => props.top || '12%'};
-  left: 5%;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
-`
-export const MonoText = styled.h1<MonoProps>`
+const MonoText = styled.h1<MonoProps>`
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
-  color: #000000;
+  color: ${(props) => props.color || '#000000'};
   position: absolute;
   top: ${(props) => props.top || '55%'};
   left: ${(props) => props.left || '5%'};
@@ -74,11 +113,20 @@ export const MonoText = styled.h1<MonoProps>`
 export const Blue = styled.span`
   color: #1c6ef3;
 `
-
 const Hilight = styled.span<MonoProps>`
   background-color: ${(props) => props.hilight || '#000000'};
 `
+
+//Console
+interface ConsoleBox {
+  background?: string
+  height?: string
+  width?: string
+  top?: string
+  left?: string
+}
 const ConsoleBox = styled.div<ConsoleBox>`
+  display: flex;
   align-items: center;
   position: absolute;
   width: ${(props) => props.width || '100vw'};
@@ -95,20 +143,21 @@ const ConsoleText = styled.h1`
   font-size: 0.9rem;
   color: #0957d0;
 `
-const blink = keyframes`
-  0%, 100% {visibility: visible;}
-  50% {visibility: hidden;}
-  `
 const BlinkText = styled.p`
   display: inline;
   animation: ${blink} 1s step-start infinite;
 `
 
+//Publishing
 export const Page2: React.FC = () => {
+  const [ref, visible] = useOnScreen({ threshold: 0.1 })
+
   return (
     <div>
-      <Dont>Don't just code.</Dont>
-      <Dont fontSize="3rem" top="22%">
+      <Dont ref={ref} visible={visible}>
+        Don't just code.
+      </Dont>
+      <Dont fontSize="3rem" top="22%" visible={visible} ref={ref}>
         Document. Refine. Archive. Share.
       </Dont>
       <ConsoleBox>
@@ -137,12 +186,12 @@ export const Page2: React.FC = () => {
           <Hilight>&ensp;</Hilight>
         </BlinkText>
       </MonoText>
-      <MonoText fontSize="0.9rem" top="88%" left="50%" centered>
+      <MonoText fontSize="0.9rem" top="46.5rem" left="50%" centered color="#8E004B">
         Keep scrolling if you want to make your project perfect
       </MonoText>
       <Styledicon
-        src={downarrow}
-        top="94%"
+        src={down_arrow}
+        top="102%"
         left="50%"
         centered
         width="1rem"
