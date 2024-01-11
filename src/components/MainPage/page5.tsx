@@ -6,6 +6,7 @@ import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page2'
 import Register from '../Register'
 
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -30,6 +31,7 @@ function useOnScreen(
 
   return [ref, visible]
 }
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -54,6 +56,7 @@ function useOnScreenImg(
 
   return [ref, visible]
 }
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Button에 사용)
 function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLButtonElement | null>, boolean] {
@@ -79,6 +82,7 @@ function useOnScreenImg2(
   return [ref, visible]
 }
 
+//keyframes
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -100,6 +104,7 @@ const slideinFade = keyframes`
   }
 `
 
+//Text
 interface DontProps {
   fontSize?: string
   top?: string
@@ -125,6 +130,7 @@ const Dont = styled.h1<DontProps & { visible: boolean }>`
       : 'none'};
 `
 
+//Page.svg
 interface Page {
   top?: string
   left?: string
@@ -146,6 +152,7 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
       : 'none'};
 `
 
+//Button
 const Startbutton = styled.button<{ visible: boolean }>`
   position: relative;
   border: #d3e2fd;
@@ -198,11 +205,13 @@ const Startbutton = styled.button<{ visible: boolean }>`
   }
 `
 
+//Publishing
 export const Page5: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg2({ threshold: 0.01 })
 
+  //Register modal
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const handleRegisterOpen = () => {
     setIsRegisterOpen(true)

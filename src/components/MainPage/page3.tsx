@@ -5,6 +5,7 @@ import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
 
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreenDiv(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -29,6 +30,7 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
+//해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -53,6 +55,7 @@ function useOnScreenImg(
 
   return [ref, visible]
 }
+////해당화면이 사용자에게 보이는지 관찰해주는 API(pointer.svg에 사용)
 function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -78,6 +81,7 @@ function useOnScreenImg2(
   return [ref, visible]
 }
 
+//keyframes 애니메이션
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -132,6 +136,7 @@ const pasteURL = keyframes`
     opacity: 1;
   }`
 
+//Text
 interface DontProps {
   fontSize?: string
   top?: string
@@ -170,6 +175,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
   animation-delay: ${(props) => props.delay || 'none'};
 `
 
+//Page (GitPage+gitodoc)
 interface Page {
   top?: string
   left?: string
@@ -189,6 +195,8 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
         `
       : 'none'};
 `
+
+//pointer
 const Styledpointer = styled.img<{ visible: boolean }>`
   width: 5rem;
   height: 3rem;
@@ -205,8 +213,9 @@ const Styledpointer = styled.img<{ visible: boolean }>`
   animation-delay: 2.5s;
 `
 
+//Publishing
 export const Page3: React.FC = () => {
-  const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 })
+  const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg2({ threshold: 1 })
 
