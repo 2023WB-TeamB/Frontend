@@ -9,10 +9,7 @@ import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
 
-interface SectionProps {
-  marginTop?: string
-}
-
+/* 각 페이지에 대한 설정 */
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -20,6 +17,9 @@ const Container = styled.div`
   overflow-x: hidden;
 `
 
+interface SectionProps {
+  marginTop?: string
+}
 const Section = styled.div<SectionProps>`
   position: relative;
   width: 100vw;
@@ -27,6 +27,7 @@ const Section = styled.div<SectionProps>`
   margin-top: ${(props) => props.marginTop || '15rem'};
 `
 
+//Logo
 const Main = styled.h1`
   font-size: 8rem;
   font-weight: 700;
@@ -43,6 +44,7 @@ const Smalli = styled.span`
   font-size: 7rem;
 `
 
+//Join us 부분
 export const Sub = styled.h1`
   font-size: 1.2rem;
   font-weight: 400;
@@ -54,6 +56,8 @@ export const Sub = styled.h1`
   transform: translateX(-50%);
   white-space: nowrap;
 `
+
+//InputBox
 const InputBoxWrapper = styled.div`
   position: absolute;
   width: 40.39rem;
@@ -84,6 +88,7 @@ const InputBox = styled.input`
   color: #1a1a1a;
 `
 
+/*** Publishing ***/
 const MainPage: React.FC = () => {
   // const [isRegisterOpen, setIsRegisterOpen] = useState(false) // 회원가입 모달 상태
   // const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
