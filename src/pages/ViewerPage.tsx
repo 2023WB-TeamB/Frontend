@@ -1,17 +1,17 @@
-import Sidebar from '../components/ViewEdit/Sidebar/SidebarList.tsx'
-import styled from 'styled-components'
-import profile from '../assets/images/profile.png'
-import gallery from '../assets/images/gallery button.png'
-import version from '../assets/images/version button.png'
-import exportBtn from '../assets/images/share button.png'
-import deleteBtn from '../assets/images/delete button.png'
-import exit from '../assets/images/exit button.png'
-import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel.tsx'
-import ModalOptions from '../components/ViewEdit/ModalOptions.tsx'
-import ModalConfirm from '../components/ViewEdit/ModalConfirm.tsx'
-import MarkdownArea from '../components/ViewEdit/MarkdownArea.tsx'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import Sidebar from "../components/ViewEdit/Sidebar/SidebarList"
+import styled from "styled-components"
+import profile from "../assets/images/profile.png"
+import gallery from "../assets/images/gallery button.png"
+import version from "../assets/images/version button.png"
+import exportBtn from "../assets/images/share button.png"
+import deleteBtn from "../assets/images/delete button.png"
+import exit from "../assets/images/exit button.png"
+import SidebarPanel from "../components/ViewEdit/Sidebar/SidebarPanel"
+import ModalOptions from "../components/ViewEdit/ModalOptions"
+import ModalConfirm from "../components/ViewEdit/ModalConfirm"
+import MarkdownArea from "../components/ViewEdit/MarkdownArea"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const StyledForm = styled.div`
   min-width: 90vw;

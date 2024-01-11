@@ -18,7 +18,7 @@ const ModalWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    z-index: 10000;
+    z-index: 1000;
     transition: all ease-in-out .5s;
 `;
 
