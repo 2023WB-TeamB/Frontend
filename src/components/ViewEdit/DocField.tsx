@@ -1,10 +1,11 @@
 // 마크다운 뷰어 컴포넌트
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import EditIcon from "../../assets/images/edit.png"
 import SaveIcon from "../../assets/images/save.png"
 import CancelIcon from "../../assets/images/cancel.png"
-import { MyComponent } from "./WYSIWYG_Area"
+import TuiEditor from "./WYSIWYG_Area"
+import { Editor } from "@toast-ui/react-editor"
 
 const ViewerWrapper = styled.div`
     position: relative;
@@ -66,26 +67,6 @@ const ViewArea = styled.div`
     width: 100%;
     max-width: 800px;
     height: 100%;
-    
-    & p {
-        width: 100%;
-        height: 100vh;
-        font-size: 1rem;
-        font-family: sans-serif;
-    }
-
-    & textarea {
-        width: 100%;
-        height: 100vh;
-        font-size: 1rem;
-        font-family: sans-serif;
-        border: 0;
-        padding: 0;
-        margin-block-start: 1rem;
-        margin-block-end: 1rem;
-        line-height: 1.5;
-        font-weight: 400;
-    }
 `
 
 interface MarkdownViewerProps {
@@ -97,6 +78,7 @@ const testText = "Lorem Ipsum is simply dummy text of the printing and typesetti
 
 const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
     const [isViewer, setIsViewer] = useState(true);
+    const editorRef = useRef<Editor>(null);
     
     const changeViewEditMode = () => {
         setIsViewer(!isViewer);
@@ -131,7 +113,10 @@ const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
                 {isViewer ? 
                     <p>
                         {testText}
-                    </p> : <MyComponent></MyComponent>
+                    </p> : <TuiEditor 
+                        content={testText} 
+                        editorRef={editorRef} 
+                    />
                 }
             </ViewArea>
         </ViewerWrapper>

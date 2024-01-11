@@ -82,7 +82,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel }) => {
                             "Page 4",
                             "Page 5",
                             "Page 6"]}/>
-                <PreviewTile title="배고프다"
+                {/*<PreviewTile title="배고프다"
                     pages={["어쩌다 나는 이렇게된 거죠",
                             "어떻게 이렇게 배고플 수 있죠",
                             "한번 무엇도 이처럼 원한 적 없죠",
@@ -112,12 +112,13 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel }) => {
                             "Alpha Centauri B",
                             "Rigil Kentaurus",
                             "Toliman"]}/>  
+                            */}   
                 <PreviewTile title="Centauri"
                     pages={["Proxima Centauri",
                             "Alpha Centauri A",
                             "Alpha Centauri B",
                             "Rigil Kentaurus",
-                            "Toliman"]}/>       
+                            "Toliman"]}/>    
             </PreviewTileWrapper>
         </StyledSidebarPanel>
     );
