@@ -1,7 +1,7 @@
 import { GlobalStyle } from '../GlobalStyle'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-// import Signin from '../components/Signin.tsx'
+import Signin from '../components/Signin.tsx'
 // import Register from '../components/Register'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
@@ -91,7 +91,7 @@ const InputBox = styled.input`
 /*** Publishing ***/
 const MainPage: React.FC = () => {
   // const [isRegisterOpen, setIsRegisterOpen] = useState(false) // 회원가입 모달 상태
-  // const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
+  const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
   const isLogin: boolean = false // 기본값은 로그아웃 상태
 
   // /* 모달 이벤트 핸들러 */
@@ -103,12 +103,19 @@ const MainPage: React.FC = () => {
   //   setIsRegisterOpen(false)
   // }
   // 로그인 핸들러
-  // const handleSigninOpen = () => {
-  //   setIsSigninOpen(true)
-  // }
-  // const handleSigninClose = () => {
-  //   setIsSigninOpen(false)
-  // }
+  const handleSigninOpen = () => {
+    setIsSigninOpen(true)
+  }
+  const handleSigninClose = () => {
+    setIsSigninOpen(false)
+  }
+
+  /**InputBox -> Enter -> Register모달**/
+  const handleEnter = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSigninOpen()
+    }
+  }
 
   return (
     <>
@@ -121,7 +128,8 @@ const MainPage: React.FC = () => {
           </Main>
           <Sub>Join us to change github repository to file!</Sub>
           <InputBoxWrapper>
-            <InputBox type="text" />
+            <InputBox type="text" onKeyDown={handleEnter} />
+            <Signin isOpen={isSigninOpen} onClose={handleSigninClose} />
           </InputBoxWrapper>
         </Section>
         <Section marginTop="5rem">
