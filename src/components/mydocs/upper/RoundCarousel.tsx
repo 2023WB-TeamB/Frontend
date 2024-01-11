@@ -81,9 +81,9 @@ const RoundCarousel: React.FC = () => {
     color: string
   } | null>(null)
   const [docs, setDocs] = useState<Doc[]>([])
-  const totalCards = 10
+  const maxCards = 10
   const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  const userId = 23
+  const userId = 1
 
   interface Doc {
     id: number
@@ -96,17 +96,17 @@ const RoundCarousel: React.FC = () => {
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
   const handlePrev = () => {
     if (!canPrev) return
-    const newRotate = rotate + 360 / totalCards
+    const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate <= 0 ? false : true)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
     setCanPrev(newRotate <= 180 ? true : false)
   }
 
   const handleNext = () => {
     if (!canNext) return
-    const newRotate = rotate - 360 / totalCards
+    const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate <= 0 ? false : true)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
     setCanPrev(newRotate <= 180 ? true : false)
   }
 
@@ -125,10 +125,13 @@ const RoundCarousel: React.FC = () => {
     try {
       // API 호출
       const response = await axios.get(`${apiUrl}${userId}/`)
-
       // 결과 확인
-      console.log(response)
-      setDocs(response.data.data.docs)
+      // console.log(response)
+      // 최근 10개 문서만 캐러셀에 남기기
+      const docs = response.data.data.docs
+      docs.length = docs.length > 10 ? 10 : docs.length
+      setDocs(docs)
+      console.log(docs)
     } catch (error) {
       // API 호출 실패
       console.error('API Error: ', error)
@@ -138,13 +141,14 @@ const RoundCarousel: React.FC = () => {
 
   useEffect(() => {
     getDocs()
+    console.log(rotate + 36 * (docs.length - 1))
   }, [])
 
   return (
     <Wrapper>
       <Carousel>
         {docs.map((doc, i) => {
-          const currentRotate = rotate + i * (360 / totalCards) // 각 카드별 각도
+          const currentRotate = rotate + i * (360 / maxCards) // 각 카드별 각도
           const visible =
             /* 카드의 위치(각도)에 따른 보여주기 속성 결정 */
             ((currentRotate % 360) + 360) % 360 > 180 && ((currentRotate % 360) + 360) % 360 < 360
