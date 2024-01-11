@@ -155,8 +155,8 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
 //Button
 const Startbutton = styled.button<{ visible: boolean }>`
   position: relative;
-  border: #d3e2fd;
-  background-color: #d3e2fd;
+  border: #1c6ef3;
+  background-color: #1c6ef3;
   border-radius: 4.09rem;
   top: 33rem;
   left: 44rem;
@@ -192,7 +192,7 @@ const Startbutton = styled.button<{ visible: boolean }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: #edeff6;
+    background: #d3e2fd;
     border-radius: 4.09rem;
     z-index: -1;
     transition: all 0.3s ease-in-out;
