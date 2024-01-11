@@ -1,27 +1,46 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
-import styled from 'styled-components'
-import ReactModal from 'react-modal'
+import styled, { keyframes } from 'styled-components'
 import axios from 'axios'
-import imgCloseBtn from '../assets/images/close.png'
-
-ReactModal.setAppElement('#root')
+/*-----------------------------------------------------------*/
+import GradientBtn from './GradientBtn'
+import CloseBtn from './CloseBtn'
+/*-----------------------------------------------------------*/
 
 /**** 스타일 ****/
-const CustomModal = {
-  content: {
-    width: '450px',
-    maxHeight: '600px',
-    backgroundColor: '#fff',
-    borderRadius: '80px',
-    margin: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-}
+const modalOpenAnimation = keyframes`
+  0% {
+    transform: translateY(100%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+`
+const Overlay = styled.div`
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+`
+const Content = styled.div`
+  position: relative;
+  background-color: white;
+  border-radius: 80px;
+  width: 450px;
+  height: 600px;
+  animation: ${modalOpenAnimation} 0.55s ease-in-out;
+`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 `
 const StyledTitle = styled.div`
@@ -40,7 +59,6 @@ const StyledNameWrapper = styled.div`
 const StyledName = styled.span<NameProps>`
   width: 170px;
   float: left;
-
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
   text-align: left;
@@ -76,44 +94,8 @@ const StyledInput = styled.input`
   background-color: #fff;
   padding-left: 20px;
 `
-const StyledButton = styled.button`
-  height: 46px;
-  width: 150px;
-  border: none;
-  border-radius: 25px;
-  background: linear-gradient(to right, #a26be1, #79c5e8);
-  box-shadow: 2px 4px 5px #0000001f;
-
-  font-family: 'Inter-Regular', Helvetica;
-  font-size: 20px;
-  color: #fff;
-
-  cursor: pointer;
-
-  &:hover {
-    background: linear-gradient(to right, #7f58ab, #4e95b6);
-  }
-`
-const StyledCloseBtn = styled.button`
-  position: absolute;
-  top: 30px;
-  right: 50px;
-  height: 20px;
-  width: 20px;
-
-  font-size: 12px;
-  font-weight: 400;
-
-  border: 0;
-  background-color: transparent;
-  background-image: url(${imgCloseBtn});
-  background-position: center;
-
-  cursor: pointer;
-`
 /**** 인터페이스 ****/
 interface RegisterProps {
-  isOpen: boolean
   onClose: () => void
 }
 interface FormProps {
@@ -126,7 +108,7 @@ interface NameProps {
   visibility?: string // 비지블
 }
 /**** 메인 ****/
-function Register({ isOpen, onClose }: RegisterProps) {
+function Register({ onClose }: RegisterProps) {
   const [data, setData] = useState<FormProps>({
     email: '',
     nickname: '',
@@ -191,71 +173,70 @@ function Register({ isOpen, onClose }: RegisterProps) {
   }
 
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      shouldCloseOnOverlayClick={false}
-      style={CustomModal}>
-      <StyledCloseBtn onClick={onClose} />
-      <StyledForm onSubmit={handleSubmit}>
-        <StyledTitle>Register</StyledTitle>
-        <StyledNameWrapper>
-          <StyledName>Email</StyledName>
-          <StyledName2 visibility="hidden">Worng Email</StyledName2>
-        </StyledNameWrapper>
-        <StyledInput
-          type="email"
-          name="email"
-          value={data.email}
-          onChange={handleChange}
-          placeholder="Enter Email"
-        />
-
-        <div style={{ margin: 10 }}></div>
-        <StyledNameWrapper>
-          <StyledName>Nickname</StyledName>
-          <StyledName2 visibility="hidden">Worng Nickname</StyledName2>
-        </StyledNameWrapper>
-        <StyledInput
-          type="text"
-          name="nickname"
-          value={data.nickname}
-          onChange={handleChange}
-          placeholder="Enter Nickname"
-        />
-
-        <div style={{ margin: 10 }}></div>
-        <StyledNameWrapper>
-          <StyledName>Password</StyledName>
-          <StyledName2 visibility="hidden">Worng Password</StyledName2>
-        </StyledNameWrapper>
-        <StyledInput
-          type="password"
-          name="password"
-          value={data.password}
-          onChange={handleChange}
-          placeholder="Enter Password"
-        />
-
-        <div style={{ margin: 10 }}></div>
-        <StyledNameWrapper>
-          <StyledName>ConfirmPassword</StyledName>
-          <StyledName2 visibility={showError ? 'visible' : 'hidden'}>Worng Password</StyledName2>
-        </StyledNameWrapper>
-        <StyledInput
-          type="password"
-          name="confirmPassword"
-          value={data.confirmPassword}
-          onChange={handleChange}
-          placeholder="Enter Confirm Password"
-          style={{
-            border: showError ? '2px solid red' : '1px solid',
-          }}
-        />
-        <div style={{ margin: 20 }}></div>
-        <StyledButton>Submit</StyledButton>
-      </StyledForm>
-    </ReactModal>
+    <Overlay>
+      <Content>
+        <CloseBtn onClick={onClose} />
+        <StyledForm onSubmit={handleSubmit}>
+          <StyledTitle>Register</StyledTitle>
+          {/* 이메일 */}
+          <StyledNameWrapper>
+            <StyledName>Email</StyledName>
+            <StyledName2 visibility="hidden">Worng Email</StyledName2>
+          </StyledNameWrapper>
+          <StyledInput
+            type="email"
+            name="email"
+            value={data.email}
+            onChange={handleChange}
+            placeholder="Enter Email"
+          />
+          {/* 닉네임 */}
+          <div style={{ margin: 10 }}></div>
+          <StyledNameWrapper>
+            <StyledName>Nickname</StyledName>
+            <StyledName2 visibility="hidden">Worng Nickname</StyledName2>
+          </StyledNameWrapper>
+          <StyledInput
+            type="text"
+            name="nickname"
+            value={data.nickname}
+            onChange={handleChange}
+            placeholder="Enter Nickname"
+          />
+          {/* 비밀번호 */}
+          <div style={{ margin: 10 }}></div>
+          <StyledNameWrapper>
+            <StyledName>Password</StyledName>
+            <StyledName2 visibility="hidden">Worng Password</StyledName2>
+          </StyledNameWrapper>
+          <StyledInput
+            type="password"
+            name="password"
+            value={data.password}
+            onChange={handleChange}
+            placeholder="Enter Password"
+          />
+          {/* 비밀번호 확인 */}
+          <div style={{ margin: 10 }}></div>
+          <StyledNameWrapper>
+            <StyledName>ConfirmPassword</StyledName>
+            <StyledName2 visibility={showError ? 'visible' : 'hidden'}>Worng Password</StyledName2>
+          </StyledNameWrapper>
+          <StyledInput
+            type="password"
+            name="confirmPassword"
+            value={data.confirmPassword}
+            onChange={handleChange}
+            placeholder="Enter Confirm Password"
+            style={{
+              border: showError ? '2px solid red' : '1px solid',
+            }}
+          />
+          <div style={{ margin: 20 }}></div>
+          <GradientBtn>Submit</GradientBtn>
+        </StyledForm>
+      </Content>
+    </Overlay>
   )
 }
 
