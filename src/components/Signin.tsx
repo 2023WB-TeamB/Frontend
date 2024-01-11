@@ -41,7 +41,7 @@ const Content = styled.div`
   border-radius: 80px;
   width: 450px;
   height: 600px;
-  animation: ${modalOpenAnimation};
+  animation: ${modalOpenAnimation} 0.55s ease-in-out;
 `
 const StyledForm = styled.form`
   display: flex;
