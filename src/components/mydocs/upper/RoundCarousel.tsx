@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
-// import dummy from '../data.json'
 import Modal from '../Modal'
 import axios from 'axios'
-
-// 카드에 내용을 넣기 위한 더미 데이터. 더미데이터를 불러와서 최근 수정된 문서가 앞으로 오게 정렬함.
-// dummy.sort((a, b) => {
-//   if (a.updated_at < b.updated_at) return 1
-//   if (a.updated_at > b.updated_at) return -1
-
-//   return 0
-// })
 
 const Wrapper = styled.div`
   position: relative;
@@ -77,19 +68,17 @@ const RoundCarousel: React.FC = () => {
     // 모달 창에 표시할 내용
     title: string
     updated_at: string
-    content: string
     color: string
   } | null>(null)
   const [docs, setDocs] = useState<Doc[]>([])
   const maxCards = 10
   const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  const userId = 1
+  const userId = 23
 
   interface Doc {
     id: number
     title: string
-    updated_at?: string
-    content?: string
+    updated_at: string
     color: string
   }
 
@@ -111,9 +100,9 @@ const RoundCarousel: React.FC = () => {
   }
 
   const handleCardClick = (item: {
+    id: number
     title: string
-    updated_at?: string
-    content?: string
+    updated_at: string
     color: string
   }) => {
     // 카드 클릭 시의 이벤트 핸들러
@@ -141,7 +130,6 @@ const RoundCarousel: React.FC = () => {
 
   useEffect(() => {
     getDocs()
-    console.log(rotate + 36 * (docs.length - 1))
   }, [])
 
   return (
@@ -157,9 +145,9 @@ const RoundCarousel: React.FC = () => {
               key={i}
               rotate={currentRotate} // 카드별로 각도 전달
               visible={visible} // 위치에 따른 카드의 보기 속성 전달
-              backgroundColor="skyblue" // 색상 전달
+              backgroundColor={doc.color} // 색상 전달
               // 카드에 content가 있는지 확인하고 없으면 빈 문자열 전달
-              onClick={() => handleCardClick({ ...doc, content: doc.content || '' })}>
+              onClick={() => handleCardClick(doc)}>
               <h3>{doc.title}</h3>
               <div>#{i + 1}</div>
               {/* <p>{item.updated_at}</p> */}
