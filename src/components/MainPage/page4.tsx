@@ -8,6 +8,7 @@ import logobox from '../../assets/images/MainPage/logobox.svg'
 import logoboxopen from '../../assets/images/MainPage/logoboxopen.svg'
 import document from '../../assets/images/MainPage/document.svg'
 import document1 from '../../assets/images/MainPage/document1.svg'
+import bar from '../../assets/images/MainPage/bar.svg'
 import { Blue } from '../../components/MainPage/page2'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
@@ -77,7 +78,7 @@ const move = keyframes`
     transform: translateX(0);
   }
   100%{
-    transform: translateX(13.5rem);
+    transform: translateX(12.5rem);
   }
 `
 const movedocument = keyframes`
@@ -85,11 +86,11 @@ const movedocument = keyframes`
     transform: translateX(-13.5rem);
     opacity:0;
   }
-  93%{
+  88%{
     transform: translateX(-13.5rem);
     opacity:0;
   }
-  94%{
+  89%{
     transform: translateX(-13.5rem);
     opacity:1;
   }
@@ -98,7 +99,7 @@ const movedocument = keyframes`
     opacity:1;
   }
 `
-const openthebox = keyframes`
+const openthebox = keyframes` 
   0%{
     opacity: 0;
   }
@@ -108,10 +109,10 @@ const openthebox = keyframes`
   20%{
     opacity: 1;
   }
-  59%{
+  57%{
     opacity: 1;
   }
-  60%{
+  58%{
     opacity: 0;
   }
   79%{
@@ -135,15 +136,32 @@ const vibration = keyframes`
     transform: rotate(-3deg);
   }
   `
+const progress = keyframes`
+  0%{
+    height: 0.7rem;
+    width: 2rem;
+    z-index: 4;
+  }
+  100%{
+    height: 0.7rem;
+    width: 29.55rem;
+    z-index: 4;
+  }`
 
-//Text
+//Text & Progress bar
 interface DontProps {
   fontSize?: string
   top?: string
   fontfamily?: string
   left?: string
+  background?: string
+  height?: string
+  width?: string
+  radius?: string
+  border?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean }>`
+const Dont = styled.div<DontProps & { visible: boolean; animationType: string }>`
+  position: absolute;
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
@@ -151,16 +169,28 @@ const Dont = styled.h1<DontProps & { visible: boolean }>`
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
+  z-index = 20;
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+  height= ${(props) => props.height || 'none'};
+  width= ${(props) => props.width || 'none'};
+  border-radius : ${(props) => props.radius || 'none'};
+  background-color: ${(props) => props.background || 'none'};
+  border : ${(props) => props.border || 'none'};
   animation: ${(props) =>
     props.visible
-      ? css`
-          ${slideUpFade} 1s ease-out
-        `
+      ? props.animationType === 'slideUpFade'
+        ? css`
+            ${slideUpFade} 1s  ease-out;
+          `
+        : props.animationType === 'progress'
+        ? css`
+            ${progress} 9s ease-in-out forwards;
+          `
+        : 'none'
       : 'none'};
-`
+    `
 
 //Page.svg
 interface Page {
@@ -171,7 +201,7 @@ const Styledpage = styled.img<Page>`
   width: 47rem;
   height: 35rem;
   position: absolute;
-  top: 11rem;
+  top: 10rem;
   left: 21.5rem;
   z-index: 0;
 `
@@ -190,7 +220,7 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
   height: ${(props) => props.width || '6rem'};
   position: absolute;
   z-index: ${(props) => props.zindex || '3'};
-  top: ${(props) => props.top || '26rem'};
+  top: ${(props) => props.top || '22.5rem'};
   left: ${(props) => props.left || '41rem'};
   animation: ${(props) =>
     props.visible
@@ -200,15 +230,15 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
           `
         : props.animationType === 'movedocument'
         ? css`
-            ${movedocument} 8s forwards;
+            ${movedocument} 7s forwards;
           `
         : props.animationType === 'openthebox'
         ? css`
-            ${openthebox} 8s forwards;
+            ${openthebox} 7s forwards;
           `
         : props.animationType === 'vibration'
         ? css`
-            ${vibration} 0.1s 5.5s 3;
+            ${vibration} 0.1s 4.5s 3;
           `
         : 'none'
       : 'none'};
@@ -221,24 +251,37 @@ export const Page4: React.FC = () => {
 
   return (
     <div>
-      <Dont ref={ref} visible={visible} fontSize="3rem" top="10%">
+      <Dont ref={ref} visible={visible} animationType="slideUpFade" fontSize="3rem" top="10%">
         <Blue>&gt; </Blue>step 2;
       </Dont>
       <Dont
         ref={ref}
         visible={visible}
-        top="10.4rem"
+        top="9.5rem"
         left="6.2rem"
         fontSize="1.2rem"
-        fontfamily="monospace">
+        fontfamily="monospace"
+        animationType="slideUpFade">
         Automatically generate the document based on your URL
       </Dont>
+      <Dont
+        visible={visible}
+        ref={ref}
+        top="33.65rem"
+        left="30rem"
+        height="1rem"
+        width="1rem"
+        radius="6.5rem"
+        background="#1C6EF3"
+        border="#1C6EF3"
+        animationType="progress"
+      />
       {/**아이콘**/}
       <Styledicon
         src={githublogo}
         visible={false}
-        top="26rem"
-        left="27rem"
+        top="22.5rem"
+        left="28rem"
         animationType="none"
         alt="githublogo"
       />
@@ -254,7 +297,7 @@ export const Page4: React.FC = () => {
         visible={visiblei}
         width="8.8rem"
         height="8.8rem"
-        top="24.5rem"
+        top="21rem"
         left="39.2rem"
         zindex="2"
         animationType="openthebox"
@@ -263,7 +306,7 @@ export const Page4: React.FC = () => {
       <Styledicon
         src={document}
         visible={visiblei}
-        top="26.5rem"
+        top="23rem"
         left="55rem"
         width="5rem"
         height="5rem"
@@ -273,7 +316,7 @@ export const Page4: React.FC = () => {
       <Styledicon
         src={document1}
         visible={visiblei}
-        top="26.5rem"
+        top="23rem"
         left="55rem"
         width="5rem"
         height="5rem"
@@ -284,8 +327,8 @@ export const Page4: React.FC = () => {
       <Styledicon
         src={file}
         visible={visiblei}
-        top="27.8rem"
-        left="28.5rem"
+        top="24.25rem"
+        left="29.5rem"
         width="3.5rem"
         height="3.5rem"
         zindex="2"
@@ -296,14 +339,24 @@ export const Page4: React.FC = () => {
       <Styledicon
         src={folder}
         visible={visiblei}
-        top="28rem"
-        left="28.5rem"
+        top="24.5rem"
+        left="29.5rem"
         width="3.5rem"
         height="3.5rem"
         zindex="2"
         animationType="move"
         delay="2s"
         alt="folder"
+      />
+      <Styledicon
+        src={bar}
+        visible={false}
+        top="19rem"
+        left="29.8rem"
+        height="1.5rem"
+        width="30rem"
+        animationType="none"
+        alt="progress"
       />
       <Styledpage ref={refi} src={step2page} alt="changepage" />
     </div>
