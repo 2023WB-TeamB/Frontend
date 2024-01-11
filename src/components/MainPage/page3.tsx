@@ -164,11 +164,11 @@ const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
           `
         : props.animationType === 'moveURL'
         ? css`
-            ${moveURL} 0.9s ease-out forwards
+            ${moveURL} 0.77s ease-out forwards
           `
         : props.animationType === 'pasteURL'
         ? css`
-            ${pasteURL} 4.6s
+            ${pasteURL} 4.5s
           `
         : 'none'
       : 'none'};
