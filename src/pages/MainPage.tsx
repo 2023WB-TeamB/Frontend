@@ -144,6 +144,7 @@ const MainPage: React.FC = () => {
           <Page5 />
         </Section>
       </Container>
+      {/* 모달창이 컨테이너 밖으로 나와 온전히 펼쳐져서 뺐습니다 */}
       {isSigninOpen && <Signin onClose={handleSigninClose} />}
     </>
   )
