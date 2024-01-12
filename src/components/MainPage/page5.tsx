@@ -238,7 +238,8 @@ export const Page5: React.FC = () => {
       <Startbutton ref={refp} visible={visiblep} onClick={handleRegisterOpen}>
         Sign up and get started!
       </Startbutton>
-      <Register isOpen={isRegisterOpen} onClose={handleRegisterClose} />
+      {/* 모달 isOpen Props를 삭제해서 코드 수정했습니다 -희수- */}
+      {isRegisterOpen && <Register onClose={handleRegisterClose} />}
       <Styledpage
         src={gitodocpage2}
         top="6rem"
