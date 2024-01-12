@@ -94,14 +94,6 @@ const MainPage: React.FC = () => {
   const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
   const isLogin: boolean = false // 기본값은 로그아웃 상태
 
-  // /* 모달 이벤트 핸들러 */
-  // // 회원가입 핸들러
-  // const handleRegisterOpen = () => {
-  //   setIsRegisterOpen(true)
-  // }
-  // const handleRegisterClose = () => {
-  //   setIsRegisterOpen(false)
-  // }
   // 로그인 핸들러
   const handleSigninOpen = () => {
     setIsSigninOpen(true)
@@ -129,7 +121,6 @@ const MainPage: React.FC = () => {
           <Sub>Join us to change github repository to file!</Sub>
           <InputBoxWrapper>
             <InputBox type="text" onKeyDown={handleEnter} />
-            <Signin isOpen={isSigninOpen} onClose={handleSigninClose} />
           </InputBoxWrapper>
         </Section>
         <Section marginTop="5rem">
@@ -145,6 +136,8 @@ const MainPage: React.FC = () => {
           <Page5 />
         </Section>
       </Container>
+      {/* 모달의 오버레이가 겹쳐서 컨테이너 밖으로 코드를 이동했습니다 -희수- */}
+      {isSigninOpen && <Signin onClose={handleSigninClose} />}
     </>
   )
 }
