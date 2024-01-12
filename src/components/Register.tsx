@@ -16,9 +16,7 @@ const modalOpenAnimation = keyframes`
     transform: translateY(0%) scale(1);
     opacity: 1;
   }
-
   `
-
 const Overlay = styled.div`
   position: fixed;
   background-color: rgba(0, 0, 0, 0.2);
