@@ -30,33 +30,8 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
+//해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
 function useOnScreenImg(
-  options: IntersectionObserverInit,
-): [MutableRefObject<HTMLImageElement | null>, boolean] {
-  const ref = useRef<HTMLImageElement | null>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setVisible(entry.isIntersecting)
-    }, options)
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
-      }
-    }
-  }, [ref, options])
-
-  return [ref, visible]
-}
-////해당화면이 사용자에게 보이는지 관찰해주는 API(pointer.svg에 사용)
-function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
   const ref = useRef<HTMLImageElement | null>(null)
@@ -217,7 +192,7 @@ const Styledpointer = styled.img<{ visible: boolean }>`
 export const Page3: React.FC = () => {
   const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
-  const [refp, visiblep] = useOnScreenImg2({ threshold: 1 })
+  const [refp, visiblep] = useOnScreenImg({ threshold: 1 })
 
   return (
     <div>
