@@ -1,17 +1,29 @@
-import { useEditor, EditorContent, FloatingMenu, BubbleMenu } from '@tiptap/react'
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import BubbleMenubar from './BubbleMenubar'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import Italic from '@tiptap/extension-italic'
+import Underline from '@tiptap/extension-underline'
 
 const extensions = [
   StarterKit,
+  Document, 
+  Paragraph, 
+  Text,
+  Italic,
+  Underline,
 ]
 
-const content = '<p>Hello World!</p>'
+const content = '<p>Hellowfoajwofj fw1123</p>'
 
 const EditorWrapper = styled.div`
   position: relative;
+  min-height: 450px;
+  height: 100%;
 `
 
 const EditorArea = () => {
@@ -36,11 +48,8 @@ const EditorArea = () => {
   return (
     <EditorWrapper>
       <EditorContent editor={editor} ref={editorRef} />
-      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>
-        <BubbleMenubar>
-
-        </BubbleMenubar>
+        <BubbleMenubar editor={editor}/>
       </BubbleMenu>
     </EditorWrapper>
   )

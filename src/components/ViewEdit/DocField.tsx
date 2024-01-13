@@ -1,11 +1,10 @@
 // 마크다운 뷰어 컴포넌트
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import EditIcon from "../../assets/images/edit.png"
 import SaveIcon from "../../assets/images/save.png"
 import CancelIcon from "../../assets/images/cancel.png"
-import TuiEditor from "./WYSIWYG_Area"
-import { Editor } from "@toast-ui/react-editor"
+import EditorArea from "./EditorComps/WYSIWYG_Area"
 
 const ViewerWrapper = styled.div`
     position: relative;
@@ -17,12 +16,6 @@ const ViewerWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 20px;
-`
-
-const DocTitle = styled.h2`
-    width: 95%;
-    text-align: left;
-    font-size: 2rem;
 `
 
 const Icon = styled.img`
@@ -66,19 +59,58 @@ const ViewArea = styled.div`
     margin-top: 15px;
     width: 100%;
     max-width: 800px;
+    min-height: 450px;
     height: 100%;
+`
+
+const TitleArea = styled.div`
+    width: 100%;
+    height: 15%;
+    padding: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    & h2, & textarea {
+        margin: 0%;
+        font-size: 2rem;
+        padding: 2px;
+        border: none;
+        font-weight: bold;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        resize: none;
+        width: 100%;
+        box-sizing: border-box;
+        line-height: 1;
+        height: 2rem;
+    }
+
+    & h2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    & textarea {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 `
 
 interface MarkdownViewerProps {
     isOpenSidePanel: boolean;
 }
 
+
 // 임시 테스트용 데이터
 const testText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
 
 const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
+    // ! 임시 제목 텍스트
+    const [title, setTitle] = useState('Hello World!')
     const [isViewer, setIsViewer] = useState(true);
-    const editorRef = useRef<Editor>(null);
     
     const changeViewEditMode = () => {
         setIsViewer(!isViewer);
@@ -88,9 +120,20 @@ const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
         margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
         left: isOpenSidePanel ? '450px' : '20px',
     };
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTitle(e.target.value);
+    };
+
     return (
         <ViewerWrapper style={sideOnStyle}>
-            <DocTitle>Document Title</DocTitle>
+            <TitleArea>
+                {isViewer ?
+                    <h2>{title}</h2>
+                    :
+                    <textarea value={title} onChange={handleChange}/>
+                }
+            </TitleArea>
             <DistributeDiv>
                 <span/>
                 <ButtonWrapper>
@@ -113,10 +156,7 @@ const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
                 {isViewer ? 
                     <p>
                         {testText}
-                    </p> : <TuiEditor 
-                        content={testText} 
-                        editorRef={editorRef} 
-                    />
+                    </p> : <EditorArea />
                 }
             </ViewArea>
         </ViewerWrapper>
