@@ -120,7 +120,7 @@ const Dont = styled.h1<DontProps & { visible: boolean }>`
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
   letter-spacing: 0;
-  line-height: normal;
+  line-height: 150%;
   white-space: nowrap;
   animation: ${(props) =>
     props.visible
@@ -232,7 +232,8 @@ export const Page5: React.FC = () => {
         left="6.2rem"
         fontSize="1.2rem"
         fontfamily="monospace">
-        Check your document
+        Check your document, <br />
+        Refine your document
       </Dont>
       <Styledicon src={pointer} top="35rem" left="60rem" alt="pointer" />
       <Startbutton ref={refp} visible={visiblep} onClick={handleRegisterOpen}>
