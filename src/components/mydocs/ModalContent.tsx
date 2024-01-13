@@ -21,7 +21,6 @@ interface ModalContentProps {
   color?: string
   title: string
   updated_at: string
-  content: string
   fontSize?: string
   width?: string
 }
@@ -30,7 +29,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
   color,
   title,
   updated_at,
-  content,
   fontSize,
   width,
 }) => {
@@ -38,7 +36,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
     <Content color={color} fontSize={fontSize} width={width} onClick={(e) => e.stopPropagation()}>
       {title && <h2>{title}</h2>}
       {updated_at && <p>{updated_at}</p>}
-      {content && <p>{content}</p>}
     </Content>
   )
 }

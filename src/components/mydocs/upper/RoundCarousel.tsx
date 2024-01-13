@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
-import dummy from '../data.json'
 import Modal from '../Modal'
-
-// 카드에 내용을 넣기 위한 더미 데이터. 더미데이터를 불러와서 최근 수정된 문서가 앞으로 오게 정렬함.
-dummy.sort((a, b) => {
-  if (a.updated_at < b.updated_at) return 1
-  if (a.updated_at > b.updated_at) return -1
-
-  return 0
-})
+import { Doc } from '../../../store/types'
 
 const Wrapper = styled.div`
   position: relative;
@@ -67,7 +59,7 @@ const NextButton = styled(Button)`
   }
 `
 
-const RoundCarousel: React.FC = () => {
+const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼을 누를 수 있는지의 상태
   const [canNext, setCanNext] = useState(true) // next 버튼을 누를 수 있는지의 상태
   const [rotate, setRotate] = useState(216)
@@ -76,32 +68,31 @@ const RoundCarousel: React.FC = () => {
     // 모달 창에 표시할 내용
     title: string
     updated_at: string
-    content: string
     color: string
   } | null>(null)
-  const totalCards = 10
+  const maxCards = 10
 
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
   const handlePrev = () => {
     if (!canPrev) return
-    const newRotate = rotate + 360 / totalCards
+    const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate <= 0 ? false : true)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
     setCanPrev(newRotate <= 180 ? true : false)
   }
 
   const handleNext = () => {
     if (!canNext) return
-    const newRotate = rotate - 360 / totalCards
+    const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate <= 0 ? false : true)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
     setCanPrev(newRotate <= 180 ? true : false)
   }
 
   const handleCardClick = (item: {
+    id: number
     title: string
     updated_at: string
-    content: string
     color: string
   }) => {
     // 카드 클릭 시의 이벤트 핸들러
@@ -109,11 +100,13 @@ const RoundCarousel: React.FC = () => {
     setModalOpen(true) // 모달 열기
   }
 
+  // docs.length = docs.length > 10 ? 10 : docs.length
+
   return (
     <Wrapper>
       <Carousel>
-        {dummy.map((item, i) => {
-          const currentRotate = rotate + i * (360 / totalCards) // 각 카드별 각도
+        {docs.map((doc, i) => {
+          const currentRotate = rotate + i * (360 / maxCards) // 각 카드별 각도
           const visible =
             /* 카드의 위치(각도)에 따른 보여주기 속성 결정 */
             ((currentRotate % 360) + 360) % 360 > 180 && ((currentRotate % 360) + 360) % 360 < 360
@@ -122,12 +115,12 @@ const RoundCarousel: React.FC = () => {
               key={i}
               rotate={currentRotate} // 카드별로 각도 전달
               visible={visible} // 위치에 따른 카드의 보기 속성 전달
-              backgroundColor={item.color} // 색상 전달
+              backgroundColor={doc.color} // 색상 전달
               // 카드에 content가 있는지 확인하고 없으면 빈 문자열 전달
-              onClick={() => handleCardClick({ ...item, content: item.content || '' })}>
-              <h3>{item.title}</h3>
+              onClick={() => handleCardClick(doc)}>
+              <h3>{doc.title}</h3>
               <div>#{i + 1}</div>
-              <p>{item.updated_at}</p>
+              {/* <p>{item.updated_at}</p> */}
             </Card>
           )
         })}

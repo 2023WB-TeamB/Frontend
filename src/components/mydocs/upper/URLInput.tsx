@@ -42,8 +42,15 @@ export const URLInput: React.FC = () => {
 
   const handleGenDoc = async () => {
     try {
-      // API 호출
-      const response = await axios.post(`${apiUrl}`, { repository_url: url, language: language })
+      // API 호출, 엑세스 토큰
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.post(
+        `${apiUrl}`,
+        { repository_url: url, language: language, color: 'skyblue' },
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
       console.log(response)
       setUrl('')
 

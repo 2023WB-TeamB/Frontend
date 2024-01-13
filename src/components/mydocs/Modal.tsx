@@ -23,7 +23,6 @@ interface ModalContentProps {
   color?: string
   title: string
   updated_at: string
-  content: string
   fontSize?: string
   width?: string
 }
@@ -49,7 +48,6 @@ const Modal: React.FC<ModalProps> = ({
         <ModalContent
           color={modalContent.color}
           title={modalContent.title}
-          content={modalContent.content}
           updated_at={modalContent.updated_at}
           width={width}
           fontSize={fontSize}
