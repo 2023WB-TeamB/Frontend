@@ -2,6 +2,7 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
 import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
+import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -69,11 +70,11 @@ interface DontProps {
   top?: string
   fontfamily?: string
 }
-export const Dont = styled.h1<DontProps & { visible: boolean }>`
+const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
   font-family: 'DMSerifDisplay', serif;
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '10%'};
   left: 5%;
@@ -97,11 +98,11 @@ interface MonoProps {
   hilight?: string
   color?: string
 }
-const MonoText = styled.h1<MonoProps>`
+const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
-  color: ${(props) => props.color || '#000000'};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '55%'};
   left: ${(props) => props.left || '5%'};
@@ -110,11 +111,14 @@ const MonoText = styled.h1<MonoProps>`
   white-space: nowrap;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 `
-export const Blue = styled.span`
-  color: #1c6ef3;
+export const Blue = styled.span<{ isDarkMode: boolean }>`
+  color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#1c6ef3')};
 `
-const Hilight = styled.span<MonoProps>`
-  background-color: ${(props) => props.hilight || '#000000'};
+const Hilight = styled.span<
+  MonoProps & { hilightDark: string; hilightLight: string; isDarkMode: boolean }
+>`
+  background-color: ${(props) =>
+    props.isDarkMode ? props.hilightDark : props.hilightLight || 'black'};
 `
 
 //Console
@@ -125,7 +129,9 @@ interface ConsoleBox {
   top?: string
   left?: string
 }
-const ConsoleBox = styled.div<ConsoleBox>`
+const ConsoleBox = styled.div<
+  ConsoleBox & { backgroundLight: string; backgroundDark: string; isDarkMode: boolean }
+>`
   display: flex;
   align-items: center;
   position: absolute;
@@ -133,15 +139,16 @@ const ConsoleBox = styled.div<ConsoleBox>`
   height: ${(props) => props.height || '2.7rem'};
   top: ${(props) => props.top || '23rem'};
   left: ${(props) => props.left || '0'};
-  background: ${(props) => props.background || '#edeff6'};
+  background: ${(props) =>
+    props.isDarkMode ? props.backgroundDark : props.backgroundLight || '#edeff6'};
 `
-const ConsoleText = styled.h1`
+const ConsoleText = styled.h1<{ isDarkMode: boolean }>`
   position: absolute;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   left: 3rem;
   font-size: 0.9rem;
-  color: #0957d0;
+  color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#0957d0')};
 `
 const BlinkText = styled.p`
   display: inline;
@@ -151,42 +158,68 @@ const BlinkText = styled.p`
 //Publishing
 export const Page2: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.1 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <div>
-      <Dont ref={ref} visible={visible}>
+      <Dont ref={ref} visible={visible} isDarkMode={isDarkMode}>
         Don't just code.
       </Dont>
-      <Dont fontSize="3rem" top="22%" visible={visible} ref={ref}>
+      <Dont fontSize="3rem" top="22%" visible={visible} ref={ref} isDarkMode={isDarkMode}>
         Document. Refine. Archive. Share.
       </Dont>
-      <ConsoleBox>
-        <ConsoleText>GiToDoc</ConsoleText>
+      <ConsoleBox isDarkMode={isDarkMode} backgroundDark="#343434" backgroundLight="#edeff6">
+        <ConsoleText isDarkMode={isDarkMode}>GiToDoc</ConsoleText>
       </ConsoleBox>
-      <ConsoleBox height="0.1rem" top="25.55rem" background="#D3E2FD"></ConsoleBox>
-      <ConsoleBox width="9rem" height="0.1rem" top="25.55rem" background="#0957D0"></ConsoleBox>
+      <ConsoleBox
+        isDarkMode={isDarkMode}
+        height="0.1rem"
+        top="25.55rem"
+        backgroundDark="#5E5E5E"
+        backgroundLight="#D3E2FD"></ConsoleBox>
+      <ConsoleBox
+        isDarkMode={isDarkMode}
+        width="9rem"
+        height="0.1rem"
+        top="25.55rem"
+        backgroundDark="#5F7EAF"
+        backgroundLight="#0957D0"></ConsoleBox>
       <ConsoleBox
         width="0.1rem"
         height="1.7rem"
         top="23.5rem"
         left="81.5rem"
-        background="#D3E2FD"></ConsoleBox>
+        backgroundLight="#D3E2FD"
+        backgroundDark="#5E5E5E"
+        isDarkMode={isDarkMode}></ConsoleBox>
       <Styledicon src={settings} top="22.8rem" left="83rem" alt="icons" />
-      <MonoText>
-        <Blue>&gt; </Blue>&ensp;Coding isn't the end of the journey.
+      <MonoText isDarkMode={isDarkMode}>
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn't the end of the journey.
         <br />
-        <Blue>&gt; </Blue>&ensp;Make Your Projects perfect to the Last Detail.
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
+        Detail.
         <br />
         <br />
-        <Blue>&gt; </Blue>&ensp;With our <Hilight hilight="#FCEBEB">GiToDoc;</Hilight>
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;With our{' '}
+        <Hilight hilightLight="#FCEBEB" hilightDark="#4E3534" isDarkMode={isDarkMode}>
+          GiToDoc;
+        </Hilight>
         <br />
-        <Blue>&gt; </Blue>&ensp;We empower you to go the extra mile, ensuring your project is not
-        just done, but perfected.{' '}
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
+        ensuring your project is not just done, but perfected.{' '}
         <BlinkText>
-          <Hilight>&ensp;</Hilight>
+          <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode}>
+            &ensp;
+          </Hilight>
         </BlinkText>
       </MonoText>
-      <MonoText fontSize="0.9rem" top="46.5rem" left="50%" centered color="#8E004B">
+      <MonoText
+        fontSize="0.9rem"
+        top="46.5rem"
+        left="50%"
+        centered
+        color="#8E004B"
+        isDarkMode={isDarkMode}>
         Keep scrolling if you want to make your project perfect
       </MonoText>
       <Styledicon
