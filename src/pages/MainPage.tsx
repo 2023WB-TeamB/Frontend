@@ -8,13 +8,15 @@ import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
+import { useDarkModeStore } from '../store/store'
 
 /* 각 페이지에 대한 설정 */
-const Container = styled.div`
+export const Container = styled.div<{ isDarkMode: boolean }>`
   width: 100vw;
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
 `
 
 interface SectionProps {
@@ -93,6 +95,7 @@ const MainPage: React.FC = () => {
   // const [isRegisterOpen, setIsRegisterOpen] = useState(false) // 회원가입 모달 상태
   const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
   const isLogin: boolean = false // 기본값은 로그아웃 상태
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   // 로그인 핸들러
   const handleSigninOpen = () => {
@@ -112,7 +115,7 @@ const MainPage: React.FC = () => {
   return (
     <>
       <GlobalStyle />
-      <Container>
+      <Container isDarkMode={isDarkMode}>
         <Header isLogin={isLogin} />
         <Section marginTop="0rem">
           <Main>

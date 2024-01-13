@@ -57,7 +57,7 @@ export const Styledicon = styled.img<Styledicon>`
   width: 5rem;
   height: 3rem;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   top: ${(props) => props.top || '5rem'};
   left: ${(props) => props.left || '3rem'};
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};

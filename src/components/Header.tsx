@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDarkModeStore } from '../store/store'
+
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Signin from './Signin'
@@ -38,7 +40,7 @@ const Layout = styled.div<LayoutProps>`
   top: 0;
   left: 0;
   // 조건부로 다크모드 지정, props로 값을 받아옴
-  background-color: ${(props) => (props.isDarkMode ? '#000' : '#fff')};
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   z-index: 5;
 `
 const Icon = styled.img<IconProps>`
@@ -55,7 +57,7 @@ const Icon = styled.img<IconProps>`
 `
 /*** 메인 ***/
 const Header = ({ isLogin }: HeaderProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const [isSigninOpen, setIsSigninOpen] = useState(false) // SignIn 모달 상태 추가
   const navigate = useNavigate()
 
@@ -67,7 +69,7 @@ const Header = ({ isLogin }: HeaderProps) => {
   }
   const handleDarkMode = () => {
     // 다크모드 토글
-    setIsDarkMode((prev: boolean) => !prev) // prev: 이전 요소의 값, 다크모드 상태를 토글
+    toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
   const handleClickSignout = async () => {
     // 로그아웃 API 호출

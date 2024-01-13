@@ -143,7 +143,7 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
   position: absolute;
   top: ${(props) => props.top || '14rem'};
   left: ${(props) => props.left || '5rem'};
-  z-index: -2;
+  z-index: 0;
   animation: ${(props) =>
     props.visible
       ? css`
@@ -173,7 +173,7 @@ const Startbutton = styled.button<{ visible: boolean }>`
           ${slideinFade} 1s ease-out
         `
       : 'none'};
-  z-index: 0;
+  z-index: 2;
   &:before {
     content: '';
     position: absolute;
@@ -183,7 +183,7 @@ const Startbutton = styled.button<{ visible: boolean }>`
     bottom: -0.01rem;
     background: linear-gradient(270deg, rgb(208, 166, 236) 0%, rgb(183, 225, 242) 100%);
     border-radius: 4.09rem;
-    z-index: -2;
+    z-index: 1;
   }
   &:after {
     content: '';
@@ -194,7 +194,7 @@ const Startbutton = styled.button<{ visible: boolean }>`
     bottom: 0;
     background: #d3e2fd;
     border-radius: 4.09rem;
-    z-index: -1;
+    z-index: 1;
     transition: all 0.3s ease-in-out;
   }
   &:hover:after {

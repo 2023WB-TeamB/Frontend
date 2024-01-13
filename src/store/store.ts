@@ -10,6 +10,17 @@ export const isEnglishStore = create<Language>((set) => ({
   setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
 }))
 
+/*다크모드*/
+type State = {
+  isDarkMode: boolean
+  toggleDarkMode: () => void
+}
+
+export const useDarkModeStore = create<State>((set) => ({
+  isDarkMode: false,
+  toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+}))
+
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
 //   setSelectContent: (select: number) => void;
