@@ -14,12 +14,25 @@ const Wrapper = styled.div`
   max-width: 800px;
   min-width: 660px;
   margin-top: 2vh;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -0.063rem;
+    left: -0.063rem;
+    bottom: -0.063rem;
+    right: -0.063rem;
+    background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+    border-radius: 4.09rem;
+    z-index: -1;
+  }
 `
 
 const StyledInput = styled.input`
   background-color: #ffffff;
   border: 1px solid rgb(165, 101, 224);
   border-radius: 65.5px;
+  box-shadow: 0.15rem 0.3rem 0.35rem #0000001a;
   height: 100%;
   width: 100%;
   padding: 0 20px;
