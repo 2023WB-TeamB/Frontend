@@ -24,6 +24,12 @@ const EditorWrapper = styled.div`
   position: relative;
   min-height: 450px;
   height: 100%;
+
+  // * Editor Form
+  & .editor-content {
+    padding: 1px;
+    line-height: 1;
+  }
 `
 
 const EditorArea = () => {
