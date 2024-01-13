@@ -47,11 +47,11 @@ const Smalli = styled.span`
 `
 
 //Join us 부분
-export const Sub = styled.h1`
+export const Sub = styled.h1<{ isDarkMode: boolean }>`
   font-size: 1.2rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
-  color: black;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: 45%;
   left: 50%;
@@ -78,8 +78,8 @@ const InputBoxWrapper = styled.div`
     z-index: -1;
   }
 `
-const InputBox = styled.input`
-  background-color: #ffffff;
+const InputBox = styled.input<{ isDarkMode: boolean }>`
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   border: solid 0.063rem transparent;
   border-radius: 4.09rem;
   box-shadow: 0.125rem 0.25rem 0.3125rem #0000001a;
@@ -87,7 +87,7 @@ const InputBox = styled.input`
   width: 40rem;
   text-align: center;
   font-size: 1.3rem;
-  color: #1a1a1a;
+  color: ${(props) => (props.isDarkMode ? 'white' : '#1a1a1a')};
 `
 
 /*** Publishing ***/
@@ -121,9 +121,9 @@ const MainPage: React.FC = () => {
           <Main>
             G<Smalli>i</Smalli>ToDoc
           </Main>
-          <Sub>Join us to change github repository to file!</Sub>
+          <Sub isDarkMode={isDarkMode}>Join us to change github repository to file!</Sub>
           <InputBoxWrapper>
-            <InputBox type="text" onKeyDown={handleEnter} />
+            <InputBox isDarkMode={isDarkMode} type="text" onKeyDown={handleEnter} />
           </InputBoxWrapper>
         </Section>
         <Section marginTop="5rem">
