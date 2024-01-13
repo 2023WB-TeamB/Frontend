@@ -10,6 +10,7 @@ import document from '../../assets/images/MainPage/document.svg'
 import document1 from '../../assets/images/MainPage/document1.svg'
 import bar from '../../assets/images/MainPage/bar.svg'
 import { Blue } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -160,12 +161,14 @@ interface DontProps {
   radius?: string
   border?: string
 }
-const Dont = styled.div<DontProps & { visible: boolean; animationType: string }>`
+const Dont = styled.div<
+  DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
+>`
   position: absolute;
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
@@ -247,13 +250,21 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
 export const Page4: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <div>
-      <Dont ref={ref} visible={visible} animationType="slideUpFade" fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 2;
+      <Dont
+        isDarkMode={isDarkMode}
+        ref={ref}
+        visible={visible}
+        animationType="slideUpFade"
+        fontSize="3rem"
+        top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 2;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={ref}
         visible={visible}
         top="9.5rem"
@@ -264,6 +275,7 @@ export const Page4: React.FC = () => {
         Automatically generate the document based on your URL
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         visible={visible}
         ref={ref}
         top="33.65rem"

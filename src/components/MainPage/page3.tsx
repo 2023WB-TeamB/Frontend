@@ -4,6 +4,7 @@ import Gitpage from '../../assets/images/MainPage/Gitpage.svg'
 import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreenDiv(
@@ -119,11 +120,13 @@ interface DontProps {
   left?: string
   delay?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
+const Dont = styled.h1<
+  DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
+>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
@@ -193,13 +196,21 @@ export const Page3: React.FC = () => {
   const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <div>
-      <Dont ref={refd} visible={visibled} animationType="slideUpFade" fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 1;
+      <Dont
+        isDarkMode={isDarkMode}
+        ref={refd}
+        visible={visibled}
+        animationType="slideUpFade"
+        fontSize="3rem"
+        top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 1;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="slideUpFade"
@@ -210,6 +221,7 @@ export const Page3: React.FC = () => {
         Copy your repository URL
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="moveURL"
@@ -222,6 +234,7 @@ export const Page3: React.FC = () => {
       </Dont>
       <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="pasteURL"

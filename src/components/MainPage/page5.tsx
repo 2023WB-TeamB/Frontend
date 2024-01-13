@@ -4,6 +4,7 @@ import gitodocpage2 from '../../assets/images/MainPage/gitodocpage2.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
@@ -111,11 +112,11 @@ interface DontProps {
   fontfamily?: string
   left?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean }>`
+const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
@@ -210,6 +211,7 @@ export const Page5: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg2({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   //Register modal
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
@@ -222,10 +224,11 @@ export const Page5: React.FC = () => {
 
   return (
     <div>
-      <Dont ref={ref} visible={visible} fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 3;
+      <Dont isDarkMode={isDarkMode} ref={ref} visible={visible} fontSize="3rem" top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 3;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={ref}
         visible={visible}
         top="10.4rem"
