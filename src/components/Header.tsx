@@ -7,13 +7,13 @@ import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Signin from './Signin'
 /*-----------------------------------------------------------*/
-import imgDarkMode from '../assets/images/dark_mode.png'
-import imgWhiteMode from '../assets/images/white_mode.png'
-import imgLogo from '../assets/images/LOGO1.png'
-import imgSignIn from '../assets/images/signin.png'
-import imgSignInDark from '../assets/images/signin_dark.png'
-import imgSignOut from '../assets/images/signout.png'
-import imgSignOutDark from '../assets/images/signout_dark.png'
+import imgDarkMode from '../assets/images/dark_mode.svg'
+import imgWhiteMode from '../assets/images/white_mode.svg'
+import imgLogo from '../assets/images/LOGO1.svg'
+import imgSignIn from '../assets/images/signin.svg'
+import imgSignInDark from '../assets/images/signin_dark.svg'
+import imgSignOut from '../assets/images/signout.svg'
+import imgSignOutDark from '../assets/images/signout_dark.svg'
 
 /*** Header 타입 지정을 위한 인터페이스 ***/
 interface HeaderProps {
