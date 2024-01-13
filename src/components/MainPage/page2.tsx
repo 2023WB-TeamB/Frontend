@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
+import settings_dark from '../../assets/images/MainPage/settings_dark.svg'
 import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { useDarkModeStore } from '../../store/store'
 
@@ -192,7 +193,12 @@ export const Page2: React.FC = () => {
         backgroundLight="#D3E2FD"
         backgroundDark="#5E5E5E"
         isDarkMode={isDarkMode}></ConsoleBox>
-      <Styledicon src={settings} top="22.8rem" left="83rem" alt="icons" />
+      <Styledicon
+        src={isDarkMode ? settings_dark : settings}
+        top="22.8rem"
+        left="83rem"
+        alt="icons"
+      />
       <MonoText isDarkMode={isDarkMode}>
         <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn't the end of the journey.
         <br />

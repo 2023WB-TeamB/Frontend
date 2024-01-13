@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import gitodocpage2 from '../../assets/images/MainPage/gitodocpage2.svg'
+import gitodocpage2_dark from '../../assets/images/MainPage/gitodocpage2_dark.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page2'
@@ -245,7 +246,7 @@ export const Page5: React.FC = () => {
       {/* 모달 isOpen Props를 삭제해서 코드 수정했습니다 -희수- */}
       {isRegisterOpen && <Register onClose={handleRegisterClose} />}
       <Styledpage
-        src={gitodocpage2}
+        src={isDarkMode ? gitodocpage2_dark : gitodocpage2}
         top="6rem"
         left="25rem"
         width="55rem"

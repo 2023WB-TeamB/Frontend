@@ -3,6 +3,8 @@ import styled, { keyframes, css } from 'styled-components'
 import Gitpage from '../../assets/images/MainPage/Gitpage.svg'
 import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
+import gitodocpage_dark from '../../assets/images/MainPage/gitodocpage_dark.svg'
+import GitPage_dark from '../../assets/images/MainPage/GitPage_dark.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
@@ -245,14 +247,19 @@ export const Page3: React.FC = () => {
         https://github.com/2023WB-TeamB
       </Dont>
       <Styledpage
-        src={gitodocpage}
+        src={isDarkMode ? gitodocpage_dark : gitodocpage}
         top="11rem"
         left="36rem"
         alt="GiToDocpage"
         ref={refi}
         visible={visiblei}
       />
-      <Styledpage src={Gitpage} alt="Githubpage" visible={false} zindex="0" />
+      <Styledpage
+        src={isDarkMode ? GitPage_dark : Gitpage}
+        alt="Githubpage"
+        visible={false}
+        zindex="0"
+      />
     </div>
   )
 }
