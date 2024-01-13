@@ -1,41 +1,61 @@
-import { Editor } from "@tiptap/react"
-import styled from "styled-components"
+import { Editor } from "@tiptap/react";
+import styled from "styled-components";
 
 const BubbleMenuWrapper = styled.div`
-    height: 30px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-`
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+`;
 
 const StyledButton = styled.button`
-    height: 100%;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
-    font-size: 12px;
-    transition: all ease .2s;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  font-size: 12px;
+  transition: all ease .2s;
 
-    &:hover {
-        background-color: lightgray;
-    }
-`
+  &:hover {
+    background-color: lightgray;
+  }
+`;
 
 interface BubbleMenubarProps {
     editor: Editor;
 }
 
 const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
-    return (
-        <BubbleMenuWrapper>
-            <StyledButton onClick={() => editor.chain().focus().toggleBold().run()}>Bold</StyledButton>
-            <StyledButton onClick={() => editor.chain().focus().toggleItalic().run()}>Italic</StyledButton>
-            <StyledButton onClick={() => editor.chain().focus().toggleUnderline().run()}>Underline</StyledButton>
-            <StyledButton onClick={() => editor.chain().focus().toggleStrike().run()}>Strike</StyledButton>
-            <StyledButton onClick={() => editor.chain().focus().toggleCode().run()}>Code</StyledButton>
-        </BubbleMenuWrapper>
-    );
-}
+  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    editor.chain().setColor(event.target.value).run();
+  };
+
+  return (
+    <BubbleMenuWrapper>
+      {/* <ColorInput
+        type="color"
+        onInput={handleColorChange}
+        value={editor.getAttributes("textStyle").color}
+        data-testid="setColor"
+      /> */}
+      <StyledButton>Color</StyledButton>
+      <StyledButton onClick={() => editor.chain().toggleBold().run()}>
+        B
+      </StyledButton>
+      <StyledButton onClick={() => editor.chain().toggleItalic().run()}>
+        I
+      </StyledButton>
+      <StyledButton onClick={() => editor.chain().toggleUnderline().run()}>
+        U
+      </StyledButton>
+      <StyledButton onClick={() => editor.chain().toggleStrike().run()}>
+        S
+      </StyledButton>
+      <StyledButton onClick={() => editor.chain().toggleCodeBlock().run()}>
+        CB
+      </StyledButton>
+    </BubbleMenuWrapper>
+  );
+};
 
 export default BubbleMenubar;

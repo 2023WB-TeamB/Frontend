@@ -1,3 +1,5 @@
+import "../../../pages/TiptapStyles.css";
+
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
@@ -8,6 +10,12 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Italic from '@tiptap/extension-italic'
 import Underline from '@tiptap/extension-underline'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import { common, createLowlight } from "lowlight";
+
+const lowlight = createLowlight(common);
 
 // ? TipTap 확장 모듈
 const extensions = [
@@ -17,6 +25,11 @@ const extensions = [
   Text,
   Italic,
   Underline,
+  CodeBlockLowlight.configure({
+    lowlight,
+  }),
+  TextStyle, 
+  Color,
 ]
 
 // ! 임시 문서 내용
