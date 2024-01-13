@@ -9,6 +9,7 @@ import Text from '@tiptap/extension-text'
 import Italic from '@tiptap/extension-italic'
 import Underline from '@tiptap/extension-underline'
 
+// ? TipTap 확장 모듈
 const extensions = [
   StarterKit,
   Document, 
@@ -18,6 +19,7 @@ const extensions = [
   Underline,
 ]
 
+// ! 임시 문서 내용
 const content = '<p>Hellowfoajwofj fw1123</p>'
 
 const EditorWrapper = styled.div`
@@ -41,6 +43,7 @@ const EditorArea = () => {
     }
   }, [])
 
+  // ? 에디터 객체 생성
   const editor:any = useEditor({
     extensions,
     content,

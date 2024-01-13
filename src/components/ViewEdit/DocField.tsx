@@ -1,4 +1,3 @@
-// 마크다운 뷰어 컴포넌트
 import React, { useState } from "react"
 import styled from "styled-components"
 import EditIcon from "../../assets/images/edit.png"
@@ -6,6 +5,7 @@ import SaveIcon from "../../assets/images/save.png"
 import CancelIcon from "../../assets/images/cancel.png"
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 
+// ? 문서 전체 폼
 const ViewerWrapper = styled.div`
     position: relative;
     min-width: 640px;
@@ -40,6 +40,7 @@ const ButtonWrapper = styled.div`
     flex-direction: row-reverse;
 `
 
+// ? 문서 제목 내용 구분선
 const DistributeDiv = styled.div`
     width: 100%;
     height: 42px;
@@ -55,6 +56,7 @@ const DistributeDiv = styled.div`
     }
 `
 
+// ? 문서 내용 폼
 const ViewArea = styled.div`
     margin-top: 15px;
     width: 100%;
@@ -63,6 +65,7 @@ const ViewArea = styled.div`
     height: 100%;
 `
 
+// ? 문서 제목 폼
 const TitleArea = styled.div`
     width: 100%;
     height: 15%;
