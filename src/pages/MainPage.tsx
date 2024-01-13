@@ -8,6 +8,7 @@ import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
+import useModalStore from '../components/useModalStore.tsx'
 
 /* 각 페이지에 대한 설정 */
 const Container = styled.div`
@@ -90,16 +91,12 @@ const InputBox = styled.input`
 
 /*** Publishing ***/
 const MainPage: React.FC = () => {
-  // const [isRegisterOpen, setIsRegisterOpen] = useState(false) // 회원가입 모달 상태
-  const [isSigninOpen, setIsSigninOpen] = useState(false) // 로그인 모달 상태
+  const { isSigninOpen, toggleSignin } = useModalStore() // 로그인 모달 상태
   const isLogin: boolean = false // 기본값은 로그아웃 상태
 
   // 로그인 핸들러
   const handleSigninOpen = () => {
-    setIsSigninOpen(true)
-  }
-  const handleSigninClose = () => {
-    setIsSigninOpen(false)
+    toggleSignin() // 로그인 open/close 토글
   }
 
   /**InputBox -> Enter -> Register모달**/
@@ -136,8 +133,7 @@ const MainPage: React.FC = () => {
           <Page5 />
         </Section>
       </Container>
-      {/* 모달의 오버레이가 겹쳐서 컨테이너 밖으로 코드를 이동했습니다 -희수- */}
-      {isSigninOpen && <Signin onClose={handleSigninClose} />}
+      {isSigninOpen && <Signin />}
     </>
   )
 }
