@@ -5,6 +5,7 @@ import axios from 'axios'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
+import useModalStore from './useModalStore'
 
 /**** 스타일 ****/
 const modalOpenAnimation = keyframes`
@@ -96,10 +97,6 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
   padding-left: 20px;
 `
 /**** 인터페이스 ****/
-interface RegisterProps {
-  // isOpen: boolean
-  onClose: () => void
-}
 interface FormProps {
   email: string
   nickname: string
@@ -110,7 +107,7 @@ interface NameProps {
   visibility?: string // 비지블
 }
 /**** 메인 ****/
-function Register({ onClose }: RegisterProps) {
+function Register() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const [data, setData] = useState<FormProps>({
     email: '',
@@ -118,7 +115,8 @@ function Register({ onClose }: RegisterProps) {
     password: '',
     confirmPassword: '',
   })
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false) // 에러메세지 상태관리
+  const { toggleRegister } = useModalStore() // 모달 상태관리
   // 비밀번호 불일치 시에러 메시지와 표시스타일 변경
   const handlePasswordMismatch = () => {
     setShowError(true)
@@ -141,7 +139,7 @@ function Register({ onClose }: RegisterProps) {
       setShowError(false)
     }
   }
-  // submit 이벤트 핸들러
+  // submit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault() // form요소에서 발생하는 페이지를 다시 로드하는 새로고침 방지
 
@@ -150,7 +148,6 @@ function Register({ onClose }: RegisterProps) {
       handlePasswordMismatch()
       return // submit 중단
     }
-
     try {
       // API 호출
       const response = await axios.post('http://gtd.kro.kr:8000/api/v1/register/', {
@@ -164,7 +161,7 @@ function Register({ onClose }: RegisterProps) {
         console.log('API Response: ', response.status)
         alert('회원가입 성공!')
 
-        onClose() // 동작 수행후 모달 닫기
+        toggleRegister() // 동작 수행후 모달 닫기
       }
       // 회원가입 실패 시
     } catch (error: any) {
@@ -179,7 +176,7 @@ function Register({ onClose }: RegisterProps) {
     <>
       <Overlay>
         <Content isDarkMode={isDarkMode}>
-          <CloseBtn onClick={onClose} />
+          <CloseBtn onClick={toggleRegister} />
           <StyledForm onSubmit={handleSubmit}>
             <StyledTitle isDarkMode={isDarkMode}>Register</StyledTitle>
             <StyledNameWrapper>
@@ -194,7 +191,7 @@ function Register({ onClose }: RegisterProps) {
               onChange={handleChange}
               placeholder="Enter Email"
             />
-
+            {/* 닉네임 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>Nickname</StyledName>
@@ -208,7 +205,7 @@ function Register({ onClose }: RegisterProps) {
               onChange={handleChange}
               placeholder="Enter Nickname"
             />
-
+            {/* 비밀번호 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>Password</StyledName>
@@ -222,7 +219,7 @@ function Register({ onClose }: RegisterProps) {
               onChange={handleChange}
               placeholder="Enter Password"
             />
-
+            {/* 비밀번호 확인 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>ConfirmPassword</StyledName>
@@ -241,6 +238,7 @@ function Register({ onClose }: RegisterProps) {
                 border: showError ? '2px solid red' : '1px solid',
               }}
             />
+            {/* SUBMIT 버튼 */}
             <div style={{ margin: 20 }}></div>
             <GradientBtn isDarkMode={isDarkMode}>Submit</GradientBtn>
           </StyledForm>

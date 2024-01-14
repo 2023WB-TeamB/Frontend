@@ -1,4 +1,3 @@
-// Signin
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +7,7 @@ import axios from 'axios'
 import Register from './Register'
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
+import useModalStore from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgGoogle from '../assets/images/logo_google.png'
 import imgGithub from '../assets/images/logo_github.png'
@@ -104,23 +104,17 @@ const StyledCheckbox = styled.input`
   background-color: blue;
 `
 /**** 인터페이스 ****/
-interface SigninProps {
-  // isOpen: boolean
-  onClose: () => void
-}
 interface FormProps {
   email: string
   password: string
 }
-// interface ContetnProps {
-//   showAnimation: boolean
-// }
+
 /**** 메인 ****/
-function Signin({ onClose }: SigninProps) {
+function Signin() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const navigate = useNavigate()
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false) // 회원가입 모달 상태
   const [rememberMe, setRememberMe] = useState(false) // remember me 상태
+  const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore()
   const [data, setData] = useState<FormProps>({
     email: '',
     password: '',
@@ -133,18 +127,17 @@ function Signin({ onClose }: SigninProps) {
       [name]: value, // key값을 기준으로 value를 가져옴
     }))
   }
-
-  const handleCloseModal = () => {
-    setIsRegisterModalOpen(false)
+  // 모달 상태관리
+  const handleClickJoinus = () => {
+    toggleRegister() // 회원가입 모달 open
   }
-
-  const handleJoinUsClick = () => {
-    setIsRegisterModalOpen(true) // 회원가입 모달 open
+  // 체크박스 상태관리
+  const handleCheckboxChange = () => {
+    setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
   }
-
+  // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+    e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
       const response = await axios.post('http://gtd.kro.kr:8000/api/v1/auth/', {
@@ -160,7 +153,7 @@ function Signin({ onClose }: SigninProps) {
         console.log('API Response: ', response.status)
         alert('로그인 성공!')
 
-        onClose() // 동작 수행후 모달 닫기
+        toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
       }
       // 로그인 실패 시
@@ -172,16 +165,12 @@ function Signin({ onClose }: SigninProps) {
       }
     }
   }
-  // 체크박스 상태관리
-  const handleCheckboxChange = () => {
-    setRememberMe(!rememberMe)
-    // true면 로그인 유지가 되게끔 api 연동
-  }
+
   return (
     <>
       <Overlay>
         <Content isDarkMode={isDarkMode}>
-          <CloseBtn onClick={onClose} />
+          <CloseBtn onClick={toggleSignin} />
           <StyledForm onSubmit={handleSubmit}>
             <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
             {/* 이메일 */}
@@ -232,23 +221,20 @@ function Signin({ onClose }: SigninProps) {
               <StyledSocial src={imgGithub} />
               <StyledSocial src={imgMeta} />
               <StyledSocial src={imgNaver} />
-              {/* TODO: 기능구현 */}
+              {/* TODO: 소셜로그인 기능 구현 */}
             </div>
             {/* Join us */}
             <div style={{ margin: 10 }}></div>
             <div>
-              <StyledFont
-                isDarkMode={isDarkMode}
-                fontLight="#7AC4E8"
-                fontDark="#7AC4E8"
-                onClick={handleJoinUsClick}>
-                Join us?
+              <StyledFont color="#000">Join </StyledFont>
+              <StyledFont color="#7AC4E8" onClick={handleClickJoinus}>
+                us?
               </StyledFont>
             </div>
           </StyledForm>
         </Content>
       </Overlay>
-      {isRegisterModalOpen && <Register onClose={handleCloseModal} />}
+      {isRegisterOpen && <Register />}
     </>
   )
 }

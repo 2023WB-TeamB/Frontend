@@ -7,6 +7,7 @@ import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
+import useModalStore from '../useModalStore'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -14,7 +15,6 @@ function useOnScreen(
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null)
   const [visible, setVisible] = useState(false)
-
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       setVisible(entry.isIntersecting)
@@ -191,13 +191,14 @@ export const Page5: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   //Register modal
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const { isRegisterOpen, toggleRegister } = useModalStore()
+  // const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const handleRegisterOpen = () => {
-    setIsRegisterOpen(true)
+    toggleRegister()
   }
-  const handleRegisterClose = () => {
-    setIsRegisterOpen(false)
-  }
+  // const handleRegisterClose = () => {
+  //   setIsRegisterOpen(false)
+  // }
 
   return (
     <div>
@@ -224,7 +225,7 @@ export const Page5: React.FC = () => {
         Click here to Sign up for GiToDoc!
       </Startbutton>
       {/* 모달 isOpen Props를 삭제해서 코드 수정했습니다 -희수- */}
-      {isRegisterOpen && <Register onClose={handleRegisterClose} />}
+      {isRegisterOpen && <Register />}
       <Styledpage
         src={isDarkMode ? gitodocpage2_dark : gitodocpage2}
         top="6rem"

@@ -6,6 +6,7 @@ import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Signin from './Signin'
+import useModalStore from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/dark_mode.svg'
 import imgWhiteMode from '../assets/images/white_mode.svg'
@@ -15,21 +16,6 @@ import imgSignInDark from '../assets/images/signin_dark.svg'
 import imgSignOut from '../assets/images/signout.svg'
 import imgSignOutDark from '../assets/images/signout_dark.svg'
 
-/*** Header 타입 지정을 위한 인터페이스 ***/
-interface HeaderProps {
-  isLogin: boolean
-  // onLogout?: () => void
-}
-interface IconProps {
-  height: string
-  width: string
-  top?: string
-  left?: string
-  right?: string
-}
-interface LayoutProps {
-  isDarkMode: boolean
-}
 /*** 스타일링 ***/
 const Layout = styled.div<LayoutProps>`
   // 스타일 크기
@@ -55,22 +41,35 @@ const Icon = styled.img<IconProps>`
 
   cursor: pointer;
 `
+/***  인터페이스 ***/
+interface HeaderProps {
+  isLogin: boolean
+}
+interface IconProps {
+  height: string
+  width: string
+  top?: string
+  left?: string
+  right?: string
+}
+interface LayoutProps {
+  isDarkMode: boolean
+}
 /*** 메인 ***/
 const Header = ({ isLogin }: HeaderProps) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
-  const [isSigninOpen, setIsSigninOpen] = useState(false) // SignIn 모달 상태 추가
+  const { isSigninOpen, toggleSignin } = useModalStore()
   const navigate = useNavigate()
 
-  const handleSigninOpen = () => {
-    setIsSigninOpen(true)
+  const handleClickSignin = () => {
+    toggleSignin() // 로그인 open/close 토글
   }
-  const handleSigninClose = () => {
-    setIsSigninOpen(false)
-  }
+
   const handleDarkMode = () => {
     // 다크모드 토글
     toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
+
   const handleClickSignout = async () => {
     // 로그아웃 API 호출
     const response = await axios.delete('http://gtd.kro.kr:8000/api/v1/auth/')
@@ -111,7 +110,7 @@ const Header = ({ isLogin }: HeaderProps) => {
             top="12px"
             right="80px"
             alt="SignIn Icon"
-            onClick={handleSigninOpen} // Signin 클릭하면 로그인 모달 오픈
+            onClick={handleClickSignin} // Signin 클릭하면 로그인 모달 오픈
           />
         )}
         {/* 다크모드 아이콘 */}
@@ -126,7 +125,7 @@ const Header = ({ isLogin }: HeaderProps) => {
         />
       </Layout>
       {/* 로그인 모달 */}
-      {isSigninOpen && <Signin onClose={handleSigninClose} />}
+      {isSigninOpen && <Signin />}
     </>
   )
 }
