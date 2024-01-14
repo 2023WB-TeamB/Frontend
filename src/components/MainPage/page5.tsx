@@ -155,55 +155,31 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
 `
 
 //Button
-const Startbutton = styled.button<{ visible: boolean }>`
+const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   position: relative;
-  border: #1c6ef3;
-  background-color: #1c6ef3;
   border-radius: 4.09rem;
   top: 33rem;
   left: 44rem;
   height: 4rem;
   width: 20rem;
   text-align: center;
-  font-size: 1.3rem;
-  font-weight: 300;
-  color: #1a1a1a;
-  overflow: hidden;
+  transition: 0.5s;
+  background-size: 200% auto;
+  font-family: 'Inter', Helvetica;
+  font-size: 1rem;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  background-image: linear-gradient(to right, #79c5e8, #a26be1, #79c5e8);
+  box-shadow: 0 0 1rem ${(props) => (props.isDarkMode ? '#202020' : '#eee')};
   animation: ${(props) =>
     props.visible
       ? css`
           ${slideinFade} 1s ease-out
         `
       : 'none'};
-  z-index: 2;
-  &:before {
-    content: '';
-    position: absolute;
-    top: -0.01rem;
-    left: -0.01rem;
-    right: -0.01rem;
-    bottom: -0.01rem;
-    background: linear-gradient(270deg, rgb(208, 166, 236) 0%, rgb(183, 225, 242) 100%);
-    border-radius: 4.09rem;
-    z-index: 1;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #d3e2fd;
-    border-radius: 4.09rem;
-    z-index: 1;
-    transition: all 0.3s ease-in-out;
-  }
-  &:hover:after {
-    top: 4rem;
-    left: 4rem;
-    right: 4rem;
-    bottom: 4rem;
+  z-index: 1;
+
+  &:hover {
+    background-position: right center;
   }
 `
 
@@ -240,8 +216,12 @@ export const Page5: React.FC = () => {
         Refine your document
       </Dont>
       <Styledicon src={pointer} top="35rem" left="60rem" alt="pointer" />
-      <Startbutton ref={refp} visible={visiblep} onClick={handleRegisterOpen}>
-        Sign up and get started!
+      <Startbutton
+        isDarkMode={isDarkMode}
+        ref={refp}
+        visible={visiblep}
+        onClick={handleRegisterOpen}>
+        Click here to Sign up for GiToDoc!
       </Startbutton>
       {/* 모달 isOpen Props를 삭제해서 코드 수정했습니다 -희수- */}
       {isRegisterOpen && <Register onClose={handleRegisterClose} />}
