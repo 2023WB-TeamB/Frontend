@@ -91,6 +91,7 @@ const ViewArea = styled.div<{ isDarkMode: boolean }>`
     line-height: 1.5;
     font-weight: 400;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   }
 `
 
