@@ -1,14 +1,14 @@
 <svg width="62" height="41" viewBox="0 0 62 41" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="LOGO1">
-<path id="Rectangle 44" d="M23.8906 2.08496H54.0005V30.4368L45.649 39.0082L15.9785 9.33775L23.8906 2.08496Z" fill="#111111"/>
+<path id="Rectangle 44" d="M23.8906 2.08496H54.0005V30.4368L45.649 39.0082L15.9785 9.33775L23.8906 2.08496Z" fill="#1A1A1A"/>
 <path id="Line 16" d="M45.6484 39.0078L53.5605 31.4555" stroke="url(#paint0_linear_955_1550)" stroke-width="2.6" stroke-linecap="round"/>
 <path id="Line 9" d="M53.5605 2.08496L53.5605 31.4556" stroke="url(#paint1_linear_955_1550)" stroke-width="2.6" stroke-linecap="round"/>
-<path id="Rectangle 46" d="M15 9.58496H46.5L60 4.58496V33.585L46.5 39.085H15L2 33.585V4.58496L15 9.58496Z" fill="#111111"/>
+<path id="Rectangle 46" d="M15 9.58496H46.5L60 4.58496V33.585L46.5 39.085H15L2 33.585V4.58496L15 9.58496Z" fill="#1A1A1A"/>
 <g id="Rectangle 45">
 <mask id="path-5-inside-1_955_1550" fill="white">
 <rect x="14" y="8.27051" width="33.4066" height="32.5275" rx="2"/>
 </mask>
-<rect x="14" y="8.27051" width="33.4066" height="32.5275" rx="2" fill="#111111" stroke="url(#paint2_linear_955_1550)" stroke-width="5.2" mask="url(#path-5-inside-1_955_1550)"/>
+<rect x="14" y="8.27051" width="33.4066" height="32.5275" rx="2" fill="#1A1A1A" stroke="url(#paint2_linear_955_1550)" stroke-width="5.2" mask="url(#path-5-inside-1_955_1550)"/>
 </g>
 <path id="Line 12" d="M46.9668 9.27832L52.9639 2.08555" stroke="url(#paint3_linear_955_1550)" stroke-width="2.6" stroke-linecap="round"/>
 <path id="Line 15" d="M15.1992 9.87695L23.5939 2.08478" stroke="url(#paint4_linear_955_1550)" stroke-width="2.6" stroke-linecap="round"/>
