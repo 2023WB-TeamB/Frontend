@@ -35,6 +35,8 @@ const Upper = styled.div`
   width: 100vw;
   scroll-snap-align: center;
   position: relative;
+
+  background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
 `
 //페이지 하단부
 const Lower = styled.div`
