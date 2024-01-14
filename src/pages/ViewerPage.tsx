@@ -1,27 +1,30 @@
-import Sidebar from "../components/ViewEdit/Sidebar/SidebarList"
-import styled from "styled-components"
-import profile from "../assets/images/profile.png"
-import gallery from "../assets/images/gallery button.png"
-import version from "../assets/images/version button.png"
-import exportBtn from "../assets/images/share button.png"
-import deleteBtn from "../assets/images/delete button.png"
-import exit from "../assets/images/exit button.png"
-import SidebarPanel from "../components/ViewEdit/Sidebar/SidebarPanel"
-import ModalOptions from "../components/ViewEdit/ModalOptions"
-import ModalConfirm from "../components/ViewEdit/ModalConfirm"
-import MarkdownArea from "../components/ViewEdit/MarkdownArea"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
+import styled from 'styled-components'
+import profile from '../assets/images/profile.png'
+import gallery from '../assets/images/gallery button.png'
+import version from '../assets/images/version button.png'
+import exportBtn from '../assets/images/share button.png'
+import deleteBtn from '../assets/images/delete button.png'
+import exit from '../assets/images/exit button.png'
+import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
+import ModalOptions from '../components/ViewEdit/ModalOptions'
+import ModalConfirm from '../components/ViewEdit/ModalConfirm'
+import MarkdownArea from '../components/ViewEdit/MarkdownArea'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDarkModeStore } from '../store/store'
 
-const StyledForm = styled.div`
-  min-width: 90vw;
-  min-height: 90vh;
+const StyledForm = styled.div<{ isDarkMode: boolean }>`
+  min-width: 100vw;
+  min-height: 100vh; //100을 안한 이유는..?
   position: relative;
   display: flex;
   flex-direction: row;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
 `
 
 function ViewerPage() {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const [isOpenSidePanel, setIsOpenSidePanel] = useState(false)
   const [isOpenOptions, setIsOpenOptions] = useState(false)
   const [isOpenConfirm, setIsOpenConfirm] = useState(false)
@@ -77,7 +80,7 @@ function ViewerPage() {
   }
 
   return (
-    <StyledForm>
+    <StyledForm isDarkMode={isDarkMode}>
       <Sidebar
         list={[
           [profile, closeSidePanel],
