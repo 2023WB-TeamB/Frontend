@@ -16,6 +16,7 @@ const ViewerWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    transform: translateX(-20px);
 `
 
 const Icon = styled.img`
@@ -63,12 +64,13 @@ const ViewArea = styled.div`
     max-width: 800px;
     min-height: 450px;
     height: 100%;
+    font-family: 'Arial', sans-serif;
 `
 
 // ? 문서 제목 폼
 const TitleArea = styled.div`
     width: 100%;
-    height: 15%;
+    height: 100px;
     padding: 10px;
     text-align: left;
     display: flex;

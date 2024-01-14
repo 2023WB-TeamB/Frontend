@@ -14,8 +14,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const StyledForm = styled.div`
-  min-width: 90vw;
-  min-height: 90vh;
+  min-width: 100vw;
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: row;

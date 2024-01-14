@@ -6,7 +6,7 @@ import TileButton from './TileButton';
 const WrapperArea = styled.div`
     position: fixed;
     height: 80vh;
-    width: 80px;
+    width: 70px;
     top: 50%;
     transform: translate(0%, -50%);
     left: 0;

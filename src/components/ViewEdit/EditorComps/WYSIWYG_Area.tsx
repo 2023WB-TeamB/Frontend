@@ -1,9 +1,10 @@
-import "../../../pages/TiptapStyles.css";
+import "./TiptapStyles.css";
 
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import TopMenubar from './TopMenubar'
 import BubbleMenubar from './BubbleMenubar'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -12,6 +13,7 @@ import Italic from '@tiptap/extension-italic'
 import Underline from '@tiptap/extension-underline'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import TextStyle from '@tiptap/extension-text-style'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
 
@@ -30,6 +32,7 @@ const extensions = [
   }),
   TextStyle, 
   Color,
+  HorizontalRule,
 ]
 
 // ! 임시 문서 내용
@@ -69,6 +72,7 @@ const EditorArea = () => {
 
   return (
     <EditorWrapper>
+      <TopMenubar editor={editor}/>
       <EditorContent editor={editor} ref={editorRef} />
       <BubbleMenu editor={editor}>
         <BubbleMenubar editor={editor}/>

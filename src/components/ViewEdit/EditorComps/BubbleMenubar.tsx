@@ -5,6 +5,7 @@ const BubbleMenuWrapper = styled.div`
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  font-family: 'Arial', sans-serif;
   overflow: hidden;
 `;
 
