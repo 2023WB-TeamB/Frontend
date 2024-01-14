@@ -14,7 +14,7 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 500px;
   height: 250px;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(44, 44, 44, 0.95' : 'rgba(243, 243, 243)'};
+    props.isDarkMode ? 'rgba(44, 44, 44, 0.95)' : 'rgba(243, 243, 243)'};
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 50px;
   display: flex;
