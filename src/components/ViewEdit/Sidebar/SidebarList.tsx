@@ -29,11 +29,13 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean }>`
   align-items: flex-end;
   border: 2px solid transparent;
   border-radius: 10px;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom, #76cae8, #ad51de);
+  background-image: ${(props) =>
+    props.isDarkMode
+      ? 'linear-gradient(#202020, #202020), linear-gradient(to bottom, #76cae8, #ad51de)'
+      : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #76cae8, #ad51de)'};
   background-origin: border-box;
   background-clip: content-box, border-box;
   transition: linear 0.3s;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
 `
 
 // list : [icon, onClick]

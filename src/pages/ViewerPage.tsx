@@ -2,9 +2,13 @@ import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import styled from 'styled-components'
 import profile from '../assets/images/profile.png'
 import gallery from '../assets/images/gallery button.png'
+import gallery_dark from '../assets/images/gallerybutton_dark.svg'
 import version from '../assets/images/version button.png'
+import version_dark from '../assets/images/versionbutton_dark.svg'
 import exportBtn from '../assets/images/share button.png'
+import exportBtn_dark from '../assets/images/sharebutton_dark.svg'
 import deleteBtn from '../assets/images/delete button.png'
+import deleteBtn_dark from '../assets/images/deletebutton_dark.svg'
 import exit from '../assets/images/exit button.png'
 import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
@@ -16,7 +20,7 @@ import { useDarkModeStore } from '../store/store'
 
 const StyledForm = styled.div<{ isDarkMode: boolean }>`
   min-width: 100vw;
-  min-height: 100vh; //100을 안한 이유는..?
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -84,10 +88,10 @@ function ViewerPage() {
       <Sidebar
         list={[
           [profile, closeSidePanel],
-          [gallery, openSidePanel],
-          [version, openSidePanel],
-          [exportBtn, openOptions],
-          [deleteBtn, openConfirmWithDelete],
+          [isDarkMode ? gallery_dark : gallery, openSidePanel],
+          [isDarkMode ? version_dark : version, openSidePanel],
+          [isDarkMode ? exportBtn_dark : exportBtn, openOptions],
+          [isDarkMode ? deleteBtn_dark : deleteBtn, openConfirmWithDelete],
           [''],
           [''],
           [''],
