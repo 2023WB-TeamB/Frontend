@@ -36,23 +36,32 @@ const Collection = styled(motion.div)`
   margin: auto 5vw;
 `
 const Card = styled.div<{ backgroundColor: string }>`
+  display: flex;
+  align-items: center;
   border-radius: 1.5rem;
-  line-height: 1rem;
+  line-height: 1.7rem;
   color: white;
   box-sizing: border-box;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
   background-color: ${({ backgroundColor }) => backgroundColor};
   position: relative;
-  text-align: center;
-  font-size: 1.3rem;
+  text-align: left;
+  font-size: 1.1rem;
   width: 13.5rem;
   height: 18rem;
+  padding: 1rem 1.5rem;
   margin: 0.5rem 2rem;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
   &:hover {
     //호버 시 카드 커지는 효과
     transform: scale(1.03);
+  }
+  h3 {
+    overflow: hidden;
+    width: 11rem;
+    height: 13.5rem;
+    margin: 0.8rem 0.3rem 1rem 0.3rem;
   }
 `
 

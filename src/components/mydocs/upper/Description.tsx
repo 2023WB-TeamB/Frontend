@@ -7,13 +7,13 @@ const LabelDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1vh;
+  margin-top: 0.1rem;
 `
 
 const TextWrapper = styled.p`
   color: #000000;
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 400;
   height: 20px;
   line-height: normal;

@@ -7,11 +7,11 @@ const Main = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 9rem;
-  width: 37rem;
-  margin-top: 1vh;
+  height: 8rem;
+  width: 30rem;
+  margin-top: 0.5vh;
   text-align: center;
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: 700;
   font-family: 'DMSerifDisplay', serif;
   color: transparent;
@@ -21,7 +21,7 @@ const Main = styled.div`
 `
 const Smalli = styled.div`
   margin-top: 1rem;
-  font-size: 8.75rem;
+  font-size: 7rem;
 `
 
 const GiToDoc: React.FC = () => {

@@ -8,13 +8,14 @@ type CardProps = {
 
 const Card = styled.div<CardProps>`
   position: absolute;
-  width: 10.5rem;
+  width: 9.2rem;
   height: 13rem;
   line-height: 1rem;
   color: white;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  border-radius: 12%;
-  text-align: center;
+  border-radius: 1.5rem;
+  text-align: left;
+  padding: 1rem 1.5rem;
   top: 120%;
   left: 50%;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
@@ -26,7 +27,7 @@ const Card = styled.div<CardProps>`
   ${({ rotate }) =>
     rotate !== undefined &&
     css`
-      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(23em) rotate(-${rotate}deg)
+      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(26rem) rotate(-${rotate}deg)
         rotate(${rotate + 90}deg);
     `}
 
@@ -35,7 +36,7 @@ const Card = styled.div<CardProps>`
     ${({ rotate }) =>
       rotate !== undefined &&
       css`
-        transform: translate(-50%, 0%) rotate(${rotate}deg) translate(23.8em) rotate(-${rotate}deg)
+        transform: translate(-50%, 0%) rotate(${rotate}deg) translate(26.5rem) rotate(-${rotate}deg)
           rotate(${rotate + 90}deg) scale(1.02);
       `}
   }

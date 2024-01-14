@@ -8,8 +8,8 @@ import btn from '../../../assets/images/mydocs/btn.svg'
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 50vh;
-  margin-top: 4vh;
+  height: 55vh;
+  margin-top: 3vh;
 `
 const Carousel = styled.div`
   position: relative;
@@ -56,6 +56,11 @@ const NextButton = styled.button<{ active: boolean }>`
   &:focus {
     outline: none;
   }
+`
+
+const CardNumber = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
 `
 
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
@@ -122,7 +127,7 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
               // 카드 클릭하면 모달에 data 전달
               onClick={() => handleCardClick(doc)}>
               <h3>{doc.title}</h3>
-              <div>#{i + 1}</div>
+              <CardNumber>#{i + 1}</CardNumber>
             </Card>
           )
         })}
