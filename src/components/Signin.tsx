@@ -2,6 +2,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Register from './Register'
@@ -37,9 +38,9 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 6;
 `
-const Content = styled.div`
+const Content = styled.div<{ isDarkMode: boolean }>`
   position: relative;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   border-radius: 80px;
   width: 450px;
   height: 600px;
@@ -51,33 +52,33 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
 `
-const StyleedTitle = styled.div`
+const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
 `
-const StyledName = styled.div`
+const StyledName = styled.div<{ isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: black;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ isDarkMode: boolean }>`
   height: 40px;
   width: 350px;
   font-size: 15px;
-  color: #000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
   border: 1px solid;
-  border-color: #000;
+  border-color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
-  background-color: #fff;
 
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   padding-left: 20px;
 `
 const StyledSocial = styled.img`
@@ -87,11 +88,11 @@ const StyledSocial = styled.img`
   margin-top: 50px;
   margin: 15px;
 `
-const StyledFont = styled.span`
+const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: ${(props) => props.color};
+  color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
 
   margin-bottom: 20px;
@@ -116,6 +117,7 @@ interface FormProps {
 // }
 /**** 메인 ****/
 function Signin({ onClose }: SigninProps) {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const navigate = useNavigate()
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false) // 회원가입 모달 상태
   const [rememberMe, setRememberMe] = useState(false) // remember me 상태
@@ -178,13 +180,14 @@ function Signin({ onClose }: SigninProps) {
   return (
     <>
       <Overlay>
-        <Content>
+        <Content isDarkMode={isDarkMode}>
           <CloseBtn onClick={onClose} />
           <StyledForm onSubmit={handleSubmit}>
-            <StyleedTitle>Sign in</StyleedTitle>
+            <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
             {/* 이메일 */}
-            <StyledName>Email</StyledName>
+            <StyledName isDarkMode={isDarkMode}>Email</StyledName>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="email"
               name="email"
               value={data.email}
@@ -193,8 +196,9 @@ function Signin({ onClose }: SigninProps) {
             />
             {/* 비밀번호 */}
             <div style={{ margin: 10 }}></div>
-            <StyledName>Password</StyledName>
+            <StyledName isDarkMode={isDarkMode}>Password</StyledName>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="password"
               name="password"
               value={data.password}
@@ -210,13 +214,17 @@ function Signin({ onClose }: SigninProps) {
                 checked={rememberMe}
                 onChange={handleCheckboxChange}
               />
-              <StyledFont color="#000" onClick={handleCheckboxChange}>
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontLight="#000"
+                fontDark="#fff"
+                onClick={handleCheckboxChange}>
                 Rememeber me
               </StyledFont>
             </div>
             <div style={{ margin: 10 }}></div>
             {/* 로그인 버튼 */}
-            <GradientBtn>Sign in</GradientBtn>
+            <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
             <div style={{ margin: 10 }}></div>
             <div>
@@ -229,9 +237,12 @@ function Signin({ onClose }: SigninProps) {
             {/* Join us */}
             <div style={{ margin: 10 }}></div>
             <div>
-              <StyledFont color="#000">Join </StyledFont>
-              <StyledFont color="#7AC4E8" onClick={handleJoinUsClick}>
-                us?
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontLight="#7AC4E8"
+                fontDark="#7AC4E8"
+                onClick={handleJoinUsClick}>
+                Join us?
               </StyledFont>
             </div>
           </StyledForm>
