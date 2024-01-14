@@ -15,12 +15,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 40px);
   width: 100vw;
 `
 const ScrollSnap = styled.div`
   scroll-snap-type: y mandatory;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -31,17 +31,19 @@ const Upper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   scroll-snap-align: center;
   position: relative;
+
+  background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
 `
 //페이지 하단부
 const Lower = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   scroll-snap-align: center;
   position: relative;

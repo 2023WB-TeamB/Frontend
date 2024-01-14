@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
 import { Doc } from '../../../store/types'
+import btn from '../../../assets/images/mydocs/btn.svg'
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 50vh;
-  margin: 2vh auto auto auto;
+  height: 55vh;
+  margin-top: 3vh;
 `
 const Carousel = styled.div`
   position: relative;
@@ -17,53 +18,57 @@ const Carousel = styled.div`
   overflow: hidden; // 카드가 캐러셀 밖으로 나가면 안보이게 함
 `
 
-const Button = styled.button`
+// 꺽쇠 이미지 하나 불러와서 회전시켜서 Prev, Next 버튼으로 사용
+// 버튼 클릭될(active) 때 색깔 흐려지는 효과,  focus 테두리 none
+// 캐러셀 왼쪽 끝에서 Prev 버튼 비활성화(disabled) & 숨기기(hidden)
+const PrevButton = styled.button<{ active: boolean }>`
   width: 50px;
   height: 50px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 25px;
-    height: 3px;
-    background-color: #959191f6;
-  }
-`
-
-const PrevButton = styled(Button)`
   left: 15vw;
   top: 25vh;
-  &:before {
-    transform: rotate(0deg) translate(-30%, 150%);
-  }
-  &:after {
-    transform: rotate(90deg) translate(-30%, 660%);
+  background-image: url(${btn});
+  transform: translateY(-50%) rotate(45deg);
+  opacity: ${({ active }) => (active ? '0.5' : '1')};
+  visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
+  &:focus {
+    outline: none;
   }
 `
 
-const NextButton = styled(Button)`
+// 캐러셀 오른쪽 끝에서 Next 버튼 비활성화(disabled) & 숨기기(hidden)
+const NextButton = styled.button<{ active: boolean }>`
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  position: absolute;
   right: 15vw;
   top: 25vh;
-  &:before {
-    transform: rotate(0deg) translate(-70%, 150%);
+  background-image: url(${btn});
+  transform: translateY(-50%) rotate(-45deg);
+  opacity: ${({ active }) => (active ? '0.5' : '1')};
+  visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
+  &:focus {
+    outline: none;
   }
-  &:after {
-    transform: rotate(90deg) translate(-30%, 200%);
-  }
+`
+
+const CardNumber = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
 `
 
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
-  const [canPrev, setCanPrev] = useState(false) // prev 버튼을 누를 수 있는지의 상태
-  const [canNext, setCanNext] = useState(true) // next 버튼을 누를 수 있는지의 상태
+  const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
+  const [canNext, setCanNext] = useState(true) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
-  const [modalOpen, setModalOpen] = useState(false) // 모달 창 상태
+  const [buttonActive, setButtonActive] = useState(false) // 클릭된 버튼 제어
+  const [modalOpen, setModalOpen] = useState(false) // 모달 활성화
   const [modalContent, setModalContent] = useState<{
     // 모달 창에 표시할 내용
     title: string
@@ -73,8 +78,11 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const maxCards = 10
 
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
+  // 버튼 클릭 시 활성화 상태(active) 2초(200ms) 유지
   const handlePrev = () => {
     if (!canPrev) return
+    setButtonActive(true)
+    setTimeout(() => setButtonActive(false), 200)
     const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -83,6 +91,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
 
   const handleNext = () => {
     if (!canNext) return
+    setButtonActive(true)
+    setTimeout(() => setButtonActive(false), 200)
     const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -100,8 +110,6 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setModalOpen(true) // 모달 열기
   }
 
-  // docs.length = docs.length > 10 ? 10 : docs.length
-
   return (
     <Wrapper>
       <Carousel>
@@ -116,16 +124,23 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
               rotate={currentRotate} // 카드별로 각도 전달
               visible={visible} // 위치에 따른 카드의 보기 속성 전달
               backgroundColor={doc.color} // 색상 전달
-              // 카드에 content가 있는지 확인하고 없으면 빈 문자열 전달
+              // 카드 클릭하면 모달에 data 전달
               onClick={() => handleCardClick(doc)}>
               <h3>{doc.title}</h3>
-              <div>#{i + 1}</div>
-              {/* <p>{item.updated_at}</p> */}
+              <CardNumber>#{i + 1}</CardNumber>
             </Card>
           )
         })}
-        <PrevButton onClick={handlePrev} style={{ visibility: canPrev ? 'visible' : 'hidden' }} />
-        <NextButton onClick={handleNext} style={{ visibility: canNext ? 'visible' : 'hidden' }} />
+        <PrevButton
+          active={buttonActive}
+          onClick={handlePrev}
+          style={{ visibility: canPrev ? 'visible' : 'hidden' }}
+        />
+        <NextButton
+          active={buttonActive}
+          onClick={handleNext}
+          style={{ visibility: canNext ? 'visible' : 'hidden' }}
+        />
       </Carousel>
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </Wrapper>

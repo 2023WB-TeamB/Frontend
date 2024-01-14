@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   width: 200px;
   height: 50px;
-  margin-top: 4.5vh;
+  margin-top: 3vh;
 `
 const StyledArrow = styled.img`
   width: 120px;
