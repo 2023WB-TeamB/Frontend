@@ -47,6 +47,11 @@ const EditorWrapper = styled.div`
   & .editor-content {
     padding: 1px;
     line-height: 1;
+    overflow: hidden;
+  }
+
+  & .tableWrapper {
+    border: 1px solid black;
   }
 `
 

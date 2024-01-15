@@ -14,7 +14,7 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 0;
   background-color: transparent;
-  font-size: 12px;
+  font-size: 11px;
   transition: all ease .2s;
 
   &:hover {
