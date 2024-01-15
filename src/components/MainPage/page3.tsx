@@ -1,6 +1,6 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
-import Gitpage from '../../assets/images/MainPage/Gitpage.svg'
+import Gitpage from '../../assets/images/MainPage/GitPage.svg'
 import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import gitodocpage_dark from '../../assets/images/MainPage/gitodocpage_dark.svg'

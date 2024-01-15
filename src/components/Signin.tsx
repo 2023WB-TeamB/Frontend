@@ -226,8 +226,14 @@ function Signin() {
             {/* Join us */}
             <div style={{ margin: 10 }}></div>
             <div>
-              <StyledFont color="#000">Join </StyledFont>
-              <StyledFont color="#7AC4E8" onClick={handleClickJoinus}>
+              <StyledFont isDarkMode={isDarkMode} fontDark="#fff" fontLight="#000">
+                Join{' '}
+              </StyledFont>
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontDark="#7AC4E8"
+                fontLight="#7AC4E8"
+                onClick={handleClickJoinus}>
                 us?
               </StyledFont>
             </div>

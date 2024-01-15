@@ -1,5 +1,5 @@
 import { GlobalStyle } from '../GlobalStyle'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Signin from '../components/Signin.tsx'
 // import Register from '../components/Register'
