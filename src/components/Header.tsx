@@ -1,18 +1,20 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDarkModeStore } from '../store/store'
+
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Signin from './Signin'
 import useModalStore from './useModalStore'
 /*-----------------------------------------------------------*/
-import imgDarkMode from '../assets/images/dark_mode.png'
-import imgWhiteMode from '../assets/images/white_mode.png'
-import imgLogo from '../assets/images/LOGO1.png'
-import imgSignIn from '../assets/images/signin.png'
-import imgSignInDark from '../assets/images/signin_dark.png'
-import imgSignOut from '../assets/images/signout.png'
-import imgSignOutDark from '../assets/images/signout_dark.png'
+import imgDarkMode from '../assets/images/dark_mode.svg'
+import imgWhiteMode from '../assets/images/white_mode.svg'
+import imgLogo from '../assets/images/LOGO1.svg'
+import imgSignIn from '../assets/images/signin.svg'
+import imgSignInDark from '../assets/images/signin_dark.svg'
+import imgSignOut from '../assets/images/signout.svg'
+import imgSignOutDark from '../assets/images/signout_dark.svg'
 
 /*** 스타일링 ***/
 const Layout = styled.div<LayoutProps>`
@@ -24,7 +26,7 @@ const Layout = styled.div<LayoutProps>`
   top: 0;
   left: 0;
   // 조건부로 다크모드 지정, props로 값을 받아옴
-  background-color: ${(props) => (props.isDarkMode ? '#000' : '#fff')};
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   z-index: 5;
 `
 const Icon = styled.img<IconProps>`
@@ -55,7 +57,7 @@ interface LayoutProps {
 }
 /*** 메인 ***/
 const Header = ({ isLogin }: HeaderProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin } = useModalStore()
   const navigate = useNavigate()
 
@@ -65,7 +67,7 @@ const Header = ({ isLogin }: HeaderProps) => {
 
   const handleDarkMode = () => {
     // 다크모드 토글
-    setIsDarkMode((prev: boolean) => !prev) // prev: 이전 요소의 값, 다크모드 상태를 토글
+    toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
 
   const handleClickSignout = async () => {

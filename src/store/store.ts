@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface Language {
   isEnglish: boolean
@@ -10,6 +11,23 @@ export const isEnglishStore = create<Language>((set) => ({
   setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
 }))
 
+/*다크모드*/
+interface State {
+  isDarkMode: boolean
+  toggleDarkMode: () => void
+}
+
+export const useDarkModeStore = create<State>(
+  persist(
+    (set) => ({
+      isDarkMode: false,
+      toggleDarkMode: () => set((state: State) => ({ isDarkMode: !state.isDarkMode })),
+    }),
+    {
+      name: 'dark-mode',
+    },
+  ) as any,
+)
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
 //   setSelectContent: (select: number) => void;

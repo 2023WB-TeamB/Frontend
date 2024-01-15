@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
+import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
@@ -30,9 +31,9 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 6;
 `
-const Content = styled.div`
+const Content = styled.div<{ isDarkMode: boolean }>`
   position: relative;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   border-radius: 80px;
   width: 450px;
   height: 600px;
@@ -43,11 +44,11 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
 `
-const StyledTitle = styled.div`
+const StyledTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
 `
@@ -56,7 +57,7 @@ const StyledNameWrapper = styled.div`
   justify-content: space-between;
 `
 
-const StyledName = styled.span<NameProps>`
+const StyledName = styled.span<NameProps & { isDarkMode: boolean }>`
   width: 170px;
   float: left;
 
@@ -64,7 +65,7 @@ const StyledName = styled.span<NameProps>`
   font-family: 'Inter-Regular', Helvetica;
   text-align: left;
   font-size: 20px;
-  color: black;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
   margin-bottom: 3px;
 `
@@ -83,16 +84,16 @@ const StyledName2 = styled.span<NameProps>`
   padding-top: 10px;
   margin-bottom: 3px;
 `
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ isDarkMode: boolean }>`
   height: 40px;
   width: 350px;
   font-size: 15px;
-  color: #000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
   border: 1px solid;
-  border-color: #000;
+  border-color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
-  background-color: #fff;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   padding-left: 20px;
 `
 /**** 인터페이스 ****/
@@ -107,6 +108,7 @@ interface NameProps {
 }
 /**** 메인 ****/
 function Register() {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const [data, setData] = useState<FormProps>({
     email: '',
     nickname: '',
@@ -173,16 +175,16 @@ function Register() {
   return (
     <>
       <Overlay>
-        <Content>
+        <Content isDarkMode={isDarkMode}>
           <CloseBtn onClick={toggleRegister} />
           <StyledForm onSubmit={handleSubmit}>
-            <StyledTitle>Register</StyledTitle>
-            {/* 이메일 */}
+            <StyledTitle isDarkMode={isDarkMode}>Register</StyledTitle>
             <StyledNameWrapper>
-              <StyledName>Email</StyledName>
+              <StyledName isDarkMode={isDarkMode}>Email</StyledName>
               <StyledName2 visibility="hidden">Worng Email</StyledName2>
             </StyledNameWrapper>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="email"
               name="email"
               value={data.email}
@@ -192,10 +194,11 @@ function Register() {
             {/* 닉네임 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
-              <StyledName>Nickname</StyledName>
+              <StyledName isDarkMode={isDarkMode}>Nickname</StyledName>
               <StyledName2 visibility="hidden">Worng Nickname</StyledName2>
             </StyledNameWrapper>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="text"
               name="nickname"
               value={data.nickname}
@@ -205,10 +208,11 @@ function Register() {
             {/* 비밀번호 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
-              <StyledName>Password</StyledName>
+              <StyledName isDarkMode={isDarkMode}>Password</StyledName>
               <StyledName2 visibility="hidden">Worng Password</StyledName2>
             </StyledNameWrapper>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="password"
               name="password"
               value={data.password}
@@ -218,12 +222,13 @@ function Register() {
             {/* 비밀번호 확인 */}
             <div style={{ margin: 10 }}></div>
             <StyledNameWrapper>
-              <StyledName>ConfirmPassword</StyledName>
+              <StyledName isDarkMode={isDarkMode}>ConfirmPassword</StyledName>
               <StyledName2 visibility={showError ? 'visible' : 'hidden'}>
                 Worng Password
               </StyledName2>
             </StyledNameWrapper>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="password"
               name="confirmPassword"
               value={data.confirmPassword}
@@ -235,7 +240,7 @@ function Register() {
             />
             {/* SUBMIT 버튼 */}
             <div style={{ margin: 20 }}></div>
-            <GradientBtn>Submit</GradientBtn>
+            <GradientBtn isDarkMode={isDarkMode}>Submit</GradientBtn>
           </StyledForm>
         </Content>
       </Overlay>

@@ -9,14 +9,16 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import { Doc } from '../store/types'
+import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
 
-const Container = styled.div`
+const Container = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: calc(100vh - 40px);
   width: 100vw;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
 `
 const ScrollSnap = styled.div`
   scroll-snap-type: y mandatory;
@@ -53,6 +55,7 @@ const MyDocsPage: React.FC = () => {
   const [docs, setDocs] = useState<Doc[]>([])
   const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   const getDocs = async () => {
     try {
@@ -87,7 +90,7 @@ const MyDocsPage: React.FC = () => {
   return (
     <div>
       <Header isLogin={isLogin} />
-      <Container>
+      <Container isDarkMode={isDarkMode}>
         <ScrollSnap>
           <Upper>
             <GiToDoc />
