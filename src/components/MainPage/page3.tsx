@@ -1,9 +1,12 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
-import Gitpage from '../../assets/images/MainPage/Gitpage.svg'
+import Gitpage from '../../assets/images/MainPage/GitPage.svg'
 import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
+import gitodocpage_dark from '../../assets/images/MainPage/gitodocpage_dark.svg'
+import GitPage_dark from '../../assets/images/MainPage/GitPage_dark.svg'
 import { Blue } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreenDiv(
@@ -30,33 +33,8 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
+//해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
 function useOnScreenImg(
-  options: IntersectionObserverInit,
-): [MutableRefObject<HTMLImageElement | null>, boolean] {
-  const ref = useRef<HTMLImageElement | null>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setVisible(entry.isIntersecting)
-    }, options)
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
-      }
-    }
-  }, [ref, options])
-
-  return [ref, visible]
-}
-////해당화면이 사용자에게 보이는지 관찰해주는 API(pointer.svg에 사용)
-function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
   const ref = useRef<HTMLImageElement | null>(null)
@@ -144,11 +122,13 @@ interface DontProps {
   left?: string
   delay?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean; animationType: string }>`
+const Dont = styled.h1<
+  DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
+>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
@@ -217,14 +197,22 @@ const Styledpointer = styled.img<{ visible: boolean }>`
 export const Page3: React.FC = () => {
   const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
-  const [refp, visiblep] = useOnScreenImg2({ threshold: 1 })
+  const [refp, visiblep] = useOnScreenImg({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <div>
-      <Dont ref={refd} visible={visibled} animationType="slideUpFade" fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 1;
+      <Dont
+        isDarkMode={isDarkMode}
+        ref={refd}
+        visible={visibled}
+        animationType="slideUpFade"
+        fontSize="3rem"
+        top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 1;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="slideUpFade"
@@ -235,6 +223,7 @@ export const Page3: React.FC = () => {
         Copy your repository URL
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="moveURL"
@@ -247,6 +236,7 @@ export const Page3: React.FC = () => {
       </Dont>
       <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
       <Dont
+        isDarkMode={isDarkMode}
         ref={refd}
         visible={visibled}
         animationType="pasteURL"
@@ -257,14 +247,19 @@ export const Page3: React.FC = () => {
         https://github.com/2023WB-TeamB
       </Dont>
       <Styledpage
-        src={gitodocpage}
+        src={isDarkMode ? gitodocpage_dark : gitodocpage}
         top="11rem"
         left="36rem"
         alt="GiToDocpage"
         ref={refi}
         visible={visiblei}
       />
-      <Styledpage src={Gitpage} alt="Githubpage" visible={false} zindex="0" />
+      <Styledpage
+        src={isDarkMode ? GitPage_dark : Gitpage}
+        alt="Githubpage"
+        visible={false}
+        zindex="0"
+      />
     </div>
   )
 }

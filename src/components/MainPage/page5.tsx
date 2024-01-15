@@ -1,10 +1,13 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import gitodocpage2 from '../../assets/images/MainPage/gitodocpage2.svg'
+import gitodocpage2_dark from '../../assets/images/MainPage/gitodocpage2_dark.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
+import useModalStore from '../useModalStore'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -12,7 +15,6 @@ function useOnScreen(
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null)
   const [visible, setVisible] = useState(false)
-
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       setVisible(entry.isIntersecting)
@@ -111,16 +113,16 @@ interface DontProps {
   fontfamily?: string
   left?: string
 }
-const Dont = styled.h1<DontProps & { visible: boolean }>`
+const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
   letter-spacing: 0;
-  line-height: normal;
+  line-height: 150%;
   white-space: nowrap;
   animation: ${(props) =>
     props.visible
@@ -143,7 +145,7 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
   position: absolute;
   top: ${(props) => props.top || '14rem'};
   left: ${(props) => props.left || '5rem'};
-  z-index: -2;
+  z-index: 0;
   animation: ${(props) =>
     props.visible
       ? css`
@@ -153,55 +155,31 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
 `
 
 //Button
-const Startbutton = styled.button<{ visible: boolean }>`
+const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   position: relative;
-  border: #1c6ef3;
-  background-color: #1c6ef3;
   border-radius: 4.09rem;
   top: 33rem;
   left: 44rem;
   height: 4rem;
   width: 20rem;
   text-align: center;
-  font-size: 1.3rem;
-  font-weight: 300;
-  color: #1a1a1a;
-  overflow: hidden;
+  transition: 0.5s;
+  background-size: 200% auto;
+  font-family: 'Inter', Helvetica;
+  font-size: 1rem;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  background-image: linear-gradient(to right, #79c5e8, #a26be1, #79c5e8);
+  box-shadow: 0 0 1rem ${(props) => (props.isDarkMode ? '#202020' : '#eee')};
   animation: ${(props) =>
     props.visible
       ? css`
           ${slideinFade} 1s ease-out
         `
       : 'none'};
-  z-index: 0;
-  &:before {
-    content: '';
-    position: absolute;
-    top: -0.01rem;
-    left: -0.01rem;
-    right: -0.01rem;
-    bottom: -0.01rem;
-    background: linear-gradient(270deg, rgb(208, 166, 236) 0%, rgb(183, 225, 242) 100%);
-    border-radius: 4.09rem;
-    z-index: -2;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #d3e2fd;
-    border-radius: 4.09rem;
-    z-index: -1;
-    transition: all 0.3s ease-in-out;
-  }
-  &:hover:after {
-    top: 4rem;
-    left: 4rem;
-    right: 4rem;
-    bottom: 4rem;
+  z-index: 1;
+
+  &:hover {
+    background-position: right center;
   }
 `
 
@@ -210,38 +188,46 @@ export const Page5: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg2({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   //Register modal
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const { isRegisterOpen, toggleRegister } = useModalStore()
+  // const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const handleRegisterOpen = () => {
-    setIsRegisterOpen(true)
+    toggleRegister()
   }
-  const handleRegisterClose = () => {
-    setIsRegisterOpen(false)
-  }
+  // const handleRegisterClose = () => {
+  //   setIsRegisterOpen(false)
+  // }
 
   return (
     <div>
-      <Dont ref={ref} visible={visible} fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 3;
+      <Dont isDarkMode={isDarkMode} ref={ref} visible={visible} fontSize="3rem" top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 3;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={ref}
         visible={visible}
         top="10.4rem"
         left="6.2rem"
         fontSize="1.2rem"
         fontfamily="monospace">
-        Check your document
+        Check your document, <br />
+        Refine your document
       </Dont>
       <Styledicon src={pointer} top="35rem" left="60rem" alt="pointer" />
-      <Startbutton ref={refp} visible={visiblep} onClick={handleRegisterOpen}>
-        Sign up and get started!
+      <Startbutton
+        isDarkMode={isDarkMode}
+        ref={refp}
+        visible={visiblep}
+        onClick={handleRegisterOpen}>
+        Click here to Sign up for GiToDoc!
       </Startbutton>
       {/* 모달 isOpen Props를 삭제해서 코드 수정했습니다 -희수- */}
-      {isRegisterOpen && <Register onClose={handleRegisterClose} />}
+      {isRegisterOpen && <Register />}
       <Styledpage
-        src={gitodocpage2}
+        src={isDarkMode ? gitodocpage2_dark : gitodocpage2}
         top="6rem"
         left="25rem"
         width="55rem"

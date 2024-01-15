@@ -9,6 +9,7 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import { Doc } from '../store/types'
+import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
 
 const Container = styled.div`
@@ -20,37 +21,44 @@ const Container = styled.div`
 `
 const ScrollSnap = styled.div`
   scroll-snap-type: y mandatory;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   overflow-y: scroll;
   overflow-x: hidden;
 `
 // 페이지 상단부
-const Upper = styled.div`
+const Upper = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   scroll-snap-align: center;
   position: relative;
+
+  background: ${(props) =>
+    props.isDarkMode
+      ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
+      : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
 `
 //페이지 하단부
-const Lower = styled.div`
+const Lower = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   scroll-snap-align: center;
   position: relative;
+  background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
 `
 
 const MyDocsPage: React.FC = () => {
   const [docs, setDocs] = useState<Doc[]>([])
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   const getDocs = async () => {
     try {
@@ -87,7 +95,7 @@ const MyDocsPage: React.FC = () => {
       <Header isLogin={isLogin} />
       <Container>
         <ScrollSnap>
-          <Upper>
+          <Upper isDarkMode={isDarkMode}>
             <GiToDoc />
             <Description />
             <Documentation />
@@ -95,7 +103,7 @@ const MyDocsPage: React.FC = () => {
             <URLInput />
             <RoundCarousel docs={docs.slice(0, 10)} />
           </Upper>
-          <Lower>
+          <Lower isDarkMode={isDarkMode}>
             <Gallery docs={docs} />
           </Lower>
         </ScrollSnap>

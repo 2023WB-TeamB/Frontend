@@ -1,12 +1,13 @@
-// Signin
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
+import useModalStore from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgGoogle from '../assets/images/logo_google.png'
 import imgGithub from '../assets/images/logo_github.png'
@@ -37,9 +38,9 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 6;
 `
-const Content = styled.div`
+const Content = styled.div<{ isDarkMode: boolean }>`
   position: relative;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   border-radius: 80px;
   width: 450px;
   height: 600px;
@@ -51,33 +52,33 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
 `
-const StyleedTitle = styled.div`
+const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
 `
-const StyledName = styled.div`
+const StyledName = styled.div<{ isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: black;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ isDarkMode: boolean }>`
   height: 40px;
   width: 350px;
   font-size: 15px;
-  color: #000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
   border: 1px solid;
-  border-color: #000;
+  border-color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
-  background-color: #fff;
 
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   padding-left: 20px;
 `
 const StyledSocial = styled.img`
@@ -87,11 +88,11 @@ const StyledSocial = styled.img`
   margin-top: 50px;
   margin: 15px;
 `
-const StyledFont = styled.span`
+const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 400;
   font-family: 'Inter-Regular', Helvetica;
-  color: ${(props) => props.color};
+  color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
 
   margin-bottom: 20px;
@@ -103,22 +104,17 @@ const StyledCheckbox = styled.input`
   background-color: blue;
 `
 /**** 인터페이스 ****/
-interface SigninProps {
-  // isOpen: boolean
-  onClose: () => void
-}
 interface FormProps {
   email: string
   password: string
 }
-// interface ContetnProps {
-//   showAnimation: boolean
-// }
+
 /**** 메인 ****/
-function Signin({ onClose }: SigninProps) {
+function Signin() {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const navigate = useNavigate()
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false) // 회원가입 모달 상태
   const [rememberMe, setRememberMe] = useState(false) // remember me 상태
+  const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore()
   const [data, setData] = useState<FormProps>({
     email: '',
     password: '',
@@ -131,21 +127,20 @@ function Signin({ onClose }: SigninProps) {
       [name]: value, // key값을 기준으로 value를 가져옴
     }))
   }
-
-  const handleCloseModal = () => {
-    setIsRegisterModalOpen(false)
+  // 모달 상태관리
+  const handleClickJoinus = () => {
+    toggleRegister() // 회원가입 모달 open
   }
-
-  const handleJoinUsClick = () => {
-    setIsRegisterModalOpen(true) // 회원가입 모달 open
+  // 체크박스 상태관리
+  const handleCheckboxChange = () => {
+    setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
   }
-
+  // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+    e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
-      const response = await axios.post('http://gtd.kro.kr:8000/api/v1/auth/', {
+      const response = await axios.post('https://gtd.kro.kr/api/v1/auth/', {
         email: data.email,
         password: data.password,
       })
@@ -158,7 +153,7 @@ function Signin({ onClose }: SigninProps) {
         console.log('API Response: ', response.status)
         alert('로그인 성공!')
 
-        onClose() // 동작 수행후 모달 닫기
+        toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
       }
       // 로그인 실패 시
@@ -170,21 +165,18 @@ function Signin({ onClose }: SigninProps) {
       }
     }
   }
-  // 체크박스 상태관리
-  const handleCheckboxChange = () => {
-    setRememberMe(!rememberMe)
-    // true면 로그인 유지가 되게끔 api 연동
-  }
+
   return (
     <>
       <Overlay>
-        <Content>
-          <CloseBtn onClick={onClose} />
+        <Content isDarkMode={isDarkMode}>
+          <CloseBtn onClick={toggleSignin} />
           <StyledForm onSubmit={handleSubmit}>
-            <StyleedTitle>Sign in</StyleedTitle>
+            <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
             {/* 이메일 */}
-            <StyledName>Email</StyledName>
+            <StyledName isDarkMode={isDarkMode}>Email</StyledName>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="email"
               name="email"
               value={data.email}
@@ -193,8 +185,9 @@ function Signin({ onClose }: SigninProps) {
             />
             {/* 비밀번호 */}
             <div style={{ margin: 10 }}></div>
-            <StyledName>Password</StyledName>
+            <StyledName isDarkMode={isDarkMode}>Password</StyledName>
             <StyledInput
+              isDarkMode={isDarkMode}
               type="password"
               name="password"
               value={data.password}
@@ -210,13 +203,17 @@ function Signin({ onClose }: SigninProps) {
                 checked={rememberMe}
                 onChange={handleCheckboxChange}
               />
-              <StyledFont color="#000" onClick={handleCheckboxChange}>
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontLight="#000"
+                fontDark="#fff"
+                onClick={handleCheckboxChange}>
                 Rememeber me
               </StyledFont>
             </div>
             <div style={{ margin: 10 }}></div>
             {/* 로그인 버튼 */}
-            <GradientBtn>Sign in</GradientBtn>
+            <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
             <div style={{ margin: 10 }}></div>
             <div>
@@ -224,20 +221,26 @@ function Signin({ onClose }: SigninProps) {
               <StyledSocial src={imgGithub} />
               <StyledSocial src={imgMeta} />
               <StyledSocial src={imgNaver} />
-              {/* TODO: 기능구현 */}
+              {/* TODO: 소셜로그인 기능 구현 */}
             </div>
             {/* Join us */}
             <div style={{ margin: 10 }}></div>
             <div>
-              <StyledFont color="#000">Join </StyledFont>
-              <StyledFont color="#7AC4E8" onClick={handleJoinUsClick}>
+              <StyledFont isDarkMode={isDarkMode} fontDark="#fff" fontLight="#000">
+                Join{' '}
+              </StyledFont>
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontDark="#7AC4E8"
+                fontLight="#7AC4E8"
+                onClick={handleClickJoinus}>
                 us?
               </StyledFont>
             </div>
           </StyledForm>
         </Content>
       </Overlay>
-      {isRegisterModalOpen && <Register onClose={handleCloseModal} />}
+      {isRegisterOpen && <Register />}
     </>
   )
 }

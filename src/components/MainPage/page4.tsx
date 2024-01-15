@@ -1,15 +1,25 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import step2page from '../../assets/images/MainPage/step2page.svg'
+import step2page_dark from '../../assets/images/MainPage/step2page_dark.svg'
 import githublogo from '../../assets/images/MainPage/githublogo.svg'
+import githublogo_dark from '../../assets/images/MainPage/githublogo_dark.svg'
 import file from '../../assets/images/MainPage/file.svg'
+import file_dark from '../../assets/images/MainPage/file_dark.svg'
 import folder from '../../assets/images/MainPage/folder.svg'
+import folder_dark from '../../assets/images/MainPage/folder_dark.svg'
 import logobox from '../../assets/images/MainPage/logobox.svg'
+import logobox_dark from '../../assets/images/MainPage/logobox_dark.svg'
 import logoboxopen from '../../assets/images/MainPage/logoboxopen.svg'
+import logoboxopen_dark from '../../assets/images/MainPage/logoboxopen_dark.svg'
 import document from '../../assets/images/MainPage/document.svg'
+import documnet_dark from '../../assets/images/MainPage/document_dark.svg'
 import document1 from '../../assets/images/MainPage/document1.svg'
+import document1_dark from '../../assets/images/MainPage/document1_dark.svg'
 import bar from '../../assets/images/MainPage/bar.svg'
+import bar_dark from '../../assets/images/MainPage/bar_dark.svg'
 import { Blue } from '../../components/MainPage/page2'
+import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -160,12 +170,14 @@ interface DontProps {
   radius?: string
   border?: string
 }
-const Dont = styled.div<DontProps & { visible: boolean; animationType: string }>`
+const Dont = styled.div<
+  DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
+>`
   position: absolute;
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
@@ -247,13 +259,21 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
 export const Page4: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <div>
-      <Dont ref={ref} visible={visible} animationType="slideUpFade" fontSize="3rem" top="10%">
-        <Blue>&gt; </Blue>step 2;
+      <Dont
+        isDarkMode={isDarkMode}
+        ref={ref}
+        visible={visible}
+        animationType="slideUpFade"
+        fontSize="3rem"
+        top="10%">
+        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 2;
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         ref={ref}
         visible={visible}
         top="9.5rem"
@@ -264,6 +284,7 @@ export const Page4: React.FC = () => {
         Automatically generate the document based on your URL
       </Dont>
       <Dont
+        isDarkMode={isDarkMode}
         visible={visible}
         ref={ref}
         top="33.65rem"
@@ -277,7 +298,7 @@ export const Page4: React.FC = () => {
       />
       {/**아이콘**/}
       <Styledicon
-        src={githublogo}
+        src={isDarkMode ? githublogo_dark : githublogo}
         visible={false}
         top="22.5rem"
         left="28rem"
@@ -285,14 +306,14 @@ export const Page4: React.FC = () => {
         alt="githublogo"
       />
       <Styledicon
-        src={logobox}
+        src={isDarkMode ? logobox_dark : logobox}
         visible={visiblei}
         zindex="1"
         animationType="vibration"
         alt="logobox"
       />
       <Styledicon
-        src={logoboxopen}
+        src={isDarkMode ? logoboxopen_dark : logoboxopen}
         visible={visiblei}
         width="8.8rem"
         height="8.8rem"
@@ -303,7 +324,7 @@ export const Page4: React.FC = () => {
         alt="logoboxopen"
       />
       <Styledicon
-        src={document}
+        src={isDarkMode ? documnet_dark : document}
         visible={visiblei}
         top="23rem"
         left="55rem"
@@ -313,7 +334,7 @@ export const Page4: React.FC = () => {
         alt="document"
       />
       <Styledicon
-        src={document1}
+        src={isDarkMode ? document1_dark : document1}
         visible={visiblei}
         top="23rem"
         left="55rem"
@@ -324,7 +345,7 @@ export const Page4: React.FC = () => {
         alt="document"
       />
       <Styledicon
-        src={file}
+        src={isDarkMode ? file_dark : file}
         visible={visiblei}
         top="24.25rem"
         left="29.5rem"
@@ -336,7 +357,7 @@ export const Page4: React.FC = () => {
         alt="file"
       />
       <Styledicon
-        src={folder}
+        src={isDarkMode ? folder_dark : folder}
         visible={visiblei}
         top="24.5rem"
         left="29.5rem"
@@ -348,7 +369,7 @@ export const Page4: React.FC = () => {
         alt="folder"
       />
       <Styledicon
-        src={bar}
+        src={isDarkMode ? bar_dark : bar}
         visible={false}
         top="19rem"
         left="29.8rem"
@@ -357,7 +378,7 @@ export const Page4: React.FC = () => {
         animationType="none"
         alt="progress"
       />
-      <Styledpage ref={refi} src={step2page} alt="changepage" />
+      <Styledpage ref={refi} src={isDarkMode ? step2page_dark : step2page} alt="changepage" />
     </div>
   )
 }

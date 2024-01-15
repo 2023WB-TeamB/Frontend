@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { isEnglishStore } from '../../../store/store'
+import { useDarkModeStore } from '../../../store/store'
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,12 +15,25 @@ const Wrapper = styled.div`
   max-width: 800px;
   min-width: 660px;
   margin-top: 2vh;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -0.063rem;
+    left: -0.063rem;
+    bottom: -0.063rem;
+    right: -0.063rem;
+    background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+    border-radius: 4.09rem;
+    z-index: -1;
+  }
 `
 
-const StyledInput = styled.input`
-  background-color: #ffffff;
+const StyledInput = styled.input<{ isDarkMode: boolean }>`
+  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#ffffff')};
   border: 1px solid rgb(165, 101, 224);
   border-radius: 65.5px;
+  box-shadow: 0.15rem 0.3rem 0.35rem #0000001a;
   height: 100%;
   width: 100%;
   padding: 0 20px;
@@ -32,8 +46,9 @@ const StyledInput = styled.input`
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
   const { isEnglish } = isEnglishStore()
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/create/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/create/'
   const language = isEnglish ? 'ENG' : 'KOR'
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +95,7 @@ export const URLInput: React.FC = () => {
   return (
     <Wrapper>
       <StyledInput
+        isDarkMode={isDarkMode}
         type="text"
         value={url}
         placeholder="Please enter your GitHub repository URL here..."

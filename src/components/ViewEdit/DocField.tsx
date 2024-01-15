@@ -1,13 +1,15 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import EditIcon from "../../assets/images/edit.png"
-import SaveIcon from "../../assets/images/save.png"
-import CancelIcon from "../../assets/images/cancel.png"
+import React, { useState } from 'react'
+import { useDarkModeStore } from '../../store/store'
+import styled from 'styled-components'
+import EditIcon from '../../assets/images/edit.png'
+import EidtIcon_dark from '../../assets/images/edit_dark.svg'
+import SaveIcon from '../../assets/images/save.png'
+import CancelIcon from '../../assets/images/cancel.png'
+import CancelIcon_dark from '../../assets/images/cancel_dark.svg'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
-    position: relative;
     min-width: 640px;
     width: 90vw;
     max-width: 1280px;
@@ -20,41 +22,41 @@ const ViewerWrapper = styled.div`
 `
 
 const Icon = styled.img`
-    margin: 5px;
-    width: 30px;
-    height: 30px;
+  margin: 5px;
+  width: 30px;
+  height: 30px;
 `
 
 const IconButton = styled.button`
-    margin: 5px;
-    padding: 0px;
-    width: 30px;
-    height: 30px;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 5px;
+  padding: 0px;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const ButtonWrapper = styled.div`
-    display: flex;
-    flex-direction: row-reverse;
+  display: flex;
+  flex-direction: row-reverse;
 `
 
 // ? 문서 제목 내용 구분선
 const DistributeDiv = styled.div`
-    width: 100%;
-    height: 42px;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: flex-start;
+  width: 100%;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: flex-start;
 
-    & span {
-        width: 100%;
-        height: 2px;
-        background-image: linear-gradient(to bottom right, #76CAE8, #AD51DE);
-    }
+  & span {
+    width: 100%;
+    height: 2px;
+    background-image: linear-gradient(to bottom right, #76cae8, #ad51de);
+  }
 `
 
 // ? 문서 내용 폼
@@ -105,12 +107,13 @@ const TitleArea = styled.div`
 `
 
 interface MarkdownViewerProps {
-    isOpenSidePanel: boolean;
+  isOpenSidePanel: boolean
 }
 
 
 // 임시 테스트용 데이터
-const testText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+const testText =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
 
 const DocField: React.FC<MarkdownViewerProps> = ({ isOpenSidePanel }) => {
     // ! 임시 제목 텍스트
