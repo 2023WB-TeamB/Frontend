@@ -1,6 +1,7 @@
 import { Editor } from "@tiptap/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
+import Swal from 'sweetalert2';
 
 const BubbleMenuWrapper = styled.div`
   background-color: white;
@@ -28,8 +29,25 @@ interface BubbleMenubarProps {
 }
 
 const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
-  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editor.chain().setColor(event.target.value).run();
+  const [currentColor, setCurrentColor] = useState('#000000');
+  
+  const handleButtonClick = () => {
+    Swal.fire({
+      toast: true,
+      title: 'Select Color',
+      html: `
+        <input type="color" id="colorPicker" value="${currentColor}" />
+      `,
+      showCancelButton: true,
+      preConfirm: () => {
+        const colorPicker = document.getElementById('colorPicker') as HTMLInputElement;
+        editor.chain().setColor(colorPicker.value).run();
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setCurrentColor(result.value);
+      }
+    });
   };
 
   const setLink = useCallback(() => {
@@ -57,13 +75,7 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
 
   return (
     <BubbleMenuWrapper>
-      {/* <ColorInput
-        type="color"
-        onInput={handleColorChange}
-        value={editor.getAttributes("textStyle").color}
-        data-testid="setColor"
-      /> */}
-      <StyledButton>Color</StyledButton>
+      <StyledButton color={currentColor} onClick={handleButtonClick}>Color</StyledButton>
       <StyledButton onClick={() => editor.chain().toggleBold().run()}>
         B
       </StyledButton>
