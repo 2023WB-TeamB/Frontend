@@ -1,4 +1,5 @@
 import { Editor } from "@tiptap/react";
+import { useCallback } from "react";
 import styled from "styled-components"
 
 const TopOptionBarWrapper = styled.div`
@@ -35,6 +36,14 @@ interface TopMenubarProps {
 }
 
 const TopMenubar = ({ editor }: TopMenubarProps) => {
+    const addImage = useCallback(() => {
+        const url = window.prompt('URL')
+    
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run()
+        }
+      }, [editor])
+    
     if (!editor) {
         return null
     }
@@ -57,7 +66,13 @@ const TopMenubar = ({ editor }: TopMenubarProps) => {
             <StyledButton
                 onClick={() => editor.commands.toggleList('bullet_list', 'list_item')}>
                 토글
-                </StyledButton>
+            </StyledButton>
+            <StyledButton onClick={addImage}>
+                이미지 삽입
+            </StyledButton>
+            <StyledButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+                표
+            </StyledButton>
         </TopOptionBarWrapper>
     )
 } 
