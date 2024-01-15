@@ -37,6 +37,7 @@ const Main = styled.h1`
   font-family: 'DMSerifDisplay', serif;
   color: transparent;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   position: absolute;
   top: 17%;
