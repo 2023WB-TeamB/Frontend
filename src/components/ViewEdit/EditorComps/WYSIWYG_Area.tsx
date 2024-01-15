@@ -9,11 +9,17 @@ import BubbleMenubar from './BubbleMenubar'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
 import Underline from '@tiptap/extension-underline'
+import Strike from '@tiptap/extension-strike'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import TextStyle from '@tiptap/extension-text-style'
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Typography from '@tiptap/extension-typography'
+import TaskItem from '@tiptap/extension-task-item'
+import TaskList from '@tiptap/extension-task-list'
+import Link from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
 
@@ -25,14 +31,22 @@ const extensions = [
   Document, 
   Paragraph, 
   Text,
+  Bold,
   Italic,
   Underline,
+  Strike,
   CodeBlockLowlight.configure({
     lowlight,
   }),
   TextStyle, 
   Color,
   HorizontalRule,
+  Typography,
+  TaskList,
+  TaskItem.configure({
+    nested: false,
+  }),
+  Link,
 ]
 
 // ! 임시 문서 내용

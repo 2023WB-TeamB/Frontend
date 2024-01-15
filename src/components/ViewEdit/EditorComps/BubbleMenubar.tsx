@@ -1,4 +1,5 @@
 import { Editor } from "@tiptap/react";
+import { useCallback } from "react";
 import styled from "styled-components";
 
 const BubbleMenuWrapper = styled.div`
@@ -31,6 +32,29 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
     editor.chain().setColor(event.target.value).run();
   };
 
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    // cancelled
+    if (url === null) {
+      return
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+  }, [editor])
+
+
   return (
     <BubbleMenuWrapper>
       {/* <ColorInput
@@ -54,6 +78,12 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleCodeBlock().run()}>
         CB
+      </StyledButton>
+      <StyledButton onClick={() => editor.chain().focus().toggleTaskList().run()}>
+        Task
+      </StyledButton>
+      <StyledButton onClick={setLink}>
+        Link
       </StyledButton>
     </BubbleMenuWrapper>
   );
