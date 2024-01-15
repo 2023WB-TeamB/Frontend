@@ -71,7 +71,7 @@ const Header = ({ isLogin }: HeaderProps) => {
 
   const handleClickSignout = async () => {
     // 로그아웃 API 호출
-    const response = await axios.delete('http://gtd.kro.kr:8000/api/v1/auth/')
+    const response = await axios.delete('https://gtd.kro.kr/api/v1/auth/')
     // 로그아웃 성공 시
     if (response.status === 202) {
       console.log('API Response: ', response.status)

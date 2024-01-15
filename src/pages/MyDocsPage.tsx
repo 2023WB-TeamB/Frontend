@@ -56,7 +56,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const [docs, setDocs] = useState<Doc[]>([])
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
