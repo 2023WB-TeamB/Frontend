@@ -10,7 +10,7 @@ COPY . ./
 
 RUN yarn
 
-CMD ["yarn", "start"]
+CMD ["yarn", "build"]
 
 # # 현재 플랫폼에 해당하는 종속성을 무시하고, 모든 플랫폼에서 사용 가능한 일반적인 종속성만을 설치
 # RUN yarn install --ignore-platform
