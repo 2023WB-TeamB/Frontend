@@ -37,6 +37,7 @@ const Main = styled.h1`
   font-family: 'DMSerifDisplay', serif;
   color: transparent;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   position: absolute;
   top: 17%;
@@ -142,12 +143,3 @@ const MainPage: React.FC = () => {
 }
 
 export default MainPage
-
-//<h1>GiToDoc</h1>
-//<p>Join us to change github repository to file!</p>
-//{/* Resister 모달을 띄우기 위한 임시 버튼 */}
-//<button onClick={handleRegisterOpen}>회원가입</button>
-//<Register isOpen={isRegisterOpen} onClose={handleRegisterClose} />
-//{/* Signin 모달을 띄우기 위한 임시 버튼 */}
-//<button onClick={handleSigninOpen}>로그인</button>
-//<Signin isOpen={isSigninOpen} onClose={handleSigninClose} />
