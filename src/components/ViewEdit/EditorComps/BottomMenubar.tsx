@@ -9,13 +9,18 @@ const BottomOptionBarWrapper = styled.div`
   height: 40px;
   border: 1px solid;
   border-radius: 10px;
-  background: fixed white;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   z-index: 1;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  transition: linear 0.3s;
 `
 
 const StyledButton = styled.button`
