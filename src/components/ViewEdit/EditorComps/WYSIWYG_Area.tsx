@@ -1,6 +1,6 @@
 import "./TiptapStyles.css";
 
-import { useEditor, EditorContent, BubbleMenu, NodeView } from '@tiptap/react'
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
