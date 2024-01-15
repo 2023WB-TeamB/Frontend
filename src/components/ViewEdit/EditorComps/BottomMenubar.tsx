@@ -2,27 +2,27 @@ import { Editor } from "@tiptap/react";
 import { useCallback } from "react";
 import styled from "styled-components"
 
-const TopOptionBarWrapper = styled.div`
-  position: fixed;
-  top: -20px;
-  left: 50%;
-  width: 80vw;
+const BottomOptionBarWrapper = styled.div`
+  position: sticky;
+  bottom: 0;
+  width: 100%;
   height: 40px;
-  transform: translateX(-50%);
   border: 1px solid;
   border-radius: 10px;
+  background: fixed white;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  z-index: 1;
 `
 
 const StyledButton = styled.button`
-    height: 100%;
+    height: 40px;
     border: none;
     border-radius: 0;
-    background-color: transparent;
+    background-color: white;
     font-size: 12px;
     transition: all ease .2s;
 
@@ -31,11 +31,11 @@ const StyledButton = styled.button`
     }
 `
 
-interface TopMenubarProps {
+interface BottomMenubarProps {
     editor: Editor;
 }
 
-const TopMenubar = ({ editor }: TopMenubarProps) => {
+const TopMenubar = ({ editor }: BottomMenubarProps) => {
     const addImage = useCallback(() => {
         const url = window.prompt('URL')
     
@@ -48,7 +48,7 @@ const TopMenubar = ({ editor }: TopMenubarProps) => {
         return null
     }
     return (
-        <TopOptionBarWrapper>
+        <BottomOptionBarWrapper>
             <StyledButton
                 onClick={() => editor.chain().focus().undo().run()}
                 disabled={!editor.can().undo()}>
@@ -73,7 +73,7 @@ const TopMenubar = ({ editor }: TopMenubarProps) => {
             <StyledButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
                 표
             </StyledButton>
-        </TopOptionBarWrapper>
+        </BottomOptionBarWrapper>
     )
 } 
 

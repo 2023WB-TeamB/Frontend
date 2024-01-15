@@ -4,7 +4,7 @@ import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import TopMenubar from './TopMenubar'
+import BottomMenubar from './BottomMenubar'
 import BubbleMenubar from './BubbleMenubar'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -109,13 +109,15 @@ const EditorArea = () => {
   })
 
   return (
-    <EditorWrapper>
-      <TopMenubar editor={editor}/>
-      <EditorContent editor={editor} ref={editorRef} />
-      <BubbleMenu editor={editor}>
-        <BubbleMenubar editor={editor}/>
-      </BubbleMenu>
-    </EditorWrapper>
+    <>
+      <EditorWrapper>
+        <EditorContent editor={editor} ref={editorRef} />
+        <BubbleMenu editor={editor}>
+          <BubbleMenubar editor={editor}/>
+        </BubbleMenu>
+      </EditorWrapper>
+      <BottomMenubar editor={editor}/>
+    </>
   )
 }
 
