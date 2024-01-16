@@ -13,7 +13,8 @@ import exit from '../assets/images/exit button.png'
 import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
-import MarkdownArea from '../components/ViewEdit/MarkdownArea'
+import DocField from '../components/ViewEdit/DocField'
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
@@ -109,7 +110,7 @@ function ViewerPage() {
           ['No', closeConfirm],
         ]}
       />
-      <MarkdownArea isOpenSidePanel={isOpenSidePanel} />
+      <DocField isOpenSidePanel={isOpenSidePanel} />
     </StyledForm>
   )
 }
