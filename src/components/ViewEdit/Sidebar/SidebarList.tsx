@@ -47,7 +47,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ list }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const isOpenSideAlways = useSidePeekStore((state) => state.isOpenSideAlways)
-  const isOpenSidePanel = useViewerPageOpenStore().isOpenGalleryPanel || useViewerPageOpenStore().isOpenVersionPanel
+  const openerStore = useViewerPageOpenStore()
+  const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
   const [isCursorInArea, setIsCursorInArea] = useState(true)
 
   const handleMouseEnter = () => {
