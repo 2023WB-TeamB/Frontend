@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import TileButton from './TileButton'
-import { useDarkModeStore } from '../../../store/store'
+import { useDarkModeStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
 
 // 호버 감지 영역
 const WrapperArea = styled.div`
@@ -41,12 +41,14 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean }>`
 // list : [icon, onClick]
 interface SidebarProps {
   list?: Array<[icon: string, onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void]>
-  isOpedSidePanel: boolean
 }
 
 // 사이드바
-const Sidebar: React.FC<SidebarProps> = ({ list, isOpedSidePanel }) => {
+const Sidebar: React.FC<SidebarProps> = ({ list }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const isOpenSideAlways = useSidePeekStore((state) => state.isOpenSideAlways)
+  const openerStore = useViewerPageOpenStore()
+  const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
   const [isCursorInArea, setIsCursorInArea] = useState(true)
 
   const handleMouseEnter = () => {
@@ -62,7 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({ list, isOpedSidePanel }) => {
 
   return (
     <WrapperArea onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Wrapper isOpenSide={isCursorInArea || isOpedSidePanel} isDarkMode={isDarkMode}>
+      <Wrapper isOpenSide={isCursorInArea || isOpenSideAlways || isOpenSidePanel} isDarkMode={isDarkMode}>
         {list &&
           list.map((item) => {
             const [icon, onClick] = item

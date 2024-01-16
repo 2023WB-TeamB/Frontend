@@ -28,6 +28,82 @@ export const useDarkModeStore = create<State>(
     },
   ) as any,
 )
+
+// * 뷰어/에디터 상태
+interface SidePeekState {
+  isOpenSideAlways: boolean;
+  toggleOpenSideAlways: () => void
+}
+interface ViewerPageOpenState {
+  isOpenGalleryPanel: boolean;
+  isOpenVersionPanel: boolean;
+  isOpenOptions: boolean;
+  openGalleryPanel: () => void;
+  closeGalleryPanel: () => void;
+  openVersionPanel: () => void;
+  closeVersionPanel: () => void;
+  openOptions: () => void;
+  closeOptions: () => void;
+}
+interface ConfirmBoxState {
+  isOpenConfirm: boolean;
+  ConfirmLabel: string;
+  openConfirm: () => void;
+  closeConfirm: () => void;
+  setConfirmLabel: (label:string) => void;
+}
+
+export const useSidePeekStore = create<SidePeekState>((set) => ({
+  isOpenSideAlways: false,
+  toggleOpenSideAlways: () => set((state) => ({ 
+    isOpenSideAlways: !state.isOpenSideAlways 
+  }))
+}))
+
+export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
+  isOpenGalleryPanel: false,
+  isOpenVersionPanel: false,
+  isOpenOptions: false,
+  openGalleryPanel: () => set(() => ({ 
+    isOpenVersionPanel: false,
+    isOpenGalleryPanel: true 
+  })),
+  closeGalleryPanel: () => set(() => ({ 
+    isOpenGalleryPanel: false
+  })),
+  openVersionPanel: () => set(() => ({
+    isOpenGalleryPanel: false,
+    isOpenVersionPanel: true
+  })),
+  closeVersionPanel: () => set(() => ({
+    isOpenVersionPanel: false
+  })),
+  openOptions: () => set(() => ({
+    isOpenGalleryPanel: false,
+    isOpenVersionPanel: false,
+    isOpenOptions: true
+  })),
+  closeOptions: () => set(() => ({
+    isOpenOptions: false
+  })),
+}));
+
+export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
+  isOpenConfirm: false,
+  ConfirmLabel: '',
+  openConfirm: () => set(() => ({
+    isOpenGalleryPanel: false,
+    isOpenVersionPanel: false,
+    isOpenConfirm: true
+  })),
+  closeConfirm: () => set(() => ({
+    isOpenConfirm: false
+  })),
+  setConfirmLabel: (ConfirmLabel: string) => set(() => ({ 
+    ConfirmLabel 
+  })),
+}));
+
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
 //   setSelectContent: (select: number) => void;
