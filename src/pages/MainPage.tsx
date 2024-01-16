@@ -112,9 +112,9 @@ const MainPage: React.FC = () => {
 
   return (
     <>
+      <Header isLogin={isLogin} />
       <GlobalStyle />
       <Container isDarkMode={isDarkMode}>
-        <Header isLogin={isLogin} />
         <Section marginTop="0rem">
           <Main>
             G<Smalli>i</Smalli>ToDoc

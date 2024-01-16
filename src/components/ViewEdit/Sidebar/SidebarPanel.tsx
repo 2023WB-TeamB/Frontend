@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PreviewTile from './PreviewTile'
-import searchIcon from '../../../assets/images/search.png'
+import searchIcon from '../../../assets/images/search.svg'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import { useDarkModeStore } from '../../../store/store'
 

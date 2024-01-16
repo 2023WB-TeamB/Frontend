@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
-
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import Signin from './Signin'
@@ -10,35 +9,73 @@ import useModalStore from './useModalStore'
 import imgDarkMode from '../assets/images/dark_mode.svg'
 import imgWhiteMode from '../assets/images/white_mode.svg'
 import imgLogo from '../assets/images/LOGO1.svg'
-import imgSignIn from '../assets/images/signin.svg'
-import imgSignInDark from '../assets/images/signin_dark.svg'
-import imgSignOut from '../assets/images/signout.svg'
-import imgSignOutDark from '../assets/images/signout_dark.svg'
+import imgSearch from '../assets/images/search.svg'
+import imgSearchDark from '../assets/images/search_dark.svg'
 
 /*** 스타일링 ***/
-const Layout = styled.div<LayoutProps>`
-  // 스타일 크기
-  height: 40px;
-  width: 100%;
-  // 스타일 위치
-  position: fixed;
-  top: 0;
-  left: 0;
+const Container = styled.div<ContainerProps>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 5px 20px 0 20px;
   // 조건부로 다크모드 지정, props로 값을 받아옴
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
-  z-index: 5;
+`
+const Logo = styled.img`
+  width: 2rem;
+  height: 2rem;
+`
+const RightWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const SearchWrapper = styled.div<SearchProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+  border-radius: 20px;
+  padding: 0 5px 0 0;
+  margin-right: 15px;
+`
+
+const Search = styled.input<SearchProps>`
+  width: 13rem;
+  height: 40px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  background-color: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+  color: ${(props) => (props.isDarkMode ? '#fff' : '#000')};
+  outline: none;
+  margin-left: 20px;
 `
 const Icon = styled.img<IconProps>`
-  // 스타일 크기, props로 값을 받아옴
+  display: flex;
   height: ${(props) => props.height};
   width: ${(props) => props.width};
-  // 스타일 위치
-  position: fixed;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
-  right: ${(props) => props.right};
-
+  padding: 5px;
   cursor: pointer;
+
+  &:hover {
+    border-radius: 50%;
+    background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+  }
+`
+const SignInOut = styled.div<SingProps>`
+  font-size: 1.6rem;
+  color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
+  margin-left: 15px;
+  align-self: flex-start;
+  cursor: pointer;
+
+  &:hover {
+    border-radius: 15px;
+    background-color: #2b2b2b;
+    background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+  }
 `
 /***  인터페이스 ***/
 interface HeaderProps {
@@ -47,11 +84,15 @@ interface HeaderProps {
 interface IconProps {
   height: string
   width: string
-  top?: string
-  left?: string
-  right?: string
+  isDarkMode?: boolean
 }
-interface LayoutProps {
+interface ContainerProps {
+  isDarkMode: boolean
+}
+interface SingProps {
+  isDarkMode: boolean
+}
+interface SearchProps {
   isDarkMode: boolean
 }
 /*** 메인 ***/
@@ -85,44 +126,37 @@ const Header = ({ isLogin }: HeaderProps) => {
 
   return (
     <>
-      <Layout isDarkMode={isDarkMode}>
-        {/* 로고 아이콘 */}
-        <Icon src={imgLogo} height="30px" width="30px" top="5px" left="15px" alt="Logo Icon" />
-        {/* 로그인 또는 로그아웃 아이콘 */}
-        {isLogin ? (
-          // 로그아웃
+      <Container isDarkMode={isDarkMode}>
+        <Logo src={imgLogo}></Logo>
+        <RightWrapper>
+          <SearchWrapper isDarkMode={isDarkMode}>
+            <Search isDarkMode={isDarkMode} />
+            <Icon
+              isDarkMode={isDarkMode}
+              src={isDarkMode ? imgSearchDark : imgSearch}
+              height="2rem"
+              width="2rem"
+              // onClick={}
+            />
+          </SearchWrapper>
           <Icon
-            src={isDarkMode ? imgSignOutDark : imgSignOut}
-            height="15px"
-            width="60px"
-            top="12px"
-            right="80px"
-            alt="SignOut Icon"
-            onClick={handleClickSignout}
+            isDarkMode={isDarkMode}
+            src={isDarkMode ? imgWhiteMode : imgDarkMode}
+            height="2rem"
+            width="2rem"
+            onClick={handleDarkMode}
           />
-        ) : (
-          // 로그인
-          <Icon
-            src={isDarkMode ? imgSignInDark : imgSignIn}
-            height="15px"
-            width="50px"
-            top="12px"
-            right="80px"
-            alt="SignIn Icon"
-            onClick={handleClickSignin} // Signin 클릭하면 로그인 모달 오픈
-          />
-        )}
-        {/* 다크모드 아이콘 */}
-        <Icon
-          src={isDarkMode ? imgWhiteMode : imgDarkMode}
-          height="30px"
-          width="30px"
-          top="5px"
-          right="15px"
-          alt="DarkMode Icon"
-          onClick={handleDarkMode}
-        />
-      </Layout>
+          {isLogin ? (
+            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
+              sign-out
+            </SignInOut>
+          ) : (
+            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignin}>
+              sign-in
+            </SignInOut>
+          )}
+        </RightWrapper>
+      </Container>
       {/* 로그인 모달 */}
       {isSigninOpen && <Signin />}
     </>
