@@ -71,37 +71,39 @@ interface ModalOptionsProps {
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
   const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  
-  // ! docsId : 임시 문서ID 
-  const docsId = 4;
-  
+  // ! docsId : 임시 문서ID
+  const docsId = 4
+
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
     toast: true,
-    position: "bottom-end",
+    position: 'bottom-end',
     showConfirmButton: false,
     timer: 1800,
-  });
-  
+  })
+
   // * URL 할당 -> docUrl
-  let docUrl = ""
+  let docUrl = ''
   const handleUrlShare = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.post(`${apiUrl}share/`, {
-        docs_id: docsId
-        }, {
-        headers: {
-          Authorization: `Bearer ${access}`
-        }
-      })
+      const response = await axios.post(
+        `${apiUrl}share/`,
+        {
+          docs_id: docsId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        },
+      )
       docUrl = response.data.share_url
-    } catch (error:any) {
+    } catch (error: any) {
       // API 호출 실패
-      if (error.response.status === 409)
-        docUrl = error.response.data.existing_url
-      console.error("API Error :", error)
+      if (error.response.status === 409) docUrl = error.response.data.existing_url
+      console.error('API Error :', error)
     }
   }
 
@@ -124,7 +126,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   // * QR 로딩창
   const showQRCode = async () => {
-    if (docUrl === "") {
+    if (docUrl === '') {
       Swal.fire({
         title: 'Loading...',
         allowOutsideClick: false,
@@ -132,31 +134,32 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
           try {
             await handleUrlShare()
             setTimeout(() => {
-              Swal.close();
-              showQRCodeModal();
+              Swal.close()
+              showQRCodeModal()
             }, 1000)
           } catch (error) {
             console.log(error)
           }
-        }
-      });
-    } else {    
-      showQRCodeModal();
+        },
+      })
+    } else {
+      showQRCodeModal()
     }
-  };
+  }
+
   // * QR 조회창
   const showQRCodeModal = () => {
     console.log(docUrl)
     Swal.fire({
       // ! 문서 제목으로 수정 예정
-      title: "문서 제목; docs_id : " + docsId,
+      title: '문서 제목; docs_id : ' + docsId,
       text: docUrl,
       imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
       imageAlt: 'QR Code',
-      showConfirmButton: true
-    });
-  };
-  
+      showConfirmButton: true,
+    })
+  }
+
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (

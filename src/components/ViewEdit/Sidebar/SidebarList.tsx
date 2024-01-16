@@ -5,15 +5,15 @@ import { useDarkModeStore } from '../../../store/store'
 
 // 호버 감지 영역
 const WrapperArea = styled.div`
-    position: fixed;
-    height: 80vh;
-    width: 70px;
-    top: 50%;
-    transform: translate(0%, -50%);
-    left: 0;
-    border-radius: 20px;
-    z-index: 2;
-`;
+  position: fixed;
+  height: 80vh;
+  width: 70px;
+  top: 50%;
+  transform: translate(0%, -50%);
+  left: 0;
+  border-radius: 20px;
+  z-index: 2;
+`
 
 // 사이드바 스타일
 const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean }>`
