@@ -4,7 +4,7 @@ import Modal from '../Modal'
 import { Doc } from '../../../store/types'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
-import { cardIdStore, modalOpenStore } from '../../../store/store'
+import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -118,12 +118,6 @@ const PageDot = styled.div<{ active: boolean }>`
 
 const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const { modalOpen, setModalOpen } = modalOpenStore()
-  const [modalContent, setModalContent] = useState<{
-    id: number
-    title: string
-    created_at: string
-    color: string
-  } | null>(null)
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
   const [buttonActive, setButtonActive] = useState(false) // 버튼 클릭 활성화 상태. opacity 변화 유지하는 데에 사용됨
   const [direction, setDirection] = useState(0) // 페이지 이동 방향
@@ -131,9 +125,10 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   useEffect(() => {
     setCurrentPage(targetPage) // direction 상태가 변경될 때 targetPage 상태를 기반으로 currentPage를 업데이트. setDirection과 setCurrentPage의 비동기 호출을 순서대로 이뤄지게 함.
   }, [targetPage])
-  const { setCardId } = cardIdStore((state) => ({
-    cardId: state.cardId,
-    setCardId: state.setCardId,
+  const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
+  const { modalContent, setModalContent } = modalContentStore((state) => ({
+    modalContent: state.modalContent,
+    setModalContent: state.setModalContent,
   }))
   const cardsPerPage = 8 // 한 페이지당 카드 수
   const totalPageNum = Math.ceil(docs.length / cardsPerPage) // 총 페이지 수를 계산합니다.
