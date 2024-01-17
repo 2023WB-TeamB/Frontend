@@ -9,7 +9,13 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import { Doc } from '../store/types'
-import { cardColorStore, cardIdStore, modalOpenStore, useDarkModeStore } from '../store/store'
+import {
+  cardColorStore,
+  cardIdStore,
+  modalOpenStore,
+  isDeleteStore,
+  useDarkModeStore,
+} from '../store/store'
 import axios from 'axios'
 
 const Container = styled.div`
@@ -66,6 +72,7 @@ const MyDocsPage: React.FC = () => {
     setCardColor: state.setCardColor,
   }))
   const { modalOpen } = modalOpenStore()
+  const { isDelete, setIsDelete } = isDeleteStore()
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
@@ -134,6 +141,31 @@ const MyDocsPage: React.FC = () => {
   useEffect(() => {
     updateCardColor()
   }, [cardColor])
+
+  // 문서를 삭제하는 API 요청
+  const deleteDoc = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      await axios.delete(`${apiUrl}${cardId}/`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      alert('문서 삭제 완료!')
+      // 문서 목록을 클라이언트 측에서 업데이트합니다.
+      setDocs(docs.filter((doc) => doc.id !== cardId))
+    } catch (error) {
+      console.error('API Error: ', error)
+      alert('문서 삭제에 실패하였습니다.')
+    }
+  }
+
+  // 문서를 삭제하는 함수
+  useEffect(() => {
+    if (isDelete) {
+      setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제
+      deleteDoc() // DB에서 해당 문서 삭제
+      setIsDelete(false) // 삭제 후 isDelete 상태를 false로 변경
+    }
+  }, [isDelete])
 
   /* Upper
   GiToDoc 로고 (GiToDoc)
