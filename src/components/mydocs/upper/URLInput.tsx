@@ -45,7 +45,7 @@ const StyledInput = styled.input`
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
   const { isEnglish } = isEnglishStore()
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/create/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/create/'
   const language = isEnglish ? 'ENG' : 'KOR'
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
@@ -69,7 +69,7 @@ export const URLInput: React.FC = () => {
 
       // 문서 생성 성공
       if (response.status === 201) {
-        console.log('API Response: ', response.status)
+        console.log('API Response: ', response)
         isEnglish ? alert('영어 문서 생성!') : alert('한글 문서 생성!')
       }
     } catch (error: any) {

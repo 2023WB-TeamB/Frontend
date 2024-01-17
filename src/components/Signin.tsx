@@ -138,7 +138,7 @@ function Signin() {
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
-      const response = await axios.post('http://gtd.kro.kr:8000/api/v1/auth/', {
+      const response = await axios.post('https://gtd.kro.kr/api/v1/auth/', {
         email: data.email,
         password: data.password,
       })
