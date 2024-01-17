@@ -14,6 +14,7 @@ import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
+import LittleHeader from '../components/ViewEdit/LittleHeader'
 import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
 
 import { useState } from 'react'
@@ -65,6 +66,7 @@ function ViewerPage() {
 
   return (
     <StyledForm isDarkMode={isDarkMode}>
+      <LittleHeader/>
       <Sidebar
         list={[
           [profile, toggleOpenSideAlways],
