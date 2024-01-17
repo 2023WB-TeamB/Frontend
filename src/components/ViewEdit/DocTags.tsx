@@ -16,10 +16,6 @@ const TagLabel = styled.label`
 const TagButton = styled.button`
   ${TagStyle}
 `
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-`
 const TagWrapper = styled.div`
     position: relative;
     width: 100%;

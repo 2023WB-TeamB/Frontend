@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDarkModeStore, useViewerPageOpenStore, useViewerModeStore } from '../../store/store'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import EidtIcon_dark from '../../assets/images/Viewer/edit_dark.svg'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -39,40 +39,11 @@ const IconButton = styled.button`
   justify-content: center;
 `
 
-const TagStyle = css`
-  margin: 5px;
-  padding: 0 10px;
-  border: 2px solid red;
-  border-radius: 30px;
-  background: transparent;
-  color: black;
-`
-const TagLabel = styled.label`
-  ${TagStyle}
-`
-const TagButton = styled.button`
-  ${TagStyle}
-`
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
 `
-const TagWrapper = styled.div`
-    position: relative;
-    width: 100%;
-    height: 40px;
-    background-color: transparent;
-    display: flex;
-    flex-direction: row;
 
-    & input {
-        margin: 5px;
-        background: transparent;
-        border: none;
-        border-radius: 30px;
-        color: black;
-    }
-`
 const DistributeContentWrappe = styled.div`
     display: flex;
     flex-direction: row;
