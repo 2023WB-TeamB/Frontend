@@ -9,8 +9,15 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import { Doc } from '../store/types'
-import { cardColorStore, cardIdStore, modalOpenStore, useDarkModeStore } from '../store/store'
+import {
+  cardColorStore,
+  cardIdStore,
+  modalOpenStore,
+  isDeleteStore,
+  useDarkModeStore,
+} from '../store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const Container = styled.div`
   display: flex;
@@ -66,6 +73,7 @@ const MyDocsPage: React.FC = () => {
     setCardColor: state.setCardColor,
   }))
   const { modalOpen } = modalOpenStore()
+  const { isDelete, setIsDelete } = isDeleteStore()
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
@@ -120,7 +128,7 @@ const MyDocsPage: React.FC = () => {
 
   // 모달 창이 닫힐 때 DB 색상 변경 요청
   useEffect(() => {
-    if (modalOpen === false && cardId !== 0) {
+    if (modalOpen === false && cardId !== 0 && isDelete === false) {
       putColor()
     }
   }, [modalOpen])
@@ -134,6 +142,36 @@ const MyDocsPage: React.FC = () => {
   useEffect(() => {
     updateCardColor()
   }, [cardColor])
+
+  // 문서를 삭제하는 API 요청
+  const deleteDoc = async () => {
+    try {
+      const access = localStorage.getItem('accessToken')
+      await axios.delete(`${apiUrl}${cardId}/`, {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+      setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Successfully deleted.',
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+      })
+    } catch (error) {
+      console.error('API Error: ', error)
+      alert('문서 삭제에 실패하였습니다.')
+    }
+  }
+
+  // 문서를 삭제하는 함수
+  useEffect(() => {
+    if (isDelete) {
+      deleteDoc()
+      setIsDelete(false) // 삭제 후 isDelete 상태를 false로 변경
+    }
+  }, [isDelete])
 
   /* Upper
   GiToDoc 로고 (GiToDoc)
