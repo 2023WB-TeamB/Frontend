@@ -76,15 +76,16 @@ function useOnScreenImg(
 const Section = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: 7rem;
 `
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 7%;
-  margin-top: 7%;
+  margin-top: 10%;
   height: 15vh;
   gap: 1.3rem;
 `
@@ -281,7 +282,7 @@ interface Styledicon {
   delay?: string
   translate?: string
 }
-const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+export const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
