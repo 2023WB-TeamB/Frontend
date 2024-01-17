@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDarkModeStore, useViewerPageOpenStore } from '../../store/store'
-import styled from 'styled-components'
+import { useDarkModeStore, useViewerPageOpenStore, useViewerModeStore } from '../../store/store'
+import styled, { css } from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import EidtIcon_dark from '../../assets/images/Viewer/edit_dark.svg'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -116,11 +116,7 @@ const DocField: React.FC = () => {
 
     // ! 임시 제목 텍스트
     const [title, setTitle] = useState('Hello World!')
-    const [isViewer, setIsViewer] = useState(true);
-    
-    const changeViewEditMode = () => {
-        setIsViewer(!isViewer);
-    }
+    const {isViewer, toggleViewerMode} = useViewerModeStore()
 
     const sideOnStyle = {
         margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
@@ -144,14 +140,14 @@ const DocField: React.FC = () => {
                 <span/>
                 <ButtonWrapper>
                     {isViewer ?
-                        <IconButton onClick={changeViewEditMode}>
+                            <IconButton onClick={toggleViewerMode}>
                             <Icon src={EditIcon}/>
                         </IconButton> : 
                         <>
-                            <IconButton onClick={changeViewEditMode}>
+                                <IconButton onClick={toggleViewerMode}>
                                 <Icon src={SaveIcon}/>
                             </IconButton>
-                            <IconButton onClick={changeViewEditMode}>
+                                <IconButton onClick={toggleViewerMode}>
                                 <Icon src={CancelIcon}/>
                             </IconButton>
                         </>

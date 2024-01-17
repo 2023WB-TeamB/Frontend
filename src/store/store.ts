@@ -52,6 +52,11 @@ interface ConfirmBoxState {
   closeConfirm: () => void;
   setConfirmLabel: (label:string) => void;
 }
+// ? 뷰어 모드
+interface ViewerModeState {
+  isViewer: boolean;
+  toggleViewerMode: () => void;
+}
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: false,
@@ -101,6 +106,13 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   })),
   setConfirmLabel: (ConfirmLabel: string) => set(() => ({ 
     ConfirmLabel 
+  })),
+}));
+
+export const useViewerModeStore = create<ViewerModeState>((set) => ({
+  isViewer: true,
+  toggleViewerMode: () => set((state) => ({
+    isViewer: !state.isViewer
   })),
 }));
 
