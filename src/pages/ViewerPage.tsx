@@ -43,8 +43,9 @@ function ViewerPage() {
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
     setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
-    setConfirmAction(() => {
+    setConfirmAction(() => () => {
       // 문서 삭제 로직
+      console.log("문서 삭제함!")
     })
     confirmBoxStore.setConfirmLabel(confirmLabel)
     confirmBoxStore.openConfirm()
