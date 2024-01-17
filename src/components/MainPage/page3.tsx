@@ -59,7 +59,36 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-//keyframes 애니메이션
+/*-----Wrapper------*/
+const Section = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 7%;
+  margin-top: 7%;
+  height: 15vh;
+  gap: 1.3rem;
+`
+const Animationwrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-left: 7%;
+  margin-right: 7%;
+`
+const Animationwrapper2 = styled.div`
+  position: relative;
+  height: 80vh;
+  width: 80vw;
+  margin: 0;
+`
+
+//keyframes 애니메이션 : flex로 묶어 위치 수정
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -89,7 +118,7 @@ const movePointer = keyframes`
     transform: translateX(0) translateY(0);
   }
   50%{
-    transform: translateX(-32rem) translateY(-11rem);
+    transform: translateX(-33rem) translateY(-12.5rem);
   }
   100% {
     transform: translateX(0) translateY(0);
@@ -100,7 +129,7 @@ const moveURL = keyframes`
     transform: translateX(0) translateY(0);
   }
   100%{
-    transform: translateX(30rem) translateY(11.2rem);
+    transform: translateX(31rem) translateY(13.2rem);
   }
 `
 const pasteURL = keyframes`
@@ -120,7 +149,6 @@ interface DontProps {
   top?: string
   fontfamily?: string
   left?: string
-  delay?: string
 }
 const Dont = styled.h1<
   DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
@@ -129,45 +157,56 @@ const Dont = styled.h1<
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  position: absolute;
-  top: ${(props) => props.top || '20rem'};
-  left: ${(props) => props.left || '4rem'};
   letter-spacing: 0;
+  margin: 0;
   z-index: 2;
-  line-height: normal;
   white-space: nowrap;
+  animation: ${slideUpFade} 1s ease-out;
+`
+/*--Dont 컴포넌트와 구별해주기 위해 URL text 추가--*/
+interface URLprops {
+  delay?: string
+  top?: string
+  left?: string
+}
+const URLtext = styled.p<
+  URLprops & { visible: boolean; animationType: string; isDarkMode: boolean }
+>`
+  fontsize: 1rem;
+  top: ${(props) => props.top || '2.85rem'};
+  left: ${(props) => props.left || '12rem'};
+  fontfamily: 'Inter', sans-serif;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 3;
   animation: ${(props) =>
     props.visible
-      ? props.animationType === 'slideUpFade'
+      ? props.animationType === 'moveURL'
         ? css`
-            ${slideUpFade} 1s ease-out
-          `
-        : props.animationType === 'moveURL'
-        ? css`
-            ${moveURL} 0.77s ease-out forwards
+            ${moveURL} 0.77s ease-out forwards;
           `
         : props.animationType === 'pasteURL'
         ? css`
-            ${pasteURL} 4.5s
+            ${pasteURL} 4.5s;
           `
         : 'none'
       : 'none'};
   animation-delay: ${(props) => props.delay || 'none'};
 `
 
-//Page (GitPage+gitodoc)
+//Page (GitPage+gitodoc) : 위치 수정
 interface Page {
   top?: string
   left?: string
   zindex?: string
 }
 const Styledpage = styled.img<Page & { visible: boolean }>`
-  width: 47rem;
+  width: 42rem;
   height: 27rem;
   position: absolute;
   z-index: ${(props) => props.zindex || '1'};
-  top: ${(props) => props.top || '16rem'};
-  left: ${(props) => props.left || '6rem'};
+  top: ${(props) => props.top || '3rem'};
+  left: ${(props) => props.left || '0rem'};
   animation: ${(props) =>
     props.visible
       ? css`
@@ -176,14 +215,14 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
       : 'none'};
 `
 
-//pointer
+//pointer : 위치수정
 const Styledpointer = styled.img<{ visible: boolean }>`
   width: 5rem;
   height: 3rem;
   position: absolute;
   z-index: 2;
-  top: 28rem;
-  left: 66rem;
+  top: 17rem;
+  left: 58rem;
   animation: ${(props) =>
     props.visible
       ? css`
@@ -201,65 +240,62 @@ export const Page3: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
-    <div>
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={refd}
-        visible={visibled}
-        animationType="slideUpFade"
-        fontSize="3rem"
-        top="10%">
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 1;
-      </Dont>
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={refd}
-        visible={visibled}
-        animationType="slideUpFade"
-        top="10.4rem"
-        left="6.2rem"
-        fontSize="1.2rem"
-        fontfamily="monospace">
-        Copy your repository URL
-      </Dont>
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={refd}
-        visible={visibled}
-        animationType="moveURL"
-        delay="3.7s"
-        fontSize="1rem"
-        top="16.45rem"
-        left="22rem"
-        fontfamily="Inter">
-        https://github.com/2023WB-TeamB
-      </Dont>
-      <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={refd}
-        visible={visibled}
-        animationType="pasteURL"
-        fontSize="1rem"
-        top="27.65rem"
-        left="52rem"
-        fontfamily="Inter">
-        https://github.com/2023WB-TeamB
-      </Dont>
-      <Styledpage
-        src={isDarkMode ? gitodocpage_dark : gitodocpage}
-        top="11rem"
-        left="36rem"
-        alt="GiToDocpage"
-        ref={refi}
-        visible={visiblei}
-      />
-      <Styledpage
-        src={isDarkMode ? GitPage_dark : Gitpage}
-        alt="Githubpage"
-        visible={false}
-        zindex="0"
-      />
-    </div>
+    <Section>
+      <TextWrapper>
+        <Dont
+          isDarkMode={isDarkMode}
+          ref={refd}
+          visible={visibled}
+          animationType="slideUpFade"
+          fontSize="3rem">
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 1;
+        </Dont>
+        <Dont
+          isDarkMode={isDarkMode}
+          ref={refd}
+          visible={visibled}
+          animationType="slideUpFade"
+          fontSize="1.2rem"
+          fontfamily="monospace">
+          Copy your repository URL
+        </Dont>
+      </TextWrapper>
+      <Animationwrapper>
+        <Animationwrapper2>
+          <URLtext
+            isDarkMode={isDarkMode}
+            ref={refd}
+            visible={visibled}
+            animationType="moveURL"
+            delay="3.7s">
+            https://github.com/2023WB-TeamB
+          </URLtext>
+          <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
+          <URLtext
+            isDarkMode={isDarkMode}
+            ref={refd}
+            visible={visibled}
+            animationType="pasteURL"
+            top="16.05rem"
+            left="43rem">
+            https://github.com/2023WB-TeamB
+          </URLtext>
+          <Styledpage
+            src={isDarkMode ? gitodocpage_dark : gitodocpage}
+            top="0"
+            left="30rem"
+            alt="GiToDocpage"
+            ref={refi}
+            visible={visiblei}
+          />
+          <Styledpage
+            src={isDarkMode ? GitPage_dark : Gitpage}
+            alt="Githubpage"
+            visible={false}
+            zindex="0"
+          />
+        </Animationwrapper2>
+      </Animationwrapper>
+    </Section>
   )
 }
