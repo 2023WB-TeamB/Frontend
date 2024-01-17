@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { TwitterPicker, ColorResult } from 'react-color'
 import styled from 'styled-components'
 import ViewDetailsButton from './ViewDetailsButton'
-import { cardColorStore, modalOpenStore } from '../../store/store'
+import { cardColorStore, isDeleteStore, modalOpenStore } from '../../store/store'
+import Swal from 'sweetalert2'
 
 interface StyledProps {
   color?: string
@@ -87,7 +88,8 @@ interface ModalContentProps {
 
 const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
-  const { modalOpen } = modalOpenStore()
+  const { modalOpen, setModalOpen } = modalOpenStore()
+  const { setIsDelete } = isDeleteStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
     setCardColor: state.setCardColor,
@@ -120,11 +122,28 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at })
     setCardColor(color.hex)
   }
 
+  // 삭제 핸들링
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete it',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsDelete(true)
+        setModalOpen(false)
+      }
+    })
+  }
+
   return (
     <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
       <ButtonsContainer>
         <OptionalButton onClick={handleClick}>🎨</OptionalButton>
-        <OptionalButton>🗑️</OptionalButton>
+        <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
       </ButtonsContainer>
       <DateLine>{created_at.slice(0, 10)}</DateLine>
       <Title>{title}</Title>
