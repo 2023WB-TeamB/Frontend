@@ -7,6 +7,7 @@ import SaveIcon from '../../assets/images/Viewer/save.png'
 import CancelIcon from '../../assets/images/Viewer/cancel.png'
 import CancelIcon_dark from '../../assets/images/Viewer/cancel_dark.svg'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
+import DocTags from './DocTags'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -38,9 +39,45 @@ const IconButton = styled.button`
   justify-content: center;
 `
 
+const TagStyle = css`
+  margin: 5px;
+  padding: 0 10px;
+  border: 2px solid red;
+  border-radius: 30px;
+  background: transparent;
+  color: black;
+`
+const TagLabel = styled.label`
+  ${TagStyle}
+`
+const TagButton = styled.button`
+  ${TagStyle}
+`
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
+`
+const TagWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+
+    & input {
+        margin: 5px;
+        background: transparent;
+        border: none;
+        border-radius: 30px;
+        color: black;
+    }
+`
+const DistributeContentWrappe = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `
 
 // ? 문서 제목 내용 구분선
@@ -49,7 +86,6 @@ const DistributeDiv = styled.div`
   height: 42px;
   display: flex;
   flex-direction: column;
-  align-items: end;
   justify-content: flex-start;
 
   & span {
@@ -138,21 +174,24 @@ const DocField: React.FC = () => {
             </TitleArea>
             <DistributeDiv>
                 <span/>
-                <ButtonWrapper>
-                    {isViewer ?
+                <DistributeContentWrappe>
+                    <DocTags/>
+                    <ButtonWrapper>
+                        {isViewer ?
                             <IconButton onClick={toggleViewerMode}>
-                            <Icon src={EditIcon}/>
-                        </IconButton> : 
-                        <>
+                                <Icon src={EditIcon}/>
+                            </IconButton> : 
+                            <>
                                 <IconButton onClick={toggleViewerMode}>
-                                <Icon src={SaveIcon}/>
-                            </IconButton>
+                                    <Icon src={SaveIcon}/>
+                                </IconButton>
                                 <IconButton onClick={toggleViewerMode}>
-                                <Icon src={CancelIcon}/>
-                            </IconButton>
-                        </>
-                    }
-                </ButtonWrapper>
+                                    <Icon src={CancelIcon}/>
+                                </IconButton>
+                            </>
+                        }
+                    </ButtonWrapper>
+                </DistributeContentWrappe>
             </DistributeDiv>
             <ViewArea>
                 {isViewer ? 
