@@ -1,6 +1,7 @@
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import styled from 'styled-components'
-import profile from '../assets/images/Viewer/profile.png'
+import double_arrow_left from '../assets/images/Viewer/double-arrow-left.png'
+import double_arrow_right from '../assets/images/Viewer/double-arrow-right.png'
 import gallery from '../assets/images/Viewer/gallery button.png'
 import gallery_dark from '../assets/images/Viewer/gallerybutton_dark.svg'
 import version from '../assets/images/Viewer/version button.png'
@@ -32,7 +33,7 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
 
 function ViewerPage() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  const toggleOpenSideAlways = useSidePeekStore((state) => state.toggleOpenSideAlways)
+  const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const openerStore = useViewerPageOpenStore()
   const confirmBoxStore = useConfirmBoxStore()
   const [confirmLabel, setConfirmLabel] = useState('')
@@ -69,7 +70,7 @@ function ViewerPage() {
       <LittleHeader/>
       <Sidebar
         list={[
-          [profile, toggleOpenSideAlways],
+          [isOpenSideAlways ? double_arrow_left : double_arrow_right, toggleOpenSideAlways],
           [isDarkMode ? gallery_dark : gallery, openerStore.openGalleryPanel],
           [isDarkMode ? version_dark : version, openerStore.openVersionPanel],
           [isDarkMode ? exportBtn_dark : exportBtn, openerStore.openOptions],
