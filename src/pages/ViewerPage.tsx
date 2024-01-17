@@ -29,6 +29,8 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  transition: ease .5s;
 `
 
 function ViewerPage() {
