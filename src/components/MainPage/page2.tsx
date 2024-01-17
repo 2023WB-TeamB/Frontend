@@ -31,6 +31,33 @@ function useOnScreen(
   return [ref, visible]
 }
 
+/*------Wrapper------*/
+const Section = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  margin-top: 5rem;
+`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 6rem;
+  gap: 3rem;
+  position: relative;
+  height: calc(100vh - 6rem);
+  width: 100vw;
+`
+//console에 있는 gitodoc 글씨와 keep scrolling을 위한 wrapper 추가
+const Centerwrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: auto;
+`
+
 //keyframes
 const slideUpFade = keyframes`
   0%{
@@ -47,22 +74,41 @@ const blink = keyframes`
   50% {visibility: hidden;}
   `
 
+const down_down = keyframes`
+  0% {
+    transform: translateY(0);
+    opacity: 0
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+`
+
 //icon(svg)
-interface Styledicon {
+interface StylediconProps {
   top?: string
   left?: string
   width?: string
   height?: string
-  centered?: boolean
+  animation?: boolean
 }
-export const Styledicon = styled.img<Styledicon>`
-  width: 5rem;
-  height: 3rem;
-  position: absolute;
+
+const Styledicon = styled.img<StylediconProps>`
+  top: ${(props) => props.top || '0'};
+  left: ${(props) => props.left || '0'};
+  width: ${(props) => props.width || '7rem'};
+  height: ${(props) => props.height || '3rem'};
   z-index: 3;
-  top: ${(props) => props.top || '5rem'};
-  left: ${(props) => props.left || '3rem'};
-  transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 2s ease-out infinite
+        `
+      : 'none'};
 `
 
 //Text(DMSerifDisplay)
@@ -71,16 +117,19 @@ interface DontProps {
   top?: string
   fontfamily?: string
 }
+const Smalldont = styled.span`
+  font-size: 3rem;
+`
 const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
+  margin-left: 5%;
   font-size: ${(props) => props.fontSize || '4rem'};
   font-weight: 700;
   font-family: 'DMSerifDisplay', serif;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  position: absolute;
   top: ${(props) => props.top || '10%'};
   left: 5%;
   letter-spacing: 0;
-  line-height: normal;
+  line-height: 1.2;
   white-space: nowrap;
   animation: ${(props) =>
     props.visible
@@ -93,20 +142,17 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
 //Text(Mono)
 interface MonoProps {
   fontSize?: string
-  top?: string
-  left?: string
+  marginleft?: string
   centered?: boolean
   hilight?: string
   color?: string
 }
 const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
+  margin-left: ${(props) => props.marginleft || '5%'};
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  position: absolute;
-  top: ${(props) => props.top || '55%'};
-  left: ${(props) => props.left || '5%'};
   letter-spacing: 0.5px;
   line-height: 2;
   white-space: nowrap;
@@ -122,7 +168,7 @@ const Hilight = styled.span<
     props.isDarkMode ? props.hilightDark : props.hilightLight || 'black'};
 `
 
-//Console
+//Console : 위치 수정 및 리팩토링
 interface ConsoleBox {
   background?: string
   height?: string
@@ -131,25 +177,30 @@ interface ConsoleBox {
   left?: string
 }
 const ConsoleBox = styled.div<
-  ConsoleBox & { backgroundLight: string; backgroundDark: string; isDarkMode: boolean }
+  ConsoleBox & {
+    backgroundLight: string
+    backgroundDark: string
+    borderDark: string
+    borderLight: string
+    isDarkMode: boolean
+  }
 >`
   display: flex;
   align-items: center;
-  position: absolute;
+  justify-content: space-between;
+  text-align: center;
   width: ${(props) => props.width || '100vw'};
   height: ${(props) => props.height || '2.7rem'};
-  top: ${(props) => props.top || '23rem'};
+  top: ${(props) => props.top || '47.5%'};
   left: ${(props) => props.left || '0'};
   background: ${(props) =>
     props.isDarkMode ? props.backgroundDark : props.backgroundLight || '#edeff6'};
-`
-const ConsoleText = styled.h1<{ isDarkMode: boolean }>`
-  position: absolute;
-  font-family: 'Inter', sans-serif;
+  border-bottom: 0.1rem solid
+    ${(props) => (props.isDarkMode ? props.borderDark : props.borderLight || '#5E5E5E')};
+  fontsize: 0.9rem;
   font-weight: 400;
-  left: 3rem;
-  font-size: 0.9rem;
   color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#0957d0')};
+  z-index: 2;
 `
 const BlinkText = styled.p`
   display: inline;
@@ -162,81 +213,68 @@ export const Page2: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
-    <div>
-      <Dont ref={ref} visible={visible} isDarkMode={isDarkMode}>
-        Don't just code.
-      </Dont>
-      <Dont fontSize="3rem" top="22%" visible={visible} ref={ref} isDarkMode={isDarkMode}>
-        Document. Refine. Archive. Share.
-      </Dont>
-      <ConsoleBox isDarkMode={isDarkMode} backgroundDark="#343434" backgroundLight="#edeff6">
-        <ConsoleText isDarkMode={isDarkMode}>GiToDoc</ConsoleText>
-      </ConsoleBox>
-      <ConsoleBox
-        isDarkMode={isDarkMode}
-        height="0.1rem"
-        top="25.55rem"
-        backgroundDark="#5E5E5E"
-        backgroundLight="#D3E2FD"></ConsoleBox>
-      <ConsoleBox
-        isDarkMode={isDarkMode}
-        width="9rem"
-        height="0.1rem"
-        top="25.55rem"
-        backgroundDark="#5F7EAF"
-        backgroundLight="#0957D0"></ConsoleBox>
-      <ConsoleBox
-        width="0.1rem"
-        height="1.7rem"
-        top="23.5rem"
-        left="81.5rem"
-        backgroundLight="#D3E2FD"
-        backgroundDark="#5E5E5E"
-        isDarkMode={isDarkMode}></ConsoleBox>
-      <Styledicon
-        src={isDarkMode ? settings_dark : settings}
-        top="22.8rem"
-        left="83rem"
-        alt="icons"
-      />
-      <MonoText isDarkMode={isDarkMode}>
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn't the end of the journey.
-        <br />
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
-        Detail.
-        <br />
-        <br />
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;With our{' '}
-        <Hilight hilightLight="#FCEBEB" hilightDark="#4E3534" isDarkMode={isDarkMode}>
-          GiToDoc;
-        </Hilight>
-        <br />
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
-        ensuring your project is not just done, but perfected.{' '}
-        <BlinkText>
-          <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode}>
-            &ensp;
+    <Section>
+      <Wrapper>
+        <Dont ref={ref} visible={visible} isDarkMode={isDarkMode}>
+          Don't just code. <br />
+          <Smalldont>Document. Refine. Archive. Share.</Smalldont>
+        </Dont>
+        <ConsoleBox
+          isDarkMode={isDarkMode}
+          backgroundDark="#343434"
+          backgroundLight="#edeff6"
+          borderDark="#5E5E5E"
+          borderLight="#D3E2FD">
+          <ConsoleBox
+            isDarkMode={isDarkMode}
+            width="9rem"
+            top="0"
+            backgroundDark="transparent"
+            backgroundLight="transparent"
+            borderDark="#5F7EAF"
+            borderLight="#0957D0">
+            <Centerwrapper>GiToDoc</Centerwrapper>
+          </ConsoleBox>
+          <Styledicon
+            src={isDarkMode ? settings_dark : settings}
+            left="92%"
+            animation={false}
+            alt="icons"
+          />
+        </ConsoleBox>
+        <MonoText isDarkMode={isDarkMode}>
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn't the end of the journey.
+          <br />
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
+          Detail.
+          <br />
+          <br />
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;With our{' '}
+          <Hilight hilightLight="#FCEBEB" hilightDark="#4E3534" isDarkMode={isDarkMode}>
+            GiToDoc;
           </Hilight>
-        </BlinkText>
-      </MonoText>
-      <MonoText
-        fontSize="0.9rem"
-        top="46.5rem"
-        left="50%"
-        centered
-        color="#8E004B"
-        isDarkMode={isDarkMode}>
-        Keep scrolling if you want to make your project perfect
-      </MonoText>
-      <Styledicon
-        src={down_arrow}
-        top="102%"
-        left="50%"
-        centered
-        width="1rem"
-        height="1rem"
-        alt="downarrow"
-      />
-    </div>
+          <br />
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
+          ensuring your project is not just done, but perfected.{' '}
+          <BlinkText>
+            <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode}>
+              &ensp;
+            </Hilight>
+          </BlinkText>
+        </MonoText>
+        <Centerwrapper>
+          <MonoText fontSize="0.85rem" color="#8E004B" marginleft="0" isDarkMode={isDarkMode}>
+            Keep scrolling if you want to make your project perfect
+          </MonoText>
+          <Styledicon
+            src={down_arrow}
+            width="2.2rem"
+            height="2.2rem"
+            animation={true}
+            alt="downarrow"
+          />
+        </Centerwrapper>
+      </Wrapper>
+    </Section>
   )
 }
