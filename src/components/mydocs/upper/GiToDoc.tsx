@@ -9,7 +9,7 @@ const Main = styled.div`
   align-items: center;
   height: 8rem;
   width: 30rem;
-  margin-top: 0.5vh;
+  margin-top: 40px;
   text-align: center;
   font-size: 8rem;
   font-weight: 700;
@@ -20,7 +20,7 @@ const Main = styled.div`
   -webkit-background-clip: text;
 `
 const Smalli = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.7rem;
   font-size: 7rem;
 `
 
