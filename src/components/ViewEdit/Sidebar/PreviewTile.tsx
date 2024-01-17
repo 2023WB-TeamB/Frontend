@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Preview from './Preview'
-import LeftArrowIcon from '../../../assets/images/arrow_left.png'
-import LeftArrowIcon_Dark from '../../../assets/images/arrow_left_dark.svg'
-import RightArrowIcon from '../../../assets/images/arrow_right.png'
-import RightArrowIcon_Dark from '../../../assets/images/arrow_right_dark.svg'
+import LeftArrowIcon from '../../../assets/images/Viewer/arrow_left.png'
+import LeftArrowIcon_Dark from '../../../assets/images/Viewer/arrow_left_dark.svg'
+import RightArrowIcon from '../../../assets/images/Viewer/arrow_right.png'
+import RightArrowIcon_Dark from '../../../assets/images/Viewer/arrow_right_dark.svg'
 import { useDarkModeStore } from '../../../store/store'
 
 const PreviewWrapper = styled.div`

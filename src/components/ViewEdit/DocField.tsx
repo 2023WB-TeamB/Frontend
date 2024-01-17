@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDarkModeStore, useViewerPageOpenStore } from '../../store/store'
 import styled from 'styled-components'
-import EditIcon from '../../assets/images/edit.png'
-import EidtIcon_dark from '../../assets/images/edit_dark.svg'
-import SaveIcon from '../../assets/images/save.png'
-import CancelIcon from '../../assets/images/cancel.png'
-import CancelIcon_dark from '../../assets/images/cancel_dark.svg'
+import EditIcon from '../../assets/images/Viewer/edit.png'
+import EidtIcon_dark from '../../assets/images/Viewer/edit_dark.svg'
+import SaveIcon from '../../assets/images/Viewer/save.png'
+import CancelIcon from '../../assets/images/Viewer/cancel.png'
+import CancelIcon_dark from '../../assets/images/Viewer/cancel_dark.svg'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 
 // ? 문서 전체 폼

@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import PreviewTile from './PreviewTile'
-import searchIcon from '../../../assets/images/search.png'
-import searchIcon_dark from '../../../assets/images/search_dark.svg'
+import searchIcon from '../../../assets/images/Viewer/search.png'
+import searchIcon_dark from '../../../assets/images/Viewer/search_dark.svg'
 import { useDarkModeStore } from '../../../store/store'
 
 // 확장 패널 스타일
