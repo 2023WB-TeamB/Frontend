@@ -63,15 +63,16 @@ function useOnScreenImg(
 const Section = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: 7rem;
 `
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 7%;
-  margin-top: 7%;
+  margin-top: 10%;
   height: 15vh;
   gap: 1.3rem;
 `
@@ -161,7 +162,12 @@ const Dont = styled.h1<
   margin: 0;
   z-index: 2;
   white-space: nowrap;
-  animation: ${slideUpFade} 1s ease-out;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${slideUpFade} 1s  ease-out;
+        `
+      : 'none'};
 `
 /*--Dont 컴포넌트와 구별해주기 위해 URL text 추가--*/
 interface URLprops {
@@ -178,6 +184,7 @@ const URLtext = styled.p<
   fontfamily: 'Inter', sans-serif;
   position: absolute;
   white-space: nowrap;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   z-index: 3;
   animation: ${(props) =>
     props.visible
