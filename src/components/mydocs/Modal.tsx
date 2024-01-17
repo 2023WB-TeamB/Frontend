@@ -22,13 +22,13 @@ const ModalWrapper = styled.div<{ modalOpen: boolean }>`
 interface ModalContentProps {
   color?: string
   title: string
-  updated_at: string
+  created_at: string
 }
 
 interface ModalProps {
   modalOpen: boolean
   modalContent: ModalContentProps | null
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setModalOpen: (modalOpen: boolean) => void
 }
 
 const Modal: React.FC<ModalProps> = ({ modalOpen, modalContent, setModalOpen }) => {
@@ -38,7 +38,7 @@ const Modal: React.FC<ModalProps> = ({ modalOpen, modalContent, setModalOpen }) 
         <ModalContent
           color={modalContent.color}
           title={modalContent.title}
-          updated_at={modalContent.updated_at}
+          created_at={modalContent.created_at}
         />
       )}
     </ModalWrapper>

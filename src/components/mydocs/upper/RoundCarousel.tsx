@@ -4,6 +4,7 @@ import Card from '../Card'
 import Modal from '../Modal'
 import { Doc } from '../../../store/types'
 import btn from '../../../assets/images/mydocs/btn.svg'
+import { cardIdStore, modalOpenStore } from '../../../store/store'
 
 const Wrapper = styled.div`
   position: relative;
@@ -68,13 +69,19 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canNext, setCanNext] = useState(true) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
   const [buttonActive, setButtonActive] = useState(false) // 클릭된 버튼 제어
-  const [modalOpen, setModalOpen] = useState(false) // 모달 활성화
   const [modalContent, setModalContent] = useState<{
     // 모달 창에 표시할 내용
     title: string
-    updated_at: string
+    created_at: string
     color: string
   } | null>(null)
+
+  //
+  const { setCardId } = cardIdStore((state) => ({
+    cardId: state.cardId,
+    setCardId: state.setCardId,
+  }))
+  const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const maxCards = 10
 
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
@@ -102,10 +109,11 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const handleCardClick = (item: {
     id: number
     title: string
-    updated_at: string
+    created_at: string
     color: string
   }) => {
     // 카드 클릭 시의 이벤트 핸들러
+    setCardId(item.id) // 수정/삭제 대상 문서 id 설정
     setModalContent(item) // 클릭한 카드의 정보를 ModalContent에 저장
     setModalOpen(true) // 모달 열기
   }
@@ -120,7 +128,7 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
             ((currentRotate % 360) + 360) % 360 > 180 && ((currentRotate % 360) + 360) % 360 < 360
           return (
             <Card
-              key={i}
+              key={doc.id}
               rotate={currentRotate} // 카드별로 각도 전달
               visible={visible} // 위치에 따른 카드의 보기 속성 전달
               backgroundColor={doc.color} // 색상 전달

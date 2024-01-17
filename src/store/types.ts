@@ -1,6 +1,6 @@
 export interface Doc {
   id: number
   title: string
-  updated_at: string
+  created_at: string
   color: string
 }
