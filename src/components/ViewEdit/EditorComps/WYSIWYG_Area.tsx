@@ -29,6 +29,8 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
+import { useDocContentStore } from "../../../store/store";
+import { Editor } from "@tiptap/core";
 
 const lowlight = createLowlight(common);
 
@@ -85,12 +87,9 @@ const EditorWrapper = styled.div`
   }
   `
 
-interface EditorAreaProps {
-  text?: string
-}
-
-const EditorArea: React.FC<EditorAreaProps> = ({ text }) => {
+const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
+  const {content, setContent} = useDocContentStore()
 
   useEffect(() => {
     if (editorRef.current) {
@@ -101,18 +100,21 @@ const EditorArea: React.FC<EditorAreaProps> = ({ text }) => {
   // ? 에디터 객체 생성
   const editor:any = useEditor({
     extensions,
-    content : text,
+    content,
     editorProps: {
       attributes: {
         class: 'editor-content',
       },
-    }
+    },
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML())
+    },
   })
 
   return (
     <>
       <EditorWrapper>
-        <EditorContent editor={editor} ref={editorRef} />
+        <EditorContent editor={editor} ref={editorRef}/>
         <BubbleMenu editor={editor}>
           <BubbleMenubar editor={editor}/>
         </BubbleMenu>

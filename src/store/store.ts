@@ -57,6 +57,11 @@ interface ViewerModeState {
   isViewer: boolean;
   toggleViewerMode: () => void;
 }
+// ? 문서 내용
+interface DocContentState {
+  content: string;
+  setContent: (newwContent:string) => void;
+}
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: false,
@@ -115,6 +120,13 @@ export const useViewerModeStore = create<ViewerModeState>((set) => ({
     isViewer: !state.isViewer
   })),
 }));
+
+export const useDocContentStore = create<DocContentState>((set) => ({
+  content: "",
+  setContent: (content:string) => set(() => ({
+    content
+  }))
+}))
 
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
