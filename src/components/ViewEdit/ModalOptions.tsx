@@ -70,9 +70,9 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   // ! docsId : 임시 문서ID
-  const docsId = 4
+  const docsId = 3
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -173,7 +173,10 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             </CloseButton>
             <label>Export</label>
             <OptionsWrapper>
-              <OptionButton icon={isDarkMode ? pdfIcon_dark : pdfIcon} context="Download as PDF" />
+              <OptionButton 
+                icon={isDarkMode ? pdfIcon_dark : pdfIcon} 
+                context="Download as PDF" 
+              />
               <OptionButton
                 icon={isDarkMode ? cloudIcon_dark : cloudIcon}
                 context="Upload to Cloud"

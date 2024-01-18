@@ -59,8 +59,17 @@ interface ViewerModeState {
 }
 // ? 문서 내용
 interface DocContentState {
+  title: string;
   content: string;
+  setTitle: (value: string) => void;
   setContent: (value: string) => void;
+}
+// ? 문서 태그
+interface DocTagState {
+  tags: Array<string>;
+  setTag: (list: string[]) => void;
+  addTag: (newTag: string) => void;
+  removeTag: (index: number) => void;
 }
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
@@ -122,9 +131,26 @@ export const useViewerModeStore = create<ViewerModeState>((set) => ({
 }));
 
 export const useDocContentStore = create<DocContentState>((set) => ({
+  title: "",
   content: "",
+  setTitle: (value: string) => set(() => ({
+    title: value
+  })),
   setContent: (value: string) => set(() => ({
     content: value
+  }))
+}))
+
+export const useDocTagStore = create<DocTagState>((set) => ({
+  tags: [],
+  setTag: (list: string[]) => set(() => ({
+    tags: list
+  })),
+  addTag: (newTag: string) => set((state) => ({
+    tags: [...state.tags, newTag]
+  })),
+  removeTag: (index: number) => set((state) => ({
+    tags: state.tags.filter((_, i) => i !== index)
   }))
 }))
 

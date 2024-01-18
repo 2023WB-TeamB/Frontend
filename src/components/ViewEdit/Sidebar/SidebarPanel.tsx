@@ -95,7 +95,7 @@ export interface projectData {
 
 // 사이드바 확장 패널
 const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel, onClose }) => {
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 

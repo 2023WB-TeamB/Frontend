@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
-import { useViewerModeStore } from "../../store/store"
+import { useDocTagStore, useViewerModeStore } from "../../store/store"
 
 const TagStyle = css`
   margin: 5px;
@@ -34,23 +34,17 @@ const TagWrapper = styled.div`
 `
 
 const DocTags: React.FC = () => {
-    // ! 임시 태그
-    const [tags, setTag] = useState<string[]>(['React', 'TypeScript', 'Styled-Component'])
+    const {tags, addTag, removeTag} = useDocTagStore()
     const {isViewer} = useViewerModeStore()
     const [inputTag, setInputTag] = useState("");
 
-    const addTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             setInputTag("")
-            const newTags = [...tags, inputTag]
-            setTag(newTags)
+            addTag(inputTag)
         }
     }
-    const removeTag = (index: number) => {
-        const newTags = [...tags]
-        newTags.splice(index, 1)
-        setTag(newTags)
-    }
+
     return (
         <TagWrapper>
             {tags.map((tag, index) => (
@@ -67,7 +61,7 @@ const DocTags: React.FC = () => {
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                         setInputTag(event.target.value)
                     }}
-                    onKeyDown={addTag}/>}
+                    onKeyDown={handleAddTag}/>}
         </TagWrapper>
     )
 }

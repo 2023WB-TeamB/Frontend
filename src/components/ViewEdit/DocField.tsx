@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDarkModeStore, useViewerPageOpenStore, useViewerModeStore, useDocContentStore } from '../../store/store'
+import { useDarkModeStore, useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import EidtIcon_dark from '../../assets/images/Viewer/edit_dark.svg'
@@ -8,6 +8,7 @@ import CancelIcon from '../../assets/images/Viewer/cancel.png'
 import CancelIcon_dark from '../../assets/images/Viewer/cancel_dark.svg'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 import DocTags from './DocTags'
+import axios from 'axios'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -114,16 +115,40 @@ const TitleArea = styled.div`
 `
 
 const DocField: React.FC = () => {
+    const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
     const openerStore = useViewerPageOpenStore()
     const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
 
-    // ! 임시 제목 텍스트
-    const [title, setTitle] = useState('Hello World!')
-    const {content, setContent} = useDocContentStore()
-    // ! 임시 내용 텍스트
+    const {title, content, setTitle, setContent} = useDocContentStore()
+    const {setTag} = useDocTagStore()
+    let docsId = 3
+
+    //? 문서 조회 API
+    const handleGetDocVersions = async () => {
+        try {
+        // API 호출, 액세스 토큰
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(
+            `${apiUrl}${docsId}/`,
+            {
+            headers: {
+                Authorization: `Bearer ${access}`,
+            },
+            },
+        )
+        setTitle(response.data.data.title)
+        setContent(response.data.data.content)
+        setTag(response.data.data.keywords)
+        } catch (error: any) {
+        // API 호출 실패
+        console.error('API Error :', error)
+        }
+    }
+
     useEffect(() => {
-        setContent("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).")
+        handleGetDocVersions()
     }, [])
+
     const {isViewer, toggleViewerMode} = useViewerModeStore()
 
     const sideOnStyle = {
