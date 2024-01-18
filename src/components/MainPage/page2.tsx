@@ -119,10 +119,15 @@ interface DontProps {
 }
 const Smalldont = styled.span`
   font-size: 3rem;
+
+  @media (max-width: 720px) {
+    font-size: 2rem;
+  }
 `
+
 const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   margin-left: 5%;
-  font-size: ${(props) => props.fontSize || '4rem'};
+  font-size: 4rem;
   font-weight: 700;
   font-family: 'DMSerifDisplay', serif;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -137,6 +142,10 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
           ${slideUpFade} 1s ease-in-out
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    font-size: 3rem;
+  }
 `
 
 //Text(Mono)
@@ -146,6 +155,7 @@ interface MonoProps {
   centered?: boolean
   hilight?: string
   color?: string
+  littleFontSize?: string
 }
 const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   margin-left: ${(props) => props.marginleft || '5%'};
@@ -155,9 +165,14 @@ const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   letter-spacing: 0.5px;
   line-height: 2;
-  white-space: nowrap;
+  // white-space: nowrap;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
+
+  @media (max-width: 720px) {
+    font-size: ${(props) => props.littleFontSize || props.fontSize || '0.8rem'};
+  }
 `
+
 export const Blue = styled.span<{ isDarkMode: boolean }>`
   color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#1c6ef3')};
 `
@@ -197,10 +212,14 @@ const ConsoleBox = styled.div<
     props.isDarkMode ? props.backgroundDark : props.backgroundLight || '#edeff6'};
   border-bottom: 0.1rem solid
     ${(props) => (props.isDarkMode ? props.borderDark : props.borderLight || '#5E5E5E')};
-  fontsize: 0.9rem;
+  font-size: 0.9rem;
   font-weight: 400;
   color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#0957d0')};
   z-index: 2;
+
+  @media (max-width: 720px) {
+    font-size: 0.8rem;
+  }
 `
 const BlinkText = styled.p`
   display: inline;
@@ -263,7 +282,12 @@ export const Page2: React.FC = () => {
           </BlinkText>
         </MonoText>
         <Centerwrapper>
-          <MonoText fontSize="0.85rem" color="#8E004B" marginleft="0" isDarkMode={isDarkMode}>
+          <MonoText
+            fontSize="0.85rem"
+            littleFontSize="0.7rem"
+            color="#8E004B"
+            marginleft="0"
+            isDarkMode={isDarkMode}>
             Keep scrolling if you want to make your project perfect
           </MonoText>
           <Styledicon
