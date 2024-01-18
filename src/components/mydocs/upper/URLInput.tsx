@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Doc, docStore, isEnglishStore, isGeneratingStore } from '../../../store/store'
 import { useDarkModeStore } from '../../../store/store'
 import Swal from 'sweetalert2'
+import colors from './defaultColors.json'
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,14 +60,22 @@ export const URLInput: React.FC = () => {
 
   const { addDoc } = docStore()
 
+  // 문서 생성시 기본 색상 중 하나를 랜덤으로 지정
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * colors.length)
+    return colors[randomIndex].color
+  }
+
+  // 문서 생성 함수
   const handleGenDoc = async () => {
     try {
       // API 호출, 엑세스 토큰
       setIsGenerating(true)
       const access = localStorage.getItem('accessToken')
+      const color = getRandomColor()
       const response = await axios.post(
         `${apiUrl}`,
-        { repository_url: url, language: language, color: 'skyblue' },
+        { repository_url: url, language: language, color: color },
         {
           headers: { Authorization: `Bearer ${access}` },
         },
