@@ -68,27 +68,28 @@ const extensions = [
   TableCell,
 ]
 
-// ! 임시 문서 내용
-const content = '<p>Hellowfoajwofj fw1123</p>'
-
 const EditorWrapper = styled.div`
   position: relative;
   min-height: 450px;
   height: 100%;
-
+  
   // * Editor Form
   & .editor-content {
     padding: 1px;
     line-height: 1;
     overflow: hidden;
   }
-
+  
   & .tableWrapper {
     border: 1px solid black;
   }
-`
+  `
 
-const EditorArea = () => {
+interface EditorAreaProps {
+  text?: string
+}
+
+const EditorArea: React.FC<EditorAreaProps> = ({ text }) => {
   const editorRef = useRef<any>(null)
 
   useEffect(() => {
@@ -100,7 +101,7 @@ const EditorArea = () => {
   // ? 에디터 객체 생성
   const editor:any = useEditor({
     extensions,
-    content,
+    content : text,
     editorProps: {
       attributes: {
         class: 'editor-content',
