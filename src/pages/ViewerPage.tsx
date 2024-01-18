@@ -14,6 +14,7 @@ import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
+import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -30,87 +31,65 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
 
 function ViewerPage() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  const [isOpenSidePanel, setIsOpenSidePanel] = useState(false)
-  const [isOpenOptions, setIsOpenOptions] = useState(false)
-  const [isOpenConfirm, setIsOpenConfirm] = useState(false)
+  const toggleOpenSideAlways = useSidePeekStore((state) => state.toggleOpenSideAlways)
+  const openerStore = useViewerPageOpenStore()
+  const confirmBoxStore = useConfirmBoxStore()
   const [confirmLabel, setConfirmLabel] = useState('')
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
-  // isOpenSidePanel ~
-  // 사이드 확장 패널 여부
-  const openSidePanel = () => {
-    setIsOpenSidePanel(true)
-  }
-  const closeSidePanel = () => {
-    setIsOpenSidePanel(false)
-  }
-
-  // isOpenOptions ~
-  // Export 모달창 여부
-  const openOptions = () => {
-    setIsOpenOptions(true)
-    setIsOpenSidePanel(false)
-  }
-  const closeOptions = () => {
-    setIsOpenOptions(false)
-  }
-
-  // isOpenConfirm ~
-  // 확인 모달창 여부
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
     setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
     setConfirmAction(() => {
       // 문서 삭제 로직
     })
-    setIsOpenConfirm(true)
-    setIsOpenSidePanel(false)
+    confirmBoxStore.setConfirmLabel(confirmLabel)
+    confirmBoxStore.openConfirm()
   }
   // 뷰어 종료 확인
-  const handleExitClick = () => {
+  const openConfirmWithExit = () => {
     setConfirmLabel('나가기')
     setConfirmAction(() => () => {
-      navigate('/')
+      navigate('/mydocs')
     })
-    setIsOpenConfirm(true)
+    confirmBoxStore.setConfirmLabel(confirmLabel)
+    confirmBoxStore.openConfirm()
   }
-  const closeConfirm = () => {
-    setIsOpenConfirm(false)
-  }
+
   // 확인 모달창 핸들러
   const handleConfirmYes = () => {
     confirmAction && confirmAction()
-    setIsOpenConfirm(false)
+    confirmBoxStore.closeConfirm()
   }
 
   return (
     <StyledForm isDarkMode={isDarkMode}>
       <Sidebar
         list={[
-          [profile, closeSidePanel],
-          [isDarkMode ? gallery_dark : gallery, openSidePanel],
-          [isDarkMode ? version_dark : version, openSidePanel],
-          [isDarkMode ? exportBtn_dark : exportBtn, openOptions],
+          [profile, toggleOpenSideAlways],
+          [isDarkMode ? gallery_dark : gallery, openerStore.openGalleryPanel],
+          [isDarkMode ? version_dark : version, openerStore.openVersionPanel],
+          [isDarkMode ? exportBtn_dark : exportBtn, openerStore.openOptions],
           [isDarkMode ? deleteBtn_dark : deleteBtn, openConfirmWithDelete],
           [''],
           [''],
           [''],
           [''],
-          [exit, handleExitClick],
-        ]}
-        isOpedSidePanel={isOpenSidePanel}></Sidebar>
-      <SidebarPanel isOpenSidePanel={isOpenSidePanel} onClose={closeSidePanel} />
-      <ModalOptions isOpenOptions={isOpenOptions} onClose={closeOptions} />
+          [exit, openConfirmWithExit],
+        ]}/>
+      <SidebarPanel isOpenSidePanel={openerStore.isOpenGalleryPanel} onClose={openerStore.closeGalleryPanel} />
+      <SidebarPanel isOpenSidePanel={openerStore.isOpenVersionPanel} onClose={openerStore.closeVersionPanel} />
+      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm
-        isOpenConfirm={isOpenConfirm}
+        isOpenConfirm={confirmBoxStore.isOpenConfirm}
         label={confirmLabel}
         confirmOption={[
           ['Yes', handleConfirmYes],
-          ['No', closeConfirm],
+          ['No', confirmBoxStore.closeConfirm],
         ]}
       />
-      <DocField isOpenSidePanel={isOpenSidePanel} />
+      <DocField/>
     </StyledForm>
   )
 }

@@ -71,7 +71,7 @@ export const URLInput: React.FC = () => {
 
       // 문서 생성 성공
       if (response.status === 201) {
-        console.log('API Response: ', response.status)
+        console.log('API Response: ', response)
         isEnglish ? alert('영어 문서 생성!') : alert('한글 문서 생성!')
       }
     } catch (error: any) {
