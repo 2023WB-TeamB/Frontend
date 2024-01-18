@@ -1,6 +1,26 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+// 문서 데이터
+export type Doc = {
+  id: number
+  title: string
+  created_at: string
+  color: string
+}
+
+type DocState = {
+  docs: Doc[]
+  setDocs: (docs: Doc[]) => void
+  addDoc: (doc: Doc) => void
+}
+
+export const docStore = create<DocState>((set) => ({
+  docs: [],
+  setDocs: (docs) => set({ docs }),
+  addDoc: (doc) => set((state) => ({ docs: [doc, ...state.docs] })),
+}))
+
 // 생성할 문서 언어
 interface Language {
   isEnglish: boolean
@@ -67,6 +87,17 @@ interface Delete {
 export const isDeleteStore = create<Delete>((set) => ({
   isDelete: false,
   setIsDelete: (isDelete) => set({ isDelete }),
+}))
+
+// 문서 생성중 여부
+type Generating = {
+  isGenerating: boolean
+  setIsGenerating: (value: boolean) => void
+}
+
+export const isGeneratingStore = create<Generating>((set) => ({
+  isGenerating: false,
+  setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
 /*다크모드*/

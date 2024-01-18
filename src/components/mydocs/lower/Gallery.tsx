@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Modal from '../Modal'
-import { Doc } from '../../../store/types'
+import { Doc } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
