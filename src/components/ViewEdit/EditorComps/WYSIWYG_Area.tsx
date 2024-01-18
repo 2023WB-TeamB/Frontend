@@ -29,8 +29,7 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
-import { useDocContentStore } from "../../../store/store";
-import { Editor } from "@tiptap/core";
+import { useDocContentStore, useViewerModeStore } from "../../../store/store";
 
 const lowlight = createLowlight(common);
 
@@ -77,18 +76,18 @@ const EditorWrapper = styled.div`
   
   // * Editor Form
   & .editor-content {
-    padding: 1px;
-    line-height: 1;
+    line-height: 1.5rem;
     overflow: hidden;
   }
   
   & .tableWrapper {
     border: 1px solid black;
   }
-  `
+`
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
+  const {isViewer} = useViewerModeStore()
   const {content, setContent} = useDocContentStore()
 
   useEffect(() => {
@@ -119,7 +118,7 @@ const EditorArea: React.FC = () => {
           <BubbleMenubar editor={editor}/>
         </BubbleMenu>
       </EditorWrapper>
-      <BottomMenubar editor={editor}/>
+      {isViewer || <BottomMenubar editor={editor}/>}
     </>
   )
 }

@@ -60,7 +60,7 @@ interface ViewerModeState {
 // ? 문서 내용
 interface DocContentState {
   content: string;
-  setContent: (newwContent:string) => void;
+  setContent: (value: string) => void;
 }
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
@@ -123,8 +123,8 @@ export const useViewerModeStore = create<ViewerModeState>((set) => ({
 
 export const useDocContentStore = create<DocContentState>((set) => ({
   content: "",
-  setContent: (content:string) => set(() => ({
-    content
+  setContent: (value: string) => set(() => ({
+    content: value
   }))
 }))
 
