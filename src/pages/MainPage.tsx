@@ -49,13 +49,17 @@ const Main = styled.h1`
   margin: 0;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
   -webkit-background-clip: text;
-  // position: absolute;
-  // top: 17%;
-  // left: 50%;
-  // transform: translateX(-50%);
+
+  @media (max-width: 720px) {
+    font-size: 7rem;
+  }
 `
 const Smalli = styled.span`
   font-size: 7rem;
+
+  @media (max-width: 720px) {
+    font-size: 6rem;
+  }
 `
 
 //Join us 부분
@@ -64,11 +68,11 @@ export const Sub = styled.h1<{ isDarkMode: boolean }>`
   font-weight: 400;
   font-family: 'Inter', sans-serif;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  // position: absolute;
-  // top: 45%;
-  // left: 50%;
-  // transform: translateX(-50%);
   white-space: nowrap;
+
+  @media (max-width: 720px) {
+    font-size: 1rem;
+  }
 `
 
 //InputBox
@@ -80,6 +84,10 @@ const InputBoxWrapper = styled.div`
   height: 3.75rem;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
   border-radius: 4.09rem;
+
+  @media (max-width: 720px) {
+    width: 35.39rem;
+  }
 `
 const InputBox = styled.input<{ isDarkMode: boolean }>`
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
@@ -91,6 +99,10 @@ const InputBox = styled.input<{ isDarkMode: boolean }>`
   text-align: center;
   font-size: 1.3rem;
   color: ${(props) => (props.isDarkMode ? 'white' : '#1a1a1a')};
+
+  @media (max-width: 720px) {
+    width: 35rem;
+  }
 `
 
 /*** Publishing ***/
