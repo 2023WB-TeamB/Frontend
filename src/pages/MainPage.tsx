@@ -2,7 +2,6 @@ import { GlobalStyle } from '../GlobalStyle'
 import React from 'react'
 import styled from 'styled-components'
 import Signin from '../components/Signin.tsx'
-// import Register from '../components/Register'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
@@ -12,22 +11,33 @@ import useModalStore from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
 
 /* 각 페이지에 대한 설정 */
-export const Container = styled.div<{ isDarkMode: boolean }>`
+const Container = styled.div<{ isDarkMode: boolean }>`
   width: 100vw;
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  margin: 0;
+`
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
 `
 
-interface SectionProps {
-  marginTop?: string
-}
-const Section = styled.div<SectionProps>`
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  margin-top: ${(props) => props.marginTop || '15rem'};
+/*-----Wrapper----- */
+const LogoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 `
 
 //Logo
@@ -36,16 +46,21 @@ const Main = styled.h1`
   font-weight: 700;
   font-family: 'DMSerifDisplay', serif;
   color: transparent;
+  margin: 0;
   background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  position: absolute;
-  top: 17%;
-  left: 50%;
-  transform: translateX(-50%);
+
+  @media (max-width: 720px) {
+    font-size: 7rem;
+  }
 `
 const Smalli = styled.span`
   font-size: 7rem;
+
+  @media (max-width: 720px) {
+    font-size: 6rem;
+  }
 `
 
 //Join us 부분
@@ -54,35 +69,30 @@ export const Sub = styled.h1<{ isDarkMode: boolean }>`
   font-weight: 400;
   font-family: 'Inter', sans-serif;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translateX(-50%);
   white-space: nowrap;
+
+  @media (max-width: 720px) {
+    font-size: 1rem;
+  }
 `
 
 //InputBox
 const InputBoxWrapper = styled.div`
-  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40.39rem;
-  top: 53%;
-  left: 50%;
-  transform: translateX(-50%);
-  &:before {
-    content: '';
-    position: absolute;
-    top: -0.063rem;
-    left: -0.063rem;
-    bottom: -0.063rem;
-    right: -0.063rem;
-    background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
-    border-radius: 4.09rem;
-    z-index: -1;
+  height: 3.75rem;
+  background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+  border-radius: 4.09rem;
+
+  @media (max-width: 720px) {
+    width: 35.39rem;
   }
 `
 const InputBox = styled.input<{ isDarkMode: boolean }>`
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
-  border: solid 0.063rem transparent;
+  border: none;
   border-radius: 4.09rem;
   box-shadow: 0.125rem 0.25rem 0.3125rem #0000001a;
   height: 3.5rem;
@@ -90,6 +100,10 @@ const InputBox = styled.input<{ isDarkMode: boolean }>`
   text-align: center;
   font-size: 1.3rem;
   color: ${(props) => (props.isDarkMode ? 'white' : '#1a1a1a')};
+
+  @media (max-width: 720px) {
+    width: 35rem;
+  }
 `
 
 /*** Publishing ***/
@@ -115,27 +129,21 @@ const MainPage: React.FC = () => {
       <GlobalStyle />
       <Container isDarkMode={isDarkMode}>
         <Header isLogin={isLogin} />
-        <Section marginTop="0rem">
-          <Main>
-            G<Smalli>i</Smalli>ToDoc
-          </Main>
-          <Sub isDarkMode={isDarkMode}>Join us to change github repository to file!</Sub>
-          <InputBoxWrapper>
-            <InputBox isDarkMode={isDarkMode} type="text" onKeyDown={handleEnter} />
-          </InputBoxWrapper>
-        </Section>
-        <Section marginTop="5rem">
-          <Page2 />
-        </Section>
         <Section>
-          <Page3 />
+          <LogoWrapper>
+            <Main>
+              G<Smalli>i</Smalli>ToDoc
+            </Main>
+            <Sub isDarkMode={isDarkMode}>Join us to change github repository to file!</Sub>
+            <InputBoxWrapper>
+              <InputBox isDarkMode={isDarkMode} type="text" onKeyDown={handleEnter} />
+            </InputBoxWrapper>
+          </LogoWrapper>
         </Section>
-        <Section>
-          <Page4 />
-        </Section>
-        <Section>
-          <Page5 />
-        </Section>
+        <Page2 />
+        <Page3 />
+        <Page4 />
+        <Page5 />
       </Container>
       {isSigninOpen && <Signin />}
     </>
