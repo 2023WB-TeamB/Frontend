@@ -14,11 +14,16 @@ const PreviewWrapper = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
 
   h3 {
+    width: 100%;
+    text-align: left;
     margin: 0;
-    margin-left: 8%;
+    margin-left: 17%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   hr {
@@ -59,8 +64,8 @@ const Button = styled.button<{ imageUrl: string }>`
 
 const PageWrapper = styled.div`
   position: relative;
-  width: 80%;
-  overflow: hidden;
+  width: 300px;
+  overflow-x: hidden;
 `
 
 const Slider = styled.span`
@@ -75,7 +80,12 @@ const Slider = styled.span`
 
 interface PreviewTileProps {
   title: string
-  pages: string[]
+  pages: Array<{
+    id: number,
+    title: string,
+    color: string,
+    created_at: string
+  }>
 }
 
 // 프로젝트 미리보기 타일
