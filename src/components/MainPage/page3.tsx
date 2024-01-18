@@ -125,6 +125,16 @@ const movePointer = keyframes`
     transform: translateX(0) translateY(0);
   }
   `
+const littlemovePointer = keyframes`
+  0%{
+    transform: translateX(0) translateY(0);
+  }
+  50%{
+    transform: translateX(-10rem) translateY(-23rem);
+  }
+  100%{
+    transform: translateX(0) translateY(0);
+  }`
 const moveURL = keyframes`
   0%{
     transform: translateX(0) translateY(0);
@@ -133,16 +143,14 @@ const moveURL = keyframes`
     transform: translateX(31rem) translateY(13.2rem);
   }
 `
-const pasteURL = keyframes`
+const littlemoveURL = keyframes`
   0%{
-    opacity: 0;
-  }
-  99%{
-    opacity: 0;
+    transform: translateX(0) translateY(0);
   }
   100%{
-    opacity: 1;
-  }`
+    transform: translateX(4.5rem) translateY(23.7rem);
+  }
+`
 
 //Text
 interface DontProps {
@@ -150,11 +158,12 @@ interface DontProps {
   top?: string
   fontfamily?: string
   left?: string
+  littleFontSize?: string
 }
 const Dont = styled.h1<
   DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
 >`
-  font-size: ${(props) => props.fontSize || '4rem'};
+  font-size: ${(props) => props.fontSize || '3rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -168,17 +177,26 @@ const Dont = styled.h1<
           ${slideUpFade} 1s  ease-out;
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
+  }
 `
-/*--Dont 컴포넌트와 구별해주기 위해 URL text 추가--*/
+/*--Dont 컴포넌트와 구별해주기 위해 URL text 추가, 'pasteURL'애니메이션 삭제--*/
 interface URLprops {
   delay?: string
   top?: string
   left?: string
+  littletop?: string
+  littleleft?: string
 }
 const URLtext = styled.p<
-  URLprops & { visible: boolean; animationType: string; isDarkMode: boolean }
+  URLprops & {
+    visible: boolean
+    isDarkMode: boolean
+  }
 >`
-  fontsize: 1rem;
+  font-size: 1rem;
   top: ${(props) => props.top || '2.85rem'};
   left: ${(props) => props.left || '12rem'};
   fontfamily: 'Inter', sans-serif;
@@ -188,17 +206,25 @@ const URLtext = styled.p<
   z-index: 3;
   animation: ${(props) =>
     props.visible
-      ? props.animationType === 'moveURL'
-        ? css`
-            ${moveURL} 0.77s ease-out forwards;
-          `
-        : props.animationType === 'pasteURL'
-        ? css`
-            ${pasteURL} 4.5s;
-          `
-        : 'none'
+      ? css`
+          ${moveURL} 0.77s ease-out forwards;
+        `
       : 'none'};
-  animation-delay: ${(props) => props.delay || 'none'};
+  animation-delay: 3.7s;
+
+  @media (max-width: 720px) {
+    font-size: 0.8rem;
+    z-index: 3;
+    top: ${(props) => props.littletop || props.top || '3rem'};
+    left: ${(props) => props.littleleft || props.left || '8.5rem'};
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 0.77s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 3.7s;
+  }
 `
 
 //Page (GitPage+gitodoc) : 위치 수정
@@ -206,6 +232,8 @@ interface Page {
   top?: string
   left?: string
   zindex?: string
+  littletop?: string
+  littleleft?: string
 }
 const Styledpage = styled.img<Page & { visible: boolean }>`
   width: 42rem;
@@ -220,6 +248,13 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
           ${slideinFade} 2.5s ease-out
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    width: 30rem;
+    height: 20rem;
+    top: ${(props) => props.littletop || props.top || '3rem'};
+    left: ${(props) => props.littleleft || props.left || '0rem'};
+  }
 `
 
 //pointer : 위치수정
@@ -233,10 +268,24 @@ const Styledpointer = styled.img<{ visible: boolean }>`
   animation: ${(props) =>
     props.visible
       ? css`
-          ${movePointer} 2s ease-out
+          ${movePointer} 1.9s ease-out
         `
       : 'none'};
   animation-delay: 2.5s;
+
+  @media (max-width: 720px) {
+    width: 3rem;
+    height: 3rem;
+    top: 28rem;
+    left: 25rem;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemovePointer} 1.68s ease-out
+          `
+        : 'none'};
+    animation-delay: 2.5s;
+  }
 `
 
 //Publishing
@@ -249,48 +298,31 @@ export const Page3: React.FC = () => {
   return (
     <Section>
       <TextWrapper>
-        <Dont
-          isDarkMode={isDarkMode}
-          ref={refd}
-          visible={visibled}
-          animationType="slideUpFade"
-          fontSize="3rem">
+        <Dont isDarkMode={isDarkMode} ref={refd} visible={visibled} animationType="slideUpFade">
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 1;
         </Dont>
         <Dont
           isDarkMode={isDarkMode}
-          ref={refd}
           visible={visibled}
           animationType="slideUpFade"
           fontSize="1.2rem"
+          littleFontSize="1rem"
           fontfamily="monospace">
           Copy your repository URL
         </Dont>
       </TextWrapper>
       <Animationwrapper>
         <Animationwrapper2>
-          <URLtext
-            isDarkMode={isDarkMode}
-            ref={refd}
-            visible={visibled}
-            animationType="moveURL"
-            delay="3.7s">
+          <URLtext isDarkMode={isDarkMode} ref={refd} visible={visibled}>
             https://github.com/2023WB-TeamB
           </URLtext>
           <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
-          <URLtext
-            isDarkMode={isDarkMode}
-            ref={refd}
-            visible={visibled}
-            animationType="pasteURL"
-            top="16.05rem"
-            left="43rem">
-            https://github.com/2023WB-TeamB
-          </URLtext>
           <Styledpage
             src={isDarkMode ? gitodocpage_dark : gitodocpage}
             top="0"
             left="30rem"
+            littletop="15rem"
+            littleleft="5rem"
             alt="GiToDocpage"
             ref={refi}
             visible={visiblei}
