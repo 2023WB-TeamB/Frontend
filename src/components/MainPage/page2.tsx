@@ -152,6 +152,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
 interface MonoProps {
   fontSize?: string
   marginleft?: string
+  marginright?: string
   centered?: boolean
   hilight?: string
   color?: string
@@ -159,6 +160,7 @@ interface MonoProps {
 }
 const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   margin-left: ${(props) => props.marginleft || '5%'};
+  margin-right: ${(props) => props.marginleft || '5%'};
   font-size: ${(props) => props.fontSize || '1rem'};
   font-weight: 400;
   font-family: monospace;
@@ -287,6 +289,7 @@ export const Page2: React.FC = () => {
             littleFontSize="0.7rem"
             color="#8E004B"
             marginleft="0"
+            marginright="0"
             isDarkMode={isDarkMode}>
             Keep scrolling if you want to make your project perfect
           </MonoText>
