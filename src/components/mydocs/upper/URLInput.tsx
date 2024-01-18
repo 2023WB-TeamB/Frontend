@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { isEnglishStore } from '../../../store/store'
+import { Doc, docStore, isEnglishStore, isGeneratingStore } from '../../../store/store'
 import { useDarkModeStore } from '../../../store/store'
+import Swal from 'sweetalert2'
 import colors from './defaultColors.json'
 
 const Wrapper = styled.div`
@@ -50,11 +51,14 @@ export const URLInput: React.FC = () => {
   const apiUrl = 'https://gtd.kro.kr/api/v1/docs/create/'
   const language = isEnglish ? 'ENG' : 'KOR'
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { setIsGenerating } = isGeneratingStore()
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value)
   }
+
+  const { addDoc } = docStore()
 
   // 문서 생성시 기본 색상 중 하나를 랜덤으로 지정
   const getRandomColor = () => {
@@ -66,6 +70,7 @@ export const URLInput: React.FC = () => {
   const handleGenDoc = async () => {
     try {
       // API 호출, 엑세스 토큰
+      setIsGenerating(true)
       const access = localStorage.getItem('accessToken')
       const color = getRandomColor()
       const response = await axios.post(
@@ -80,15 +85,41 @@ export const URLInput: React.FC = () => {
 
       // 문서 생성 성공
       if (response.status === 201) {
+        setIsGenerating(false)
         console.log('API Response: ', response)
-        isEnglish ? alert('영어 문서 생성!') : alert('한글 문서 생성!')
+
+        // response.data.data에서 Doc 인터페이스에 맞는 데이터만 추출
+        const newDoc: Doc = {
+          id: response.data.data.docs_id,
+          title: response.data.data.title,
+          created_at: response.data.data.created_at,
+          color: response.data.data.color,
+        }
+
+        addDoc(newDoc)
+
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'success',
+          title: 'Successfully created document!',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
       }
     } catch (error: any) {
       // 문서 생성 실패
       if (error.response) {
+        setIsGenerating(false)
         console.error('API Response: ', error.response.status)
-        alert(error.response.message)
-        setUrl('')
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'error',
+          title: 'Document creation failed!',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
       }
     }
   }
