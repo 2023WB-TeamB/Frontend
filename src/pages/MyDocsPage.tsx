@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
@@ -8,16 +8,18 @@ import LanguageToggle from '../components/mydocs/upper/LanguageToggle'
 import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
-import { Doc } from '../store/types'
 import {
   cardColorStore,
   cardIdStore,
   modalOpenStore,
   isDeleteStore,
   useDarkModeStore,
+  isGeneratingStore,
+  docStore,
 } from '../store/store'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { Animation } from '../components/mydocs/upper/Loading'
 
 const Container = styled.div`
   display: flex;
@@ -49,6 +51,16 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
       ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
       : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
 `
+
+// 문서 생성 부분(URL, 로딩)
+const Generation = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 23vh;
+`
+
 //페이지 하단부
 const Lower = styled.div<{ isDarkMode: boolean }>`
   display: flex;
@@ -62,7 +74,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 `
 
 const MyDocsPage: React.FC = () => {
-  const [docs, setDocs] = useState<Doc[]>([])
+  const { docs, setDocs } = docStore()
   const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
@@ -74,6 +86,7 @@ const MyDocsPage: React.FC = () => {
   }))
   const { modalOpen } = modalOpenStore()
   const { isDelete, setIsDelete } = isDeleteStore()
+  const { isGenerating } = isGeneratingStore()
   const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
@@ -135,7 +148,8 @@ const MyDocsPage: React.FC = () => {
 
   // 클라이언트 문서 색상 변경
   const updateCardColor = () => {
-    setDocs((docs) => docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc)))
+    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc))
+    setDocs(newDocs)
   }
 
   // 색상 선택 할 때마다 클라이언트 색상 변경
@@ -190,9 +204,17 @@ const MyDocsPage: React.FC = () => {
           <Upper isDarkMode={isDarkMode}>
             <GiToDoc />
             <Description />
-            <Documentation />
-            <LanguageToggle />
-            <URLInput />
+            <Generation>
+              {isGenerating ? (
+                <Animation />
+              ) : (
+                <>
+                  <Documentation />
+                  <LanguageToggle />
+                  <URLInput />
+                </>
+              )}
+            </Generation>
             <RoundCarousel docs={docs.slice(0, 10)} />
           </Upper>
           <Lower isDarkMode={isDarkMode}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
-import { Doc } from '../../../store/types'
+import { Doc } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
 
