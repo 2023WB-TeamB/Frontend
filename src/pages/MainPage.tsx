@@ -129,7 +129,6 @@ const MainPage: React.FC = () => {
       <Header isLogin={isLogin} />
       <GlobalStyle />
       <Container isDarkMode={isDarkMode}>
-        <Header isLogin={isLogin} />
         <Section>
           <LogoWrapper>
             <Main>
