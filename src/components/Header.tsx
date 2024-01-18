@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
-import { ChangeEvent, useState } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
 import useModalStore from './useModalStore'
@@ -32,27 +31,6 @@ const RightWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-const SearchWrapper = styled.div<SearchProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
-  border-radius: 10px;
-  padding: 0 5px 0 0;
-  margin-right: 15px;
-`
-
-const Search = styled.input<SearchProps>`
-  width: 20.5rem;
-  height: 40px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 20px;
-  background-color: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
-  color: ${(props) => (props.isDarkMode ? '#fff' : '#000')};
-  outline: none;
-  margin-left: 20px;
-`
 const Icon = styled.img<IconProps>`
   display: flex;
   height: ${(props) => props.height};
@@ -65,18 +43,12 @@ const Icon = styled.img<IconProps>`
     background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
   }
 `
-const SignInOut = styled.div<SingProps>`
+const SignInOut = styled.div<SignProps>`
   font-size: 1.6rem;
   color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
   margin-left: 15px;
   align-self: flex-start;
   cursor: pointer;
-
-  /* &:hover {
-    border-radius: 15px;
-    background-color: #2b2b2b;
-    background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
-  } */
 `
 /***  인터페이스 ***/
 interface HeaderProps {
@@ -90,29 +62,15 @@ interface IconProps {
 interface ContainerProps {
   isDarkMode: boolean
 }
-interface SingProps {
+interface SignProps {
   isDarkMode: boolean
-}
-interface SearchProps {
-  isDarkMode?: boolean
-}
-export interface searchProps {
-  docs_id: number
-  title: string
-  updated_at: string
-  keywords: [name: any]
 }
 
 const Header = ({ isLogin }: HeaderProps) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
-  const { isSigninOpen, toggleSignin, isSearchListOpen, toggleSearchList } = useModalStore()
-  const [search, setSearch] = useState<string>('') // 검색 키워드 상태관리
-  const [searchedData, setSearchedData] = useState<searchProps[]>([]) // 초기값은 undefined로 설정하거나, 필요에 따라 초기값을 지정하세요.
+  const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const navigate = useNavigate()
 
-  const getSearchData = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value) // search 상태관리
-  }
   const handleClickSignin = () => {
     toggleSignin() // 로그인 open/close 토글
   }
@@ -120,34 +78,9 @@ const Header = ({ isLogin }: HeaderProps) => {
     toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
 
-  const handelClickSearch = async (e: React.MouseEvent) => {
+  const handleClickSearch = async (e: React.MouseEvent) => {
     e.preventDefault()
-    if (search === '') return 0
-    try {
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.post(
-        `https://gtd.kro.kr/api/v1/docs/search/`,
-        {
-          query: `${search}`, // 검색하고자할 키워드, 제목의 일부
-        },
-        { headers: { Authorization: `Bearer ${access}` } }, // 헤더에 access토큰 추가
-      )
-      if (response.status === 200) {
-        toggleSearchList() // 검색리스트 토글
-        setSearchedData(response.data.data) // 검색한 문서의 정보, 배열이 들어감(타이틀 날짜 키워드 등)
-        console.log('API Response: ', response.status)
-        console.log('API Responsed Data: ', response.data.data)
-      }
-    } catch (error: any) {
-      if (error.response.status === 400) {
-        console.log('API Response: ', error.response.status)
-        alert('검색어를 입력해 주세요')
-      }
-      if (error.response.status === 404) {
-        console.log('API Response: ', error.response.status)
-        alert('해당하는 문서가 없습니다')
-      }
-    }
+    searchListOpen()
   }
 
   const handleClickSignout = async () => {
@@ -168,16 +101,13 @@ const Header = ({ isLogin }: HeaderProps) => {
         <Logo src={imgLogo}></Logo>
         <RightWrapper>
           {/* 검색 */}
-          <SearchWrapper isDarkMode={isDarkMode}>
-            <Search type="text" value={search} onChange={getSearchData} isDarkMode={isDarkMode} />
-            <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgSearchDark : imgSearch}
-              height="2rem"
-              width="2rem"
-              onClick={handelClickSearch}
-            />
-          </SearchWrapper>
+          <Icon
+            isDarkMode={isDarkMode}
+            src={isDarkMode ? imgSearchDark : imgSearch}
+            height="2.4rem"
+            width="2.4rem"
+            onClick={handleClickSearch}
+          />
           {/* 다크모드 */}
           <Icon
             isDarkMode={isDarkMode}
@@ -199,7 +129,7 @@ const Header = ({ isLogin }: HeaderProps) => {
         </RightWrapper>
       </Container>
       {/* 모달 */}
-      {isSearchListOpen && <SearchList searchedData={searchedData} />}
+      {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}
     </>
   )

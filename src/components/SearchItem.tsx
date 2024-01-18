@@ -1,86 +1,99 @@
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
-import imgSubmit from '../assets/images/search_double_arrow.svg'
-import { searchProps } from './Header'
+import { searchProps } from './SearchList'
+import { cardIdStore, modalContentStore, modalOpenStore } from '../store/store'
+import Modal from '../components/mydocs/Modal'
 
 interface searchItemProps {
   searchedData: searchProps[]
+  onClick?: () => void
 }
-
 const Container = styled.div`
-  display: flex;
-`
-const LeftContainer = styled.div`
+  width: 50rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background-color: white;
-  border-radius: 10px 0 0 10px;
-  width: 18rem;
   padding: 5px 0;
-  margin-bottom: 10px;
+
+  cursor: pointer;
+  &:hover {
+    width: 50rem;
+    background: #f0f0f0;
+  }
 `
-const RightContainer = styled.div`
+const TItleDateWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: white;
-  border-radius: 0 10px 10px 0;
-  width: auto;
-  padding: 5px 0;
-  margin-bottom: 10px;
+  align-items: flex-end;
 `
 const Date = styled.div`
-  max-width: 18rem;
-  font-size: 0.9rem;
-  margin: 0 10px;
+  max-width: 30rem;
+  font-size: 0.7rem;
+  color: #c8c8c8;
+  margin-left: 5px;
 `
 const Title = styled.div`
-  max-width: 18rem;
-  font-size: 1rem;
+  max-width: 35rem;
+  font-size: 1.2rem;
   font-weight: bold;
   word-wrap: break-word;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  margin: 0 10px;
+  margin: 0 20px;
 `
 const TagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  max-width: 18rem;
-  margin: 0 10px;
+  max-width: 35rem;
+  margin: 0 20px;
 `
 const Tag = styled.div`
-  color: white;
-  background-color: #8cccfb;
-  border-radius: 5px;
-  padding: 2px;
-  margin: 3px 3px;
+  color: #eb8698;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  padding: 0 10px;
+  margin-top: 3px;
 `
-const Submit = styled.img`
-  width: 80px;
-  height: 80px;
-`
+
 const SearchItem: React.FC<searchItemProps> = ({ searchedData }) => {
-  // const onClick = () => {}
+  const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
+  const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
+  const { modalContent, setModalContent } = modalContentStore((state) => ({
+    modalContent: state.modalContent,
+    setModalContent: state.setModalContent,
+  }))
+  type SearchedType = {
+    id: number
+    title: string
+    created_at: string
+    color: string
+  }
+
   return (
     <>
       {searchedData.map((item) => (
-        <Container>
-          <LeftContainer>
-            <Date>{item.updated_at.slice(0, 10)}</Date>
+        <Container
+          onClick={() => {
+            const SearchedModal: SearchedType = {
+              id: item.id,
+              title: item.title,
+              created_at: item.created_at,
+              color: item.color,
+            }
+            setCardId(item.id) // 수정/삭제 대상 문서 id 설정
+            setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
+            setModalOpen(true) // 모달 열기
+            console.log('SearchedData: ', SearchedModal)
+          }}>
+          <TItleDateWrapper>
             <Title> {item.title}</Title>
-            <TagWrapper>
-              {item.keywords.length > 0 && item.keywords.map((tag) => <Tag>{tag.name}</Tag>)}
-            </TagWrapper>
-          </LeftContainer>
-          <RightContainer>
-            {/* Submit 이미지 및 기타 내용 */}
-            <Submit src={imgSubmit} />
-          </RightContainer>
+            <Date>{item.created_at.slice(0, 10)}</Date>
+          </TItleDateWrapper>
+          <TagWrapper>
+            {item.keywords.length > 0 && item.keywords.map((tag) => <Tag>{tag.name}</Tag>)}
+          </TagWrapper>
         </Container>
       ))}
+      <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </>
   )
 }

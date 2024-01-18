@@ -8,7 +8,8 @@ interface modalState {
   toggleRegister: () => void
 
   isSearchListOpen: boolean
-  toggleSearchList: () => void
+  searchListOpen: () => void
+  searchListClose: () => void
 }
 
 const useModalStore = create<modalState>((set) => ({
@@ -19,7 +20,8 @@ const useModalStore = create<modalState>((set) => ({
   toggleRegister: () => set((state) => ({ isRegisterOpen: !state.isRegisterOpen })),
 
   isSearchListOpen: false,
-  toggleSearchList: () => set((state) => ({ isSearchListOpen: !state.isSearchListOpen })),
+  searchListOpen: () => set(() => ({ isSearchListOpen: true })),
+  searchListClose: () => set(() => ({ isSearchListOpen: false })),
 }))
 
 export default useModalStore
