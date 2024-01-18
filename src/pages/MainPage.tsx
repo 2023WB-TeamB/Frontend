@@ -126,6 +126,7 @@ const MainPage: React.FC = () => {
 
   return (
     <>
+      <Header isLogin={isLogin} />
       <GlobalStyle />
       <Container isDarkMode={isDarkMode}>
         <Header isLogin={isLogin} />
