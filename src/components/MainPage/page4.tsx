@@ -121,6 +121,10 @@ const GuagebarContainer = styled.div`
   height: 0.7rem;
   width: 29.6rem;
   z-index: 4;
+
+  @media (max-width: 720px) {
+    top: 60%;
+  }
 `
 
 //keyframes : 'translate(-50%,-50%)를 추가하여 위치를 재조정(Styledicon 관련)'
@@ -218,11 +222,12 @@ interface DontProps {
   width?: string
   radius?: string
   border?: string
+  littleFontSize?: string
 }
 const Dont = styled.div<
   DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
 >`
-  font-size: ${(props) => props.fontSize || '4rem'};
+  font-size: ${(props) => props.fontSize || '3rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -242,6 +247,10 @@ const Dont = styled.div<
           ${slideUpFade} 1s  ease-out;
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
+  }
     `
 /*--flex로 인하여 guagebar 따로 추가(원래 Dont였습니다)--*/
 const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
@@ -255,6 +264,7 @@ const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
           ${progress} 8s ease-in-out forwards;
         `
       : 'none'};
+  }
 `
 
 //Page.svg
@@ -270,6 +280,12 @@ const Styledpage = styled.img<Page>`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
+
+  @media (max-width: 720px) {
+    width: 40rem;
+    height: 25rem;
+    top: 36%;
+  }
 `
 
 //icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
@@ -281,6 +297,7 @@ interface Styledicon {
   zindex?: string
   delay?: string
   translate?: string
+  littletop?: string
 }
 export const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
@@ -310,6 +327,10 @@ export const Styledicon = styled.img<Styledicon & { visible: boolean; animationT
           `
         : 'none'
       : 'none'};
+
+  @media (max-width: 720px) {
+    top: ${(props) => props.littletop || props.top || '36%'};
+  }
 `
 
 //Publishing
@@ -327,7 +348,6 @@ export const Page4: React.FC = () => {
           ref={ref}
           visible={visible}
           animationType="slideUpFade"
-          fontSize="3rem"
           top="10%">
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 2;
         </Dont>
@@ -338,6 +358,7 @@ export const Page4: React.FC = () => {
           top="9.5rem"
           left="6.2rem"
           fontSize="1.2rem"
+          littleFontSize="1rem"
           fontfamily="monospace"
           animationType="slideUpFade">
           Automatically generate the document based on your URL
@@ -353,7 +374,6 @@ export const Page4: React.FC = () => {
             <Styledicon
               src={isDarkMode ? githublogo_dark : githublogo}
               visible={false}
-              top="47%"
               left="calc(50% - 12.5rem)"
               translate="-50%,-50%"
               animationType="none"
@@ -373,6 +393,7 @@ export const Page4: React.FC = () => {
               width="8.8rem"
               height="8.8rem"
               top="calc(47% - 0.1rem)"
+              littletop="calc(36% - 0.1rem)"
               left="calc(50% - 0.4rem)"
               translate="-50%, -50%"
               zindex="2"
@@ -382,7 +403,6 @@ export const Page4: React.FC = () => {
             <Styledicon
               src={isDarkMode ? documnet_dark : document}
               visible={visiblei}
-              top="47%"
               left="calc(50% + 12.5rem)"
               translate="-50%, -50%"
               width="5rem"
@@ -393,7 +413,6 @@ export const Page4: React.FC = () => {
             <Styledicon
               src={isDarkMode ? document1_dark : document1}
               visible={visiblei}
-              top="47%"
               left="calc(50% + 12.5rem)"
               translate="-50%, -50%"
               width="5rem"
@@ -406,6 +425,7 @@ export const Page4: React.FC = () => {
               src={isDarkMode ? file_dark : file}
               visible={visiblei}
               top="calc(47% + 0.5rem)"
+              littletop="calc(36% + 0.5rem)"
               left="calc(50% - 12.5rem)"
               translate="-50%,-50%"
               width="3.5rem"
@@ -419,6 +439,7 @@ export const Page4: React.FC = () => {
               src={isDarkMode ? folder_dark : folder}
               visible={visiblei}
               top="calc(47% + 0.7rem)"
+              littletop="calc(36% + 0.7rem)"
               left="calc(50% - 13rem)"
               translate="-50%, -50%"
               width="3.5rem"
@@ -432,6 +453,7 @@ export const Page4: React.FC = () => {
               src={isDarkMode ? bar_dark : bar}
               visible={false}
               top="75%"
+              littletop="60%"
               left="50%"
               translate="-50%, -50%"
               height="1.5rem"
