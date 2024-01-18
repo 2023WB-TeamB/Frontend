@@ -145,9 +145,10 @@ interface DontProps {
   top?: string
   fontfamily?: string
   left?: string
+  littleFontSize?: string
 }
 const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
-  font-size: ${(props) => props.fontSize || '4rem'};
+  font-size: ${(props) => props.fontSize || '3rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -161,6 +162,10 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
           ${slideUpFade} 1s  ease-out;
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
+  }
 `
 //Page.svg
 interface Page {
@@ -183,6 +188,13 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
           ${slideinFade} 1s ease-out
         `
       : 'none'};
+
+  @media (max-width: 720px) {
+    widht: 40rem;
+    height: 22rem;
+    top: 30%;
+    left: 50%;
+  }
 `
 
 //Button
@@ -213,6 +225,13 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   &:hover {
     background-position: right center;
   }
+
+  @media (max-width: 720px) {
+    width: 16rem;
+    heiht: 3rem;
+    top: 45%;
+    font-size: 0.9rem;
+  }
 `
 
 //Publishing
@@ -231,7 +250,7 @@ export const Page5: React.FC = () => {
   return (
     <Section>
       <TextWrapper>
-        <Dont isDarkMode={isDarkMode} ref={ref} visible={visible} fontSize="3rem">
+        <Dont isDarkMode={isDarkMode} ref={ref} visible={visible}>
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 3;
         </Dont>
         <Dont
@@ -241,9 +260,9 @@ export const Page5: React.FC = () => {
           top="10.4rem"
           left="6.2rem"
           fontSize="1.2rem"
+          littleFontSize="1rem"
           fontfamily="monospace">
-          Check your document, <br />
-          Refine your document
+          Check your document, Refine your document
         </Dont>
       </TextWrapper>
       <Animationwrapper>
