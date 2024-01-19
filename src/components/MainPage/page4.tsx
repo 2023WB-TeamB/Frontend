@@ -72,7 +72,62 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-//keyframes
+/*-----Wrapper------*/
+const Section = styled.div`
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 7rem;
+`
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 7%;
+  margin-top: 10%;
+  height: 15vh;
+  gap: 1.3rem;
+`
+const Animationwrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-left: 7%;
+  margin-right: 7%;
+`
+const Animationwrapper2 = styled.div`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  height: 80vh;
+  width: 80vw;
+  margin: 0;
+`
+//안의 animation을 페이지의 가운데에 위치시켜주기 위해 wrapper 생성
+const Animationwrapper3 = styled.div`
+  position: relative;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+  height: 50vh;
+  width: 60vw;
+  margin: 0;
+`
+//게이지바를 페이지 안의 중앙에 위치시키면서 왼쪽에서 오른쪽으로 가는 애니메이션을 구현하기 위해 wrapper 추가
+const GuagebarContainer = styled.div`
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 0.7rem;
+  width: 29.6rem;
+  z-index: 4;
+
+  @media (max-width: 720px) {
+    top: 60%;
+  }
+`
+
+//keyframes : 'translate(-50%,-50%)를 추가하여 위치를 재조정(Styledicon 관련)'
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -85,27 +140,27 @@ const slideUpFade = keyframes`
 `
 const move = keyframes`
   0%{
-    transform: translateX(0);
+    transform: translate(-50%, -50%) translateX(0);
   }
   100%{
-    transform: translateX(12.5rem);
+    transform: translate(-50%, -50%) translateX(12.5rem);
   }
 `
 const movedocument = keyframes`
   0%{
-    transform: translateX(-13.5rem);
+    transform: translate(-50%, -50%) translateX(-12.5rem);
     opacity:0;
   }
   88%{
-    transform: translateX(-13.5rem);
+    transform: translate(-50%, -50%) translateX(-12.5rem);
     opacity:0;
   }
   89%{
-    transform: translateX(-13.5rem);
+    transform: translate(-50%, -50%) translateX(-12.5rem);
     opacity:1;
   }
   100%{
-    transform: translateX(0);
+    transform: translate(-50%, -50%) translateX(0);
     opacity:1;
   }
 `
@@ -140,25 +195,23 @@ const openthebox = keyframes`
   `
 const vibration = keyframes`
   0%{
-    transform: rotate(4deg);
+    transform: translate(-50%,-50%) rotate(4deg);
   }
   100%{
-    transform: rotate(-3deg);
+    transform: translateX(-50%,-50%) rotate(-3deg);
   }
   `
 const progress = keyframes`
   0%{
-    height: 0.7rem;
-    width: 2rem;
+    width: 0;
     z-index: 4;
   }
   100%{
-    height: 0.7rem;
-    width: 29.55rem;
+    width: 100%;
     z-index: 4;
   }`
 
-//Text & Progress bar
+//Text
 interface DontProps {
   fontSize?: string
   top?: string
@@ -169,16 +222,15 @@ interface DontProps {
   width?: string
   radius?: string
   border?: string
+  littleFontSize?: string
 }
 const Dont = styled.div<
   DontProps & { visible: boolean; animationType: string; isDarkMode: boolean }
 >`
-  position: absolute;
-  font-size: ${(props) => props.fontSize || '4rem'};
+  font-size: ${(props) => props.fontSize || '3rem'};
   font-weight: 400;
   font-family: ${(props) => props.fontfamily || 'DMSerifDisplay'};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  position: absolute;
   top: ${(props) => props.top || '20rem'};
   left: ${(props) => props.left || '4rem'};
   letter-spacing: 0;
@@ -191,17 +243,29 @@ const Dont = styled.div<
   border : ${(props) => props.border || 'none'};
   animation: ${(props) =>
     props.visible
-      ? props.animationType === 'slideUpFade'
-        ? css`
-            ${slideUpFade} 1s  ease-out;
-          `
-        : props.animationType === 'progress'
-        ? css`
-            ${progress} 8s ease-in-out forwards;
-          `
-        : 'none'
+      ? css`
+          ${slideUpFade} 1s  ease-out;
+        `
       : 'none'};
+
+  @media (max-width: 720px) {
+    font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
+  }
     `
+/*--flex로 인하여 guagebar 따로 추가(원래 Dont였습니다)--*/
+const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
+  height: 100%;
+  border-radius: 6.5rem;
+  background: #1c6ef3;
+  border: #1c6ef3;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${progress} 8s ease-in-out forwards;
+        `
+      : 'none'};
+  }
+`
 
 //Page.svg
 interface Page {
@@ -212,12 +276,19 @@ const Styledpage = styled.img<Page>`
   width: 47rem;
   height: 35rem;
   position: absolute;
-  top: 10rem;
-  left: 21.5rem;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 0;
+
+  @media (max-width: 720px) {
+    width: 40rem;
+    height: 25rem;
+    top: 36%;
+  }
 `
 
-//icon(svg)
+//icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
 interface Styledicon {
   top?: string
   left?: string
@@ -225,14 +296,17 @@ interface Styledicon {
   height?: string
   zindex?: string
   delay?: string
+  translate?: string
+  littletop?: string
 }
-const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+export const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
   z-index: ${(props) => props.zindex || '3'};
-  top: ${(props) => props.top || '22.5rem'};
-  left: ${(props) => props.left || '41rem'};
+  top: ${(props) => props.top || '47%'};
+  left: ${(props) => props.left || '50%'};
+  transform: ${(props) => props.translate && `translate(${props.translate})`};
   animation: ${(props) =>
     props.visible
       ? props.animationType === 'move'
@@ -253,132 +327,144 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
           `
         : 'none'
       : 'none'};
+
+  @media (max-width: 720px) {
+    top: ${(props) => props.littletop || props.top || '36%'};
+  }
 `
 
 //Publishing
+/*--icon들의 경우 calc를 이용하여 중앙에 있는 로고박스를 기준으로 위치 수정--*/
 export const Page4: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
-    <div>
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={ref}
-        visible={visible}
-        animationType="slideUpFade"
-        fontSize="3rem"
-        top="10%">
-        <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 2;
-      </Dont>
-      <Dont
-        isDarkMode={isDarkMode}
-        ref={ref}
-        visible={visible}
-        top="9.5rem"
-        left="6.2rem"
-        fontSize="1.2rem"
-        fontfamily="monospace"
-        animationType="slideUpFade">
-        Automatically generate the document based on your URL
-      </Dont>
-      <Dont
-        isDarkMode={isDarkMode}
-        visible={visible}
-        ref={ref}
-        top="33.65rem"
-        left="30rem"
-        height="1rem"
-        width="1rem"
-        radius="6.5rem"
-        background="#1C6EF3"
-        border="#1C6EF3"
-        animationType="progress"
-      />
-      {/**아이콘**/}
-      <Styledicon
-        src={isDarkMode ? githublogo_dark : githublogo}
-        visible={false}
-        top="22.5rem"
-        left="28rem"
-        animationType="none"
-        alt="githublogo"
-      />
-      <Styledicon
-        src={isDarkMode ? logobox_dark : logobox}
-        visible={visiblei}
-        zindex="1"
-        animationType="vibration"
-        alt="logobox"
-      />
-      <Styledicon
-        src={isDarkMode ? logoboxopen_dark : logoboxopen}
-        visible={visiblei}
-        width="8.8rem"
-        height="8.8rem"
-        top="21rem"
-        left="39.2rem"
-        zindex="2"
-        animationType="openthebox"
-        alt="logoboxopen"
-      />
-      <Styledicon
-        src={isDarkMode ? documnet_dark : document}
-        visible={visiblei}
-        top="23rem"
-        left="55rem"
-        width="5rem"
-        height="5rem"
-        animationType="movedocument"
-        alt="document"
-      />
-      <Styledicon
-        src={isDarkMode ? document1_dark : document1}
-        visible={visiblei}
-        top="23rem"
-        left="55rem"
-        width="5rem"
-        height="5rem"
-        zindex="2"
-        animationType="none"
-        alt="document"
-      />
-      <Styledicon
-        src={isDarkMode ? file_dark : file}
-        visible={visiblei}
-        top="24.25rem"
-        left="29.5rem"
-        width="3.5rem"
-        height="3.5rem"
-        zindex="2"
-        animationType="move"
-        delay="3s"
-        alt="file"
-      />
-      <Styledicon
-        src={isDarkMode ? folder_dark : folder}
-        visible={visiblei}
-        top="24.5rem"
-        left="29.5rem"
-        width="3.5rem"
-        height="3.5rem"
-        zindex="2"
-        animationType="move"
-        delay="2s"
-        alt="folder"
-      />
-      <Styledicon
-        src={isDarkMode ? bar_dark : bar}
-        visible={false}
-        top="19rem"
-        left="29.8rem"
-        height="1.5rem"
-        width="30rem"
-        animationType="none"
-        alt="progress"
-      />
-      <Styledpage ref={refi} src={isDarkMode ? step2page_dark : step2page} alt="changepage" />
-    </div>
+    <Section>
+      <TextWrapper>
+        <Dont
+          isDarkMode={isDarkMode}
+          ref={ref}
+          visible={visible}
+          animationType="slideUpFade"
+          top="10%">
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>step 2;
+        </Dont>
+        <Dont
+          isDarkMode={isDarkMode}
+          ref={ref}
+          visible={visible}
+          top="9.5rem"
+          left="6.2rem"
+          fontSize="1.2rem"
+          littleFontSize="1rem"
+          fontfamily="monospace"
+          animationType="slideUpFade">
+          Automatically generate the document based on your URL
+        </Dont>
+      </TextWrapper>
+      <Animationwrapper>
+        <Animationwrapper2>
+          <Animationwrapper3>
+            <GuagebarContainer>
+              <Guagebar isDarkMode={isDarkMode} visible={visible} ref={ref} />
+            </GuagebarContainer>
+            {/**아이콘**/}
+            <Styledicon
+              src={isDarkMode ? githublogo_dark : githublogo}
+              visible={false}
+              left="calc(50% - 12.5rem)"
+              translate="-50%,-50%"
+              animationType="none"
+              alt="githublogo"
+            />
+            <Styledicon
+              src={isDarkMode ? logobox_dark : logobox}
+              visible={visiblei}
+              zindex="1"
+              translate="-50%,-50%"
+              animationType="vibration"
+              alt="logobox"
+            />
+            <Styledicon
+              src={isDarkMode ? logoboxopen_dark : logoboxopen}
+              visible={visiblei}
+              width="8.8rem"
+              height="8.8rem"
+              top="calc(47% - 0.1rem)"
+              littletop="calc(36% - 0.1rem)"
+              left="calc(50% - 0.4rem)"
+              translate="-50%, -50%"
+              zindex="2"
+              animationType="openthebox"
+              alt="logoboxopen"
+            />
+            <Styledicon
+              src={isDarkMode ? documnet_dark : document}
+              visible={visiblei}
+              left="calc(50% + 12.5rem)"
+              translate="-50%, -50%"
+              width="5rem"
+              height="5rem"
+              animationType="movedocument"
+              alt="document"
+            />
+            <Styledicon
+              src={isDarkMode ? document1_dark : document1}
+              visible={visiblei}
+              left="calc(50% + 12.5rem)"
+              translate="-50%, -50%"
+              width="5rem"
+              height="5rem"
+              zindex="2"
+              animationType="none"
+              alt="document"
+            />
+            <Styledicon
+              src={isDarkMode ? file_dark : file}
+              visible={visiblei}
+              top="calc(47% + 0.5rem)"
+              littletop="calc(36% + 0.5rem)"
+              left="calc(50% - 12.5rem)"
+              translate="-50%,-50%"
+              width="3.5rem"
+              height="3.5rem"
+              zindex="2"
+              animationType="move"
+              delay="3s"
+              alt="file"
+            />
+            <Styledicon
+              src={isDarkMode ? folder_dark : folder}
+              visible={visiblei}
+              top="calc(47% + 0.7rem)"
+              littletop="calc(36% + 0.7rem)"
+              left="calc(50% - 13rem)"
+              translate="-50%, -50%"
+              width="3.5rem"
+              height="3.5rem"
+              zindex="2"
+              animationType="move"
+              delay="2s"
+              alt="folder"
+            />
+            <Styledicon
+              src={isDarkMode ? bar_dark : bar}
+              visible={false}
+              top="75%"
+              littletop="60%"
+              left="50%"
+              translate="-50%, -50%"
+              height="1.5rem"
+              width="30rem"
+              animationType="none"
+              alt="progress"
+            />
+          </Animationwrapper3>
+          <Styledpage ref={refi} src={isDarkMode ? step2page_dark : step2page} alt="changepage" />
+        </Animationwrapper2>
+      </Animationwrapper>
+    </Section>
   )
 }

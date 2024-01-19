@@ -1,6 +1,27 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+// 문서 데이터
+export type Doc = {
+  id: number
+  title: string
+  created_at: string
+  color: string
+}
+
+type DocState = {
+  docs: Doc[]
+  setDocs: (docs: Doc[]) => void
+  addDoc: (doc: Doc) => void
+}
+
+export const docStore = create<DocState>((set) => ({
+  docs: [],
+  setDocs: (docs) => set({ docs }),
+  addDoc: (doc) => set((state) => ({ docs: [doc, ...state.docs] })),
+}))
+
+// 생성할 문서 언어
 interface Language {
   isEnglish: boolean
   setIsEnglish: (isEnglish: boolean) => void
@@ -9,6 +30,74 @@ interface Language {
 export const isEnglishStore = create<Language>((set) => ({
   isEnglish: false,
   setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
+}))
+
+// 모달 상태
+interface Modal {
+  modalOpen: boolean
+  setModalOpen: (modalOpen: boolean) => void
+}
+
+export const modalOpenStore = create<Modal>((set) => ({
+  modalOpen: false,
+  setModalOpen: (modalOpen) => set({ modalOpen }),
+}))
+
+// 모달 내용
+interface modalContent {
+  modalContent: { id: number; title: string; created_at: string; color: string } | null
+  setModalContent: (
+    content: { id: number; title: string; created_at: string; color: string } | null,
+  ) => void
+}
+
+export const modalContentStore = create<modalContent>((set) => ({
+  modalContent: null,
+  setModalContent: (content) => set(() => ({ modalContent: content })),
+}))
+
+// 선택한 카드 ID
+interface CardId {
+  cardId: number
+  setCardId: (cardId: number) => void
+}
+
+export const cardIdStore = create<CardId>((set) => ({
+  cardId: 0,
+  setCardId: (cardId) => set({ cardId }),
+}))
+
+// 변경할 색상
+interface CardColor {
+  cardColor: string
+  setCardColor: (cardColor: string) => void
+}
+
+export const cardColorStore = create<CardColor>((set) => ({
+  cardColor: 'black',
+  setCardColor: (cardColor) => set({ cardColor }),
+}))
+
+// 문서 삭제 여부
+interface Delete {
+  isDelete: boolean
+  setIsDelete: (isDelete: boolean) => void
+}
+
+export const isDeleteStore = create<Delete>((set) => ({
+  isDelete: false,
+  setIsDelete: (isDelete) => set({ isDelete }),
+}))
+
+// 문서 생성중 여부
+type Generating = {
+  isGenerating: boolean
+  setIsGenerating: (value: boolean) => void
+}
+
+export const isGeneratingStore = create<Generating>((set) => ({
+  isGenerating: false,
+  setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
 /*다크모드*/
@@ -31,26 +120,26 @@ export const useDarkModeStore = create<State>(
 
 // * 뷰어/에디터 상태
 interface SidePeekState {
-  isOpenSideAlways: boolean;
+  isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
 }
 interface ViewerPageOpenState {
-  isOpenGalleryPanel: boolean;
-  isOpenVersionPanel: boolean;
-  isOpenOptions: boolean;
-  openGalleryPanel: () => void;
-  closeGalleryPanel: () => void;
-  openVersionPanel: () => void;
-  closeVersionPanel: () => void;
-  openOptions: () => void;
-  closeOptions: () => void;
+  isOpenGalleryPanel: boolean
+  isOpenVersionPanel: boolean
+  isOpenOptions: boolean
+  openGalleryPanel: () => void
+  closeGalleryPanel: () => void
+  openVersionPanel: () => void
+  closeVersionPanel: () => void
+  openOptions: () => void
+  closeOptions: () => void
 }
 interface ConfirmBoxState {
-  isOpenConfirm: boolean;
-  ConfirmLabel: string;
-  openConfirm: () => void;
-  closeConfirm: () => void;
-  setConfirmLabel: (label:string) => void;
+  isOpenConfirm: boolean
+  ConfirmLabel: string
+  openConfirm: () => void
+  closeConfirm: () => void
+  setConfirmLabel: (label: string) => void
 }
 // ? 뷰어 모드
 interface ViewerModeState {
@@ -74,54 +163,64 @@ interface DocTagState {
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: false,
-  toggleOpenSideAlways: () => set((state) => ({ 
-    isOpenSideAlways: !state.isOpenSideAlways 
-  }))
+  toggleOpenSideAlways: () =>
+    set((state) => ({
+      isOpenSideAlways: !state.isOpenSideAlways,
+    })),
 }))
 
 export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
   isOpenGalleryPanel: false,
   isOpenVersionPanel: false,
   isOpenOptions: false,
-  openGalleryPanel: () => set(() => ({ 
-    isOpenVersionPanel: false,
-    isOpenGalleryPanel: true 
-  })),
-  closeGalleryPanel: () => set(() => ({ 
-    isOpenGalleryPanel: false
-  })),
-  openVersionPanel: () => set(() => ({
-    isOpenGalleryPanel: false,
-    isOpenVersionPanel: true
-  })),
-  closeVersionPanel: () => set(() => ({
-    isOpenVersionPanel: false
-  })),
-  openOptions: () => set(() => ({
-    isOpenGalleryPanel: false,
-    isOpenVersionPanel: false,
-    isOpenOptions: true
-  })),
-  closeOptions: () => set(() => ({
-    isOpenOptions: false
-  })),
-}));
+  openGalleryPanel: () =>
+    set(() => ({
+      isOpenVersionPanel: false,
+      isOpenGalleryPanel: true,
+    })),
+  closeGalleryPanel: () =>
+    set(() => ({
+      isOpenGalleryPanel: false,
+    })),
+  openVersionPanel: () =>
+    set(() => ({
+      isOpenGalleryPanel: false,
+      isOpenVersionPanel: true,
+    })),
+  closeVersionPanel: () =>
+    set(() => ({
+      isOpenVersionPanel: false,
+    })),
+  openOptions: () =>
+    set(() => ({
+      isOpenGalleryPanel: false,
+      isOpenVersionPanel: false,
+      isOpenOptions: true,
+    })),
+  closeOptions: () =>
+    set(() => ({
+      isOpenOptions: false,
+    })),
+}))
 
 export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   isOpenConfirm: false,
   ConfirmLabel: '',
-  openConfirm: () => set(() => ({
-    isOpenGalleryPanel: false,
-    isOpenVersionPanel: false,
-    isOpenConfirm: true
-  })),
-  closeConfirm: () => set(() => ({
-    isOpenConfirm: false
-  })),
-  setConfirmLabel: (ConfirmLabel: string) => set(() => ({ 
-    ConfirmLabel 
-  })),
-}));
+  openConfirm: () =>
+    set(() => ({
+      isOpenGalleryPanel: false,
+      isOpenVersionPanel: false,
+      isOpenConfirm: true,
+    })),
+  closeConfirm: () =>
+    set(() => ({
+      isOpenConfirm: false,
+    })),
+  setConfirmLabel: (ConfirmLabel: string) =>
+    set(() => ({
+      ConfirmLabel,
+    })),
+}))
 
 export const useViewerModeStore = create<ViewerModeState>((set) => ({
   isViewer: true,
@@ -167,19 +266,3 @@ export const useDocIdStore = create<DocIdState>((set) => ({
     docId: id
   }))
 }))
-
-// interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
-//   selectContent: number;
-//   setSelectContent: (select: number) => void;
-// }
-
-// // create를 이용해서 store을 생상헐 수 있으며, 다수의 store도 생성 가능하다.
-// export const useStore = create<SelectContentState>((set) => ({
-//   // create 함수의 매개변수로 콜백함수를 받는데 이 콜백함수의  return객체에 state,
-//   // setState를 넣는다.
-//   selectContent: window.localStorage.getItem('select') ?
-//   	Number(window.localStorage.getItem('select')) : 0,
-//   setSelectContent: (select) => {
-//     set((state) => ({ ...state, selectContent: select }));
-//   },
-// }));

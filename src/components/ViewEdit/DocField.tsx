@@ -10,15 +10,15 @@ import axios from 'axios'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
-    min-width: 640px;
-    width: 90vw;
-    max-width: 1280px;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    transform: translateX(-20px);
+  min-width: 640px;
+  width: 90vw;
+  max-width: 1280px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  transform: translateX(-20px);
 `
 
 const Icon = styled.img`
@@ -67,49 +67,50 @@ const DistributeDiv = styled.div`
 
 // ? 문서 내용 폼
 const ViewArea = styled.div`
-    margin-top: 15px;
-    width: 100%;
-    max-width: 800px;
-    min-height: 450px;
-    height: 100%;
-    font-family: 'Arial', sans-serif;
+  margin-top: 15px;
+  width: 100%;
+  max-width: 800px;
+  min-height: 450px;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
 `
 
 // ? 문서 제목 폼
 const TitleArea = styled.div`
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+
+  & h2,
+  & textarea {
+    margin: 0%;
+    font-size: 2rem;
+    padding: 2px;
+    border: none;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    resize: none;
     width: 100%;
-    height: 100px;
-    padding: 10px;
-    text-align: left;
-    display: flex;
-    align-items: center;
+    box-sizing: border-box;
+    line-height: 1;
+    height: 2rem;
+  }
 
-    & h2, & textarea {
-        margin: 0%;
-        font-size: 2rem;
-        padding: 2px;
-        border: none;
-        font-weight: bold;
-        color: #333;
-        font-family: 'Arial', sans-serif;
-        resize: none;
-        width: 100%;
-        box-sizing: border-box;
-        line-height: 1;
-        height: 2rem;
-    }
+  & h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-    & h2 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    & textarea {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+  & textarea {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `
 
 const DocField: React.FC = () => {
@@ -149,14 +150,14 @@ const DocField: React.FC = () => {
 
     const {isViewer, toggleViewerMode} = useViewerModeStore()
 
-    const sideOnStyle = {
-        margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
-        left: isOpenSidePanel ? '450px' : '20px',
-    };
+  const sideOnStyle = {
+    margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
+    left: isOpenSidePanel ? '450px' : '20px',
+  }
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setTitle(e.target.value);
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTitle(e.target.value)
+  }
 
     return (
         <ViewerWrapper style={sideOnStyle} id='DocField'>
