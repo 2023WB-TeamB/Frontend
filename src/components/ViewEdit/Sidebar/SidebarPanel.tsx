@@ -4,7 +4,7 @@ import PreviewTile from './PreviewTile'
 import searchIcon from '../../../assets/images/Viewer/search.png'
 import searchIcon_dark from '../../../assets/images/Viewer/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
-import { useDarkModeStore, useViewerPageOpenStore } from '../../../store/store'
+import { useDarkModeStore } from '../../../store/store'
 import axios from 'axios'
 
 // 확장 패널 스타일

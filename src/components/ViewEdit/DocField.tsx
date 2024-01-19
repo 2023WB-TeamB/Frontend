@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useDarkModeStore, useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore } from '../../store/store'
+import React, { useEffect } from 'react'
+import { useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
-import EidtIcon_dark from '../../assets/images/Viewer/edit_dark.svg'
 import SaveIcon from '../../assets/images/Viewer/save.png'
 import CancelIcon from '../../assets/images/Viewer/cancel.png'
-import CancelIcon_dark from '../../assets/images/Viewer/cancel_dark.svg'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 import DocTags from './DocTags'
 import axios from 'axios'
