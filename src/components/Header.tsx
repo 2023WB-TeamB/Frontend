@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
-import { useModalStore, useLocalStorageStore } from './useModalStore'
+import { useModalStore } from './useModalStore'
 import SearchList from './SearchList'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/dark_mode.svg'
@@ -57,7 +57,7 @@ const SignInOut = styled.div<SignType>`
 `
 /***  인터페이스 ***/
 interface HeaderType {
-  isLogin: boolean
+  isGetToken: boolean
 }
 interface IconType {
   height: string
@@ -72,10 +72,9 @@ interface SignType {
   isDarkMode: boolean
 }
 
-const Header: React.FC<HeaderType> = ({ isLogin }) => {
+const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
-  // const { isSignin } = useLocalStorageStore()
   // const [scrollPosition, setScrollPosition] = useState(false) // 스크롤 위치 상태관리
   const navigate = useNavigate()
 
@@ -117,37 +116,51 @@ const Header: React.FC<HeaderType> = ({ isLogin }) => {
 
   return (
     <>
-      <Container isDarkMode={isDarkMode}>
-        <Logo src={imgLogo}></Logo>
-        <RightWrapper>
-          {/* 검색 */}
-          <Icon
-            isDarkMode={isDarkMode}
-            src={isDarkMode ? imgSearchDark : imgSearch}
-            height="2.4rem"
-            width="2.4rem"
-            onClick={handleClickSearch}
-          />
-          {/* 다크모드 */}
-          <Icon
-            isDarkMode={isDarkMode}
-            src={isDarkMode ? imgWhiteMode : imgDarkMode}
-            height="2rem"
-            width="2rem"
-            onClick={handleDarkMode}
-          />
-          {/* 로그인/로그아웃 */}
-          {isLogin ? (
-            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
-              sign-out
-            </SignInOut>
-          ) : (
+      {isGetToken ? (
+        <Container isDarkMode={isDarkMode}>
+          <Logo src={imgLogo}></Logo>
+          <RightWrapper>
+            {/* 다크모드 */}
+            <Icon
+              isDarkMode={isDarkMode}
+              src={isDarkMode ? imgWhiteMode : imgDarkMode}
+              height="2rem"
+              width="2rem"
+              onClick={handleDarkMode}
+            />
+            {/* 로그인 */}
             <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignin}>
               sign-in
             </SignInOut>
-          )}
-        </RightWrapper>
-      </Container>
+          </RightWrapper>
+        </Container>
+      ) : (
+        <Container isDarkMode={isDarkMode}>
+          <Logo src={imgLogo}></Logo>
+          <RightWrapper>
+            {/* 검색 */}
+            <Icon
+              isDarkMode={isDarkMode}
+              src={isDarkMode ? imgSearchDark : imgSearch}
+              height="2.4rem"
+              width="2.4rem"
+              onClick={handleClickSearch}
+            />
+            {/* 다크모드 */}
+            <Icon
+              isDarkMode={isDarkMode}
+              src={isDarkMode ? imgWhiteMode : imgDarkMode}
+              height="2rem"
+              width="2rem"
+              onClick={handleDarkMode}
+            />
+            {/* 로그아웃 */}
+            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
+              sign-out
+            </SignInOut>
+          </RightWrapper>
+        </Container>
+      )}
       {/* 모달 */}
       {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}

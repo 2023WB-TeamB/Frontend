@@ -12,8 +12,8 @@ interface modalState {
   searchListClose: () => void
 }
 interface localStorageState {
-  isSignin: boolean
-  setIsSignin: (state: boolean) => void
+  isGetToken: boolean
+  setisGetToken: (state: boolean) => void
 }
 
 export const useModalStore = create<modalState>((set) => ({
@@ -29,6 +29,6 @@ export const useModalStore = create<modalState>((set) => ({
 }))
 
 export const useLocalStorageStore = create<localStorageState>((set) => ({
-  isSignin: false,
-  setIsSignin: (state) => set({ isSignin: state }),
+  isGetToken: true,
+  setisGetToken: (state) => set({ isGetToken: state }),
 }))

@@ -20,6 +20,7 @@ import {
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Animation } from '../components/mydocs/upper/Loading'
+import { useLocalStorageStore } from '../components/useModalStore'
 
 const Container = styled.div`
   display: flex;
@@ -87,8 +88,15 @@ const MyDocsPage: React.FC = () => {
   const { modalOpen } = modalOpenStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
-  const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { isGetToken, setisGetToken } = useLocalStorageStore()
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken') !== null) {
+      // console.log('토큰있음')
+      setisGetToken(false)
+    } else setisGetToken(true)
+  }, ['accessToken'])
 
   const getDocs = async () => {
     try {
@@ -198,7 +206,7 @@ const MyDocsPage: React.FC = () => {
 
   return (
     <div>
-      <Header isLogin={isLogin} />
+      <Header isGetToken={isGetToken} />
       <Container>
         <ScrollSnap>
           <Upper isDarkMode={isDarkMode}>
