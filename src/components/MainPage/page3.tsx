@@ -79,14 +79,15 @@ const TextWrapper = styled.div`
 `
 const Animationwrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-left: 7%;
-  margin-right: 7%;
+  margin-left: 10%;
+  margin-right: 10%;
 `
 const Animationwrapper2 = styled.div`
   position: relative;
   height: 68vh;
-  width: 80vw;
+  width: auto;
   margin: 0;
 `
 const Arrowwrapper = styled.div`
