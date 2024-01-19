@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
@@ -86,6 +86,7 @@ const SearchList: React.FC = () => {
   const { searchListClose } = useModalStore()
   const [search, setSearch] = useState<string>('') // 검색 키워드 상태관리
   const [searchedData, setSearchedData] = useState<searchProps[]>([]) // 초기값은 undefined로 설정하거나, 필요에 따라 초기값을 지정하세요.
+  const searchBarRef = useRef<HTMLInputElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
   const getSearchData = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
@@ -111,13 +112,33 @@ const SearchList: React.FC = () => {
   const handleOnClick = () => {
     setSearch('')
   }
+  // Overlay를 클릭한 경우에만 searchListClose 호출
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      searchListClose()
+    }
+  }
+  // ESC 키를 누른 경우 searchListClose 호출
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      searchListClose()
+    }
+  }
+  // SearchBar에 focus를 주어서 ESC키 이벤트가 발생하도록 한다.
+  useEffect(() => {
+    if (searchBarRef.current) {
+      // 참조된 DOM요소를 확인하고 존재한다면
+      searchBarRef.current.focus() // 해당 요소에 focus를 둔다
+    }
+  }, [])
 
   return (
-    <Overlay>
+    <Overlay onClick={handleOverlayClick} onKeyDown={handleKeyPress} tabIndex={0}>
       <Container>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
           <SearchBar
+            ref={searchBarRef} // useRef가 참조할 요소
             onChange={getSearchData}
             value={search}
             placeholder="Search your document..."
