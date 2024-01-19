@@ -74,7 +74,7 @@ interface ModalOptionsProps {
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
   const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
   const {docId} = useDocIdStore()
-  const docsId = 3
+  const {title} = useDocContentStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -153,9 +153,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   const showQRCodeModal = () => {
     console.log(docUrl)
     Swal.fire({
-      // ! 문서 제목으로 수정 예정
-      title: '문서 제목; docs_id : ' + docsId,
-      text: docUrl,
+      text: title,
       imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
       imageAlt: 'QR Code',
       showConfirmButton: true,
@@ -164,8 +162,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   //? 다운로드할 컴포넌트 ID
   const rootElementId = "DocField"
-  //? 다운로드될 파일명
-  const downloadFileName = "GTD_TestPDF"
   
   // * PDF 다운로드
   const downloadPdfDocument = (rootElementId: string) => {
@@ -193,7 +189,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             heightLeft -= pageHeight;
             heightAdd -= pageHeight;
           }
-          pdf.save(`${downloadFileName}.pdf`);
+          pdf.save(`${title}.pdf`);
       })
   }
 
