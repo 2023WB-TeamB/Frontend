@@ -32,7 +32,7 @@ const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 5;
 `
 const Container = styled.div`
   display: flex;
@@ -86,11 +86,11 @@ const SearchList: React.FC = () => {
   const { searchListClose } = useModalStore()
   const [search, setSearch] = useState<string>('') // 검색 키워드 상태관리
   const [searchedData, setSearchedData] = useState<searchProps[]>([]) // 초기값은 undefined로 설정하거나, 필요에 따라 초기값을 지정하세요.
+
   const getSearchData = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       const temp = e.target.value
       setSearch(temp)
-
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
         `https://gtd.kro.kr/api/v1/docs/search/`,
@@ -107,14 +107,22 @@ const SearchList: React.FC = () => {
     },
     [search],
   )
+  // 검색내용 삭제
+  const handleOnClick = () => {
+    setSearch('')
+  }
 
   return (
     <Overlay>
       <Container>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
-          <SearchBar onChange={getSearchData} placeholder="Search your document..." />
-          <Icon src={imgClose} height="1rem" width="1rem" onClick={searchListClose} />
+          <SearchBar
+            onChange={getSearchData}
+            value={search}
+            placeholder="Search your document..."
+          />
+          <Icon src={imgClose} height="1rem" width="1rem" onClick={handleOnClick} />
         </SearchWrapper>
         <Divider />
         <ItemWrapper>{search && <SearchItem searchedData={searchedData} />}</ItemWrapper>
