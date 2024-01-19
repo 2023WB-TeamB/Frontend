@@ -52,7 +52,7 @@ const extensions = [
   Typography,
   TaskList,
   TaskItem.configure({
-    nested: false,
+    nested: true,
   }),
   Link,
   Image.configure({
