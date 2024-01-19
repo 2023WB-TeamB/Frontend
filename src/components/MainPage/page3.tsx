@@ -5,6 +5,7 @@ import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import gitodocpage_dark from '../../assets/images/MainPage/gitodocpage_dark.svg'
 import GitPage_dark from '../../assets/images/MainPage/GitPage_dark.svg'
+import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
@@ -84,9 +85,17 @@ const Animationwrapper = styled.div`
 `
 const Animationwrapper2 = styled.div`
   position: relative;
-  height: 80vh;
+  height: 68vh;
   width: 80vw;
   margin: 0;
+`
+const Arrowwrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  height: 20vh;
+  width: 99vw;
 `
 
 //keyframes 애니메이션 : flex로 묶어 위치 수정
@@ -149,6 +158,44 @@ const littlemoveURL = keyframes`
   }
   100%{
     transform: translateX(4.5rem) translateY(23.7rem);
+  }
+`
+
+/*----down-arrow animation-----*/
+const down_down = keyframes`
+0% {
+  transform: translateY(0);
+  opacity: 0
+}
+50% {
+  opacity: 0.5;
+}
+100% {
+  transform: translateY(1rem);
+  opacity: 0;
+}
+`
+interface StyledarrowProps {
+  animation: boolean
+}
+
+const Styledarrow = styled.img<StyledarrowProps>`
+  top: 0;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 3;
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 2s ease-out infinite
+        `
+      : 'none'};
+
+  @media (max-width: 720px) {
+    margin-top: 3rem;
   }
 `
 
@@ -335,6 +382,9 @@ export const Page3: React.FC = () => {
           />
         </Animationwrapper2>
       </Animationwrapper>
+      <Arrowwrapper>
+        <Styledarrow src={down_arrow} animation={true} alt="downarrow" />
+      </Arrowwrapper>
     </Section>
   )
 }
