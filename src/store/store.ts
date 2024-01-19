@@ -154,6 +154,20 @@ export const useDocTagStore = create<DocTagState>((set) => ({
   }))
 }))
 
+//* 현재 문서 ID
+interface DocIdState {
+  docId?: number
+  setDocId: (id: number) => void
+}
+
+export const useDocIdStore = create<DocIdState>((set) => ({
+  //! 임시 문서 ID 지정
+  docId: 31,
+  setDocId: (id: number) => set(() => ({
+    docId: id
+  }))
+}))
+
 // interface SelectContentState { //ts를 사용하기때문에 타입지정이 필요.js사용시 미사용 코드
 //   selectContent: number;
 //   setSelectContent: (select: number) => void;

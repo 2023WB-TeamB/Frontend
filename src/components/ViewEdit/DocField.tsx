@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore } from '../../store/store'
+import { useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -119,7 +119,7 @@ const DocField: React.FC = () => {
 
     const {title, content, setTitle, setContent} = useDocContentStore()
     const {setTag} = useDocTagStore()
-    let docsId = 3
+    const {docId} = useDocIdStore()
 
     //? 문서 조회 API
     const handleGetDocVersions = async () => {
@@ -127,7 +127,7 @@ const DocField: React.FC = () => {
         // API 호출, 액세스 토큰
         const access = localStorage.getItem('accessToken')
         const response = await axios.get(
-            `${apiUrl}${docsId}/`,
+            `${apiUrl}${docId}/`,
             {
             headers: {
                 Authorization: `Bearer ${access}`,

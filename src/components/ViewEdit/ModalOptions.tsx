@@ -16,7 +16,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import html2canvas from 'html2canvas'
 import { jsPDF }  from 'jspdf'
-import { useDarkModeStore } from '../../store/store'
+import { useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
@@ -73,7 +73,7 @@ interface ModalOptionsProps {
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
   const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
-  // ! docsId : 임시 문서ID
+  const {docId} = useDocIdStore()
   const docsId = 3
 
   // * Toast 알림창
@@ -93,7 +93,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       const response = await axios.post(
         `${apiUrl}share/`,
         {
-          docs_id: docsId,
+          docs_id: docId,
         },
         {
           headers: {
