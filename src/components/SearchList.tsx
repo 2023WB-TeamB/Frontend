@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 /*-----------------------------------------------------------*/
 import SearchItem from './SearchItem'
-import useModalStore from './useModalStore'
+import { useModalStore } from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'

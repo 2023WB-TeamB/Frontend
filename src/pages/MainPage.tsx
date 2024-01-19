@@ -7,7 +7,7 @@ import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
-import useModalStore from '../components/useModalStore.tsx'
+import { useModalStore } from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
 
 /* 각 페이지에 대한 설정 */

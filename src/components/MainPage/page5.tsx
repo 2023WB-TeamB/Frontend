@@ -7,7 +7,7 @@ import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page4'
 import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
-import useModalStore from '../useModalStore'
+import { useModalStore } from '../useModalStore'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
@@ -92,7 +92,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 7rem;
-  margin-bottom; 0;
+  margin-bottom: 0;
 `
 const TextWrapper = styled.div`
   display: flex;

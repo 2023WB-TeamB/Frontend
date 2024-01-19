@@ -11,8 +11,12 @@ interface modalState {
   searchListOpen: () => void
   searchListClose: () => void
 }
+interface localStorageState {
+  isSignin: boolean
+  setIsSignin: (state: boolean) => void
+}
 
-const useModalStore = create<modalState>((set) => ({
+export const useModalStore = create<modalState>((set) => ({
   isSigninOpen: false,
   toggleSignin: () => set((state) => ({ isSigninOpen: !state.isSigninOpen })),
 
@@ -24,4 +28,7 @@ const useModalStore = create<modalState>((set) => ({
   searchListClose: () => set(() => ({ isSearchListOpen: false })),
 }))
 
-export default useModalStore
+export const useLocalStorageStore = create<localStorageState>((set) => ({
+  isSignin: false,
+  setIsSignin: (state) => set({ isSignin: state }),
+}))

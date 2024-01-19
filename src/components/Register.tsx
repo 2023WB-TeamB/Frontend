@@ -5,7 +5,7 @@ import axios from 'axios'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import useModalStore from './useModalStore'
+import { useModalStore } from './useModalStore'
 
 /**** 스타일 ****/
 const modalOpenAnimation = keyframes`

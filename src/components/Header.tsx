@@ -1,10 +1,11 @@
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
-import useModalStore from './useModalStore'
+import { useModalStore, useLocalStorageStore } from './useModalStore'
 import SearchList from './SearchList'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/dark_mode.svg'
@@ -14,13 +15,17 @@ import imgSearch from '../assets/images/search.svg'
 import imgSearchDark from '../assets/images/search_dark.svg'
 
 /*** 스타일링 ***/
-const Container = styled.div<ContainerProps>`
+const Container = styled.div<ContainerType>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: calc(100% - 255px);
   height: 50px;
+  position: fixed;
+  border-color: black;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
-  padding: 0 30px 0 10px;
+  padding: 0 120px;
+  z-index: 3;
 `
 const Logo = styled.img`
   width: 2rem;
@@ -31,11 +36,11 @@ const RightWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-const Icon = styled.img<IconProps>`
+const Icon = styled.img<IconType>`
   display: flex;
   height: ${(props) => props.height};
   width: ${(props) => props.width};
-  padding: 5px;
+  margin-left: 10px;
   cursor: pointer;
 
   &:hover {
@@ -43,32 +48,35 @@ const Icon = styled.img<IconProps>`
     background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
   }
 `
-const SignInOut = styled.div<SignProps>`
-  font-size: 1.6rem;
+const SignInOut = styled.div<SignType>`
+  font-size: 1.3rem;
   color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
-  margin-left: 15px;
+  margin-left: 10px;
   align-self: flex-start;
   cursor: pointer;
 `
 /***  인터페이스 ***/
-interface HeaderProps {
+interface HeaderType {
   isLogin: boolean
 }
-interface IconProps {
+interface IconType {
   height: string
   width: string
   isDarkMode?: boolean
 }
-interface ContainerProps {
+interface ContainerType {
   isDarkMode: boolean
+  // showBorder: boolean
 }
-interface SignProps {
+interface SignType {
   isDarkMode: boolean
 }
 
-const Header = ({ isLogin }: HeaderProps) => {
+const Header: React.FC<HeaderType> = ({ isLogin }) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
+  // const { isSignin } = useLocalStorageStore()
+  // const [scrollPosition, setScrollPosition] = useState(false) // 스크롤 위치 상태관리
   const navigate = useNavigate()
 
   const handleClickSignin = () => {
@@ -83,8 +91,8 @@ const Header = ({ isLogin }: HeaderProps) => {
     searchListOpen()
   }
 
+  // 로그아웃 API 호출
   const handleClickSignout = async () => {
-    // 로그아웃 API 호출
     const response = await axios.delete('https://gtd.kro.kr/api/v1/auth/')
     // 로그아웃 성공 시
     if (response.status === 202) {
@@ -95,6 +103,18 @@ const Header = ({ isLogin }: HeaderProps) => {
       navigate('/') // 메인페이지로 이동
     }
   }
+  // 스크롤 이벤트
+  // const handleScroll = () => {
+  //   console.log(window.scrollY)
+  //   setScrollPosition(() => (window.scrollY >= 500 ? true : false))
+  // }
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll)
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll) //clean up
+  //   }
+  // })
+
   return (
     <>
       <Container isDarkMode={isDarkMode}>
