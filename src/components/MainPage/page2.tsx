@@ -3,6 +3,8 @@ import styled, { keyframes, css } from 'styled-components'
 import settings from '../../assets/images/MainPage/settings.svg'
 import settings_dark from '../../assets/images/MainPage/settings_dark.svg'
 import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
+import page2 from '../../assets/images/MainPage/page2.svg'
+import page2_dark from '../../assets/images/MainPage/page2_dark.svg'
 import { useDarkModeStore } from '../../store/store'
 
 //해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
@@ -37,16 +39,19 @@ const Section = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 5rem;
 `
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 6rem;
-  gap: 3rem;
+  gap: 2.2rem;
   position: relative;
   height: calc(100vh - 6rem);
-  width: 100vw;
+  width: 84.25vw;
+  margin-bottom: 7rem;
 `
 //console에 있는 gitodoc 글씨와 keep scrolling을 위한 wrapper 추가
 const Centerwrapper = styled.div`
@@ -80,14 +85,29 @@ const down_down = keyframes`
     opacity: 0
   }
   50% {
-    opacity: 1;
+    opacity: 0.5;
   }
   100% {
-    transform: translateY(2rem);
+    transform: translateY(1rem);
     opacity: 0;
   }
 `
+/*** page.svg 추가 ***/
+//Page.svg
+const Styledpage = styled.img`
+  width: 85vw;
+  height: 40rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
 
+  @media (max-width: 720px) {
+    height: 35rem;
+    top: 50%;
+  }
+`
 //icon(svg)
 interface StylediconProps {
   top?: string
@@ -118,7 +138,7 @@ interface DontProps {
   fontfamily?: string
 }
 const Smalldont = styled.span`
-  font-size: 3rem;
+  font-size: 2.5rem;
 
   @media (max-width: 720px) {
     font-size: 2rem;
@@ -127,11 +147,14 @@ const Smalldont = styled.span`
 
 const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   margin-left: 5%;
-  font-size: 4rem;
+  margin-top: 7.5%;
+  margin-bottom: calc(7.5% - 3rem);
+  font-size: 3.5rem;
   font-weight: 700;
+  z-index: 1;
   font-family: 'DMSerifDisplay', serif;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  top: ${(props) => props.top || '10%'};
+  top: ${(props) => props.top || '0'};
   left: 5%;
   letter-spacing: 0;
   line-height: 1.2;
@@ -145,6 +168,8 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
 
   @media (max-width: 720px) {
     font-size: 3rem;
+    margin-top: 18%;
+    margin-bottom: calc(9% - 2.2rem);
   }
 `
 
@@ -161,13 +186,13 @@ interface MonoProps {
 const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   margin-left: ${(props) => props.marginleft || '5%'};
   margin-right: ${(props) => props.marginleft || '5%'};
-  font-size: ${(props) => props.fontSize || '1rem'};
+  font-size: ${(props) => props.fontSize || '0.95rem'};
   font-weight: 400;
+  z-index: 1;
   font-family: monospace;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   letter-spacing: 0.5px;
   line-height: 2;
-  // white-space: nowrap;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 
   @media (max-width: 720px) {
@@ -206,8 +231,8 @@ const ConsoleBox = styled.div<
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  width: ${(props) => props.width || '100vw'};
-  height: ${(props) => props.height || '2.7rem'};
+  width: ${(props) => props.width || '84.25vw'};
+  height: ${(props) => props.height || '2.4rem'};
   top: ${(props) => props.top || '47.5%'};
   left: ${(props) => props.left || '0'};
   background: ${(props) =>
@@ -283,25 +308,26 @@ export const Page2: React.FC = () => {
             </Hilight>
           </BlinkText>
         </MonoText>
-        <Centerwrapper>
-          <MonoText
-            fontSize="0.85rem"
-            littleFontSize="0.7rem"
-            color="#8E004B"
-            marginleft="0"
-            marginright="0"
-            isDarkMode={isDarkMode}>
-            Keep scrolling if you want to make your project perfect
-          </MonoText>
-          <Styledicon
-            src={down_arrow}
-            width="2.2rem"
-            height="2.2rem"
-            animation={true}
-            alt="downarrow"
-          />
-        </Centerwrapper>
       </Wrapper>
+      <Centerwrapper>
+        <MonoText
+          fontSize="0.85rem"
+          littleFontSize="0.7rem"
+          color="#8E004B"
+          marginleft="0"
+          marginright="0"
+          isDarkMode={isDarkMode}>
+          Keep scrolling if you want to make your project perfect
+        </MonoText>
+        <Styledicon
+          src={down_arrow}
+          width="2.2rem"
+          height="2.2rem"
+          animation={true}
+          alt="downarrow"
+        />
+      </Centerwrapper>
+      <Styledpage src={isDarkMode ? page2_dark : page2} alt="page image" />
     </Section>
   )
 }
