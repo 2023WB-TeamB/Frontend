@@ -3,6 +3,7 @@ import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
@@ -151,8 +152,10 @@ function Signin() {
         localStorage.setItem('refreshToken', response.data.token.refresh)
 
         console.log('API Response: ', response.status)
-        alert('로그인 성공!')
-
+        Toast.fire({
+          icon: 'success',
+          title: '환영합니다!',
+        })
         toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
       }
@@ -161,11 +164,25 @@ function Signin() {
       // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        alert('로그인 실패!')
+        Toast.fire({
+          icon: 'success',
+          title: '다시 로그인해 주세요',
+        })
       }
     }
   }
-
+  // sweetAlert2 toast창 라이브러리
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    },
+  })
   return (
     <>
       <Overlay>

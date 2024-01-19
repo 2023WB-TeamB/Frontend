@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
@@ -159,19 +160,37 @@ function Register() {
       if (response.status === 200) {
         console.log(response.data)
         console.log('API Response: ', response.status)
-        alert('회원가입 성공!')
-
+        // alert('회원가입 성공!')
+        Toast.fire({
+          icon: 'success',
+          title: '회원가입에 성공하였습니다.',
+        })
         toggleRegister() // 동작 수행후 모달 닫기
       }
       // 회원가입 실패 시
     } catch (error: any) {
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        alert('회원가입 실패!')
+        // alert('회원가입 실패!')
+        Toast.fire({
+          icon: 'success',
+          title: '회원가입에 실패하였습니다.',
+        })
       }
     }
   }
-
+  // sweetAlert2 toast창 라이브러리
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    },
+  })
   return (
     <>
       <Overlay>
