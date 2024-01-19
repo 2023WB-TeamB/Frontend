@@ -89,7 +89,7 @@ interface PreviewTileProps {
 }
 
 // 프로젝트 미리보기 타일
-const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
+const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const [currentPage, setCurrentPage] = useState(0)
   const style = {
@@ -129,4 +129,4 @@ const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   )
 }
 
-export default PreviewTile
+export default VersionPreviewTile

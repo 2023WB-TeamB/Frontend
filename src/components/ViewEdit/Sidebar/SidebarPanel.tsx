@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import PreviewTile from './PreviewTile'
+import VersionPreviewTile from './VersionPreviewTile'
 import searchIcon from '../../../assets/images/search.png'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
-import { useDarkModeStore } from '../../../store/store'
+import { useDarkModeStore, useViewerPageOpenStore } from '../../../store/store'
 import axios from 'axios'
+import GalleryPreviewTile from './GalleryPreviewTile'
 
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: boolean }>`
@@ -19,7 +20,7 @@ const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: bo
   background-color: ${(props) => (props.isDarkMode ? '#252525' : '#f0f0f0')};
   z-index: 1;
   transform: translate(${({ isOpenSidePanel }) => (isOpenSidePanel ? `0%` : `-100%`)}, 0%);
-  transition: ease-in-out 0.2s;
+  transition: ease-in-out 0.3s;
 `
 
 // 미리보기 타일 묶음
@@ -96,6 +97,7 @@ export interface projectData {
 // 사이드바 확장 패널
 const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel, onClose }) => {
   const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {isOpenGalleryPanel, isOpenVersionPanel} = useViewerPageOpenStore()
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
@@ -103,6 +105,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel, onClose })
   const handleGetDocVersions = async () => {
     try {
       // API 호출, 액세스 토큰
+      
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(
         `${apiUrl}version/`,
@@ -134,12 +137,22 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel, onClose })
           <img src={closeIcon}/>
         </StyledCloseButton>
       </SidePanelTopWrapper>
-      <PreviewTileWrapper isDarkMode={isDarkMode}>
-      {myDocsData.length > 0 && myDocsData.map((item) => {
-        const [projectTitle, projectData] = item
-        return <PreviewTile title={projectTitle} pages={projectData}/>
-      })}
-      </PreviewTileWrapper>
+        {isOpenGalleryPanel && 
+          <PreviewTileWrapper isDarkMode={isDarkMode}>
+          {myDocsData.length > 0 && myDocsData.map((item) => {
+            const [projectTitle, projectData] = item
+            return <GalleryPreviewTile title={projectTitle} pages={projectData}/>
+          })}
+          </PreviewTileWrapper>
+        }
+        {isOpenVersionPanel &&
+          <PreviewTileWrapper isDarkMode={isDarkMode}>
+          {myDocsData.length > 0 && myDocsData.map((item) => {
+            const [projectTitle, projectData] = item
+            return <VersionPreviewTile title={projectTitle} pages={projectData}/>
+          })}
+          </PreviewTileWrapper>
+        }
     </StyledSidebarPanel>
   )
 }

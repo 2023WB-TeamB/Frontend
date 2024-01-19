@@ -5,7 +5,7 @@ import { useDocTagStore, useViewerModeStore } from "../../store/store"
 const TagStyle = css`
   margin: 5px;
   padding: 0 10px;
-  border: 2px solid red;
+  border: 2px solid lightseagreen;
   border-radius: 30px;
   background: transparent;
   color: black;
