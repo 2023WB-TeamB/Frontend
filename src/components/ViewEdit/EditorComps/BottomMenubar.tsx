@@ -30,6 +30,7 @@ const StyledButton = styled.button`
     background-color: white;
     font-size: 12px;
     transition: all ease .2s;
+    color: black;
 
     &:hover {
         background-color: lightgray;
