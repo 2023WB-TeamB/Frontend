@@ -159,7 +159,7 @@ const DocField: React.FC = () => {
     };
 
     return (
-        <ViewerWrapper style={sideOnStyle}>
+        <ViewerWrapper style={sideOnStyle} id='DocField'>
             <TitleArea>
                 {isViewer ?
                     <h2>{title}</h2>

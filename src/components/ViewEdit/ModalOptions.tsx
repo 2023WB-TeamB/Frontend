@@ -14,6 +14,8 @@ import OptionButton from './OptionButton'
 import BackDrop from './BackDrop'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import html2canvas from 'html2canvas'
+import { jsPDF }  from 'jspdf'
 import { useDarkModeStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
@@ -160,6 +162,41 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     })
   }
 
+  //? 다운로드할 컴포넌트 ID
+  const rootElementId = "DocField"
+  //? 다운로드될 파일명
+  const downloadFileName = "GTD_TestPDF"
+  
+  // * PDF 다운로드
+  const downloadPdfDocument = (rootElementId: string) => {
+    const input = document.getElementById(rootElementId);
+    console.log("pdf download start", input)
+    if (input != null)
+      html2canvas(input)
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          //pdf 가로 세로 사이즈
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
+          const widthRatio = pageWidth / canvas.width;
+          const customHeight = canvas.height * widthRatio;
+          //? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight);
+          let heightLeft = customHeight;
+          let heightAdd = -pageHeight;
+          // 한 페이지 이상일 경우
+          while (heightLeft >= pageHeight) {
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight);
+            heightLeft -= pageHeight;
+            heightAdd -= pageHeight;
+          }
+          pdf.save(`${downloadFileName}.pdf`);
+      })
+  }
+
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
@@ -175,7 +212,8 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             <OptionsWrapper>
               <OptionButton 
                 icon={isDarkMode ? pdfIcon_dark : pdfIcon} 
-                context="Download as PDF" 
+                context="Download as PDF"
+                onClick={() => downloadPdfDocument(rootElementId)}
               />
               <OptionButton
                 icon={isDarkMode ? cloudIcon_dark : cloudIcon}
