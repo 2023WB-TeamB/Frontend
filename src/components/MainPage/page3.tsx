@@ -268,7 +268,7 @@ const URLtext = styled.p<
   @media (max-width: 720px) {
     font-size: 0.8rem;
     z-index: 3;
-    top: ${(props) => props.littletop || props.top || '3rem'};
+    top: ${(props) => props.littletop || props.top || '3.2rem'};
     left: ${(props) => props.littleleft || props.left || '8.5rem'};
     animation: ${(props) =>
       props.visible
