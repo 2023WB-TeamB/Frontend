@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import ConfirmButton from './ConfirmButton'
-import ConfirmIcon from '../../assets/images/confirm.png'
-import ConfirmIcon_dark from '../../assets/images/confirm_dark.svg'
+import ConfirmIcon from '../../assets/images/Viewer/confirm.png'
+import ConfirmIcon_dark from '../../assets/images/Viewer/confirm_dark.svg'
 import BackDrop from './BackDrop'
 import { useDarkModeStore } from '../../store/store'
 

@@ -1,19 +1,21 @@
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import styled from 'styled-components'
-import profile from '../assets/images/profile.png'
-import gallery from '../assets/images/gallery button.png'
-import gallery_dark from '../assets/images/gallerybutton_dark.svg'
-import version from '../assets/images/version button.png'
-import version_dark from '../assets/images/versionbutton_dark.svg'
-import exportBtn from '../assets/images/share button.png'
-import exportBtn_dark from '../assets/images/sharebutton_dark.svg'
-import deleteBtn from '../assets/images/delete button.png'
-import deleteBtn_dark from '../assets/images/deletebutton_dark.svg'
-import exit from '../assets/images/exit button.png'
+import double_arrow_left from '../assets/images/Viewer/double-arrow-left.png'
+import double_arrow_right from '../assets/images/Viewer/double-arrow-right.png'
+import gallery from '../assets/images/Viewer/gallery button.png'
+import gallery_dark from '../assets/images/Viewer/gallerybutton_dark.svg'
+import version from '../assets/images/Viewer/version button.png'
+import version_dark from '../assets/images/Viewer/versionbutton_dark.svg'
+import exportBtn from '../assets/images/Viewer/share button.png'
+import exportBtn_dark from '../assets/images/Viewer/sharebutton_dark.svg'
+import deleteBtn from '../assets/images/Viewer/delete button.png'
+import deleteBtn_dark from '../assets/images/Viewer/deletebutton_dark.svg'
+import exit from '../assets/images/Viewer/exit button.png'
 import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
+import LittleHeader from '../components/ViewEdit/LittleHeader'
 import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
 
 import { useState } from 'react'
@@ -27,11 +29,13 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: row;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  transition: ease .5s;
 `
 
 function ViewerPage() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  const toggleOpenSideAlways = useSidePeekStore((state) => state.toggleOpenSideAlways)
+  const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const openerStore = useViewerPageOpenStore()
   const confirmBoxStore = useConfirmBoxStore()
   const [confirmLabel, setConfirmLabel] = useState('')
@@ -41,8 +45,9 @@ function ViewerPage() {
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
     setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
-    setConfirmAction(() => {
+    setConfirmAction(() => () => {
       // 문서 삭제 로직
+      console.log("문서 삭제함!")
     })
     confirmBoxStore.setConfirmLabel(confirmLabel)
     confirmBoxStore.openConfirm()
@@ -65,9 +70,10 @@ function ViewerPage() {
 
   return (
     <StyledForm isDarkMode={isDarkMode}>
+      <LittleHeader/>
       <Sidebar
         list={[
-          [profile, toggleOpenSideAlways],
+          [isOpenSideAlways ? double_arrow_left : double_arrow_right, toggleOpenSideAlways],
           [isDarkMode ? gallery_dark : gallery, openerStore.openGalleryPanel],
           [isDarkMode ? version_dark : version, openerStore.openVersionPanel],
           [isDarkMode ? exportBtn_dark : exportBtn, openerStore.openOptions],

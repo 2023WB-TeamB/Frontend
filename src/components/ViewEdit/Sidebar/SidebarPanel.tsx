@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import PreviewTile from './PreviewTile'
-import searchIcon from '../../../assets/images/search.svg'
+import VersionPreviewTile from './VersionPreviewTile'
+import searchIcon from '../../../assets/images/search.png'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
-import { useDarkModeStore } from '../../../store/store'
+import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
+import { useDarkModeStore, useViewerPageOpenStore } from '../../../store/store'
+import axios from 'axios'
+import GalleryPreviewTile from './GalleryPreviewTile'
 
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: boolean }>`
@@ -17,7 +20,7 @@ const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: bo
   background-color: ${(props) => (props.isDarkMode ? '#252525' : '#f0f0f0')};
   z-index: 1;
   transform: translate(${({ isOpenSidePanel }) => (isOpenSidePanel ? `0%` : `-100%`)}, 0%);
-  transition: ease-in-out 0.2s;
+  transition: ease-in-out 0.3s;
 `
 
 // 미리보기 타일 묶음
@@ -35,8 +38,7 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean }>`
 
 // 검색 영역 스타일
 const SearchArea = styled.div<{ isDarkMode: boolean }>`
-  margin: 25px;
-  width: 75%;
+  width: 80%;
   height: 40px;
   border: 1px solid ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 30px;
@@ -46,7 +48,7 @@ const SearchArea = styled.div<{ isDarkMode: boolean }>`
   overflow: hidden;
 
   input {
-    padding: 13px;
+    padding: 12px;
     width: 85%;
     background: transparent;
     border: none;
@@ -58,9 +60,26 @@ const SearchArea = styled.div<{ isDarkMode: boolean }>`
       outline: none;
     }
   }
+`
 
-  img {
-  }
+//* 패널 닫기 버튼
+const StyledCloseButton = styled.button`
+  width: 40px;
+  height: 40px;
+  background: transparent no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+//* 패널 상단 집합
+const SidePanelTopWrapper = styled.div`
+  width: 70%;
+  margin: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `
 
 interface SidebarPanelProps {
@@ -68,71 +87,72 @@ interface SidebarPanelProps {
   onClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
+export interface projectData {
+  id: number
+  title: string
+  color: string
+  created_at: string
+}
+
 // 사이드바 확장 패널
-const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel }) => {
+const SidebarPanel: React.FC<SidebarPanelProps> = ({ isOpenSidePanel, onClose }) => {
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {isOpenGalleryPanel, isOpenVersionPanel} = useViewerPageOpenStore()
+  const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+
+  //? 문서 조회 API
+  const handleGetDocVersions = async () => {
+    try {
+      // API 호출, 액세스 토큰
+      
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(
+        `${apiUrl}version/`,
+        {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        },
+      )
+      setMyDocsData(Object.entries(response.data.data))
+    } catch (error: any) {
+      // API 호출 실패
+      console.error('API Error :', error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetDocVersions()
+  }, [])
 
   return (
     <StyledSidebarPanel isOpenSidePanel={isOpenSidePanel} isDarkMode={isDarkMode}>
-      <SearchArea isDarkMode={isDarkMode}>
-        <input></input>
-        <img src={isDarkMode ? searchIcon_dark : searchIcon}></img>
-      </SearchArea>
-      <PreviewTileWrapper isDarkMode={isDarkMode}>
-        <PreviewTile
-          title="Test Project"
-          pages={['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6']}
-        />
-        <PreviewTile
-          title="배고프다"
-          pages={[
-            '어쩌다 나는 이렇게된 거죠',
-            '어떻게 이렇게 배고플 수 있죠',
-            '한번 무엇도 이처럼 원한 적 없죠',
-            '그립다고 천 번쯤 말해보면 닿을까요',
-            '울어보고 떼쓰면 배고픈 내 마음 알까요',
-            '그 이름 만 번쯤 미워해 볼까요',
-            '서운한 일들만 손꼽을까요',
-            '이미 허기는 너무 커져 있는데',
-            '배고픈 내가 아니니 내 맘 닿을 수 없겠죠',
-            '그래요 내가 더 많이 배고픈 거죠',
-          ]}
-        />
-        <PreviewTile
-          title="GiToDoc"
-          pages={['Page 1', 'Page 2', 'Page 3', 'Page 4', 'Page 5', 'Page 6']}
-        />
-        <PreviewTile
-          title="Centauri"
-          pages={[
-            'Proxima Centauri',
-            'Alpha Centauri A',
-            'Alpha Centauri B',
-            'Rigil Kentaurus',
-            'Toliman',
-          ]}
-        />
-        <PreviewTile
-          title="Centauri"
-          pages={[
-            'Proxima Centauri',
-            'Alpha Centauri A',
-            'Alpha Centauri B',
-            'Rigil Kentaurus',
-            'Toliman',
-          ]}
-        />
-        <PreviewTile
-          title="Centauri"
-          pages={[
-            'Proxima Centauri',
-            'Alpha Centauri A',
-            'Alpha Centauri B',
-            'Rigil Kentaurus',
-            'Toliman',
-          ]}
-        />
-      </PreviewTileWrapper>
+      <SidePanelTopWrapper>
+        <SearchArea isDarkMode={isDarkMode}>
+          <input></input>
+          <img src={isDarkMode ? searchIcon_dark : searchIcon}></img>
+        </SearchArea>
+        <StyledCloseButton onClick={onClose}>
+          <img src={closeIcon}/>
+        </StyledCloseButton>
+      </SidePanelTopWrapper>
+        {isOpenGalleryPanel && 
+          <PreviewTileWrapper isDarkMode={isDarkMode}>
+          {myDocsData.length > 0 && myDocsData.map((item) => {
+            const [projectTitle, projectData] = item
+            return <GalleryPreviewTile title={projectTitle} pages={projectData}/>
+          })}
+          </PreviewTileWrapper>
+        }
+        {isOpenVersionPanel &&
+          <PreviewTileWrapper isDarkMode={isDarkMode}>
+          {myDocsData.length > 0 && myDocsData.map((item) => {
+            const [projectTitle, projectData] = item
+            return <VersionPreviewTile title={projectTitle} pages={projectData}/>
+          })}
+          </PreviewTileWrapper>
+        }
     </StyledSidebarPanel>
   )
 }

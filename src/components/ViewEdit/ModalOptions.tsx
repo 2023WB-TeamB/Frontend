@@ -1,20 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import pdfIcon from '../../assets/images/pdf.png'
-import pdfIcon_dark from '../../assets/images/pdf_dark.svg'
-import cloudIcon from '../../assets/images/upload-cloud.png'
-import cloudIcon_dark from '../../assets/images/upload-cloud_dark.svg'
-import urlIcon from '../../assets/images/url.png'
-import urlIcon_dark from '../../assets/images/url_dark.svg'
-import qrCreateIcon from '../../assets/images/qr-code-add.png'
-import qrCreateIcon_dark from '../../assets/images/qr-code-add_dark.svg'
-import closeIcon from '../../assets/images/closeIcon.png'
-import closeIcon_dark from '../../assets/images/closeIcon_dark.svg'
+import pdfIcon from '../../assets/images/Viewer/pdf.png'
+import pdfIcon_dark from '../../assets/images/Viewer/pdf_dark.svg'
+import cloudIcon from '../../assets/images/Viewer/upload-cloud.png'
+import cloudIcon_dark from '../../assets/images/Viewer/upload-cloud_dark.svg'
+import urlIcon from '../../assets/images/Viewer/url.png'
+import urlIcon_dark from '../../assets/images/Viewer/url_dark.svg'
+import qrCreateIcon from '../../assets/images/Viewer/qr-code-add.png'
+import qrCreateIcon_dark from '../../assets/images/Viewer/qr-code-add_dark.svg'
+import closeIcon from '../../assets/images/Viewer/closeIcon.png'
+import closeIcon_dark from '../../assets/images/Viewer/closeIcon_dark.svg'
 import OptionButton from './OptionButton'
 import BackDrop from './BackDrop'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useDarkModeStore } from '../../store/store'
+import html2canvas from 'html2canvas'
+import { jsPDF }  from 'jspdf'
+import { useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
@@ -70,9 +72,9 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-  const apiUrl = 'http://gtd.kro.kr:8000/api/v1/docs/'
-  // ! docsId : 임시 문서ID
-  const docsId = 4
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {docId} = useDocIdStore()
+  const {title} = useDocContentStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -91,7 +93,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       const response = await axios.post(
         `${apiUrl}share/`,
         {
-          docs_id: docsId,
+          docs_id: docId,
         },
         {
           headers: {
@@ -151,13 +153,44 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   const showQRCodeModal = () => {
     console.log(docUrl)
     Swal.fire({
-      // ! 문서 제목으로 수정 예정
-      title: '문서 제목; docs_id : ' + docsId,
-      text: docUrl,
+      text: title,
       imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
       imageAlt: 'QR Code',
       showConfirmButton: true,
     })
+  }
+
+  //? 다운로드할 컴포넌트 ID
+  const rootElementId = "DocField"
+  
+  // * PDF 다운로드
+  const downloadPdfDocument = (rootElementId: string) => {
+    const input = document.getElementById(rootElementId);
+    console.log("pdf download start", input)
+    if (input != null)
+      html2canvas(input)
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          //pdf 가로 세로 사이즈
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
+          const widthRatio = pageWidth / canvas.width;
+          const customHeight = canvas.height * widthRatio;
+          //? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight);
+          let heightLeft = customHeight;
+          let heightAdd = -pageHeight;
+          // 한 페이지 이상일 경우
+          while (heightLeft >= pageHeight) {
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight);
+            heightLeft -= pageHeight;
+            heightAdd -= pageHeight;
+          }
+          pdf.save(`${title}.pdf`);
+      })
   }
 
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -173,7 +206,11 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             </CloseButton>
             <label>Export</label>
             <OptionsWrapper>
-              <OptionButton icon={isDarkMode ? pdfIcon_dark : pdfIcon} context="Download as PDF" />
+              <OptionButton 
+                icon={isDarkMode ? pdfIcon_dark : pdfIcon} 
+                context="Download as PDF"
+                onClick={() => downloadPdfDocument(rootElementId)}
+              />
               <OptionButton
                 icon={isDarkMode ? cloudIcon_dark : cloudIcon}
                 context="Upload to Cloud"

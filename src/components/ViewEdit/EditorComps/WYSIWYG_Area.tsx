@@ -29,6 +29,7 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
+import { useDocContentStore, useViewerModeStore } from "../../../store/store";
 
 const lowlight = createLowlight(common);
 
@@ -51,7 +52,7 @@ const extensions = [
   Typography,
   TaskList,
   TaskItem.configure({
-    nested: false,
+    nested: true,
   }),
   Link,
   Image.configure({
@@ -68,28 +69,26 @@ const extensions = [
   TableCell,
 ]
 
-// ! 임시 문서 내용
-const content = '<p>Hellowfoajwofj fw1123</p>'
-
 const EditorWrapper = styled.div`
   position: relative;
   min-height: 450px;
   height: 100%;
-
+  
   // * Editor Form
   & .editor-content {
-    padding: 1px;
-    line-height: 1;
+    line-height: 1.5rem;
     overflow: hidden;
   }
-
+  
   & .tableWrapper {
     border: 1px solid black;
   }
 `
 
-const EditorArea = () => {
+const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
+  const {isViewer} = useViewerModeStore()
+  const {content, setContent} = useDocContentStore()
 
   useEffect(() => {
     if (editorRef.current) {
@@ -105,18 +104,21 @@ const EditorArea = () => {
       attributes: {
         class: 'editor-content',
       },
-    }
+    },
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML())
+    },
   })
 
   return (
     <>
       <EditorWrapper>
-        <EditorContent editor={editor} ref={editorRef} />
+        <EditorContent editor={editor} ref={editorRef}/>
         <BubbleMenu editor={editor}>
           <BubbleMenubar editor={editor}/>
         </BubbleMenu>
       </EditorWrapper>
-      <BottomMenubar editor={editor}/>
+      {isViewer || <BottomMenubar editor={editor}/>}
     </>
   )
 }
