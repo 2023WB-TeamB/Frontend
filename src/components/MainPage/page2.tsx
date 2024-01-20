@@ -301,7 +301,7 @@ export const Page2: React.FC = () => {
           <br />
           <br />
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;With our{' '}
-          <Hilight hilightLight="#FCEBEB" hilightDark="#4E3534" isDarkMode={isDarkMode}>
+          <Hilight hilightLight="#FCEBEB" hilightDark="#8A6565" isDarkMode={isDarkMode}>
             GiToDoc;
           </Hilight>
           <br />
