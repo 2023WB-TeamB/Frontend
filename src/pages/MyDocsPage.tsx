@@ -76,7 +76,9 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs/' // 배포 서버
+  const apiUrl = 'http://localhost:8000/api/v1/docs/' // 개발 서버
+
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,

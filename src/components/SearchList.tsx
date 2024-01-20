@@ -32,7 +32,7 @@ const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  z-index: 5; // 재훈님과 얘기해서 수치 조정
 `
 const Container = styled.div`
   display: flex;
@@ -90,11 +90,14 @@ const SearchList: React.FC = () => {
 
   const getSearchData = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
+      // const url = 'https://gtd.kro.kr/api/v1/docs/search/' // 배포 서버
+      const url = 'http://localhost:8000/api/v1/docs/search/' // 개발 서버
+
       const temp = e.target.value
       setSearch(temp)
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
-        `https://gtd.kro.kr/api/v1/docs/search/`,
+        `${url}`,
         {
           query: `${search}`, // 검색하고자할 키워드, 제목의 일부
         },
