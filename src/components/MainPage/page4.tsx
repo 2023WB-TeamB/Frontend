@@ -227,7 +227,7 @@ const down_down = keyframes`
   opacity: 0
 }
 50% {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 100% {
   transform: translateY(1rem);
@@ -279,11 +279,11 @@ const Dont = styled.div<
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
-  height= ${(props) => props.height || 'none'};
-  width= ${(props) => props.width || 'none'};
-  border-radius : ${(props) => props.radius || 'none'};
+  height: ${(props) => props.height || 'none'};
+  width: ${(props) => props.width || 'none'};
+  border-radius: ${(props) => props.radius || 'none'};
   background-color: ${(props) => props.background || 'none'};
-  border : ${(props) => props.border || 'none'};
+  border: ${(props) => props.border || 'none'};
   animation: ${(props) =>
     props.visible
       ? css`
@@ -294,7 +294,7 @@ const Dont = styled.div<
   @media (max-width: 720px) {
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
-    `
+`
 /*--flex로 인하여 guagebar 따로 추가(원래 Dont였습니다)--*/
 const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
   height: 100%;
@@ -307,7 +307,6 @@ const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
           ${progress} 8s ease-in-out forwards;
         `
       : 'none'};
-  }
 `
 
 //Page.svg
@@ -333,7 +332,7 @@ const Styledpage = styled.img<Page>`
 `
 
 //icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
-interface Styledicon {
+interface StylediconProps {
   top?: string
   left?: string
   width?: string
@@ -343,7 +342,7 @@ interface Styledicon {
   translate?: string
   littletop?: string
 }
-export const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+export const Styledicon = styled.img<StylediconProps & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
@@ -358,18 +357,18 @@ export const Styledicon = styled.img<Styledicon & { visible: boolean; animationT
             ${move} 0.5s ${props.delay || '1s'} ease-out 2;
           `
         : props.animationType === 'movedocument'
-        ? css`
-            ${movedocument} 7s forwards;
-          `
-        : props.animationType === 'openthebox'
-        ? css`
-            ${openthebox} 7s forwards;
-          `
-        : props.animationType === 'vibration'
-        ? css`
-            ${vibration} 0.1s 4.5s 3;
-          `
-        : 'none'
+          ? css`
+              ${movedocument} 7s forwards;
+            `
+          : props.animationType === 'openthebox'
+            ? css`
+                ${openthebox} 7s forwards;
+              `
+            : props.animationType === 'vibration'
+              ? css`
+                  ${vibration} 0.1s 4.5s 3;
+                `
+              : 'none'
       : 'none'};
 
   @media (max-width: 720px) {
@@ -510,7 +509,7 @@ export const Page4: React.FC = () => {
         </Animationwrapper2>
       </Animationwrapper>
       <Arrowwrapper>
-        <Styledarrow src={down_arrow} animation={true} alt="downarrow" />
+        <Styledarrow src={down_arrow} animation alt="downarrow" />
       </Arrowwrapper>
     </Section>
   )
