@@ -1,13 +1,13 @@
-import { GlobalStyle } from '../GlobalStyle'
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
+import { GlobalStyle } from '../GlobalStyle'
 import Signin from '../components/Signin.tsx'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
-import down_arrow from '../../src/assets/images/MainPage/down_arrow.svg'
+import down_arrow from '../assets/images/MainPage/down_arrow.svg'
 import useModalStore from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
 
@@ -121,7 +121,7 @@ const down_down = keyframes`
     opacity: 0
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
   100% {
     transform: translateY(1rem);
@@ -182,7 +182,7 @@ const MainPage: React.FC = () => {
             </InputBoxWrapper>
           </LogoWrapper>
           <Arrowwrapper>
-            <Styledicon src={down_arrow} animation={true} alt="downarrow" />
+            <Styledicon src={down_arrow} animation alt="downarrow" />
           </Arrowwrapper>
         </Section>
         <Page2 />
