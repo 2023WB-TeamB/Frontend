@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Modal from '../Modal'
-import { Doc } from '../../../store/store'
+import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
-import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
+import { darken } from 'polished'
+import Preview from './Preview'
+import getContent from './getContent'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -44,10 +45,11 @@ const Card = styled.div<{ backgroundColor: string }>`
   color: white;
   box-sizing: border-box;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background: ${({ backgroundColor }) =>
+    `linear-gradient(135deg, ${backgroundColor}, ${darken(0.02, backgroundColor)})`};
   position: relative;
-  text-align: left;
   font-size: 1.1rem;
+  word-break: break-all;
   width: 13.5rem;
   height: 18rem;
   padding: 1rem 1.5rem;
@@ -58,11 +60,18 @@ const Card = styled.div<{ backgroundColor: string }>`
     //호버 시 카드 커지는 효과
     transform: scale(1.03);
   }
-  h3 {
-    overflow: hidden;
+  div {
+    line-height: 1.6rem;
+    font-size: 1.26rem;
+    font-weight: 600;
     width: 11rem;
-    height: 13.5rem;
+    height: 13rem;
     margin: 0.8rem 0.3rem 1rem 0.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `
 
@@ -117,7 +126,7 @@ const PageDot = styled.div<{ active: boolean }>`
 `
 
 const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
-  const { modalOpen, setModalOpen } = modalOpenStore()
+  const { previewOpen, setPreviewOpen } = previewOpenStore()
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
   const [buttonActive, setButtonActive] = useState(false) // 버튼 클릭 활성화 상태. opacity 변화 유지하는 데에 사용됨
   const [direction, setDirection] = useState(0) // 페이지 이동 방향
@@ -126,22 +135,26 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setCurrentPage(targetPage) // direction 상태가 변경될 때 targetPage 상태를 기반으로 currentPage를 업데이트. setDirection과 setCurrentPage의 비동기 호출을 순서대로 이뤄지게 함.
   }, [targetPage])
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
-  const { modalContent, setModalContent } = modalContentStore((state) => ({
-    modalContent: state.modalContent,
-    setModalContent: state.setModalContent,
+  const { previewContent, setPreviewContent } = previewContentStore((state) => ({
+    previewContent: state.previewContent,
+    setPreviewContent: state.setPreviewContent,
   }))
   const cardsPerPage = 8 // 한 페이지당 카드 수
   const totalPageNum = Math.ceil(docs.length / cardsPerPage) // 총 페이지 수를 계산합니다.
 
-  const handleCardClick = (item: {
+  const handleCardClick = async (item: {
     id: number
     title: string
     created_at: string
     color: string
   }) => {
-    setCardId(item.id) // 컬러 수정할 문서 id 설정
-    setModalContent(item)
-    setModalOpen(true)
+    setCardId(item.id) // 문서 id 설정
+    const content = await getContent(item.id) // content 불러오기
+    setPreviewContent({
+      ...item,
+      content: content,
+    }) // previewContent에 item과 content를 추가하여 저장
+    setPreviewOpen(true)
   }
 
   const handlePrev = () => {
@@ -181,7 +194,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
             exit="exit">
             {currentCards.map((doc) => (
               <Card key={doc.id} backgroundColor={doc.color} onClick={() => handleCardClick(doc)}>
-                <h3>{doc.title}</h3>
+                <div>{doc.title}</div>
               </Card>
             ))}
           </Collection>
@@ -191,7 +204,11 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           onClick={handleNext}
           disabled={currentPage === totalPageNum}
         />
-        <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
+        <Preview
+          previewOpen={previewOpen}
+          previewContent={previewContent}
+          setPreviewOpen={setPreviewOpen}
+        />
       </Wrapper>
       <PageDotContainer>
         {Array.from({ length: totalPageNum }).map((_, i) => (
