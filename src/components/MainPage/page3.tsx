@@ -9,7 +9,7 @@ import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreenDiv(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -34,7 +34,7 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -60,7 +60,7 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-/*-----Wrapper------*/
+/* -----Wrapper------*/
 const Section = styled.div`
   position: relative;
   width: 100vw;
@@ -83,6 +83,11 @@ const Animationwrapper = styled.div`
   justify-content: center;
   margin-left: calc((100vw - 1152px) / 2);
   margin-right: calc((100vw - 1152px) / 2);
+
+  @media (max-width: 720px) {
+    margin-left: 7%;
+    margin-right: 7%;
+  }
 `
 const Animationwrapper2 = styled.div`
   position: relative;
@@ -99,7 +104,7 @@ const Arrowwrapper = styled.div`
   width: 99vw;
 `
 
-//keyframes 애니메이션 : flex로 묶어 위치 수정
+// keyframes 애니메이션 : flex로 묶어 위치 수정
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -162,14 +167,14 @@ const littlemoveURL = keyframes`
   }
 `
 
-/*----down-arrow animation-----*/
+/* ----down-arrow animation-----*/
 const down_down = keyframes`
 0% {
   transform: translateY(0);
   opacity: 0
 }
 50% {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 100% {
   transform: translateY(1rem);
@@ -247,7 +252,7 @@ const URLtext = styled.p<
   font-size: 1rem;
   top: ${(props) => props.top || '2.85rem'};
   left: ${(props) => props.left || '12rem'};
-  fontfamily: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: absolute;
   white-space: nowrap;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -272,7 +277,6 @@ const URLtext = styled.p<
           `
         : 'none'};
     animation-delay: 3.7s;
-  }
 `
 
 //Page (GitPage+gitodoc) : 위치 수정
@@ -384,7 +388,7 @@ export const Page3: React.FC = () => {
         </Animationwrapper2>
       </Animationwrapper>
       <Arrowwrapper>
-        <Styledarrow src={down_arrow} animation={true} alt="downarrow" />
+        <Styledarrow src={down_arrow} animation alt="downarrow" />
       </Arrowwrapper>
     </Section>
   )
