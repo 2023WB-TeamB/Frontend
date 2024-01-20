@@ -4,37 +4,67 @@ import styled from 'styled-components'
 import ViewDetailsButton from './ViewDetailsButton'
 import { cardColorStore, isDeleteStore, modalOpenStore } from '../../store/store'
 import Swal from 'sweetalert2'
+import { darken } from 'polished'
 
-interface StyledProps {
-  color?: string
+interface ContentProps {
+  color: string
 }
 
-const Content = styled.div<StyledProps>`
+const Content = styled.div<ContentProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  background: ${({ color }) => color || 'rgba(0, 0, 0, 1)'};
+  background: ${({ color }) => `linear-gradient(135deg, ${color}, ${darken(0.02, color)})`};
   color: white;
   font-size: 1rem;
   width: 20rem;
   height: 26rem;
   padding: 1.7rem;
   border-radius: 20px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+`
+
+interface PageProps {
+  color: string
+  zindex: number
+  translateX: number // translateX 값을 props로 받습니다.
+  translateY: number // translateY 값을 props로 받습니다.
+}
+
+// 페이지 겹쳐보이는 효과를 위한 빈 모달
+const EmptyPage = styled.div<PageProps>`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(${({ translateX }) => translateX}%, ${({ translateY }) => translateY}%);
+  z-index: ${({ zindex }) => zindex || 0};
+  background: ${({ color }) => `linear-gradient(135deg, ${color}, ${darken(0.04, color)})`};
+  width: 20rem;
+  height: 26rem;
+  padding: 1.7rem;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 // 문서 최근 수정일
 const DateLine = styled.p`
   text-align: left;
+  margin: 0.6rem 0;
 `
 
 // 문서 제목
 const Title = styled.h2`
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   height: 19rem; // 높이를 지정합니다.
   width: 100%; // 너비를 지정합니다.
   margin: 0;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 // 추가 버튼 (팔레트, 삭제)
 const OptionalButton = styled.button`
@@ -140,26 +170,30 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at })
   }
 
   return (
-    <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
-      <ButtonsContainer>
-        <OptionalButton onClick={handleClick}>🎨</OptionalButton>
-        <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
-      </ButtonsContainer>
-      <DateLine>{created_at.slice(0, 10)}</DateLine>
-      <Title>{title}</Title>
-      <ButtonsContainer>
-        <ViewDetailsButton />
-      </ButtonsContainer>
+    <>
+      <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
+        <ButtonsContainer>
+          <OptionalButton onClick={handleClick}>🎨</OptionalButton>
+          <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
+        </ButtonsContainer>
+        <DateLine>{created_at.slice(0, 10)}</DateLine>
+        <Title>{title}</Title>
+        <ButtonsContainer>
+          <ViewDetailsButton />
+        </ButtonsContainer>
 
-      {displayColorPicker ? (
-        <>
-          <Overlay onClick={handleClose} />
-          <ColorPickerWrapper>
-            <TwitterPicker color={cardColor} onChange={handleChange} />
-          </ColorPickerWrapper>
-        </>
-      ) : null}
-    </Content>
+        {displayColorPicker ? (
+          <>
+            <Overlay onClick={handleClose} />
+            <ColorPickerWrapper>
+              <TwitterPicker color={cardColor} onChange={handleChange} />
+            </ColorPickerWrapper>
+          </>
+        ) : null}
+      </Content>
+      <EmptyPage color={cardColor} zindex={-1} translateX={-49} translateY={-49} />
+      <EmptyPage color={cardColor} zindex={-2} translateX={-48} translateY={-48} />
+    </>
   )
 }
 
