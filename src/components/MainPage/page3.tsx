@@ -81,8 +81,8 @@ const Animationwrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: calc((100vw - 1152px) / 2);
+  margin-right: calc((100vw - 1152px) / 2);
 `
 const Animationwrapper2 = styled.div`
   position: relative;
