@@ -46,12 +46,16 @@ const Section = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 6rem;
-  gap: 2.2rem;
+  padding-top: 5rem;
+  gap: 1.7rem;
   position: relative;
-  height: calc(100vh - 6rem);
+  height: 35rem;
   width: 84.25vw;
-  margin-bottom: 7rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 720px) {
+    gap: 2rem;
+  }
 `
 //console에 있는 gitodoc 글씨와 keep scrolling을 위한 wrapper 추가
 const Centerwrapper = styled.div`
@@ -85,7 +89,7 @@ const down_down = keyframes`
     opacity: 0
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
   100% {
     transform: translateY(1rem);
@@ -96,9 +100,9 @@ const down_down = keyframes`
 //Page.svg
 const Styledpage = styled.img`
   width: 85vw;
-  height: 40rem;
+  height: 35rem;
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -147,8 +151,8 @@ const Smalldont = styled.span`
 
 const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   margin-left: 5%;
-  margin-top: 7.5%;
-  margin-bottom: calc(7.5% - 3rem);
+  margin-top: 6%;
+  margin-bottom: calc(6% - 3rem);
   font-size: 3.5rem;
   font-weight: 700;
   z-index: 1;
@@ -168,8 +172,8 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
 
   @media (max-width: 720px) {
     font-size: 3rem;
-    margin-top: 18%;
-    margin-bottom: calc(9% - 2.2rem);
+    margin-top: 15%;
+    margin-bottom: calc(9% - 2rem);
   }
 `
 
@@ -186,6 +190,7 @@ interface MonoProps {
 const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   margin-left: ${(props) => props.marginleft || '5%'};
   margin-right: ${(props) => props.marginleft || '5%'};
+  margin-bottom: 0;
   font-size: ${(props) => props.fontSize || '0.95rem'};
   font-weight: 400;
   z-index: 1;
