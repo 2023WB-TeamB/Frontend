@@ -92,8 +92,8 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
 
   // 로그아웃 API 호출
   const handleClickSignout = async () => {
-    // const url = 'https://gtd.kro.kr/api/v1/auth/' // 배포 서버
-    const url = 'http://localhost:8000/api/v1/auth/' // 개발 서버
+    const url = 'https://gtd.kro.kr/api/v1/auth' // 배포 서버
+    // const url = 'http://localhost:8000/api/v1/auth' // 개발 서버
     const response = await axios.delete(url)
     // 로그아웃 성공 시
     if (response.status === 202) {
@@ -104,6 +104,14 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
       navigate('/') // 메인페이지로 이동
     }
   }
+
+  // 페이지가 닫힐 때 로그아웃 수행
+  // window.addEventListener('unload', deleteToken)
+  // function deleteToken() {
+  //   localStorage.removeItem('accessToken')
+  //   localStorage.removeItem('refreshToken')
+  // }
+
   // 스크롤 이벤트
   // const handleScroll = () => {
   //   console.log(window.scrollY)

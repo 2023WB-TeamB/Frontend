@@ -90,11 +90,11 @@ const SearchList: React.FC = () => {
 
   const getSearchData = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
-      // const url = 'https://gtd.kro.kr/api/v1/docs/search/' // 배포 서버
-      const url = 'http://localhost:8000/api/v1/docs/search/' // 개발 서버
-
+      const url = 'https://gtd.kro.kr/api/v1/docs/search' // 배포 서버
+      // const url = 'http://localhost:8000/api/v1/docs/search' // 개발 서버
       const temp = e.target.value
       setSearch(temp)
+
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
         `${url}`,
@@ -106,7 +106,7 @@ const SearchList: React.FC = () => {
       if (response.status === 200) {
         setSearchedData(response.data.data) // 검색한 문서의 정보, 배열이 들어감(타이틀 날짜 키워드 등)
         console.log('API Response: ', response.status)
-        console.log('API Responsed Data: ', response.data)
+        console.log('API Responsed Data: ', response.data.data)
       }
     },
     [search],
