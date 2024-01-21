@@ -125,7 +125,7 @@ interface SidePeekState {
   toggleOpenSideAlways: () => void
 }
 export const useSidePeekStore = create<SidePeekState>((set) => ({
-  isOpenSideAlways: false,
+  isOpenSideAlways: true,
   toggleOpenSideAlways: () =>
     set((state) => ({
       isOpenSideAlways: !state.isOpenSideAlways,
@@ -138,9 +138,8 @@ interface ViewerPageOpenState {
   isOpenVersionPanel: boolean
   isOpenOptions: boolean
   openGalleryPanel: () => void
-  closeGalleryPanel: () => void
   openVersionPanel: () => void
-  closeVersionPanel: () => void
+  closeSidePanel: () => void
   openOptions: () => void
   closeOptions: () => void
 }
@@ -153,17 +152,14 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
       isOpenVersionPanel: false,
       isOpenGalleryPanel: true,
     })),
-  closeGalleryPanel: () =>
-    set(() => ({
-      isOpenGalleryPanel: false,
-    })),
   openVersionPanel: () =>
     set(() => ({
       isOpenGalleryPanel: false,
       isOpenVersionPanel: true,
     })),
-  closeVersionPanel: () =>
+  closeSidePanel: () =>
     set(() => ({
+      isOpenGalleryPanel: false,
       isOpenVersionPanel: false,
     })),
   openOptions: () =>
