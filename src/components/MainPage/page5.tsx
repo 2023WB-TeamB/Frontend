@@ -92,7 +92,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 7rem;
-  margin-bottom; 0;
+  margin-bottom: 0;
 `
 const TextWrapper = styled.div`
   display: flex;
