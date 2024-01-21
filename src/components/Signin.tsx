@@ -3,11 +3,12 @@ import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import useModalStore from './useModalStore'
+import { useModalStore } from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgGoogle from '../assets/images/logo_google.png'
 import imgGithub from '../assets/images/logo_github.png'
@@ -137,10 +138,12 @@ function Signin() {
   }
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
+    // const url = 'http://localhost:8000/api/v1/auth' // 개발서버
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
-      const response = await axios.post('https://gtd.kro.kr/api/v1/auth/', {
+      const response = await axios.post(url, {
         email: data.email,
         password: data.password,
       })
@@ -151,8 +154,10 @@ function Signin() {
         localStorage.setItem('refreshToken', response.data.token.refresh)
 
         console.log('API Response: ', response.status)
-        alert('로그인 성공!')
-
+        Toast.fire({
+          icon: 'success',
+          title: '환영합니다!',
+        })
         toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
       }
@@ -161,11 +166,25 @@ function Signin() {
       // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        alert('로그인 실패!')
+        Toast.fire({
+          icon: 'success',
+          title: '다시 로그인해 주세요',
+        })
       }
     }
   }
-
+  // sweetAlert2 toast창 라이브러리
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    },
+  })
   return (
     <>
       <Overlay>
