@@ -1,3 +1,5 @@
+import React from 'react'
+import styled, { keyframes, css } from 'styled-components'
 import { GlobalStyle } from '../GlobalStyle'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
@@ -7,6 +9,8 @@ import { Page3 } from '../components/MainPage/page3'
 import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
+import down_arrow from '../assets/images/MainPage/down_arrow.svg'
+import useModalStore from '../components/useModalStore.tsx'
 import { useLocalStorageStore, useModalStore } from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
 
@@ -38,6 +42,13 @@ const LogoWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1rem;
+`
+const Arrowwrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 20vh;
+  width: 20vw;
 `
 
 //Logo
@@ -106,6 +117,40 @@ const InputBox = styled.input<{ isDarkMode: boolean }>`
   }
 `
 
+/*----down-arrow animation-----*/
+const down_down = keyframes`
+  0% {
+    transform: translateY(0);
+    opacity: 0
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+`
+interface StylediconProps {
+  animation: boolean
+}
+
+const Styledicon = styled.img<StylediconProps>`
+  position: absolute;
+  top: 130%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 3;
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 2s ease-out infinite
+        `
+      : 'none'};
+`
+
 /*** Publishing ***/
 const MainPage: React.FC = () => {
   const { isSigninOpen, toggleSignin } = useModalStore() // 로그인 모달 상태
@@ -145,6 +190,9 @@ const MainPage: React.FC = () => {
               <InputBox isDarkMode={isDarkMode} type="text" onKeyDown={handleEnter} />
             </InputBoxWrapper>
           </LogoWrapper>
+          <Arrowwrapper>
+            <Styledicon src={down_arrow} animation alt="downarrow" />
+          </Arrowwrapper>
         </Section>
         <Page2 />
         <Page3 />

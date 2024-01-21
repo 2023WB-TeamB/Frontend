@@ -76,9 +76,8 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs/' // 배포 서버
-  const apiUrl = 'http://localhost:8000/api/v1/docs/' // 개발 서버
-
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
+  const apiUrl = 'http://localhost:8000/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,
@@ -127,7 +126,7 @@ const MyDocsPage: React.FC = () => {
       // API 호출, 엑세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `${apiUrl}${cardId}/`,
+        `${apiUrl}/${cardId}`,
         { color: `${cardColor}` },
         {
           headers: { Authorization: `Bearer ${access}` },
@@ -171,7 +170,7 @@ const MyDocsPage: React.FC = () => {
   const deleteDoc = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}${cardId}/`, {
+      await axios.delete(`${apiUrl}/${cardId}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제

@@ -58,10 +58,24 @@ const NextButton = styled.button<{ active: boolean }>`
     outline: none;
   }
 `
+const Title = styled.div`
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 0.8rem;
+  font-family: 'Inter';
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
-const CardNumber = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
+const CreatedAt = styled.div`
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 500;
 `
 
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
@@ -127,8 +141,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
               backgroundColor={doc.color} // 색상 전달
               // 카드 클릭하면 모달에 data 전달
               onClick={() => handleCardClick(doc)}>
-              <h3>{doc.title}</h3>
-              <CardNumber>#{i + 1}</CardNumber>
+              <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
+              <Title>{doc.title}</Title>
             </Card>
           )
         })}
