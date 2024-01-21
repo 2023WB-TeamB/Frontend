@@ -277,6 +277,7 @@ const URLtext = styled.p<
           `
         : 'none'};
     animation-delay: 3.7s;
+  }
 `
 
 //Page (GitPage+gitodoc) : 위치 수정
