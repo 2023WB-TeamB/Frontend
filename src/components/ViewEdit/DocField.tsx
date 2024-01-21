@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react'
 import { useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
 import styled from 'styled-components'
@@ -7,6 +8,7 @@ import CancelIcon from '../../assets/images/Viewer/cancel.png'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 import DocTags from './DocTags'
 import axios from 'axios'
+
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`

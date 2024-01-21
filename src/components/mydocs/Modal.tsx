@@ -33,11 +33,7 @@ interface ModalProps {
   setModalOpen: (modalOpen: boolean) => void
 }
 
-const Modal: React.FC<ModalProps> = ({
-  modalOpen,
-  modalContent,
-  setModalOpen,
-}) => {
+const Modal: React.FC<ModalProps> = ({ modalOpen, modalContent, setModalOpen }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   return (
     <ModalWrapper isDarkMode={isDarkMode} modalOpen={modalOpen} onClick={() => setModalOpen(false)}>

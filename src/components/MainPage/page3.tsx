@@ -5,10 +5,11 @@ import gitodocpage from '../../assets/images/MainPage/gitodocpage.svg'
 import pointer from '../../assets/images/MainPage/pointer.svg'
 import gitodocpage_dark from '../../assets/images/MainPage/gitodocpage_dark.svg'
 import GitPage_dark from '../../assets/images/MainPage/GitPage_dark.svg'
+import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreenDiv(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -33,7 +34,7 @@ function useOnScreenDiv(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(svg에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -59,7 +60,7 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-/*-----Wrapper------*/
+/* -----Wrapper------*/
 const Section = styled.div`
   position: relative;
   width: 100vw;
@@ -78,18 +79,32 @@ const TextWrapper = styled.div`
 `
 const Animationwrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-left: 7%;
-  margin-right: 7%;
+  margin-left: calc((100vw - 1152px) / 2);
+  margin-right: calc((100vw - 1152px) / 2);
+
+  @media (max-width: 720px) {
+    margin-left: 7%;
+    margin-right: 7%;
+  }
 `
 const Animationwrapper2 = styled.div`
   position: relative;
-  height: 80vh;
-  width: 80vw;
+  height: 68vh;
+  width: auto;
   margin: 0;
 `
+const Arrowwrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  height: 20vh;
+  width: 99vw;
+`
 
-//keyframes 애니메이션 : flex로 묶어 위치 수정
+// keyframes 애니메이션 : flex로 묶어 위치 수정
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -152,6 +167,44 @@ const littlemoveURL = keyframes`
   }
 `
 
+/* ----down-arrow animation-----*/
+const down_down = keyframes`
+0% {
+  transform: translateY(0);
+  opacity: 0
+}
+50% {
+  opacity: 0.8;
+}
+100% {
+  transform: translateY(1rem);
+  opacity: 0;
+}
+`
+interface StyledarrowProps {
+  animation: boolean
+}
+
+const Styledarrow = styled.img<StyledarrowProps>`
+  top: 0;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 3;
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 2s ease-out infinite
+        `
+      : 'none'};
+
+  @media (max-width: 720px) {
+    margin-top: 3rem;
+  }
+`
+
 //Text
 interface DontProps {
   fontSize?: string
@@ -199,7 +252,7 @@ const URLtext = styled.p<
   font-size: 1rem;
   top: ${(props) => props.top || '2.85rem'};
   left: ${(props) => props.left || '12rem'};
-  fontfamily: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: absolute;
   white-space: nowrap;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -215,7 +268,7 @@ const URLtext = styled.p<
   @media (max-width: 720px) {
     font-size: 0.8rem;
     z-index: 3;
-    top: ${(props) => props.littletop || props.top || '3rem'};
+    top: ${(props) => props.littletop || props.top || '3.2rem'};
     left: ${(props) => props.littleleft || props.left || '8.5rem'};
     animation: ${(props) =>
       props.visible
@@ -335,6 +388,9 @@ export const Page3: React.FC = () => {
           />
         </Animationwrapper2>
       </Animationwrapper>
+      <Arrowwrapper>
+        <Styledarrow src={down_arrow} animation alt="downarrow" />
+      </Arrowwrapper>
     </Section>
   )
 }

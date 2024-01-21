@@ -18,6 +18,7 @@ import document1 from '../../assets/images/MainPage/document1.svg'
 import document1_dark from '../../assets/images/MainPage/document1_dark.svg'
 import bar from '../../assets/images/MainPage/bar.svg'
 import bar_dark from '../../assets/images/MainPage/bar_dark.svg'
+import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
@@ -99,7 +100,7 @@ const Animationwrapper2 = styled.div`
   display: flex;
   position: relative;
   justify-content: center;
-  height: 80vh;
+  height: 70vh;
   width: 80vw;
   margin: 0;
 `
@@ -125,6 +126,14 @@ const GuagebarContainer = styled.div`
   @media (max-width: 720px) {
     top: 60%;
   }
+`
+const Arrowwrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  height: 20vh;
+  width: 99vw;
 `
 
 //keyframes : 'translate(-50%,-50%)를 추가하여 위치를 재조정(Styledicon 관련)'
@@ -211,6 +220,40 @@ const progress = keyframes`
     z-index: 4;
   }`
 
+/*----down-arrow animation-----*/
+const down_down = keyframes`
+0% {
+  transform: translateY(0);
+  opacity: 0
+}
+50% {
+  opacity: 0.8;
+}
+100% {
+  transform: translateY(1rem);
+  opacity: 0;
+}
+`
+interface StyledarrowProps {
+  animation: boolean
+}
+
+const Styledarrow = styled.img<StyledarrowProps>`
+  top: 0;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 3;
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 2s ease-out infinite
+        `
+      : 'none'};
+`
+
 //Text
 interface DontProps {
   fontSize?: string
@@ -236,11 +279,11 @@ const Dont = styled.div<
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
-  height= ${(props) => props.height || 'none'};
-  width= ${(props) => props.width || 'none'};
-  border-radius : ${(props) => props.radius || 'none'};
+  height: ${(props) => props.height || 'none'};
+  width: ${(props) => props.width || 'none'};
+  border-radius: ${(props) => props.radius || 'none'};
   background-color: ${(props) => props.background || 'none'};
-  border : ${(props) => props.border || 'none'};
+  border: ${(props) => props.border || 'none'};
   animation: ${(props) =>
     props.visible
       ? css`
@@ -251,7 +294,7 @@ const Dont = styled.div<
   @media (max-width: 720px) {
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
-    `
+`
 /*--flex로 인하여 guagebar 따로 추가(원래 Dont였습니다)--*/
 const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
   height: 100%;
@@ -264,7 +307,6 @@ const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
           ${progress} 8s ease-in-out forwards;
         `
       : 'none'};
-  }
 `
 
 //Page.svg
@@ -276,6 +318,7 @@ const Styledpage = styled.img<Page>`
   width: 47rem;
   height: 35rem;
   position: absolute;
+  padding-top: 10vh;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -289,7 +332,7 @@ const Styledpage = styled.img<Page>`
 `
 
 //icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
-interface Styledicon {
+interface StylediconProps {
   top?: string
   left?: string
   width?: string
@@ -299,7 +342,7 @@ interface Styledicon {
   translate?: string
   littletop?: string
 }
-export const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+export const Styledicon = styled.img<StylediconProps & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
@@ -314,18 +357,18 @@ export const Styledicon = styled.img<Styledicon & { visible: boolean; animationT
             ${move} 0.5s ${props.delay || '1s'} ease-out 2;
           `
         : props.animationType === 'movedocument'
-        ? css`
-            ${movedocument} 7s forwards;
-          `
-        : props.animationType === 'openthebox'
-        ? css`
-            ${openthebox} 7s forwards;
-          `
-        : props.animationType === 'vibration'
-        ? css`
-            ${vibration} 0.1s 4.5s 3;
-          `
-        : 'none'
+          ? css`
+              ${movedocument} 7s forwards;
+            `
+          : props.animationType === 'openthebox'
+            ? css`
+                ${openthebox} 7s forwards;
+              `
+            : props.animationType === 'vibration'
+              ? css`
+                  ${vibration} 0.1s 4.5s 3;
+                `
+              : 'none'
       : 'none'};
 
   @media (max-width: 720px) {
@@ -465,6 +508,9 @@ export const Page4: React.FC = () => {
           <Styledpage ref={refi} src={isDarkMode ? step2page_dark : step2page} alt="changepage" />
         </Animationwrapper2>
       </Animationwrapper>
+      <Arrowwrapper>
+        <Styledarrow src={down_arrow} animation alt="downarrow" />
+      </Arrowwrapper>
     </Section>
   )
 }

@@ -1,70 +1,80 @@
 import React, { useEffect, useState } from 'react'
 import { TwitterPicker, ColorResult } from 'react-color'
 import styled from 'styled-components'
-import ViewDetailsButton from './ViewDetailsButton'
-import { cardColorStore, isDeleteStore, modalOpenStore } from '../../store/store'
+import ViewDetailsButton from '../ViewDetailsButton'
+import { cardColorStore, isDeleteStore, previewOpenStore } from '../../../store/store'
 import Swal from 'sweetalert2'
-import { darken } from 'polished'
+import { rgba, linearGradient } from 'polished'
 
-interface ContentProps {
-  color: string
-}
+const Wrapper = styled.div<{ color: string; previewOpen: boolean }>`
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  background: ${({ color }) =>
+    linearGradient({
+      colorStops: [`${rgba(color, 1)} 0%`, `${rgba(color, 0.9)} 80%`, `${rgba(color, 0.8)} 100%`],
+      toDirection: '270deg',
+    })};
+  color: black;
+  width: 34rem;
+  height: 39rem;
+  padding: 1.7rem;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
 
-const Content = styled.div<ContentProps>`
+  position: absolute;
+  right: ${({ previewOpen }) => (previewOpen ? '-5%' : '-100%')};
+  transition: right 0.5s ease-out;
+`
+
+const WhiteLine = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 49.4rem;
+  height: 37.4rem;
+  padding: 1rem;
+  border: 0.1rem solid white;
+  border-radius: 20px;
+`
+
+const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  background: ${({ color }) => `linear-gradient(135deg, ${color}, ${darken(0.02, color)})`};
-  color: white;
-  font-size: 1rem;
-  width: 20rem;
-  height: 26rem;
-  padding: 1.7rem;
+  width: 28rem;
+  height: 37rem;
+  padding: 1rem;
   border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
-`
-
-interface PageProps {
-  color: string
-  zindex: number
-  translateX: number // translateX 값을 props로 받습니다.
-  translateY: number // translateY 값을 props로 받습니다.
-}
-
-// 페이지 겹쳐보이는 효과를 위한 빈 모달
-const EmptyPage = styled.div<PageProps>`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(${({ translateX }) => translateX}%, ${({ translateY }) => translateY}%);
-  z-index: ${({ zindex }) => zindex || 0};
-  background: ${({ color }) => `linear-gradient(135deg, ${color}, ${darken(0.04, color)})`};
-  width: 20rem;
-  height: 26rem;
-  padding: 1.7rem;
-  border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 // 문서 최근 수정일
 const DateLine = styled.p`
-  text-align: left;
-  margin: 0.6rem 0;
+  text-align: right;
+  margin: 0;
 `
 
 // 문서 제목
 const Title = styled.h2`
-  font-size: 1.5rem;
-  height: 19rem; // 높이를 지정합니다.
+  font-size: 2rem;
+  height: 6rem; // 높이를 지정합니다.
   width: 100%; // 너비를 지정합니다.
   margin: 0;
   word-break: break-all;
   display: -webkit-box;
-  -webkit-line-clamp: 7;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+`
+const Content = styled.div`
+  font-size: 1.2rem;
+  height: 18rem;
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
 `
 // 추가 버튼 (팔레트, 삭제)
 const OptionalButton = styled.button`
@@ -110,15 +120,16 @@ const Overlay = styled.div`
   z-index: 1;
 `
 
-interface ModalContentProps {
+interface PreviewContentProps {
   color?: string
   title: string
   created_at: string
+  content: string
 }
 
-const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at }) => {
+const PreviewContent: React.FC<PreviewContentProps> = ({ color, title, created_at, content }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
-  const { modalOpen, setModalOpen } = modalOpenStore()
+  const { previewOpen, setPreviewOpen } = previewOpenStore()
   const { setIsDelete } = isDeleteStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
@@ -132,10 +143,10 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at })
 
   // 모달 창 닫힐 때 색상 선택 도구 자동으로 닫히게 함
   useEffect(() => {
-    if (!modalOpen) {
+    if (!previewOpen) {
       setDisplayColorPicker(false)
     }
-  }, [modalOpen])
+  }, [previewOpen])
 
   // 팔레트 버튼 누르면 색상 선택 도구 열림/닫힘
   const handleClick = () => {
@@ -164,37 +175,37 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at })
     }).then((result) => {
       if (result.isConfirmed) {
         setIsDelete(true)
-        setModalOpen(false)
+        setPreviewOpen(false)
       }
     })
   }
 
   return (
-    <>
-      <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
-        <ButtonsContainer>
-          <OptionalButton onClick={handleClick}>🎨</OptionalButton>
-          <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
-        </ButtonsContainer>
-        <DateLine>{created_at.slice(0, 10)}</DateLine>
-        <Title>{title}</Title>
-        <ButtonsContainer>
-          <ViewDetailsButton />
-        </ButtonsContainer>
-
-        {displayColorPicker ? (
-          <>
-            <Overlay onClick={handleClose} />
-            <ColorPickerWrapper>
-              <TwitterPicker color={cardColor} onChange={handleChange} />
-            </ColorPickerWrapper>
-          </>
-        ) : null}
-      </Content>
-      <EmptyPage color={cardColor} zindex={-1} translateX={-49} translateY={-49} />
-      <EmptyPage color={cardColor} zindex={-2} translateX={-48} translateY={-48} />
-    </>
+    <Wrapper color={cardColor} previewOpen={previewOpen} onClick={(e) => e.stopPropagation()}>
+      <WhiteLine>
+        <ContentArea>
+          <ButtonsContainer>
+            <OptionalButton onClick={handleClick}>🎨</OptionalButton>
+            <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
+          </ButtonsContainer>
+          <Title>{title}</Title>
+          <DateLine>{created_at.slice(0, 10)}</DateLine>
+          <Content>{content}</Content>
+          <ButtonsContainer>
+            <ViewDetailsButton />
+          </ButtonsContainer>
+          {displayColorPicker ? (
+            <>
+              <Overlay onClick={handleClose} />
+              <ColorPickerWrapper>
+                <TwitterPicker color={cardColor} onChange={handleChange} />
+              </ColorPickerWrapper>
+            </>
+          ) : null}
+        </ContentArea>
+      </WhiteLine>
+    </Wrapper>
   )
 }
 
-export default ModalContent
+export default PreviewContent
