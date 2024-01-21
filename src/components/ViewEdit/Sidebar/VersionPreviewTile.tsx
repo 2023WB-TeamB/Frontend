@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Preview from './Preview'
-import LeftArrowIcon from '../../../assets/images/arrow_left.png'
-import LeftArrowIcon_Dark from '../../../assets/images/arrow_left_dark.svg'
-import RightArrowIcon from '../../../assets/images/arrow_right.png'
-import RightArrowIcon_Dark from '../../../assets/images/arrow_right_dark.svg'
+import LeftArrowIcon from '../../../assets/images/Viewer/arrow_left.png'
+import LeftArrowIcon_Dark from '../../../assets/images/Viewer/arrow_left_dark.svg'
+import RightArrowIcon from '../../../assets/images/Viewer/arrow_right.png'
+import RightArrowIcon_Dark from '../../../assets/images/Viewer/arrow_right_dark.svg'
 import { useDarkModeStore } from '../../../store/store'
 
 const PreviewWrapper = styled.div`
@@ -14,11 +14,16 @@ const PreviewWrapper = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
 
   h3 {
+    width: 100%;
+    text-align: left;
     margin: 0;
-    margin-left: 8%;
+    margin-left: 17%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   hr {
@@ -59,8 +64,8 @@ const Button = styled.button<{ imageUrl: string }>`
 
 const PageWrapper = styled.div`
   position: relative;
-  width: 80%;
-  overflow: hidden;
+  width: 300px;
+  overflow-x: hidden;
 `
 
 const Slider = styled.span`
@@ -75,11 +80,16 @@ const Slider = styled.span`
 
 interface PreviewTileProps {
   title: string
-  pages: string[]
+  pages: Array<{
+    id: number,
+    title: string,
+    color: string,
+    created_at: string
+  }>
 }
 
 // 프로젝트 미리보기 타일
-const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
+const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const [currentPage, setCurrentPage] = useState(0)
   const style = {
@@ -119,4 +129,4 @@ const PreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   )
 }
 
-export default PreviewTile
+export default VersionPreviewTile

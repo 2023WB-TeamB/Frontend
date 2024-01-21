@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { darken } from 'polished'
 
 type CardProps = {
   rotate: number
@@ -10,15 +11,16 @@ const Card = styled.div<CardProps>`
   position: absolute;
   width: 9.2rem;
   height: 13rem;
-  line-height: 1rem;
+  line-height: 1.5rem;
   color: white;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background: ${({ backgroundColor }) =>
+    `linear-gradient(135deg, ${backgroundColor}, ${darken(0.02, backgroundColor)})`};
   border-radius: 1.5rem;
   text-align: left;
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 1.5rem;
   top: 120%;
   left: 50%;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
   transition: transform 0.3s, visibility 0.4s, opacity 0.4s;

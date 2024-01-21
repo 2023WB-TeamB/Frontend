@@ -56,6 +56,42 @@ export const modalContentStore = create<modalContent>((set) => ({
   setModalContent: (content) => set(() => ({ modalContent: content })),
 }))
 
+// 프리뷰 상태
+interface Preview {
+  previewOpen: boolean
+  setPreviewOpen: (modalOpen: boolean) => void
+}
+
+export const previewOpenStore = create<Preview>((set) => ({
+  previewOpen: false,
+  setPreviewOpen: (previewOpen) => set({ previewOpen }),
+}))
+
+// 프리뷰 내용
+interface PreviewContent {
+  previewContent: {
+    id: number
+    title: string
+    created_at: string
+    color: string
+    content: string
+  } | null
+  setPreviewContent: (
+    content: {
+      id: number
+      title: string
+      created_at: string
+      color: string
+      content: string
+    } | null,
+  ) => void
+}
+
+export const previewContentStore = create<PreviewContent>((set) => ({
+  previewContent: null,
+  setPreviewContent: (content) => set(() => ({ previewContent: content })),
+}))
+
 // 선택한 카드 ID
 interface CardId {
   cardId: number
@@ -141,6 +177,25 @@ interface ConfirmBoxState {
   closeConfirm: () => void
   setConfirmLabel: (label: string) => void
 }
+// ? 뷰어 모드
+interface ViewerModeState {
+  isViewer: boolean;
+  toggleViewerMode: () => void;
+}
+// ? 문서 내용
+interface DocContentState {
+  title: string;
+  content: string;
+  setTitle: (value: string) => void;
+  setContent: (value: string) => void;
+}
+// ? 문서 태그
+interface DocTagState {
+  tags: Array<string>;
+  setTag: (list: string[]) => void;
+  addTag: (newTag: string) => void;
+  removeTag: (index: number) => void;
+}
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: false,
@@ -201,4 +256,49 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
     set(() => ({
       ConfirmLabel,
     })),
+}))
+
+export const useViewerModeStore = create<ViewerModeState>((set) => ({
+  isViewer: true,
+  toggleViewerMode: () => set((state) => ({
+    isViewer: !state.isViewer
+  })),
+}));
+
+export const useDocContentStore = create<DocContentState>((set) => ({
+  title: "",
+  content: "",
+  setTitle: (value: string) => set(() => ({
+    title: value
+  })),
+  setContent: (value: string) => set(() => ({
+    content: value
+  }))
+}))
+
+export const useDocTagStore = create<DocTagState>((set) => ({
+  tags: [],
+  setTag: (list: string[]) => set(() => ({
+    tags: list
+  })),
+  addTag: (newTag: string) => set((state) => ({
+    tags: [...state.tags, newTag]
+  })),
+  removeTag: (index: number) => set((state) => ({
+    tags: state.tags.filter((_, i) => i !== index)
+  }))
+}))
+
+//* 현재 문서 ID
+interface DocIdState {
+  docId?: number
+  setDocId: (id: number) => void
+}
+
+export const useDocIdStore = create<DocIdState>((set) => ({
+  //! 임시 문서 ID 지정
+  docId: 31,
+  setDocId: (id: number) => set(() => ({
+    docId: id
+  }))
 }))

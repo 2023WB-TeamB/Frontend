@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { useViewerPageOpenStore } from '../../store/store'
-import styled from 'styled-components'
-import EditIcon from '../../assets/images/edit.png'
-// import EidtIcon_dark from '../../assets/images/edit_dark.svg'
-import SaveIcon from '../../assets/images/save.png'
-import CancelIcon from '../../assets/images/cancel.png'
-// import CancelIcon_dark from '../../assets/images/cancel_dark.svg'
-import EditorArea from './EditorComps/WYSIWYG_Area'
 
-//useDarkModeStore
+import React, { useEffect } from 'react'
+import { useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
+import styled from 'styled-components'
+import EditIcon from '../../assets/images/Viewer/edit.png'
+import SaveIcon from '../../assets/images/Viewer/save.png'
+import CancelIcon from '../../assets/images/Viewer/cancel.png'
+import EditorArea from "./EditorComps/WYSIWYG_Area"
+import DocTags from './DocTags'
+import axios from 'axios'
+
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -45,13 +45,19 @@ const ButtonWrapper = styled.div`
   flex-direction: row-reverse;
 `
 
+const DistributeContentWrappe = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`
+
 // ? 문서 제목 내용 구분선
 const DistributeDiv = styled.div`
   width: 100%;
   height: 42px;
   display: flex;
   flex-direction: column;
-  align-items: end;
   justify-content: flex-start;
 
   & span {
@@ -109,21 +115,42 @@ const TitleArea = styled.div`
   }
 `
 
-// 임시 테스트용 데이터
-const testText =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-
 const DocField: React.FC = () => {
-  const openerStore = useViewerPageOpenStore()
-  const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
+    const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+    const openerStore = useViewerPageOpenStore()
+    const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
 
-  // ! 임시 제목 텍스트
-  const [title, setTitle] = useState('Hello World!')
-  const [isViewer, setIsViewer] = useState(true)
+    const {title, content, setTitle, setContent} = useDocContentStore()
+    const {setTag} = useDocTagStore()
+    const {docId} = useDocIdStore()
 
-  const changeViewEditMode = () => {
-    setIsViewer(!isViewer)
-  }
+    //? 문서 조회 API
+    const handleGetDocVersions = async () => {
+        try {
+        // API 호출, 액세스 토큰
+        const access = localStorage.getItem('accessToken')
+        const response = await axios.get(
+            `${apiUrl}${docId}/`,
+            {
+            headers: {
+                Authorization: `Bearer ${access}`,
+            },
+            },
+        )
+        setTitle(response.data.data.title)
+        setContent(response.data.data.content)
+        setTag(response.data.data.keywords)
+        } catch (error: any) {
+        // API 호출 실패
+        console.error('API Error :', error)
+        }
+    }
+
+    useEffect(() => {
+        handleGetDocVersions()
+    }, [])
+
+    const {isViewer, toggleViewerMode} = useViewerModeStore()
 
   const sideOnStyle = {
     margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
@@ -134,33 +161,44 @@ const DocField: React.FC = () => {
     setTitle(e.target.value)
   }
 
-  return (
-    <ViewerWrapper style={sideOnStyle}>
-      <TitleArea>
-        {isViewer ? <h2>{title}</h2> : <textarea value={title} onChange={handleChange} />}
-      </TitleArea>
-      <DistributeDiv>
-        <span />
-        <ButtonWrapper>
-          {isViewer ? (
-            <IconButton onClick={changeViewEditMode}>
-              <Icon src={EditIcon} />
-            </IconButton>
-          ) : (
-            <>
-              <IconButton onClick={changeViewEditMode}>
-                <Icon src={SaveIcon} />
-              </IconButton>
-              <IconButton onClick={changeViewEditMode}>
-                <Icon src={CancelIcon} />
-              </IconButton>
-            </>
-          )}
-        </ButtonWrapper>
-      </DistributeDiv>
-      <ViewArea>{isViewer ? <p>{testText}</p> : <EditorArea />}</ViewArea>
-    </ViewerWrapper>
-  )
+    return (
+        <ViewerWrapper style={sideOnStyle} id='DocField'>
+            <TitleArea>
+                {isViewer ?
+                    <h2>{title}</h2>
+                    :
+                    <textarea value={title} onChange={handleChange}/>
+                }
+            </TitleArea>
+            <DistributeDiv>
+                <span/>
+                <DistributeContentWrappe>
+                    <DocTags/>
+                    <ButtonWrapper>
+                        {isViewer ?
+                            <IconButton onClick={toggleViewerMode}>
+                                <Icon src={EditIcon}/>
+                            </IconButton> : 
+                            <>
+                                <IconButton onClick={toggleViewerMode}>
+                                    <Icon src={SaveIcon}/>
+                                </IconButton>
+                                <IconButton onClick={toggleViewerMode}>
+                                    <Icon src={CancelIcon}/>
+                                </IconButton>
+                            </>
+                        }
+                    </ButtonWrapper>
+                </DistributeContentWrappe>
+            </DistributeDiv>
+            <ViewArea>
+                {isViewer ? 
+                    <p dangerouslySetInnerHTML={{__html:content}}/> : 
+                    <EditorArea/>
+                }
+            </ViewArea>
+        </ViewerWrapper>
+    )
 }
 
 export default DocField
