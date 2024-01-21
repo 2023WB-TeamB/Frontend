@@ -56,6 +56,42 @@ export const modalContentStore = create<modalContent>((set) => ({
   setModalContent: (content) => set(() => ({ modalContent: content })),
 }))
 
+// 프리뷰 상태
+interface Preview {
+  previewOpen: boolean
+  setPreviewOpen: (modalOpen: boolean) => void
+}
+
+export const previewOpenStore = create<Preview>((set) => ({
+  previewOpen: false,
+  setPreviewOpen: (previewOpen) => set({ previewOpen }),
+}))
+
+// 프리뷰 내용
+interface PreviewContent {
+  previewContent: {
+    id: number
+    title: string
+    created_at: string
+    color: string
+    content: string
+  } | null
+  setPreviewContent: (
+    content: {
+      id: number
+      title: string
+      created_at: string
+      color: string
+      content: string
+    } | null,
+  ) => void
+}
+
+export const previewContentStore = create<PreviewContent>((set) => ({
+  previewContent: null,
+  setPreviewContent: (content) => set(() => ({ previewContent: content })),
+}))
+
 // 선택한 카드 ID
 interface CardId {
   cardId: number
