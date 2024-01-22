@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react'
-import { useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
+import { useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore, useApiUrlStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -8,6 +8,7 @@ import CancelIcon from '../../assets/images/Viewer/cancel.png'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 import DocTags from './DocTags'
 import axios from 'axios'
+import { marked } from 'marked'
 
 
 // ? 문서 전체 폼
@@ -73,7 +74,9 @@ const ViewArea = styled.div`
   width: 80%;
   min-height: 450px;
   height: 100%;
+  max-height: 75vh;
   font-family: 'Arial', sans-serif;
+  overflow: auto;
 `
 
 // ? 문서 제목 폼
@@ -114,14 +117,13 @@ const TitleArea = styled.div`
 `
 
 const DocField: React.FC = () => {
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
-  
+  const { apiUrl } = useApiUrlStore()
   const {title, content, setTitle, setContent} = useDocContentStore()
-  const {setTag} = useDocTagStore()
+  const {tags, setTag, addTag} = useDocTagStore()
   const {docId} = useDocIdStore()
 
   //? 문서 조회 API
-  const handleGetDocVersions = async () => {
+  const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
@@ -135,25 +137,74 @@ const DocField: React.FC = () => {
       )
       setTitle(response.data.data.title)
       setContent(response.data.data.content)
-      setTag(response.data.data.keywords)
+      setTag([])
+      for (const key in response.data.data.keywords) {
+        addTag(response.data.data.keywords[key].name)
+      }
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      //! 임시 데이터
-      setTitle("Hello React!!")
-      setContent("안녕하세요, 처음뵙겠습니다!<br/>Hello, Pleasure to meet you!")
-      setTag(["React", "TypeScript"])
     }
   }
 
   useEffect(() => {
-    handleGetDocVersions()
+    handleGetDoc()
   }, [])
 
   const {isViewer, toggleViewerMode} = useViewerModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
+  }
+
+  //* 마크다운 -> HTML
+  useEffect(() => {
+    const convertMarkdownToHtml = async () => {
+      setContent(await marked(content))
+    }
+
+    convertMarkdownToHtml()
+  }, [content])
+
+  //? 문서 수정 API
+  const handleSaveDocContent = async () => {
+    try {
+      // API 호출, 액세스 토큰
+      const access = localStorage.getItem('accessToken')
+      await axios.put(
+        `${apiUrl}${docId}`,
+        {
+          title: title,
+          content: content,
+          keywords: tags,
+        },
+        {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        },
+      )
+      console.log('save success')
+      alert("문서가 저장되었습니다.")
+      return true
+    } catch (error: any) {
+      // API 호출 실패
+      console.error('API Error :', error)
+      alert("문서 저장에 실패했습니다.")
+      return false
+    }
+  }
+
+  
+  const saveDoc = async () => {
+    // 저장 성공시 뷰어로 전환
+    await handleSaveDocContent() && toggleViewerMode()
+  }
+
+  const unsaveDoc = async () => {
+    // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
+    await handleGetDoc()
+    toggleViewerMode()
   }
 
     return (
@@ -175,10 +226,10 @@ const DocField: React.FC = () => {
                   <Icon src={EditIcon}/>
                 </IconButton> : 
                 <>
-                  <IconButton onClick={toggleViewerMode}>
+                  <IconButton onClick={saveDoc}>
                     <Icon src={SaveIcon}/>
                   </IconButton>
-                  <IconButton onClick={toggleViewerMode}>
+                  <IconButton onClick={unsaveDoc}>
                     <Icon src={CancelIcon}/>
                   </IconButton>
                 </>

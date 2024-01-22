@@ -4,7 +4,7 @@ import VersionPreviewTile from './VersionPreviewArea'
 import searchIcon from '../../../assets/images/search.png'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
-import { useDarkModeStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
+import { useApiUrlStore, useDarkModeStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
 import axios from 'axios'
 import GalleryPreviewTile from './GalleryPreviewArea'
 
@@ -30,6 +30,11 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 85%;
   overflow-y: auto;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
 `
 
 // 검색 영역 스타일
@@ -137,7 +142,7 @@ const tempData: Array<[string, projectData[]]> = [
 
 // 사이드바 확장 패널
 const SidebarPanel: React.FC = () => {
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const { apiUrl } = useApiUrlStore()
   const {
     isOpenGalleryPanel, 
     isOpenVersionPanel, 
