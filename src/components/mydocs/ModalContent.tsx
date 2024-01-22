@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import ViewDetailsButton from './ViewDetailsButton'
-import { cardColorStore, isDeleteStore, modalOpenStore } from '../../store/store'
-import Swal from 'sweetalert2'
+import { cardColorStore } from '../../store/store'
 import PalleteButton from './PalleteButton'
+import DeleteButton from './DeleteButton'
 
 interface ContentProps {
   color: string
@@ -124,28 +124,6 @@ const ButtonsContainer = styled.div`
   width: 100%;
 `
 
-// 추가 버튼 (팔레트, 삭제)
-const OptionalButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 0.3rem 0.5rem;
-  margin-left: 0.5rem;
-  outline: none;
-  transition: background-color 0.2s ease; // 배경색의 전환 시간 설정
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05); // 호버 시 배경색 조금 더 밝게
-  }
-  &:active {
-    outline: none; // 클릭 시 테두리가 나타나지 않도록 설정
-    background-color: rgba(0, 0, 0, 0.1); // 클릭 시 배경색 더 밝게
-  }
-  &:focus {
-    outline: none; // 포커스 시 테두리가 나타나지 않도록 설정
-  }
-`
-
 interface ModalContentProps {
   color?: string
   title: string
@@ -155,8 +133,6 @@ interface ModalContentProps {
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, repo, tags }) => {
-  const { setModalOpen } = modalOpenStore()
-  const { setIsDelete } = isDeleteStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
     setCardColor: state.setCardColor,
@@ -167,29 +143,12 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
     setCardColor(color || 'rgba(0, 0, 0, 1)')
   }, [color])
 
-  // 삭제 핸들링
-  const handleDelete = () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Delete it',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setIsDelete(true)
-        setModalOpen(false)
-      }
-    })
-  }
-
   return (
     <>
       <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
         <ButtonsContainer>
           <PalleteButton />
-          <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
+          <DeleteButton />
         </ButtonsContainer>
         <UpperWrapper>
           <Repo>{repo}</Repo>
