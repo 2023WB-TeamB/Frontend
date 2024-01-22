@@ -58,13 +58,23 @@ const NextButton = styled.button<{ active: boolean }>`
     outline: none;
   }
 `
+
+// 문서 생성일
+const CreatedAt = styled.div`
+  margin-top: 0.5rem;
+  text-align: left;
+  font-size: 0.74rem;
+  font-weight: 300;
+`
+
 const Title = styled.div`
   text-align: left;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-top: 0.8rem;
+  line-height: 1.5rem;
+  margin-top: 0.2rem;
   font-family: 'Inter';
-  word-break: break-all;
+  word-break: keep-all;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -72,10 +82,25 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `
 
-const CreatedAt = styled.div`
-  text-align: left;
-  font-size: 0.9rem;
+const TagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  line-height: 1.2rem; // 한 줄당 태그의 높이를 제한
+  margin-top: 0.2rem;
+  overflow: hidden;
+`
+
+const Tag = styled.text<{ color: string }>`
+  color: ${({ color }) => color};
+  background-color: #e4e4e4;
+  font-size: 0.8rem;
   font-weight: 500;
+  border-radius: 0.65rem;
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
+  padding: 0rem 0.3rem;
 `
 
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
@@ -118,6 +143,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     title: string
     created_at: string
     color: string
+    repo: string
+    tags: string[]
   }) => {
     // 카드 클릭 시의 이벤트 핸들러
     setCardId(item.id) // 수정/삭제 대상 문서 id 설정
@@ -143,6 +170,13 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
               onClick={() => handleCardClick(doc)}>
               <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
               <Title>{doc.title}</Title>
+              <TagWrapper>
+                {doc.tags.map((tag, index) => (
+                  <Tag key={index} color={doc.color}>
+                    {tag}
+                  </Tag>
+                ))}
+              </TagWrapper>
             </Card>
           )
         })}

@@ -9,7 +9,7 @@ type CardProps = {
 
 const Card = styled.div<CardProps>`
   position: absolute;
-  width: 9.2rem;
+  width: 9.7rem;
   height: 13rem;
   line-height: 1.5rem;
   color: white;
@@ -17,7 +17,8 @@ const Card = styled.div<CardProps>`
     `linear-gradient(135deg, ${backgroundColor}, ${darken(0.02, backgroundColor)})`};
   border-radius: 1.5rem;
   text-align: left;
-  padding: 1.2rem 1.5rem;
+  border: 0.08rem solid darkgray;
+  padding: 1.4rem 1.2rem;
   top: 120%;
   left: 50%;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
