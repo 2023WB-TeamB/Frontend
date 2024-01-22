@@ -156,6 +156,15 @@ const DocField: React.FC = () => {
     setTitle(e.target.value)
   }
 
+  //* 마크다운 -> HTML
+  useEffect(() => {
+    const convertMarkdownToHtml = async () => {
+      setContent(await marked(content))
+    }
+
+    convertMarkdownToHtml()
+  }, [content])
+
     return (
       <ViewerWrapper id='DocField'>
         <TitleArea>
