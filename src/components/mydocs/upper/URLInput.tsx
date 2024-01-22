@@ -48,7 +48,7 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
   const { isEnglish } = isEnglishStore()
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/create/'
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const language = isEnglish ? 'ENG' : 'KOR'
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { setIsGenerating } = isGeneratingStore()
@@ -94,6 +94,8 @@ export const URLInput: React.FC = () => {
           title: response.data.data.title,
           created_at: response.data.data.created_at,
           color: response.data.data.color,
+          repo: response.data.data.repository_url,
+          tags: [],
         }
 
         addDoc(newDoc)
