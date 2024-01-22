@@ -201,7 +201,9 @@ const DocField: React.FC = () => {
     await handleSaveDocContent() && toggleViewerMode()
   }
 
-  const unsaveDoc = () => {
+  const unsaveDoc = async () => {
+    // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
+    await handleGetDoc()
     toggleViewerMode()
   }
 
