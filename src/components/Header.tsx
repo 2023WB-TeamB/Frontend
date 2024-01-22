@@ -1,12 +1,14 @@
 // import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useDarkModeStore } from '../store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
+import { useState, useEffect } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
 import { useModalStore } from './useModalStore'
 import SearchList from './SearchList'
+import { useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/dark_mode.svg'
 import imgWhiteMode from '../assets/images/white_mode.svg'
@@ -75,8 +77,21 @@ interface SignType {
 const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
-  // const [scrollPosition, setScrollPosition] = useState(false) // 스크롤 위치 상태관리
+  // const [scrollPosition, setScrollPosition] = useState(0)
   const navigate = useNavigate()
+
+  // 스크롤 이벤트 핸들러 함수
+  // const handleScroll = () => {
+  //   setScrollPosition(window.scrollY)
+  // }
+  // useEffect(() => {
+  //   // 컴포넌트가 마운트되면 스크롤 이벤트 리스너 등록
+  //   window.addEventListener('scroll', handleScroll)
+  //   // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, []) // 빈 배열은 마운트/언마운트 시에만 실행
 
   const handleClickSignin = () => {
     toggleSignin() // 로그인 open/close 토글
@@ -95,40 +110,43 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     const url = 'https://gtd.kro.kr/api/v1/auth' // 배포 서버
     // const url = 'http://localhost:8000/api/v1/auth' // 개발 서버
     const response = await axios.delete(url)
-    // 로그아웃 성공 시
-    if (response.status === 202) {
-      console.log('API Response: ', response.status)
-      // 로그아웃 성공 시, 로컬스토리지에서 토큰 삭제 후 메인페이지 이동
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      navigate('/') // 메인페이지로 이동
-    }
+    Swal.fire({
+      // 로그아웃 알림창
+      // title: '로그아웃',
+      text: '로그아웃 하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      // 로그아웃 확인 클릭 시
+      if (result.isConfirmed) {
+        Swal.fire({
+          // title: '로그아웃',
+          text: '로그아웃 되었습니다.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: '확인',
+        })
+        if (response.status === 202) {
+          console.log('API Response: ', response.status)
+          // 로그아웃 성공 시, 로컬스토리지에서 토큰 삭제 후 메인페이지 이동
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+          navigate('/') // 메인페이지로 이동
+        }
+      }
+    })
   }
-
-  // 페이지가 닫힐 때 로그아웃 수행
-  // window.addEventListener('unload', deleteToken)
-  // function deleteToken() {
-  //   localStorage.removeItem('accessToken')
-  //   localStorage.removeItem('refreshToken')
-  // }
-
-  // 스크롤 이벤트
-  // const handleScroll = () => {
-  //   console.log(window.scrollY)
-  //   setScrollPosition(() => (window.scrollY >= 500 ? true : false))
-  // }
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll)
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll) //clean up
-  //   }
-  // })
 
   return (
     <>
       {isGetToken ? (
         <Container isDarkMode={isDarkMode}>
           <Logo src={imgLogo}></Logo>
+          {/* <span>현재 스크롤 위치: {scrollPosition}px</span> */}
           <RightWrapper>
             {/* 다크모드 */}
             <Icon
