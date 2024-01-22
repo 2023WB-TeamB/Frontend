@@ -119,11 +119,11 @@ const TitleArea = styled.div`
 const DocField: React.FC = () => {
   const { apiUrl } = useApiUrlStore()
   const {title, content, setTitle, setContent} = useDocContentStore()
-  const {setTag} = useDocTagStore()
+  const {tags, setTag, addTag} = useDocTagStore()
   const {docId} = useDocIdStore()
 
   //? 문서 조회 API
-  const handleGetDocVersions = async () => {
+  const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
@@ -137,19 +137,18 @@ const DocField: React.FC = () => {
       )
       setTitle(response.data.data.title)
       setContent(response.data.data.content)
-      setTag(response.data.data.keywords)
+      setTag([])
+      for (const key in response.data.data.keywords) {
+        addTag(response.data.data.keywords[key].name)
+      }
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      //! 임시 데이터
-      setTitle("Hello React!!")
-      setContent("안녕하세요, 처음뵙겠습니다!<br/>Hello, Pleasure to meet you!")
-      setTag(["React", "TypeScript"])
     }
   }
 
   useEffect(() => {
-    handleGetDocVersions()
+    handleGetDoc()
   }, [])
 
   const {isViewer, toggleViewerMode} = useViewerModeStore()
@@ -166,6 +165,45 @@ const DocField: React.FC = () => {
 
     convertMarkdownToHtml()
   }, [content])
+
+  //? 문서 수정 API
+  const handleSaveDocContent = async () => {
+    try {
+      // API 호출, 액세스 토큰
+      const access = localStorage.getItem('accessToken')
+      await axios.put(
+        `${apiUrl}${docId}`,
+        {
+          title: title,
+          content: content,
+          keywords: tags,
+        },
+        {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        },
+      )
+      console.log('save success')
+      alert("문서가 저장되었습니다.")
+      return true
+    } catch (error: any) {
+      // API 호출 실패
+      console.error('API Error :', error)
+      alert("문서 저장에 실패했습니다.")
+      return false
+    }
+  }
+
+  
+  const saveDoc = async () => {
+    // 저장 성공시 뷰어로 전환
+    await handleSaveDocContent() && toggleViewerMode()
+  }
+
+  const unsaveDoc = () => {
+    toggleViewerMode()
+  }
 
     return (
       <ViewerWrapper id='DocField'>
@@ -186,10 +224,10 @@ const DocField: React.FC = () => {
                   <Icon src={EditIcon}/>
                 </IconButton> : 
                 <>
-                  <IconButton onClick={toggleViewerMode}>
+                  <IconButton onClick={saveDoc}>
                     <Icon src={SaveIcon}/>
                   </IconButton>
-                  <IconButton onClick={toggleViewerMode}>
+                  <IconButton onClick={unsaveDoc}>
                     <Icon src={CancelIcon}/>
                   </IconButton>
                 </>
