@@ -180,42 +180,6 @@ interface ViewerPageOpenState {
   openOptions: () => void
   closeOptions: () => void
 }
-
-interface ConfirmBoxState {
-  isOpenConfirm: boolean
-  ConfirmLabel: string
-  openConfirm: () => void
-  closeConfirm: () => void
-  setConfirmLabel: (label: string) => void
-}
-// ? 뷰어 모드
-interface ViewerModeState {
-  isViewer: boolean
-  toggleViewerMode: () => void
-}
-// ? 문서 내용
-interface DocContentState {
-  title: string
-  content: string
-  setTitle: (value: string) => void
-  setContent: (value: string) => void
-}
-// ? 문서 태그
-interface DocTagState {
-  tags: Array<string>
-  setTag: (list: string[]) => void
-  addTag: (newTag: string) => void
-  removeTag: (index: number) => void
-}
-
-export const useSidePeekStore = create<SidePeekState>((set) => ({
-  isOpenSideAlways: false,
-  toggleOpenSideAlways: () =>
-    set((state) => ({
-      isOpenSideAlways: !state.isOpenSideAlways,
-    })),
-}))
-
 export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
   isOpenGalleryPanel: false,
   isOpenVersionPanel: false,
