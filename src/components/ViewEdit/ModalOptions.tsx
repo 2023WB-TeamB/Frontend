@@ -16,7 +16,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import html2canvas from 'html2canvas'
 import { jsPDF }  from 'jspdf'
-import { useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
+import { useApiUrlStore, useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
@@ -82,7 +82,7 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const { apiUrl } = useApiUrlStore()
   const {docId} = useDocIdStore()
   const {title} = useDocContentStore()
 
