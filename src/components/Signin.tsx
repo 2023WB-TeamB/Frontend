@@ -166,9 +166,10 @@ function Signin() {
       // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        Toast.fire({
-          icon: 'success',
-          title: '다시 로그인해 주세요',
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 실패',
+          text: '이메일 또는 비밀번호를 확인해 주세요',
         })
       }
     }
