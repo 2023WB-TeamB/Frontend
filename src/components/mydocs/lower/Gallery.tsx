@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
 import Preview from './Preview'
 import getContent from './getContent'
+import { useMediaQuery } from 'react-responsive'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -29,7 +30,8 @@ const Wrapper = styled.div`
 const Collection = styled(motion.div)`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
+  /* justify-content: flex-start; */
   align-items: center;
   flex-wrap: wrap;
   position: relative;
@@ -122,6 +124,11 @@ const PageDot = styled.div<{ active: boolean }>`
   background-color: ${({ active }) => (active ? '#5d5d5d' : 'lightgray')};
   margin: 0 5px;
 `
+interface UseMediaQueryProps {
+  query: string
+  match?: boolean
+  onChange?: (matches: boolean) => void
+}
 
 const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const { previewOpen, setPreviewOpen } = previewOpenStore()
@@ -138,8 +145,30 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     previewContent: state.previewContent,
     setPreviewContent: state.setPreviewContent,
   }))
-  const cardsPerPage = 8 // 한 페이지당 카드 수
-  const totalPageNum = Math.ceil(docs.length / cardsPerPage) // 총 페이지 수를 계산합니다.
+
+  // const cardsPerPage = 8 // 한 페이지당 카드 수
+  const responsivePc: UseMediaQueryProps = { query: '(min-width:1360px)' }
+  const responsiveNotebook: UseMediaQueryProps = {
+    query: '(min-width:1045px) and (max-width:1361px)',
+  }
+  const responsiveTablet: UseMediaQueryProps = { query: '(min-width:735px) and (max-width:1046px)' }
+  const responsiveMobile: UseMediaQueryProps = { query: '(max-width:734px)' }
+
+  const isPc = useMediaQuery(responsivePc)
+  const isNotebook = useMediaQuery(responsiveNotebook)
+  const isTablet = useMediaQuery(responsiveTablet)
+  const isMobile = useMediaQuery(responsiveMobile)
+
+  console.log(isTablet)
+  const cardsPerPage = () => {
+    if (isPc) return 8
+    if (isNotebook) return 6
+    if (isTablet) return 4
+    if (isMobile) return 2
+    else return 8
+  }
+  console.log(cardsPerPage())
+  const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
     id: number
@@ -178,7 +207,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }
 
   // 현재 페이지에 맞는 카드만을 잘라내는 부분
-  const currentCards = docs.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+  const currentCards = docs.slice((currentPage - 1) * cardsPerPage(), currentPage * cardsPerPage())
 
   return (
     <GalleryWrapper>
