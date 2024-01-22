@@ -30,6 +30,11 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 85%;
   overflow-y: auto;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
 `
 
 // 검색 영역 스타일

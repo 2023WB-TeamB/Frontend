@@ -74,7 +74,9 @@ const ViewArea = styled.div`
   width: 80%;
   min-height: 450px;
   height: 100%;
+  max-height: 75vh;
   font-family: 'Arial', sans-serif;
+  overflow: auto;
 `
 
 // ? 문서 제목 폼
