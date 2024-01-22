@@ -294,8 +294,20 @@ interface DocIdState {
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
-  docId: 31,
+  docId: 27,
   setDocId: (id: number) => set(() => ({
     docId: id
+  }))
+}))
+
+interface ApiUrlState {
+  apiUrl: string
+  setApiUrl: (url: string) => void
+}
+export const useApiUrlStore = create<ApiUrlState>((set) => ({
+  apiUrl: 'https://gtd.kro.kr/api/v1/docs/',
+  // apiUrl: 'http://localhost:8000/api/v1/docs/',
+  setApiUrl: (url: string) => set(() => ({
+    apiUrl: url
   }))
 }))
