@@ -16,7 +16,7 @@ import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
 import LittleHeader from '../components/ViewEdit/LittleHeader'
-import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore } from '../store/store'
+import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore, useApiUrlStore } from '../store/store'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -54,7 +54,7 @@ function ViewerPage() {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {apiUrl} = useApiUrlStore()
 
   //? 문서 삭제 API
   const handleDeleteDoc = async () => {

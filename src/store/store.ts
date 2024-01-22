@@ -312,7 +312,7 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://gtd.kro.kr/api/v1/docs/',
+  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs/',
   // apiUrl: 'http://localhost:8000/api/v1/docs/',
   setApiUrl: (url: string) => set(() => ({
     apiUrl: url
