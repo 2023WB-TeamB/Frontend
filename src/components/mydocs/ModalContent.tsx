@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { TwitterPicker, ColorResult } from 'react-color'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import ViewDetailsButton from './ViewDetailsButton'
 import { cardColorStore, isDeleteStore, modalOpenStore } from '../../store/store'
 import Swal from 'sweetalert2'
+import PalleteButton from './PalleteButton'
 
 interface ContentProps {
   color: string
@@ -146,24 +146,6 @@ const OptionalButton = styled.button`
   }
 `
 
-// 색상 선택 도구를 감싸는 컴포넌트
-const ColorPickerWrapper = styled.div`
-  position: absolute;
-  top: 30%;
-  right: 27%;
-  z-index: 2;
-`
-
-// 색상 선택 도구 오버레이
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-`
-
 interface ModalContentProps {
   color?: string
   title: string
@@ -173,8 +155,7 @@ interface ModalContentProps {
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, repo, tags }) => {
-  const [displayColorPicker, setDisplayColorPicker] = useState(false)
-  const { modalOpen, setModalOpen } = modalOpenStore()
+  const { setModalOpen } = modalOpenStore()
   const { setIsDelete } = isDeleteStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
@@ -185,28 +166,6 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
   useEffect(() => {
     setCardColor(color || 'rgba(0, 0, 0, 1)')
   }, [color])
-
-  // 모달 창 닫힐 때 색상 선택 도구 자동으로 닫히게 함
-  useEffect(() => {
-    if (!modalOpen) {
-      setDisplayColorPicker(false)
-    }
-  }, [modalOpen])
-
-  // 팔레트 버튼 누르면 색상 선택 도구 열림/닫힘
-  const handleClick = () => {
-    setDisplayColorPicker(!displayColorPicker)
-  }
-
-  // 색상 선택 도구 외부 클릭하면 닫힘
-  const handleClose = () => {
-    setDisplayColorPicker(false)
-  }
-
-  // 선택한 색상 cardColor 상태에 저장 => 모달 색상 변경(Here) / 모달 닫을 때 카드 색상 변경(MyDocsPage)
-  const handleChange = (color: ColorResult) => {
-    setCardColor(color.hex)
-  }
 
   // 삭제 핸들링
   const handleDelete = () => {
@@ -229,7 +188,7 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
     <>
       <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
         <ButtonsContainer>
-          <OptionalButton onClick={handleClick}>🎨</OptionalButton>
+          <PalleteButton />
           <OptionalButton onClick={handleDelete}>🗑️</OptionalButton>
         </ButtonsContainer>
         <UpperWrapper>
@@ -247,15 +206,6 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
           <CreatedAt color={cardColor}>{created_at.slice(0, 10)}</CreatedAt>
           <ViewDetailsButton />
         </LowerWrapper>
-
-        {displayColorPicker ? (
-          <>
-            <Overlay onClick={handleClose} />
-            <ColorPickerWrapper>
-              <TwitterPicker color={cardColor} onChange={handleChange} />
-            </ColorPickerWrapper>
-          </>
-        ) : null}
       </Content>
       <EmptyPage color={cardColor} zindex={-1} translateX={-47} translateY={-47} />
     </>
