@@ -240,8 +240,8 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
 
 // ? 뷰어 모드
 interface ViewerModeState {
-  isViewer: boolean;
-  toggleViewerMode: () => void;
+  isViewer: boolean
+  toggleViewerMode: () => void
 }
 export const useViewerModeStore = create<ViewerModeState>((set) => ({
   isViewer: true,
@@ -253,10 +253,10 @@ export const useViewerModeStore = create<ViewerModeState>((set) => ({
 
 // ? 문서 내용
 interface DocContentState {
-  title: string;
-  content: string;
-  setTitle: (value: string) => void;
-  setContent: (value: string) => void;
+  title: string
+  content: string
+  setTitle: (value: string) => void
+  setContent: (value: string) => void
 }
 export const useDocContentStore = create<DocContentState>((set) => ({
   title: '',
@@ -273,10 +273,10 @@ export const useDocContentStore = create<DocContentState>((set) => ({
 
 // ? 문서 태그
 interface DocTagState {
-  tags: Array<string>;
-  setTag: (list: string[]) => void;
-  addTag: (newTag: string) => void;
-  removeTag: (index: number) => void;
+  tags: Array<string>
+  setTag: (list: string[]) => void
+  addTag: (newTag: string) => void
+  removeTag: (index: number) => void
 }
 export const useDocTagStore = create<DocTagState>((set) => ({
   tags: [],
