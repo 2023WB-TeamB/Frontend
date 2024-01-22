@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import ViewDetailsButton from '../ViewDetailsButton'
-import { cardColorStore, previewOpenStore } from '../../../store/store'
+import { cardColorStore, previewOpenStore, useDarkModeStore } from '../../../store/store'
 import ReactMarkdown from 'react-markdown'
 import PalleteButton from '../PalleteButton'
 import DeleteButton from '../DeleteButton'
@@ -15,12 +15,12 @@ const Container = styled.div<{ previewOpen: boolean }>`
 `
 
 // 프리뷰의 실제 내용이 들어가는 부분
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
-  color: black;
+  background: ${(props) => (props.isDarkMode ? '#2C2C2C' : 'white')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   width: 27rem;
   height: 42rem;
   padding: 0 3rem;
@@ -89,7 +89,6 @@ const LowerWrapper = styled.div`
 
 // 레포 이름
 const Repo = styled.p`
-  color: black;
   text-align: left;
   height: 1.5rem;
   font-size: 1.05rem;
@@ -116,9 +115,9 @@ const TagWrapper = styled.div`
   width: 95%;
   margin-top: 0.6rem;
 `
-const Tag = styled.div<{ color: string }>`
+const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   color: ${({ color }) => color};
-  background-color: #f8f8f8;
+  background-color: ${(props) => (props.isDarkMode ? '#454545' : '#f8f8f8')};
   font-size: 0.9rem;
   border-radius: 0.5rem;
   margin-top: 0.4rem;
@@ -167,6 +166,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
   repo,
   tags,
 }) => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { previewOpen } = previewOpenStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
@@ -180,7 +180,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
 
   return (
     <Container previewOpen={previewOpen} onClick={(e) => e.stopPropagation()}>
-      <Wrapper>
+      <Wrapper isDarkMode={isDarkMode}>
         <ContentArea>
           <ButtonsContainer>
             <PalleteButton />
@@ -191,7 +191,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
             <Title>{title}</Title>
             <TagWrapper>
               {tags.map((tag, index) => (
-                <Tag key={index} color={cardColor}>
+                <Tag key={index} color={cardColor} isDarkMode={isDarkMode}>
                   {tag}
                 </Tag>
               ))}

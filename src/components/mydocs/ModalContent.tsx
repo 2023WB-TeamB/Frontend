@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import ViewDetailsButton from './ViewDetailsButton'
-import { cardColorStore } from '../../store/store'
+import { cardColorStore, useDarkModeStore } from '../../store/store'
 import PalleteButton from './PalleteButton'
 import DeleteButton from './DeleteButton'
 
-interface ContentProps {
-  color: string
-}
-
 // 캐러셀 모달 창
-const Content = styled.div<ContentProps>`
+const Content = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background: white;
-  color: black;
+  background: ${(props) => (props.isDarkMode ? '#2C2C2C' : 'white')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   font-size: 1rem;
   width: 19rem;
   height: 26rem;
@@ -70,7 +66,6 @@ const LowerWrapper = styled.div`
 
 // 레포 이름
 const Repo = styled.p`
-  color: black;
   text-align: left;
   height: 1.5rem;
   font-size: 0.9rem;
@@ -97,9 +92,9 @@ const TagWrapper = styled.div`
   width: 95%;
   margin-top: 0rem;
 `
-const Tag = styled.div<{ color: string }>`
+const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   color: ${({ color }) => color};
-  background-color: #f8f8f8;
+  background-color: ${(props) => (props.isDarkMode ? '#454545' : '#f8f8f8')};
   font-size: 0.9rem;
   border-radius: 0.5rem;
   margin-right: 0.5rem;
@@ -133,6 +128,7 @@ interface ModalContentProps {
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, repo, tags }) => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
     setCardColor: state.setCardColor,
@@ -145,7 +141,7 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
 
   return (
     <>
-      <Content color={cardColor} onClick={(e) => e.stopPropagation()}>
+      <Content color={cardColor} isDarkMode={isDarkMode} onClick={(e) => e.stopPropagation()}>
         <ButtonsContainer>
           <PalleteButton />
           <DeleteButton />
@@ -155,7 +151,7 @@ const ModalContent: React.FC<ModalContentProps> = ({ color, title, created_at, r
           <Title>{title}</Title>
           <TagWrapper>
             {tags.map((tag, index) => (
-              <Tag key={index} color={cardColor}>
+              <Tag key={index} color={cardColor} isDarkMode={isDarkMode}>
                 {tag}
               </Tag>
             ))}
