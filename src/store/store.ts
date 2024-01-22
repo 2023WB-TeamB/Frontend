@@ -7,6 +7,7 @@ export type Doc = {
   title: string
   created_at: string
   color: string
+  keywords?: { name: any }[]
 }
 
 type DocState = {
@@ -179,6 +180,42 @@ interface ViewerPageOpenState {
   openOptions: () => void
   closeOptions: () => void
 }
+
+interface ConfirmBoxState {
+  isOpenConfirm: boolean
+  ConfirmLabel: string
+  openConfirm: () => void
+  closeConfirm: () => void
+  setConfirmLabel: (label: string) => void
+}
+// ? 뷰어 모드
+interface ViewerModeState {
+  isViewer: boolean
+  toggleViewerMode: () => void
+}
+// ? 문서 내용
+interface DocContentState {
+  title: string
+  content: string
+  setTitle: (value: string) => void
+  setContent: (value: string) => void
+}
+// ? 문서 태그
+interface DocTagState {
+  tags: Array<string>
+  setTag: (list: string[]) => void
+  addTag: (newTag: string) => void
+  removeTag: (index: number) => void
+}
+
+export const useSidePeekStore = create<SidePeekState>((set) => ({
+  isOpenSideAlways: false,
+  toggleOpenSideAlways: () =>
+    set((state) => ({
+      isOpenSideAlways: !state.isOpenSideAlways,
+    })),
+}))
+
 export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
   isOpenGalleryPanel: false,
   isOpenVersionPanel: false,
@@ -244,10 +281,11 @@ interface ViewerModeState {
 }
 export const useViewerModeStore = create<ViewerModeState>((set) => ({
   isViewer: true,
-  toggleViewerMode: () => set((state) => ({
-    isViewer: !state.isViewer
-  })),
-}));
+  toggleViewerMode: () =>
+    set((state) => ({
+      isViewer: !state.isViewer,
+    })),
+}))
 
 // ? 문서 내용
 interface DocContentState {
@@ -257,14 +295,16 @@ interface DocContentState {
   setContent: (value: string) => void;
 }
 export const useDocContentStore = create<DocContentState>((set) => ({
-  title: "",
-  content: "",
-  setTitle: (value: string) => set(() => ({
-    title: value
-  })),
-  setContent: (value: string) => set(() => ({
-    content: value
-  }))
+  title: '',
+  content: '',
+  setTitle: (value: string) =>
+    set(() => ({
+      title: value,
+    })),
+  setContent: (value: string) =>
+    set(() => ({
+      content: value,
+    })),
 }))
 
 // ? 문서 태그
@@ -276,15 +316,18 @@ interface DocTagState {
 }
 export const useDocTagStore = create<DocTagState>((set) => ({
   tags: [],
-  setTag: (list: string[]) => set(() => ({
-    tags: list
-  })),
-  addTag: (newTag: string) => set((state) => ({
-    tags: [...state.tags, newTag]
-  })),
-  removeTag: (index: number) => set((state) => ({
-    tags: state.tags.filter((_, i) => i !== index)
-  }))
+  setTag: (list: string[]) =>
+    set(() => ({
+      tags: list,
+    })),
+  addTag: (newTag: string) =>
+    set((state) => ({
+      tags: [...state.tags, newTag],
+    })),
+  removeTag: (index: number) =>
+    set((state) => ({
+      tags: state.tags.filter((_, i) => i !== index),
+    })),
 }))
 
 //? 현재 문서 ID
@@ -295,7 +338,8 @@ interface DocIdState {
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
   docId: 31,
-  setDocId: (id: number) => set(() => ({
-    docId: id
-  }))
+  setDocId: (id: number) =>
+    set(() => ({
+      docId: id,
+    })),
 }))
