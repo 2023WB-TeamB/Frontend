@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { Doc } from '../store/store'
 
 interface modalState {
   isSigninOpen: boolean
@@ -14,6 +15,10 @@ interface modalState {
 interface localStorageState {
   isGetToken: boolean
   setisGetToken: (state: boolean) => void
+}
+interface SearchState {
+  filteredData: Doc[]
+  setFilteredData: (data: Doc[]) => void
 }
 
 export const useModalStore = create<modalState>((set) => ({
@@ -31,4 +36,9 @@ export const useModalStore = create<modalState>((set) => ({
 export const useLocalStorageStore = create<localStorageState>((set) => ({
   isGetToken: true,
   setisGetToken: (state) => set({ isGetToken: state }),
+}))
+
+export const useSearchStore = create<SearchState>((set) => ({
+  filteredData: [],
+  setFilteredData: (data) => set({ filteredData: data }),
 }))

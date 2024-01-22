@@ -1,26 +1,21 @@
-import React, { ChangeEvent, useCallback, useEffect, useState, useRef } from 'react'
+import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 /*-----------------------------------------------------------*/
 import SearchItem from './SearchItem'
-import { useModalStore } from './useModalStore'
+import { useModalStore, useSearchStore } from './useModalStore'
+import useDebounce from './useDebounce'
+import { docStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
 
-interface IconProps {
+interface IconType {
   height: string
   width: string
   isDarkMode?: boolean
   onClick?: () => void
 }
-export interface searchProps {
-  id: number
-  title: string
-  created_at: string
-  color: string
-  keywords: [name: any]
-}
+
 /**** 스타일 ****/
 const Overlay = styled.div`
   position: fixed;
@@ -42,12 +37,10 @@ const Container = styled.div`
   border-radius: 20px;
   height: 450px;
   width: 50rem;
-  overflow-x: hidden;
-  overflow-y: hidden;
   padding: 10px 0;
   z-index: 5;
 `
-const Icon = styled.img<IconProps>`
+const Icon = styled.img<IconType>`
   display: flex;
   height: ${(props) => props.height};
   width: ${(props) => props.width};
@@ -81,39 +74,42 @@ const ItemWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  overflow-x: hidden;
 `
+
 const SearchList: React.FC = () => {
   const { searchListClose } = useModalStore()
-  const [search, setSearch] = useState<string>('') // 검색 키워드 상태관리
-  const [searchedData, setSearchedData] = useState<searchProps[]>([]) // 초기값은 undefined로 설정하거나, 필요에 따라 초기값을 지정하세요.
+  const [query, setQuery] = useState('') // 검색 키워드 상태관리
+  // const [filteredData, setFilteredData] = useState<Doc[]>([])
+  const { filteredData, setFilteredData } = useSearchStore()
+  const debouncedQuery = useDebounce(query, 500)
+  const { docs } = docStore()
+
   const searchBarRef = useRef<HTMLInputElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
-  const getSearchData = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
-      const url = 'https://gtd.kro.kr/api/v1/docs/search' // 배포 서버
-      // const url = 'http://localhost:8000/api/v1/docs/search' // 개발 서버
-      const temp = e.target.value
-      setSearch(temp)
-
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.post(
-        `${url}`,
-        {
-          query: `${search}`, // 검색하고자할 키워드, 제목의 일부
-        },
-        { headers: { Authorization: `Bearer ${access}` } }, // 헤더에 access토큰 추가
+  const getValue = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value.toLowerCase())
+  }
+  // 필터링 로직
+  useEffect(() => {
+    const getData = () => {
+      setFilteredData(
+        docs.filter((doc) => {
+          const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
+          const title = doc.title.toLowerCase().includes(lowerCaseQuery)
+          const keywords = doc.keywords!.some((keyword) =>
+            keyword.name.toLowerCase().includes(lowerCaseQuery),
+          )
+          return title || keywords
+        }),
       )
-      if (response.status === 200) {
-        setSearchedData(response.data.data) // 검색한 문서의 정보, 배열이 들어감(타이틀 날짜 키워드 등)
-        console.log('API Response: ', response.status)
-        console.log('API Responsed Data: ', response.data.data)
-      }
-    },
-    [search],
-  )
+    }
+    getData()
+  }, [debouncedQuery]) // 디바운스로 의존성을 준다
+
   // 검색내용 삭제
   const handleOnClick = () => {
-    setSearch('')
+    setQuery('')
   }
   // Overlay를 클릭한 경우에만 searchListClose 호출
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -142,14 +138,14 @@ const SearchList: React.FC = () => {
           <Icon src={imgSearch} height="2rem" width="2rem" />
           <SearchBar
             ref={searchBarRef} // useRef가 참조할 요소
-            onChange={getSearchData}
-            value={search}
-            placeholder="Search your document..."
+            onChange={getValue}
+            value={query}
+            placeholder="Search your itemument..."
           />
           <Icon src={imgClose} height="1rem" width="1rem" onClick={handleOnClick} />
         </SearchWrapper>
         <Divider />
-        <ItemWrapper>{search && <SearchItem searchedData={searchedData} />}</ItemWrapper>
+        <ItemWrapper>{query && <SearchItem getData={filteredData} />}</ItemWrapper>
       </Container>
     </Overlay>
   )
