@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Preview from './Preview'
+import VersionPreview from './VersionPreview'
 import LeftArrowIcon from '../../../assets/images/Viewer/arrow_left.png'
 import LeftArrowIcon_Dark from '../../../assets/images/Viewer/arrow_left_dark.svg'
 import RightArrowIcon from '../../../assets/images/Viewer/arrow_right.png'
@@ -17,10 +17,9 @@ const PreviewWrapper = styled.div`
   align-items: center;
 
   h3 {
-    width: 100%;
+    width: 80%;
     text-align: left;
     margin: 0;
-    margin-left: 17%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -109,7 +108,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   return (
     <PreviewWrapper>
       <h3>{title}</h3>
-      <hr></hr>
+      <hr/>
       <SlideWrapper>
         <Button
           onClick={goToPreviousPage}
@@ -117,7 +116,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
         <PageWrapper>
           <Slider style={style}>
             {pages.map((page, index) => (
-              <Preview key={index} content={page} />
+              <VersionPreview key={index} content={page} />
             ))}
           </Slider>
         </PageWrapper>

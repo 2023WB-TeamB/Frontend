@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react'
-import { useViewerPageOpenStore, useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
+import { useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -12,15 +12,15 @@ import axios from 'axios'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
-  min-width: 640px;
-  width: 90vw;
+  position: relative;
+  width: 100%;
   max-width: 1280px;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  transform: translateX(-20px);
+  transition: ease-in-out .3s;
 `
 
 const Icon = styled.img`
@@ -54,8 +54,8 @@ const DistributeContentWrappe = styled.div`
 
 // ? 문서 제목 내용 구분선
 const DistributeDiv = styled.div`
-  width: 100%;
-  height: 42px;
+  width: 90%;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -69,9 +69,8 @@ const DistributeDiv = styled.div`
 
 // ? 문서 내용 폼
 const ViewArea = styled.div`
-  margin-top: 15px;
-  width: 100%;
-  max-width: 800px;
+  margin-top: 20px;
+  width: 80%;
   min-height: 450px;
   height: 100%;
   font-family: 'Arial', sans-serif;
@@ -79,9 +78,8 @@ const ViewArea = styled.div`
 
 // ? 문서 제목 폼
 const TitleArea = styled.div`
-  width: 100%;
+  width: 90%;
   height: 100px;
-  padding: 10px;
   text-align: left;
   display: flex;
   align-items: center;
@@ -93,7 +91,7 @@ const TitleArea = styled.div`
     padding: 2px;
     border: none;
     font-weight: bold;
-    color: #333;
+    color: #96C;
     font-family: 'Arial', sans-serif;
     resize: none;
     width: 100%;
@@ -116,88 +114,85 @@ const TitleArea = styled.div`
 `
 
 const DocField: React.FC = () => {
-    const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
-    const openerStore = useViewerPageOpenStore()
-    const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  
+  const {title, content, setTitle, setContent} = useDocContentStore()
+  const {setTag} = useDocTagStore()
+  const {docId} = useDocIdStore()
 
-    const {title, content, setTitle, setContent} = useDocContentStore()
-    const {setTag} = useDocTagStore()
-    const {docId} = useDocIdStore()
-
-    //? 문서 조회 API
-    const handleGetDocVersions = async () => {
-        try {
-        // API 호출, 액세스 토큰
-        const access = localStorage.getItem('accessToken')
-        const response = await axios.get(
-            `${apiUrl}${docId}/`,
-            {
-            headers: {
-                Authorization: `Bearer ${access}`,
-            },
-            },
-        )
-        setTitle(response.data.data.title)
-        setContent(response.data.data.content)
-        setTag(response.data.data.keywords)
-        } catch (error: any) {
-        // API 호출 실패
-        console.error('API Error :', error)
-        }
+  //? 문서 조회 API
+  const handleGetDocVersions = async () => {
+    try {
+      // API 호출, 액세스 토큰
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.get(
+        `${apiUrl}${docId}`,
+        {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        },
+      )
+      setTitle(response.data.data.title)
+      setContent(response.data.data.content)
+      setTag(response.data.data.keywords)
+    } catch (error: any) {
+      // API 호출 실패
+      console.error('API Error :', error)
+      //! 임시 데이터
+      setTitle("Hello React!!")
+      setContent("안녕하세요, 처음뵙겠습니다!<br/>Hello, Pleasure to meet you!")
+      setTag(["React", "TypeScript"])
     }
-
-    useEffect(() => {
-        handleGetDocVersions()
-    }, [])
-
-    const {isViewer, toggleViewerMode} = useViewerModeStore()
-
-  const sideOnStyle = {
-    margin: isOpenSidePanel ? '5vh 5%' : '5vh 15%',
-    left: isOpenSidePanel ? '450px' : '20px',
   }
+
+  useEffect(() => {
+    handleGetDocVersions()
+  }, [])
+
+  const {isViewer, toggleViewerMode} = useViewerModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
   }
 
     return (
-        <ViewerWrapper style={sideOnStyle} id='DocField'>
-            <TitleArea>
-                {isViewer ?
-                    <h2>{title}</h2>
-                    :
-                    <textarea value={title} onChange={handleChange}/>
-                }
-            </TitleArea>
-            <DistributeDiv>
-                <span/>
-                <DistributeContentWrappe>
-                    <DocTags/>
-                    <ButtonWrapper>
-                        {isViewer ?
-                            <IconButton onClick={toggleViewerMode}>
-                                <Icon src={EditIcon}/>
-                            </IconButton> : 
-                            <>
-                                <IconButton onClick={toggleViewerMode}>
-                                    <Icon src={SaveIcon}/>
-                                </IconButton>
-                                <IconButton onClick={toggleViewerMode}>
-                                    <Icon src={CancelIcon}/>
-                                </IconButton>
-                            </>
-                        }
-                    </ButtonWrapper>
-                </DistributeContentWrappe>
-            </DistributeDiv>
-            <ViewArea>
-                {isViewer ? 
-                    <p dangerouslySetInnerHTML={{__html:content}}/> : 
-                    <EditorArea/>
-                }
-            </ViewArea>
-        </ViewerWrapper>
+      <ViewerWrapper id='DocField'>
+        <TitleArea>
+          {isViewer ?
+            <h2>{title}</h2>
+            :
+            <textarea value={title} onChange={handleChange}/>
+          }
+        </TitleArea>
+        <DistributeDiv>
+          <span/>
+          <DistributeContentWrappe>
+            <DocTags/>
+            <ButtonWrapper>
+              {isViewer ?
+                <IconButton onClick={toggleViewerMode}>
+                  <Icon src={EditIcon}/>
+                </IconButton> : 
+                <>
+                  <IconButton onClick={toggleViewerMode}>
+                    <Icon src={SaveIcon}/>
+                  </IconButton>
+                  <IconButton onClick={toggleViewerMode}>
+                    <Icon src={CancelIcon}/>
+                  </IconButton>
+                </>
+              }
+            </ButtonWrapper>
+          </DistributeContentWrappe>
+        </DistributeDiv>
+        <ViewArea>
+          {isViewer ? 
+            <p dangerouslySetInnerHTML={{__html:content}}/> : 
+            <EditorArea/>
+          }
+        </ViewArea>
+      </ViewerWrapper>
     )
 }
 
