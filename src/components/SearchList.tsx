@@ -2,9 +2,9 @@ import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
 import SearchItem from './SearchItem'
-import { useModalStore } from './useModalStore'
+import { useModalStore, useSearchStore } from './useModalStore'
 import useDebounce from './useDebounce'
-import { docStore, Doc } from '../store/store'
+import { docStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
@@ -80,7 +80,8 @@ const ItemWrapper = styled.div`
 const SearchList: React.FC = () => {
   const { searchListClose } = useModalStore()
   const [query, setQuery] = useState('') // 검색 키워드 상태관리
-  const [filteredData, setFilteredData] = useState<Doc[]>([])
+  // const [filteredData, setFilteredData] = useState<Doc[]>([])
+  const { filteredData, setFilteredData } = useSearchStore()
   const debouncedQuery = useDebounce(query, 500)
   const { docs } = docStore()
 
