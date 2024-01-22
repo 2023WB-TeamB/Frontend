@@ -5,15 +5,16 @@ import { useDarkModeStore } from "../../store/store";
 
 const StyledLittleHeader = styled.div`
     position: fixed;
-    margin: 20px;
+    padding: 1rem;
+    margin: 1rem;
     top: 0;
     right: 0;
-    width: 120px;
-    height: 40px;
+    width: 4rem;
+    height: 2rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     border-radius: 10px;
 `
 
@@ -42,7 +43,6 @@ const LittleHeader = () => {
 
     return (
         <StyledLittleHeader>
-            <label>프로필</label>
             <StyledButton onClick={toggleDarkMode}>
                 <Icon src={isDarkMode ? DarkModeIcon : WhiteModeIcon} isDarkMode={isDarkMode}></Icon>
             </StyledButton>
