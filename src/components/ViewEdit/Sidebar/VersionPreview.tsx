@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDarkModeStore } from '../../../store/store'
 
-interface PreviewProps {
+interface VersionPreviewProps {
   content: {
     id: number,
     title: string,
@@ -40,7 +40,7 @@ const PreviewContent = styled.p<{ isDarkMode: boolean, color: string }>`
   }
 `
 
-const Preview: React.FC<PreviewProps> = ({ content }) => {
+const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return <PreviewContent 
@@ -49,4 +49,4 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
   >{content.title}</PreviewContent>
 }
 
-export default Preview
+export default VersionPreview
