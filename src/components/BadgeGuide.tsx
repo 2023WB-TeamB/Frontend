@@ -95,6 +95,7 @@ const Box = styled.div<BoxProps & { isDarkMode: boolean; boxDark: string; boxLig
   line-height: 1.5;
 `
 
+/*-----------Publishing-------------*/
 export const BadgeGuide = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isGuideOpen, openGuide, closeGuide } = useGuideStore()
@@ -105,6 +106,7 @@ export const BadgeGuide = () => {
   }
 
   // 모달 외부 클릭을 감지하는 함수
+  // 모달 외부나 아이콘을 다시 클릭하면 모달 닫힘
   const modalRef = useOutsideClick(closeGuide, iconRef)
 
   return (
