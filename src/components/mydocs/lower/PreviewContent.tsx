@@ -98,8 +98,10 @@ const Repo = styled.p`
 
 // 문서 제목
 const Title = styled.h2`
+  flex-grow: 1;
   font-size: 2rem;
   width: 95%; // 너비를 지정합니다.
+  max-height: 9rem;
   margin: 0;
   word-break: keep-all;
   display: -webkit-box;
@@ -114,6 +116,8 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   width: 95%;
   margin-top: 0.6rem;
+  max-height: 3.6rem;
+  overflow: hidden;
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   color: ${({ color }) => color};

@@ -91,6 +91,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   width: 100%;
+  height: 5.8rem;
   line-height: 1.2rem; // 한 줄당 태그의 높이를 제어합니다.
   margin-top: 0.2rem;
   overflow: hidden; // 내용이 넘치면 숨깁니다.
@@ -102,7 +103,7 @@ const Tag = styled.text<{ color: string }>`
   font-size: 0.8rem;
   font-weight: 500;
   border-radius: 0.65rem;
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
   margin-right: 0.2rem;
   padding: 0rem 0.3rem;
 `
