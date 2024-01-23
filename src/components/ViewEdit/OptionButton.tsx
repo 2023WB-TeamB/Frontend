@@ -14,7 +14,7 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
   height: 60px;
   min-height: 45px;
   border: 1px solid transparent;
-  border-radius: 50px;
+  border-radius: 20px;
   background-image: ${(props) =>
     props.isDarkMode
       ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#fff, #fff)'

@@ -117,7 +117,6 @@ const PrevButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  background-image: url(${btn});
   transform: rotate(90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -133,7 +132,6 @@ const NextButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  background-image: url(${btn});
   transform: rotate(-90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -160,7 +158,8 @@ const PageDot = styled.div<{ active: boolean }>`
 const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const { previewOpen, setPreviewOpen } = previewOpenStore()
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
-  const [buttonActive, setButtonActive] = useState(false) // 버튼 클릭 활성화 상태. opacity 변화 유지하는 데에 사용됨
+  const [prevButtonActive, setPrevButtonActive] = useState(false)
+  const [nextButtonActive, setNextButtonActive] = useState(false)
   const [direction, setDirection] = useState(0) // 페이지 이동 방향
   const [targetPage, setTargetPage] = useState(currentPage)
   useEffect(() => {
@@ -192,15 +191,15 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }
 
   const handlePrev = () => {
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200) // 200ms 후에 opacity를 원상태로 복구
+    setPrevButtonActive(true)
+    setTimeout(() => setPrevButtonActive(false), 200) // 200ms 후에 opacity를 원상태로 복구
     setDirection(-1) // 페이지 이동 애니메이션 방향 설정
     setTargetPage(currentPage - 1) // 페이지 변경
   }
 
   const handleNext = () => {
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setNextButtonActive(true)
+    setTimeout(() => setNextButtonActive(false), 200)
     setDirection(1)
     setTargetPage(currentPage + 1)
   }
@@ -218,7 +217,9 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   return (
     <GalleryWrapper>
       <Wrapper>
-        <PrevButton active={buttonActive} onClick={handlePrev} disabled={currentPage === 1} />
+        <PrevButton active={prevButtonActive} onClick={handlePrev} disabled={currentPage === 1}>
+          <img src={btn} alt="Prev" />
+        </PrevButton>
         <AnimatePresence mode="wait">
           <Collection
             key={currentPage}
@@ -242,10 +243,11 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           </Collection>
         </AnimatePresence>
         <NextButton
-          active={buttonActive}
+          active={nextButtonActive}
           onClick={handleNext}
-          disabled={currentPage === totalPageNum}
-        />
+          disabled={currentPage === totalPageNum}>
+          <img src={btn} alt="Next" />
+        </NextButton>
         <Preview
           previewOpen={previewOpen}
           previewContent={previewContent}

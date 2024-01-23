@@ -1,13 +1,25 @@
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
-import { searchProps } from './SearchList'
+// import { searchType } from './SearchList'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../store/store'
 import Modal from '../components/mydocs/Modal'
 
-interface searchItemProps {
-  searchedData: searchProps[]
-  onClick?: () => void
+interface searchItemType {
+  id: number
+  title: string
+  created_at: string
+  color: string
+  keywords?: { name: any }[]
+  // keywords: [name: any]
 }
+
+interface modalType {
+  id: number
+  title: string
+  created_at: string
+  color: string
+}
+
 const Container = styled.div`
   width: 50rem;
   display: flex;
@@ -54,45 +66,39 @@ const Tag = styled.div`
   margin-top: 3px;
 `
 
-const SearchItem: React.FC<searchItemProps> = ({ searchedData }) => {
+const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const { modalContent, setModalContent } = modalContentStore((state) => ({
     modalContent: state.modalContent,
     setModalContent: state.setModalContent,
   }))
-  type SearchedType = {
-    id: number
-    title: string
-    created_at: string
-    color: string
-  }
-
   return (
     <>
-      {searchedData.map((item) => (
-        <Container
-          onClick={() => {
-            const SearchedModal: SearchedType = {
-              id: item.id,
-              title: item.title,
-              created_at: item.created_at,
-              color: item.color,
-            }
-            setCardId(item.id) // 수정/삭제 대상 문서 id 설정
-            setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
-            setModalOpen(true) // 모달 열기
-            console.log('SearchedData: ', SearchedModal)
-          }}>
-          <TItleDateWrapper>
-            <Title> {item.title}</Title>
-            <Date>{item.created_at.slice(0, 10)}</Date>
-          </TItleDateWrapper>
-          <TagWrapper>
-            {item.keywords.length > 0 && item.keywords.map((tag) => <Tag>{tag.name}</Tag>)}
-          </TagWrapper>
-        </Container>
-      ))}
+      {getData.length > 0 &&
+        getData.map((item) => (
+          <Container
+            key={item.id}
+            onClick={() => {
+              const SearchedModal: modalType = {
+                id: item.id,
+                title: item.title,
+                created_at: item.created_at,
+                color: item.color,
+              }
+              setCardId(item.id) // 수정/삭제 대상 문서 id 설정
+              setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
+              setModalOpen(true) // 모달 열기
+            }}>
+            <TItleDateWrapper>
+              <Title> {item.title}</Title>
+              <Date>{item.created_at.slice(0, 10)}</Date>
+            </TItleDateWrapper>
+            <TagWrapper>
+              {item.keywords!.length > 0 && item.keywords!.map((tag) => <Tag>{tag.name}</Tag>)}
+            </TagWrapper>
+          </Container>
+        ))}
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </>
   )

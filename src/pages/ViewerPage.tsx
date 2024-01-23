@@ -16,11 +16,12 @@ import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
 import LittleHeader from '../components/ViewEdit/LittleHeader'
-import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
+import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore } from '../store/store'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDarkModeStore } from '../store/store'
+import axios from 'axios'
 
 const StyledForm = styled.div<{ isDarkMode: boolean }>`
   min-width: 100vw;
@@ -28,26 +29,59 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   transition: ease .5s;
+  overflow: hidden;
+`
+
+const StyledDocFieldWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 function ViewerPage() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
+  const { docId } = useDocIdStore()
   const openerStore = useViewerPageOpenStore()
   const confirmBoxStore = useConfirmBoxStore()
   const [confirmLabel, setConfirmLabel] = useState('')
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
+  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+
+  //? 문서 삭제 API
+  const handleDeleteDoc = async () => {
+    try {
+      // API 호출, 액세스 토큰
+      const access = localStorage.getItem('accessToken')
+      await axios.delete(
+        `${apiUrl}${docId}`,
+        {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        },
+      )
+      console.log("document delete success")
+    } catch (error: any) {
+      // API 호출 실패
+      console.error('API Error :', error)
+      console.log("document delete fail")
+    }
+  }
+
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
     setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
     setConfirmAction(() => () => {
-      // 문서 삭제 로직
-      console.log("문서 삭제함!")
+      handleDeleteDoc()
     })
     confirmBoxStore.setConfirmLabel(confirmLabel)
     confirmBoxStore.openConfirm()
@@ -73,19 +107,20 @@ function ViewerPage() {
       <LittleHeader/>
       <Sidebar
         list={[
-          [isOpenSideAlways ? double_arrow_left : double_arrow_right, toggleOpenSideAlways],
-          [isDarkMode ? gallery_dark : gallery, openerStore.openGalleryPanel],
-          [isDarkMode ? version_dark : version, openerStore.openVersionPanel],
-          [isDarkMode ? exportBtn_dark : exportBtn, openerStore.openOptions],
-          [isDarkMode ? deleteBtn_dark : deleteBtn, openConfirmWithDelete],
+          [isOpenSideAlways ? double_arrow_left : double_arrow_right, , toggleOpenSideAlways],
+          [isDarkMode ? gallery_dark : gallery, "Gallery", openerStore.openGalleryPanel],
+          [isDarkMode ? version_dark : version, "Version", openerStore.openVersionPanel],
+          [isDarkMode ? exportBtn_dark : exportBtn, "Export", openerStore.openOptions],
+          [isDarkMode ? deleteBtn_dark : deleteBtn, "Delete", openConfirmWithDelete],
           [''],
           [''],
           [''],
           [''],
-          [exit, openConfirmWithExit],
+          [''],
+          [''],
+          [exit, "Exit", openConfirmWithExit],
         ]}/>
-      <SidebarPanel isOpenSidePanel={openerStore.isOpenGalleryPanel} onClose={openerStore.closeGalleryPanel} />
-      <SidebarPanel isOpenSidePanel={openerStore.isOpenVersionPanel} onClose={openerStore.closeVersionPanel} />
+      <SidebarPanel/>
       <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm
         isOpenConfirm={confirmBoxStore.isOpenConfirm}
@@ -95,7 +130,9 @@ function ViewerPage() {
           ['No', confirmBoxStore.closeConfirm],
         ]}
       />
-      <DocField/>
+      <StyledDocFieldWrapper>
+        <DocField/>
+      </StyledDocFieldWrapper>
     </StyledForm>
   )
 }

@@ -31,7 +31,6 @@ const PrevButton = styled.button<{ active: boolean }>`
   position: absolute;
   left: 15vw;
   top: 25vh;
-  background-image: url(${btn});
   transform: translateY(-50%) rotate(45deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -50,7 +49,6 @@ const NextButton = styled.button<{ active: boolean }>`
   position: absolute;
   right: 15vw;
   top: 25vh;
-  background-image: url(${btn});
   transform: translateY(-50%) rotate(-45deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -107,7 +105,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
   const [canNext, setCanNext] = useState(true) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
-  const [buttonActive, setButtonActive] = useState(false) // 클릭된 버튼 제어
+  const [prevButtonActive, setPrevButtonActive] = useState(false)
+  const [nextButtonActive, setNextButtonActive] = useState(false)
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const { modalContent, setModalContent } = modalContentStore((state) => ({
@@ -120,8 +119,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   // 버튼 클릭 시 활성화 상태(active) 2초(200ms) 유지
   const handlePrev = () => {
     if (!canPrev) return
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setPrevButtonActive(true)
+    setTimeout(() => setPrevButtonActive(false), 200)
     const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -130,8 +129,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
 
   const handleNext = () => {
     if (!canNext) return
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setNextButtonActive(true)
+    setTimeout(() => setNextButtonActive(false), 200)
     const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -181,15 +180,17 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           )
         })}
         <PrevButton
-          active={buttonActive}
+          active={prevButtonActive}
           onClick={handlePrev}
-          style={{ visibility: canPrev ? 'visible' : 'hidden' }}
-        />
+          style={{ visibility: canPrev ? 'visible' : 'hidden' }}>
+          <img src={btn} alt="Prev" />
+        </PrevButton>
         <NextButton
-          active={buttonActive}
+          active={nextButtonActive}
           onClick={handleNext}
-          style={{ visibility: canNext ? 'visible' : 'hidden' }}
-        />
+          style={{ visibility: canNext ? 'visible' : 'hidden' }}>
+          <img src={btn} alt="Prev" />
+        </NextButton>
       </Carousel>
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </Wrapper>

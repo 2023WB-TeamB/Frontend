@@ -22,6 +22,7 @@ export type Doc = {
   color: string
   repo: string
   tags: string[]
+  keywords?: Keyword[]
 }
 
 type DocState = {
@@ -188,56 +189,31 @@ export const useDarkModeStore = create<State>(
 )
 
 // * 뷰어/에디터 상태
+//? 사이드바 고정 상태
 interface SidePeekState {
   isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
 }
-interface ViewerPageOpenState {
-  isOpenGalleryPanel: boolean
-  isOpenVersionPanel: boolean
-  isOpenOptions: boolean
-  openGalleryPanel: () => void
-  closeGalleryPanel: () => void
-  openVersionPanel: () => void
-  closeVersionPanel: () => void
-  openOptions: () => void
-  closeOptions: () => void
-}
-interface ConfirmBoxState {
-  isOpenConfirm: boolean
-  ConfirmLabel: string
-  openConfirm: () => void
-  closeConfirm: () => void
-  setConfirmLabel: (label: string) => void
-}
-// ? 뷰어 모드
-interface ViewerModeState {
-  isViewer: boolean
-  toggleViewerMode: () => void
-}
-// ? 문서 내용
-interface DocContentState {
-  title: string
-  content: string
-  setTitle: (value: string) => void
-  setContent: (value: string) => void
-}
-// ? 문서 태그
-interface DocTagState {
-  tags: Array<string>
-  setTag: (list: string[]) => void
-  addTag: (newTag: string) => void
-  removeTag: (index: number) => void
-}
 
 export const useSidePeekStore = create<SidePeekState>((set) => ({
-  isOpenSideAlways: false,
+  isOpenSideAlways: true,
   toggleOpenSideAlways: () =>
     set((state) => ({
       isOpenSideAlways: !state.isOpenSideAlways,
     })),
 }))
 
+//? 사이드바 기능 여부 상태
+interface ViewerPageOpenState {
+  isOpenGalleryPanel: boolean
+  isOpenVersionPanel: boolean
+  isOpenOptions: boolean
+  openGalleryPanel: () => void
+  openVersionPanel: () => void
+  closeSidePanel: () => void
+  openOptions: () => void
+  closeOptions: () => void
+}
 export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
   isOpenGalleryPanel: false,
   isOpenVersionPanel: false,
@@ -247,17 +223,14 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
       isOpenVersionPanel: false,
       isOpenGalleryPanel: true,
     })),
-  closeGalleryPanel: () =>
-    set(() => ({
-      isOpenGalleryPanel: false,
-    })),
   openVersionPanel: () =>
     set(() => ({
       isOpenGalleryPanel: false,
       isOpenVersionPanel: true,
     })),
-  closeVersionPanel: () =>
+  closeSidePanel: () =>
     set(() => ({
+      isOpenGalleryPanel: false,
       isOpenVersionPanel: false,
     })),
   openOptions: () =>
@@ -272,6 +245,14 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
     })),
 }))
 
+//? 확인 모달창
+interface ConfirmBoxState {
+  isOpenConfirm: boolean
+  ConfirmLabel: string
+  openConfirm: () => void
+  closeConfirm: () => void
+  setConfirmLabel: (label: string) => void
+}
 export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   isOpenConfirm: false,
   ConfirmLabel: '',
@@ -291,6 +272,11 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
     })),
 }))
 
+// ? 뷰어 모드
+interface ViewerModeState {
+  isViewer: boolean
+  toggleViewerMode: () => void
+}
 export const useViewerModeStore = create<ViewerModeState>((set) => ({
   isViewer: true,
   toggleViewerMode: () =>
@@ -299,6 +285,13 @@ export const useViewerModeStore = create<ViewerModeState>((set) => ({
     })),
 }))
 
+// ? 문서 내용
+interface DocContentState {
+  title: string
+  content: string
+  setTitle: (value: string) => void
+  setContent: (value: string) => void
+}
 export const useDocContentStore = create<DocContentState>((set) => ({
   title: '',
   content: '',
@@ -312,6 +305,13 @@ export const useDocContentStore = create<DocContentState>((set) => ({
     })),
 }))
 
+// ? 문서 태그
+interface DocTagState {
+  tags: Array<string>
+  setTag: (list: string[]) => void
+  addTag: (newTag: string) => void
+  removeTag: (index: number) => void
+}
 export const useDocTagStore = create<DocTagState>((set) => ({
   tags: [],
   setTag: (list: string[]) =>
@@ -328,17 +328,29 @@ export const useDocTagStore = create<DocTagState>((set) => ({
     })),
 }))
 
-//* 현재 문서 ID
+//? 현재 문서 ID
 interface DocIdState {
   docId?: number
   setDocId: (id: number) => void
 }
-
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
-  docId: 31,
+  docId: 27,
   setDocId: (id: number) =>
     set(() => ({
       docId: id,
+    })),
+}))
+
+interface ApiUrlState {
+  apiUrl: string
+  setApiUrl: (url: string) => void
+}
+export const useApiUrlStore = create<ApiUrlState>((set) => ({
+  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
+  // apiUrl: 'http://localhost:8000/api/v1/docs/',
+  setApiUrl: (url: string) =>
+    set(() => ({
+      apiUrl: url,
     })),
 }))
