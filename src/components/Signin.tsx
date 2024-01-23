@@ -176,7 +176,7 @@ function Signin() {
 
         Toast.fire({
           icon: 'error',
-          title: 'Login failed',
+          title: 'Sign in failed',
           text: 'Please check your email or password',
         })
       }
