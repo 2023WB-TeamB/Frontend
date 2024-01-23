@@ -112,7 +112,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
 
   // 로그아웃 API 호출
   const handleClickSignout = async () => {
-    const url = 'https://gtd.kro.kr/api/v1/auth' // 배포 서버
+    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포서버
     // const url = 'http://localhost:8000/api/v1/auth' // 개발 서버
     const response = await axios.delete(url)
     Swal.fire({
