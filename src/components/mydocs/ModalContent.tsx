@@ -93,6 +93,7 @@ const TagWrapper = styled.div`
   max-height: 10rem;
   overflow: hidden;
   margin-top: 0rem;
+  line-height: 1.2rem;
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   color: ${({ color }) => color};
