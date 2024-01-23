@@ -89,7 +89,9 @@ const Title = styled.h2`
 const TagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 95%;
+  width: 100%;
+  max-height: 10rem;
+  overflow: hidden;
   margin-top: 0rem;
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
