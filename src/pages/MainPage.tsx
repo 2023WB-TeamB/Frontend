@@ -1,6 +1,6 @@
-import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import { GlobalStyle } from '../GlobalStyle'
+import React, { useEffect } from 'react'
 import Signin from '../components/Signin.tsx'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
@@ -8,8 +8,9 @@ import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
 import down_arrow from '../assets/images/MainPage/down_arrow.svg'
-import useModalStore from '../components/useModalStore.tsx'
+import { useLocalStorageStore, useModalStore } from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
+import { useNavigate } from 'react-router-dom'
 
 /* 각 페이지에 대한 설정 */
 const Container = styled.div<{ isDarkMode: boolean }>`
@@ -151,14 +152,22 @@ const Styledicon = styled.img<StylediconProps>`
 /*** Publishing ***/
 const MainPage: React.FC = () => {
   const { isSigninOpen, toggleSignin } = useModalStore() // 로그인 모달 상태
-  const isLogin: boolean = false // 기본값은 로그아웃 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { isGetToken, setisGetToken } = useLocalStorageStore()
+  const navigate = useNavigate()
 
-  // 로그인 핸들러
+  useEffect(() => {
+    if (localStorage.getItem('accessToken') === null) {
+      setisGetToken(true)
+    } else {
+      navigate('/mydocs') // 서버 접속할 때 토큰이 저장되어있다면 로그인됨으로 간주하고 mydocs로 리다이렉션
+    }
+  }, ['accessToken'])
+
+  // 로그인 모달 핸들러
   const handleSigninOpen = () => {
     toggleSignin() // 로그인 open/close 토글
   }
-
   /**InputBox -> Enter -> Register모달**/
   const handleEnter = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -168,7 +177,7 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      <Header isLogin={isLogin} />
+      <Header isGetToken={isGetToken} />
       <GlobalStyle />
       <Container isDarkMode={isDarkMode}>
         <Section>

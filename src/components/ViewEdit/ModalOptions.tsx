@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import pdfIcon from '../../assets/images/Viewer/pdf.png'
 import pdfIcon_dark from '../../assets/images/Viewer/pdf_dark.svg'
-import cloudIcon from '../../assets/images/Viewer/upload-cloud.png'
-import cloudIcon_dark from '../../assets/images/Viewer/upload-cloud_dark.svg'
+// import cloudIcon from '../../assets/images/Viewer/upload-cloud.png'
+// import cloudIcon_dark from '../../assets/images/Viewer/upload-cloud_dark.svg'
 import urlIcon from '../../assets/images/Viewer/url.png'
 import urlIcon_dark from '../../assets/images/Viewer/url_dark.svg'
 import qrCreateIcon from '../../assets/images/Viewer/qr-code-add.png'
@@ -16,7 +16,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import html2canvas from 'html2canvas'
 import { jsPDF }  from 'jspdf'
-import { useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
+import { useApiUrlStore, useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
@@ -24,16 +24,17 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   left: 50%;
   transform: translate(-50%, -60%);
   width: 400px;
-  height: 500px;
+  height: 450px;
   background-color: ${(props) =>
     props.isDarkMode ? 'rgba(44, 44, 44, 0.95)' : 'rgba(243, 243, 243)'};
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 50px;
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
   z-index: 1000;
+  animation: fadeInAnimation 0.2s ease-in-out;
 
   & label {
     margin: 35px;
@@ -44,10 +45,19 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
     font-weight: bold;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   }
+  @keyframes fadeInAnimation {
+   0% {
+    transform: scale(0%, 0%);
+   } 
+   100% {
+    transform: scale(100%, 100%);
+   }
+  }
 `
 
+// 버튼 영역
 const OptionsWrapper = styled.div`
-  height: 65%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,7 +82,7 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const { apiUrl } = useApiUrlStore()
   const {docId} = useDocIdStore()
   const {title} = useDocContentStore()
 
@@ -91,7 +101,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
-        `${apiUrl}share/`,
+        `${apiUrl}share`,
         {
           docs_id: docId,
         },
@@ -211,10 +221,10 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
                 context="Download as PDF"
                 onClick={() => downloadPdfDocument(rootElementId)}
               />
-              <OptionButton
+              {/* <OptionButton
                 icon={isDarkMode ? cloudIcon_dark : cloudIcon}
                 context="Upload to Cloud"
-              />
+              /> */}
               <OptionButton
                 icon={isDarkMode ? urlIcon_dark : urlIcon}
                 context="Copy a URL"

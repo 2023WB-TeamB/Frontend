@@ -1,16 +1,27 @@
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
-import { searchProps } from './SearchList'
+// import { searchType } from './SearchList'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../store/store'
 import Modal from '../components/mydocs/Modal'
 /*-----------------------------------------------------------*/
-import { useDarkModeStore } from '../store/store'
 
-interface searchItemProps {
-  searchedData: searchProps[]
-  onClick?: () => void
+interface searchItemType {
+  id: number
+  title: string
+  created_at: string
+  color: string
+  keywords?: { name: any }[]
+  // keywords: [name: any]
 }
-const Container = styled.div<{ isDarkMode: boolean }>`
+
+interface modalType {
+  id: number
+  title: string
+  created_at: string
+  color: string
+}
+
+const Container = styled.div`
   width: 50rem;
   display: flex;
   flex-direction: column;
@@ -19,7 +30,7 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   cursor: pointer;
   &:hover {
     width: 50rem;
-    background: ${(props) => (props.isDarkMode ? '#414141' : '#f0f0f0')};
+    background: #f0f0f0;
   }
 `
 const TItleDateWrapper = styled.div`
@@ -48,56 +59,48 @@ const TagWrapper = styled.div`
   max-width: 35rem;
   margin: 0 20px;
 `
-const Tag = styled.div<{ isDarkMode: boolean }>`
+const Tag = styled.div`
   color: #eb8698;
-  background-color: ${(props) => (props.isDarkMode ? '#393939' : '#f8f8f8')};
+  background-color: #f8f8f8;
   border-radius: 10px;
   padding: 0 10px;
   margin-top: 3px;
 `
 
-const SearchItem: React.FC<searchItemProps> = ({ searchedData }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+
+const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const { modalContent, setModalContent } = modalContentStore((state) => ({
     modalContent: state.modalContent,
     setModalContent: state.setModalContent,
   }))
-  type SearchedType = {
-    id: number
-    title: string
-    created_at: string
-    color: string
-  }
-
   return (
     <>
-      {searchedData.map((item) => (
-        <Container
-          onClick={() => {
-            const SearchedModal: SearchedType = {
-              id: item.id,
-              title: item.title,
-              created_at: item.created_at,
-              color: item.color,
-            }
-            setCardId(item.id) // 수정/삭제 대상 문서 id 설정
-            setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
-            setModalOpen(true) // 모달 열기
-            console.log('SearchedData: ', SearchedModal)
-          }}
-          isDarkMode={isDarkMode}>
-          <TItleDateWrapper>
-            <Title> {item.title}</Title>
-            <Date>{item.created_at.slice(0, 10)}</Date>
-          </TItleDateWrapper>
-          <TagWrapper>
-            {item.keywords.length > 0 &&
-              item.keywords.map((tag) => <Tag isDarkMode={isDarkMode}>{tag.name}</Tag>)}
-          </TagWrapper>
-        </Container>
-      ))}
+      {getData.length > 0 &&
+        getData.map((item) => (
+          <Container
+            key={item.id}
+            onClick={() => {
+              const SearchedModal: modalType = {
+                id: item.id,
+                title: item.title,
+                created_at: item.created_at,
+                color: item.color,
+              }
+              setCardId(item.id) // 수정/삭제 대상 문서 id 설정
+              setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
+              setModalOpen(true) // 모달 열기
+            }}>
+            <TItleDateWrapper>
+              <Title> {item.title}</Title>
+              <Date>{item.created_at.slice(0, 10)}</Date>
+            </TItleDateWrapper>
+            <TagWrapper>
+              {item.keywords!.length > 0 && item.keywords!.map((tag) => <Tag>{tag.name}</Tag>)}
+            </TagWrapper>
+          </Container>
+        ))}
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </>
   )

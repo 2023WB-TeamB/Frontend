@@ -2,10 +2,11 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import useModalStore from './useModalStore'
+import { useModalStore } from './useModalStore'
 
 /**** 스타일 ****/
 const modalOpenAnimation = keyframes`
@@ -142,7 +143,8 @@ function Register() {
   // submit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault() // form요소에서 발생하는 페이지를 다시 로드하는 새로고침 방지
-
+    const url = 'https://gtd.kro.kr/api/v1/register' // 배포서버
+    // const url = `http://localhost:8000/api/v1/register` // 개발서버
     // 비밀번호와 비밀번호 확인의 일치 여부 확인
     if (data.password !== data.confirmPassword) {
       handlePasswordMismatch()
@@ -150,7 +152,7 @@ function Register() {
     }
     try {
       // API 호출
-      const response = await axios.post('https://gtd.kro.kr/api/v1/register/', {
+      const response = await axios.post(url, {
         email: data.email,
         nickname: data.nickname,
         password: data.password,
@@ -159,19 +161,37 @@ function Register() {
       if (response.status === 200) {
         console.log(response.data)
         console.log('API Response: ', response.status)
-        alert('회원가입 성공!')
-
+        // alert('회원가입 성공!')
+        Toast.fire({
+          icon: 'success',
+          title: '회원가입에 성공하였습니다.',
+        })
         toggleRegister() // 동작 수행후 모달 닫기
       }
       // 회원가입 실패 시
     } catch (error: any) {
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        alert('회원가입 실패!')
+        // alert('회원가입 실패!')
+        Toast.fire({
+          icon: 'success',
+          title: '회원가입에 실패하였습니다.',
+        })
       }
     }
   }
-
+  // sweetAlert2 toast창 라이브러리
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    },
+  })
   return (
     <>
       <Overlay>

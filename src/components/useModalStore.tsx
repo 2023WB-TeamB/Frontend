@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { Doc } from '../store/store'
 
 interface modalState {
   isSigninOpen: boolean
@@ -11,8 +12,16 @@ interface modalState {
   searchListOpen: () => void
   searchListClose: () => void
 }
+interface localStorageState {
+  isGetToken: boolean
+  setisGetToken: (state: boolean) => void
+}
+interface SearchState {
+  filteredData: Doc[]
+  setFilteredData: (data: Doc[]) => void
+}
 
-const useModalStore = create<modalState>((set) => ({
+export const useModalStore = create<modalState>((set) => ({
   isSigninOpen: false,
   toggleSignin: () => set((state) => ({ isSigninOpen: !state.isSigninOpen })),
 
@@ -24,4 +33,12 @@ const useModalStore = create<modalState>((set) => ({
   searchListClose: () => set(() => ({ isSearchListOpen: false })),
 }))
 
-export default useModalStore
+export const useLocalStorageStore = create<localStorageState>((set) => ({
+  isGetToken: true,
+  setisGetToken: (state) => set({ isGetToken: state }),
+}))
+
+export const useSearchStore = create<SearchState>((set) => ({
+  filteredData: [],
+  setFilteredData: (data) => set({ filteredData: data }),
+}))

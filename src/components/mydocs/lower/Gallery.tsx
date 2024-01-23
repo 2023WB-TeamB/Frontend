@@ -35,13 +35,16 @@ const Collection = styled(motion.div)`
   position: relative;
   height: 85vh;
   width: 70rem;
-  margin: auto 5vw;
+  margin: auto 3vw;
 `
+
 const Card = styled.div<{ backgroundColor: string }>`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 0.05rem solid darkgray;
   border-radius: 1.5rem;
-  line-height: 1.7rem;
   color: white;
   box-sizing: border-box;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
@@ -51,8 +54,8 @@ const Card = styled.div<{ backgroundColor: string }>`
   font-size: 1.1rem;
   word-break: break-all;
   width: 13.5rem;
-  height: 18rem;
-  padding: 1rem 1.5rem;
+  height: 17.5rem;
+  padding: 2rem 1.5rem;
   margin: 0.5rem 2rem;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
@@ -60,19 +63,49 @@ const Card = styled.div<{ backgroundColor: string }>`
     //호버 시 카드 커지는 효과
     transform: scale(1.03);
   }
-  div {
-    line-height: 1.6rem;
-    font-size: 1.26rem;
-    font-weight: 600;
-    width: 11rem;
-    height: 13rem;
-    margin: 0.8rem 0.3rem 1rem 0.3rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 8;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+`
+
+const CreatedAt = styled.div`
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 400;
+`
+
+const Title = styled.div`
+  text-align: left;
+  font-size: 1.26rem;
+  font-weight: 700;
+  line-height: 1.7rem;
+  font-family: 'Inter';
+  margin-top: 0.5rem;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const TagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  height: 5.8rem;
+  line-height: 1.2rem; // 한 줄당 태그의 높이를 제어합니다.
+  margin-top: 0.2rem;
+  overflow: hidden; // 내용이 넘치면 숨깁니다.
+`
+
+const Tag = styled.text<{ color: string }>`
+  color: ${({ color }) => color};
+  background-color: #f1f1f1;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 0.65rem;
+  margin-top: 0.25rem;
+  margin-right: 0.2rem;
+  padding: 0rem 0.3rem;
 `
 
 // 꺽쇠 이미지 하나 불러와서 회전시켜서 Prev, Next 버튼으로 사용
@@ -85,7 +118,6 @@ const PrevButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  background-image: url(${btn});
   transform: rotate(90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -101,7 +133,6 @@ const NextButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  background-image: url(${btn});
   transform: rotate(-90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -128,7 +159,8 @@ const PageDot = styled.div<{ active: boolean }>`
 const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const { previewOpen, setPreviewOpen } = previewOpenStore()
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지 번호
-  const [buttonActive, setButtonActive] = useState(false) // 버튼 클릭 활성화 상태. opacity 변화 유지하는 데에 사용됨
+  const [prevButtonActive, setPrevButtonActive] = useState(false)
+  const [nextButtonActive, setNextButtonActive] = useState(false)
   const [direction, setDirection] = useState(0) // 페이지 이동 방향
   const [targetPage, setTargetPage] = useState(currentPage)
   useEffect(() => {
@@ -147,6 +179,8 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     title: string
     created_at: string
     color: string
+    repo: string
+    tags: string[]
   }) => {
     setCardId(item.id) // 문서 id 설정
     const content = await getContent(item.id) // content 불러오기
@@ -158,15 +192,15 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }
 
   const handlePrev = () => {
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200) // 200ms 후에 opacity를 원상태로 복구
+    setPrevButtonActive(true)
+    setTimeout(() => setPrevButtonActive(false), 200) // 200ms 후에 opacity를 원상태로 복구
     setDirection(-1) // 페이지 이동 애니메이션 방향 설정
     setTargetPage(currentPage - 1) // 페이지 변경
   }
 
   const handleNext = () => {
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setNextButtonActive(true)
+    setTimeout(() => setNextButtonActive(false), 200)
     setDirection(1)
     setTargetPage(currentPage + 1)
   }
@@ -184,7 +218,9 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   return (
     <GalleryWrapper>
       <Wrapper>
-        <PrevButton active={buttonActive} onClick={handlePrev} disabled={currentPage === 1} />
+        <PrevButton active={prevButtonActive} onClick={handlePrev} disabled={currentPage === 1}>
+          <img src={btn} alt="Prev" />
+        </PrevButton>
         <AnimatePresence mode="wait">
           <Collection
             key={currentPage}
@@ -194,16 +230,25 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
             exit="exit">
             {currentCards.map((doc) => (
               <Card key={doc.id} backgroundColor={doc.color} onClick={() => handleCardClick(doc)}>
-                <div>{doc.title}</div>
+                <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
+                <Title>{doc.title}</Title>
+                <TagWrapper>
+                  {doc.tags.map((tag, index) => (
+                    <Tag key={index} color={doc.color}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </TagWrapper>
               </Card>
             ))}
           </Collection>
         </AnimatePresence>
         <NextButton
-          active={buttonActive}
+          active={nextButtonActive}
           onClick={handleNext}
-          disabled={currentPage === totalPageNum}
-        />
+          disabled={currentPage === totalPageNum}>
+          <img src={btn} alt="Next" />
+        </NextButton>
         <Preview
           previewOpen={previewOpen}
           previewContent={previewContent}

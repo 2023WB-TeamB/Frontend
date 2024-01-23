@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const getContent = async (id: number) => {
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
-  const apiUrl = 'http://localhost:8000/api/v1/docs'
+  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  // const apiUrl = 'http://localhost:8000/api/v1/docs'
   try {
     // API 호출, 엑세스 토큰
     const access = localStorage.getItem('accessToken')

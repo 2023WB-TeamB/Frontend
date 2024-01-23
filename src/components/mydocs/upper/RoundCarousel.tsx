@@ -31,7 +31,6 @@ const PrevButton = styled.button<{ active: boolean }>`
   position: absolute;
   left: 15vw;
   top: 25vh;
-  background-image: url(${btn});
   transform: translateY(-50%) rotate(45deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -50,7 +49,6 @@ const NextButton = styled.button<{ active: boolean }>`
   position: absolute;
   right: 15vw;
   top: 25vh;
-  background-image: url(${btn});
   transform: translateY(-50%) rotate(-45deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
@@ -58,13 +56,23 @@ const NextButton = styled.button<{ active: boolean }>`
     outline: none;
   }
 `
+
+// 문서 생성일
+const CreatedAt = styled.div`
+  margin-top: 0.5rem;
+  text-align: left;
+  font-size: 0.74rem;
+  font-weight: 300;
+`
+
 const Title = styled.div`
   text-align: left;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-top: 0.8rem;
+  line-height: 1.5rem;
+  margin-top: 0.2rem;
   font-family: 'Inter';
-  word-break: break-all;
+  word-break: keep-all;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -72,17 +80,34 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `
 
-const CreatedAt = styled.div`
-  text-align: left;
-  font-size: 0.9rem;
+const TagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  height: 5.8rem;
+  line-height: 1.2rem; // 한 줄당 태그의 높이를 제한
+  margin-top: 0.2rem;
+  overflow: hidden;
+`
+
+const Tag = styled.text<{ color: string }>`
+  color: ${({ color }) => color};
+  background-color: #e4e4e4;
+  font-size: 0.8rem;
   font-weight: 500;
+  border-radius: 0.65rem;
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
+  padding: 0rem 0.3rem;
 `
 
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
   const [canNext, setCanNext] = useState(true) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
-  const [buttonActive, setButtonActive] = useState(false) // 클릭된 버튼 제어
+  const [prevButtonActive, setPrevButtonActive] = useState(false)
+  const [nextButtonActive, setNextButtonActive] = useState(false)
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const { modalContent, setModalContent } = modalContentStore((state) => ({
@@ -95,8 +120,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   // 버튼 클릭 시 활성화 상태(active) 2초(200ms) 유지
   const handlePrev = () => {
     if (!canPrev) return
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setPrevButtonActive(true)
+    setTimeout(() => setPrevButtonActive(false), 200)
     const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -105,8 +130,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
 
   const handleNext = () => {
     if (!canNext) return
-    setButtonActive(true)
-    setTimeout(() => setButtonActive(false), 200)
+    setNextButtonActive(true)
+    setTimeout(() => setNextButtonActive(false), 200)
     const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
     setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
@@ -118,6 +143,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     title: string
     created_at: string
     color: string
+    repo: string
+    tags: string[]
   }) => {
     // 카드 클릭 시의 이벤트 핸들러
     setCardId(item.id) // 수정/삭제 대상 문서 id 설정
@@ -143,19 +170,28 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
               onClick={() => handleCardClick(doc)}>
               <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
               <Title>{doc.title}</Title>
+              <TagWrapper>
+                {doc.tags.map((tag, index) => (
+                  <Tag key={index} color={doc.color}>
+                    {tag}
+                  </Tag>
+                ))}
+              </TagWrapper>
             </Card>
           )
         })}
         <PrevButton
-          active={buttonActive}
+          active={prevButtonActive}
           onClick={handlePrev}
-          style={{ visibility: canPrev ? 'visible' : 'hidden' }}
-        />
+          style={{ visibility: canPrev ? 'visible' : 'hidden' }}>
+          <img src={btn} alt="Prev" />
+        </PrevButton>
         <NextButton
-          active={buttonActive}
+          active={nextButtonActive}
           onClick={handleNext}
-          style={{ visibility: canNext ? 'visible' : 'hidden' }}
-        />
+          style={{ visibility: canNext ? 'visible' : 'hidden' }}>
+          <img src={btn} alt="Prev" />
+        </NextButton>
       </Carousel>
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </Wrapper>

@@ -16,10 +16,15 @@ import {
   useDarkModeStore,
   isGeneratingStore,
   docStore,
+  Doc,
+  DocData,
+  Keyword,
+  previewOpenStore,
 } from '../store/store'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Animation } from '../components/mydocs/upper/Loading'
+import { useLocalStorageStore } from '../components/useModalStore'
 
 const Container = styled.div`
   display: flex;
@@ -75,8 +80,8 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
-  const apiUrl = 'http://localhost:8000/api/v1/docs'
+  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  // const apiUrl = 'http://localhost:8000/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,
@@ -86,10 +91,18 @@ const MyDocsPage: React.FC = () => {
     setCardColor: state.setCardColor,
   }))
   const { modalOpen } = modalOpenStore()
+  const { previewOpen } = previewOpenStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
-  const isLogin: boolean = true // 기본값은 로그인이 된 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { isGetToken, setisGetToken } = useLocalStorageStore()
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken') !== null) {
+      // console.log('토큰있음')
+      setisGetToken(false)
+    } else setisGetToken(true)
+  }, ['accessToken'])
 
   const getDocs = async () => {
     try {
@@ -98,7 +111,13 @@ const MyDocsPage: React.FC = () => {
       const response = await axios.get(`${apiUrl}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
-      const docs = response.data.data
+      const docsData: DocData[] = response.data.data
+      // json 타입의 keywords를 string[] 타입의 tags로 변환하여 Doc에 추가
+      const docs: Doc[] = docsData.map((doc: DocData) => ({
+        ...doc,
+        repo: doc.repository_url.replace('https://github.com/', ''),
+        tags: doc.keywords.map((keyword: Keyword) => keyword.name),
+      }))
       setDocs(docs)
       console.log(docs)
     } catch (error) {
@@ -146,6 +165,13 @@ const MyDocsPage: React.FC = () => {
       putColor()
     }
   }, [modalOpen])
+
+  // 프리뷰 창이 닫힐 때 DB 색상 변경 요청
+  useEffect(() => {
+    if (previewOpen === false && cardId !== 0 && isDelete === false) {
+      putColor()
+    }
+  }, [previewOpen])
 
   // 클라이언트 문서 색상 변경
   const updateCardColor = () => {
@@ -199,7 +225,7 @@ const MyDocsPage: React.FC = () => {
 
   return (
     <div>
-      <Header isLogin={isLogin} />
+      <Header isGetToken={isGetToken} />
       <Container>
         <ScrollSnap>
           <Upper isDarkMode={isDarkMode}>
