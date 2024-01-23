@@ -170,6 +170,17 @@ export const isGeneratingStore = create<Generating>((set) => ({
   setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
+// 문서 생성 시간
+interface GenerateTime {
+  generateTime: number
+  setGenerateTime: (cardId: number) => void
+}
+
+export const generateTimeStore = create<GenerateTime>((set) => ({
+  generateTime: 0,
+  setGenerateTime: (generateTime) => set({ generateTime }),
+}))
+
 /*다크모드*/
 interface State {
   isDarkMode: boolean
