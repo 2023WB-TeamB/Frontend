@@ -138,7 +138,7 @@ function Signin() {
   }
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
+    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포서버
     // const url = 'http://localhost:8000/api/v1/auth' // 개발서버
     e.preventDefault() // 리렌더링 방지
     try {
@@ -154,9 +154,10 @@ function Signin() {
         localStorage.setItem('refreshToken', response.data.token.refresh)
 
         console.log('API Response: ', response.status)
+
         Toast.fire({
           icon: 'success',
-          title: '환영합니다!',
+          title: 'welcome!',
         })
         toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
@@ -166,9 +167,17 @@ function Signin() {
       // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
+
+        // 비밀번호 초기화
+        setData((prevData) => ({
+          ...prevData,
+          password: '',
+        }))
+
         Toast.fire({
-          icon: 'success',
-          title: '다시 로그인해 주세요',
+          icon: 'error',
+          title: 'Sign in failed',
+          text: 'Please check your email or password',
         })
       }
     }

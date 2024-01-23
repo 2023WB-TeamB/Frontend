@@ -1,13 +1,28 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type Keyword = {
+  name: string
+}
+
+export type DocData = {
+  id: number
+  title: string
+  created_at: string
+  color: string
+  repository_url: string
+  keywords: Keyword[]
+}
+
 // 문서 데이터
 export type Doc = {
   id: number
   title: string
   created_at: string
   color: string
-  keywords?: { name: any }[]
+  repo: string
+  tags: string[]
+  keywords?: Keyword[]
 }
 
 type DocState = {
@@ -46,9 +61,23 @@ export const modalOpenStore = create<Modal>((set) => ({
 
 // 모달 내용
 interface modalContent {
-  modalContent: { id: number; title: string; created_at: string; color: string } | null
+  modalContent: {
+    id: number
+    title: string
+    created_at: string
+    color: string
+    repo: string
+    tags: string[]
+  } | null
   setModalContent: (
-    content: { id: number; title: string; created_at: string; color: string } | null,
+    content: {
+      id: number
+      title: string
+      created_at: string
+      color: string
+      repo: string
+      tags: string[]
+    } | null,
   ) => void
 }
 
@@ -76,6 +105,8 @@ interface PreviewContent {
     created_at: string
     color: string
     content: string
+    repo: string
+    tags: string[]
   } | null
   setPreviewContent: (
     content: {
@@ -84,6 +115,8 @@ interface PreviewContent {
       created_at: string
       color: string
       content: string
+      repo: string
+      tags: string[]
     } | null,
   ) => void
 }
@@ -161,6 +194,7 @@ interface SidePeekState {
   isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
 }
+
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: true,
   toggleOpenSideAlways: () =>
@@ -180,34 +214,6 @@ interface ViewerPageOpenState {
   openOptions: () => void
   closeOptions: () => void
 }
-
-interface ConfirmBoxState {
-  isOpenConfirm: boolean
-  ConfirmLabel: string
-  openConfirm: () => void
-  closeConfirm: () => void
-  setConfirmLabel: (label: string) => void
-}
-// ? 뷰어 모드
-interface ViewerModeState {
-  isViewer: boolean
-  toggleViewerMode: () => void
-}
-// ? 문서 내용
-interface DocContentState {
-  title: string
-  content: string
-  setTitle: (value: string) => void
-  setContent: (value: string) => void
-}
-// ? 문서 태그
-interface DocTagState {
-  tags: Array<string>
-  setTag: (list: string[]) => void
-  addTag: (newTag: string) => void
-  removeTag: (index: number) => void
-}
-
 export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
   isOpenGalleryPanel: false,
   isOpenVersionPanel: false,
@@ -329,9 +335,22 @@ interface DocIdState {
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
-  docId: 31,
+  docId: 27,
   setDocId: (id: number) =>
     set(() => ({
       docId: id,
+    })),
+}))
+
+interface ApiUrlState {
+  apiUrl: string
+  setApiUrl: (url: string) => void
+}
+export const useApiUrlStore = create<ApiUrlState>((set) => ({
+  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
+  // apiUrl: 'http://localhost:8000/api/v1/docs/',
+  setApiUrl: (url: string) =>
+    set(() => ({
+      apiUrl: url,
     })),
 }))

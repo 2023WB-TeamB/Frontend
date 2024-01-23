@@ -25,6 +25,8 @@ interface ModalContentProps {
   color?: string
   title: string
   created_at: string
+  repo: string
+  tags: string[]
 }
 
 interface ModalProps {
@@ -42,6 +44,8 @@ const Modal: React.FC<ModalProps> = ({ modalOpen, modalContent, setModalOpen }) 
           color={modalContent.color}
           title={modalContent.title}
           created_at={modalContent.created_at}
+          repo={modalContent.repo}
+          tags={modalContent.tags}
         />
       )}
     </ModalWrapper>
