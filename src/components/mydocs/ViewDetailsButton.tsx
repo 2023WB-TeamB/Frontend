@@ -1,6 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { cardColorStore } from '../../store/store'
+import { useNavigate } from 'react-router-dom'
+import {
+  cardColorStore,
+  cardIdStore,
+  modalOpenStore,
+  previewOpenStore,
+  useDocIdStore,
+} from '../../store/store'
 
 const ImageButton = styled.button`
   display: flex;
@@ -46,11 +53,31 @@ const Text = styled.span<{ color: string }>`
 `
 
 const ViewDetailsButton: React.FC = () => {
+  const { cardId } = cardIdStore((state) => ({
+    cardId: state.cardId,
+  }))
+  const { setDocId } = useDocIdStore((state) => ({
+    setDocId: state.setDocId,
+  }))
+  const { setModalOpen } = modalOpenStore()
+  const { setPreviewOpen } = previewOpenStore()
   const { cardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
   }))
+
+  const navigate = useNavigate() // useNavigate 추가
+
+  const handleClick = () => {
+    // 클릭 이벤트 추가
+    const path = window.location.pathname.replace('mydocs', 'viewer')
+    setDocId(cardId)
+    navigate(path)
+    setModalOpen(false)
+    setPreviewOpen(false)
+  }
+
   return (
-    <ImageButton>
+    <ImageButton onClick={handleClick}>
       <Text color={cardColor}>View Details</Text>
       <ViewDetailsIcon color={cardColor} />
     </ImageButton>
