@@ -238,16 +238,16 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
     })),
 }))
 
-// ? 뷰어 모드
-interface ViewerModeState {
-  isViewer: boolean
-  toggleViewerMode: () => void
+// ? 편집 모드
+interface EditorModeState {
+  isEditor: boolean
+  toggleEditorMode: () => void
 }
-export const useViewerModeStore = create<ViewerModeState>((set) => ({
-  isViewer: true,
-  toggleViewerMode: () =>
+export const useEditorModeStore = create<EditorModeState>((set) => ({
+  isEditor: false,
+  toggleEditorMode: () =>
     set((state) => ({
-      isViewer: !state.isViewer,
+      isEditor: !state.isEditor,
     })),
 }))
 

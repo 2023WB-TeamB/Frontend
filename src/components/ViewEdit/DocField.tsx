@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react'
-import { useViewerModeStore, useDocContentStore, useDocTagStore, useDocIdStore, useApiUrlStore } from '../../store/store'
+import { useEditorModeStore, useDocContentStore, useDocTagStore, useDocIdStore, useApiUrlStore } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.png'
 import SaveIcon from '../../assets/images/Viewer/save.png'
@@ -151,18 +151,18 @@ const DocField: React.FC = () => {
     handleGetDoc()
   }, [])
 
-  const {isViewer, toggleViewerMode} = useViewerModeStore()
+  const {isEditor, toggleEditorMode} = useEditorModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
   }
 
   //* 마크다운 -> HTML
-  useEffect(() => {
-    const convertMarkdownToHtml = async () => {
-      setContent(await marked(content))
-    }
+  const convertMarkdownToHtml = async () => {
+    setContent(await marked(content))
+  }
 
+  useEffect(() => {
     convertMarkdownToHtml()
   }, [content])
 
@@ -198,22 +198,22 @@ const DocField: React.FC = () => {
   
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
-    await handleSaveDocContent() && toggleViewerMode()
+    await handleSaveDocContent() && toggleEditorMode()
   }
 
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
     await handleGetDoc()
-    toggleViewerMode()
+    toggleEditorMode()
   }
 
     return (
       <ViewerWrapper id='DocField'>
         <TitleArea>
-          {isViewer ?
-            <h2>{title}</h2>
-            :
+          {isEditor ?
             <textarea value={title} onChange={handleChange}/>
+            :
+            <h2>{title}</h2>
           }
         </TitleArea>
         <DistributeDiv>
@@ -221,10 +221,7 @@ const DocField: React.FC = () => {
           <DistributeContentWrappe>
             <DocTags/>
             <ButtonWrapper>
-              {isViewer ?
-                <IconButton onClick={toggleViewerMode}>
-                  <Icon src={EditIcon}/>
-                </IconButton> : 
+              {isEditor ?
                 <>
                   <IconButton onClick={saveDoc}>
                     <Icon src={SaveIcon}/>
@@ -233,15 +230,16 @@ const DocField: React.FC = () => {
                     <Icon src={CancelIcon}/>
                   </IconButton>
                 </>
+                : 
+                <IconButton onClick={toggleEditorMode}>
+                  <Icon src={EditIcon}/>
+                </IconButton>
               }
             </ButtonWrapper>
           </DistributeContentWrappe>
         </DistributeDiv>
         <ViewArea>
-          {isViewer ? 
-            <p dangerouslySetInnerHTML={{__html:content}}/> : 
             <EditorArea/>
-          }
         </ViewArea>
       </ViewerWrapper>
     )
