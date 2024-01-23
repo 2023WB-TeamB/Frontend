@@ -98,6 +98,7 @@ const EditorArea: React.FC = () => {
 
   // ? 에디터 객체 생성
   const editor:any = useEditor({
+    editable: isEditor,
     extensions,
     content,
     editorProps: {
@@ -109,6 +110,18 @@ const EditorArea: React.FC = () => {
       setContent(editor.getHTML())
     },
   })
+  
+  useEffect(() => {
+    if (!editor) {
+      return undefined
+    }
+
+    editor.setEditable(isEditor)
+  }, [editor, isEditor])
+
+  if (!editor) {
+    return null
+  }
 
   return (
     <>
