@@ -113,8 +113,8 @@ const StyledDivider = styled.div<{ isDarkMode: boolean }>`
 
   font-family: 'Inter';
   font-size: 16px;
-  color: ${(props) => (props.isDarkMode ? '#5e5e5e' : '#c8c8c8')};
-  font-weight: 200;
+  color: ${(props) => (props.isDarkMode ? '#c8c8c8' : '#bbbbbb')};
+  font-weight: 400;
 `
 
 /**** 인터페이스 ****/
@@ -242,6 +242,8 @@ function Signin() {
                 style={{
                   position: 'absolute',
                   height: 16,
+                  paddingLeft: 10,
+                  paddingRight: 10,
                   backgroundColor: isDarkMode ? '#202020' : 'white',
                 }}>
                 &nbsp;or&nbsp;
