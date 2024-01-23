@@ -10,7 +10,6 @@ import { Page2 } from '../components/MainPage/page2'
 import down_arrow from '../assets/images/MainPage/down_arrow.svg'
 import { useLocalStorageStore, useModalStore } from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
-import { useNavigate } from 'react-router-dom'
 
 /* 각 페이지에 대한 설정 */
 const Container = styled.div<{ isDarkMode: boolean }>`
@@ -154,14 +153,12 @@ const MainPage: React.FC = () => {
   const { isSigninOpen, toggleSignin } = useModalStore() // 로그인 모달 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isGetToken, setisGetToken } = useLocalStorageStore()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (localStorage.getItem('accessToken') === null) {
+      // console.log('토큰없음')
       setisGetToken(true)
-    } else {
-      navigate('/mydocs') // 서버 접속할 때 토큰이 저장되어있다면 로그인됨으로 간주하고 mydocs로 리다이렉션
-    }
+    } else setisGetToken(false)
   }, ['accessToken'])
 
   // 로그인 모달 핸들러
