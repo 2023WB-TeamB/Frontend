@@ -154,10 +154,9 @@ function Signin() {
         localStorage.setItem('refreshToken', response.data.token.refresh)
 
         console.log('API Response: ', response.status)
-
         Toast.fire({
           icon: 'success',
-          title: 'welcome!',
+          title: '환영합니다!',
         })
         toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
@@ -167,17 +166,9 @@ function Signin() {
       // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-
-        // 비밀번호 초기화
-        setData((prevData) => ({
-          ...prevData,
-          password: '',
-        }))
-
         Toast.fire({
-          icon: 'error',
-          title: 'Sign in failed',
-          text: 'Please check your email or password',
+          icon: 'success',
+          title: '다시 로그인해 주세요',
         })
       }
     }
