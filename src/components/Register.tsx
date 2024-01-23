@@ -35,8 +35,8 @@ const Overlay = styled.div`
 const Content = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
-  border-radius: 80px;
-  width: 450px;
+  border-radius: 50px;
+  width: 425px;
   height: 600px;
   animation: ${modalOpenAnimation} 0.55s ease-in-out;
 `
@@ -47,7 +47,7 @@ const StyledForm = styled.form`
 `
 const StyledTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 300;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
@@ -62,7 +62,7 @@ const StyledName = styled.span<NameProps & { isDarkMode: boolean }>`
   width: 170px;
   float: left;
 
-  font-weight: 400;
+  font-weight: 200;
   font-family: 'Inter-Regular', Helvetica;
   text-align: left;
   font-size: 20px;
@@ -79,21 +79,21 @@ const StyledName2 = styled.span<NameProps>`
   font-family: 'Inter-Regular', Helvetica;
   text-align: right;
   font-size: 13px;
-  color: red;
+  color: #cf4e4e;
 
   visibility: ${(props) => props.visibility};
   padding-top: 10px;
   margin-bottom: 3px;
 `
 const StyledInput = styled.input<{ isDarkMode: boolean }>`
-  height: 40px;
-  width: 350px;
+  height: 45px;
+  width: 324px;
   font-size: 15px;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
-  border: 1px solid;
-  border-color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  border-radius: 20px;
+  border: 0.5px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#5e5e5e' : '#c8c8c8')};
+  border-radius: 15px;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   padding-left: 20px;
 `
@@ -201,7 +201,7 @@ function Register() {
             <StyledTitle isDarkMode={isDarkMode}>Register</StyledTitle>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>Email</StyledName>
-              <StyledName2 visibility="hidden">Worng Email</StyledName2>
+              <StyledName2 visibility="hidden">Wrong Email</StyledName2>
             </StyledNameWrapper>
             <StyledInput
               isDarkMode={isDarkMode}
@@ -212,10 +212,10 @@ function Register() {
               placeholder="Enter Email"
             />
             {/* 닉네임 */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>Nickname</StyledName>
-              <StyledName2 visibility="hidden">Worng Nickname</StyledName2>
+              <StyledName2 visibility="hidden">Wrong Nickname</StyledName2>
             </StyledNameWrapper>
             <StyledInput
               isDarkMode={isDarkMode}
@@ -226,10 +226,10 @@ function Register() {
               placeholder="Enter Nickname"
             />
             {/* 비밀번호 */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             <StyledNameWrapper>
               <StyledName isDarkMode={isDarkMode}>Password</StyledName>
-              <StyledName2 visibility="hidden">Worng Password</StyledName2>
+              <StyledName2 visibility="hidden">Wrong Password</StyledName2>
             </StyledNameWrapper>
             <StyledInput
               isDarkMode={isDarkMode}
@@ -240,11 +240,11 @@ function Register() {
               placeholder="Enter Password"
             />
             {/* 비밀번호 확인 */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             <StyledNameWrapper>
-              <StyledName isDarkMode={isDarkMode}>ConfirmPassword</StyledName>
+              <StyledName isDarkMode={isDarkMode}>Confirm Password</StyledName>
               <StyledName2 visibility={showError ? 'visible' : 'hidden'}>
-                Worng Password
+                Wrong Password
               </StyledName2>
             </StyledNameWrapper>
             <StyledInput
@@ -255,11 +255,15 @@ function Register() {
               onChange={handleChange}
               placeholder="Enter Confirm Password"
               style={{
-                border: showError ? '2px solid red' : '1px solid',
+                border: showError
+                  ? '2px solid #CF4E4E'
+                  : isDarkMode
+                  ? '0.5px solid #5e5e5e'
+                  : '0.5px solid #c8c8c8',
               }}
             />
             {/* SUBMIT 버튼 */}
-            <div style={{ margin: 20 }}></div>
+            <div style={{ margin: 15 }}></div>
             <GradientBtn isDarkMode={isDarkMode}>Submit</GradientBtn>
           </StyledForm>
         </Content>

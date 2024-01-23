@@ -42,9 +42,9 @@ const Overlay = styled.div`
 const Content = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
-  border-radius: 80px;
-  width: 450px;
-  height: 600px;
+  border-radius: 50px;
+  width: 425px;
+  height: 580px;
   animation: ${modalOpenAnimation} 0.55s ease-in-out;
 `
 const StyledForm = styled.form`
@@ -55,7 +55,7 @@ const StyledForm = styled.form`
 `
 const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 300;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
@@ -64,34 +64,34 @@ const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
 const StyledName = styled.div<{ isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 200;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
 const StyledInput = styled.input<{ isDarkMode: boolean }>`
-  height: 40px;
-  width: 350px;
+  height: 45px;
+  width: 324px;
   font-size: 15px;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
-  border: 1px solid;
-  border-color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  border-radius: 20px;
+  border: 0.5px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#5e5e5e' : '#c8c8c8')};
+  border-radius: 15px;
 
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   padding-left: 20px;
 `
 const StyledSocial = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
 
   margin-top: 50px;
-  margin: 15px;
+  margin: 8px;
 `
 const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 200;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
@@ -104,6 +104,20 @@ const StyledCheckbox = styled.input`
 
   background-color: blue;
 `
+const StyledDivider = styled.div<{ isDarkMode: boolean }>`
+  width: 300px;
+  height: 16px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Inter';
+  font-size: 16px;
+  color: ${(props) => (props.isDarkMode ? '#c8c8c8' : '#bbbbbb')};
+  font-weight: 400;
+`
+
 /**** 인터페이스 ****/
 interface FormProps {
   email: string
@@ -212,7 +226,7 @@ function Signin() {
               placeholder="Enter Email"
             />
             {/* 비밀번호 */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             <StyledName isDarkMode={isDarkMode}>Password</StyledName>
             <StyledInput
               isDarkMode={isDarkMode}
@@ -223,7 +237,7 @@ function Signin() {
               placeholder="Enter Password"
             />
             {/* Remember me */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             <div>
               <StyledCheckbox
                 type="checkbox"
@@ -239,11 +253,31 @@ function Signin() {
                 Rememeber me
               </StyledFont>
             </div>
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 8 }}></div>
             {/* 로그인 버튼 */}
             <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
             <div style={{ margin: 10 }}></div>
+            <StyledDivider isDarkMode>
+              <div
+                style={{
+                  position: 'absolute',
+                  width: 300,
+                  height: 4,
+                  borderBottom: isDarkMode ? '0.5px solid #5e5e5e' : '0.5px solid #c8c8c8',
+                }}></div>
+              <div
+                style={{
+                  position: 'absolute',
+                  height: 16,
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  backgroundColor: isDarkMode ? '#202020' : 'white',
+                }}>
+                &nbsp;or&nbsp;
+              </div>
+            </StyledDivider>
+            <div style={{ margin: 8 }}></div>
             <div>
               <StyledSocial src={imgGoogle} />
               <StyledSocial src={imgGithub} />
@@ -252,7 +286,7 @@ function Signin() {
               {/* TODO: 소셜로그인 기능 구현 */}
             </div>
             {/* Join us */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 4 }}></div>
             <div>
               <StyledFont isDarkMode={isDarkMode} fontDark="#fff" fontLight="#000">
                 Join{' '}
