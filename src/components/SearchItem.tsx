@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import { searchProps } from './SearchList'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../store/store'
 import Modal from '../components/mydocs/Modal'
+/*-----------------------------------------------------------*/
+import { useDarkModeStore } from '../store/store'
 
 interface searchItemProps {
   searchedData: searchProps[]
   onClick?: () => void
 }
-const Container = styled.div`
+const Container = styled.div<{ isDarkMode: boolean }>`
   width: 50rem;
   display: flex;
   flex-direction: column;
@@ -17,7 +19,7 @@ const Container = styled.div`
   cursor: pointer;
   &:hover {
     width: 50rem;
-    background: #f0f0f0;
+    background: ${(props) => (props.isDarkMode ? '#414141' : '#f0f0f0')};
   }
 `
 const TItleDateWrapper = styled.div`
@@ -46,15 +48,16 @@ const TagWrapper = styled.div`
   max-width: 35rem;
   margin: 0 20px;
 `
-const Tag = styled.div`
+const Tag = styled.div<{ isDarkMode: boolean }>`
   color: #eb8698;
-  background-color: #f8f8f8;
+  background-color: ${(props) => (props.isDarkMode ? '#393939' : '#f8f8f8')};
   border-radius: 10px;
   padding: 0 10px;
   margin-top: 3px;
 `
 
 const SearchItem: React.FC<searchItemProps> = ({ searchedData }) => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
   const { modalContent, setModalContent } = modalContentStore((state) => ({
@@ -83,13 +86,15 @@ const SearchItem: React.FC<searchItemProps> = ({ searchedData }) => {
             setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
             setModalOpen(true) // 모달 열기
             console.log('SearchedData: ', SearchedModal)
-          }}>
+          }}
+          isDarkMode={isDarkMode}>
           <TItleDateWrapper>
             <Title> {item.title}</Title>
             <Date>{item.created_at.slice(0, 10)}</Date>
           </TItleDateWrapper>
           <TagWrapper>
-            {item.keywords.length > 0 && item.keywords.map((tag) => <Tag>{tag.name}</Tag>)}
+            {item.keywords.length > 0 &&
+              item.keywords.map((tag) => <Tag isDarkMode={isDarkMode}>{tag.name}</Tag>)}
           </TagWrapper>
         </Container>
       ))}

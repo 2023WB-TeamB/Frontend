@@ -7,6 +7,8 @@ import useModalStore from './useModalStore'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
+/*-----------------------------------------------------------*/
+import { useDarkModeStore } from '../store/store'
 
 interface IconProps {
   height: string
@@ -34,11 +36,11 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 3;
 `
-const Container = styled.div`
+const Container = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  color: black;
+  background-color: ${(props) => (props.isDarkMode ? '#2c2c2c' : '#fff')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
   height: 450px;
   width: 50rem;
@@ -59,14 +61,14 @@ const SearchWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-const SearchBar = styled.input`
+const SearchBar = styled.input<{ isDarkMode: boolean }>`
   width: 44rem;
   height: 40px;
   font-size: 1.2rem;
   border: none;
   outline: none;
   background-color: transparent;
-  color: black;
+  color: ${(props) => (props.isDarkMode ? '#ffffff' : '#000000')};
   ::placeholder {
     color: #c8c8c8;
   }
@@ -83,6 +85,7 @@ const ItemWrapper = styled.div`
   align-items: flex-start;
 `
 const SearchList: React.FC = () => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { searchListClose } = useModalStore()
   const [search, setSearch] = useState<string>('') // 검색 키워드 상태관리
   const [searchedData, setSearchedData] = useState<searchProps[]>([]) // 초기값은 undefined로 설정하거나, 필요에 따라 초기값을 지정하세요.
@@ -110,10 +113,14 @@ const SearchList: React.FC = () => {
 
   return (
     <Overlay>
-      <Container>
+      <Container isDarkMode={isDarkMode}>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
-          <SearchBar onChange={getSearchData} placeholder="Search your document..." />
+          <SearchBar
+            onChange={getSearchData}
+            placeholder="Search your document..."
+            isDarkMode={isDarkMode}
+          />
           <Icon src={imgClose} height="1rem" width="1rem" onClick={searchListClose} />
         </SearchWrapper>
         <Divider />
