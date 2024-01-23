@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
 import { useModalStore } from './useModalStore'
@@ -112,23 +112,23 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     const response = await axios.delete(url)
     Swal.fire({
       // 로그아웃 알림창
-      // title: '로그아웃',
-      text: '로그아웃 하시겠습니까?',
+      title: 'Sign out',
+      text: 'Do you want to signed out?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: '확인',
-      cancelButtonText: '취소',
+      confirmButtonText: 'OK',
+      cancelButtonText: 'cancel',
     }).then((result) => {
       // 로그아웃 확인 클릭 시
       if (result.isConfirmed) {
         Swal.fire({
           // title: '로그아웃',
-          text: '로그아웃 되었습니다.',
+          text: "You're signed out of GiToDoc",
           icon: 'success',
           confirmButtonColor: '#3085d6',
-          confirmButtonText: '확인',
+          confirmButtonText: 'OK',
         })
         if (response.status === 202) {
           console.log('API Response: ', response.status)
