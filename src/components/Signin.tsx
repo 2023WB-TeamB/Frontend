@@ -138,7 +138,7 @@ function Signin() {
   }
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
+    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포서버
     // const url = 'http://localhost:8000/api/v1/auth' // 개발서버
     e.preventDefault() // 리렌더링 방지
     try {

@@ -26,6 +26,8 @@ interface PreviewContentProps {
   title: string
   created_at: string
   content: string
+  repo: string
+  tags: string[]
 }
 
 interface PreviewProps {
@@ -47,6 +49,8 @@ const Preview: React.FC<PreviewProps> = ({ previewOpen, previewContent, setPrevi
           title={previewContent.title}
           created_at={previewContent.created_at}
           content={previewContent.content}
+          repo={previewContent.repo}
+          tags={previewContent.tags}
         />
       )}
     </PreviewWrapper>
