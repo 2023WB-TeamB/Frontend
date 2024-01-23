@@ -8,6 +8,8 @@ import { docStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
+/*-----------------------------------------------------------*/
+
 
 interface IconType {
   height: string
@@ -59,7 +61,7 @@ const SearchBar = styled.input`
   border: none;
   outline: none;
   background-color: transparent;
-  color: black;
+  color: #000000;
   ::placeholder {
     color: #c8c8c8;
   }

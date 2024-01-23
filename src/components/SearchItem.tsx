@@ -3,6 +3,7 @@ import styled from 'styled-components'
 // import { searchType } from './SearchList'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../store/store'
 import Modal from '../components/mydocs/Modal'
+/*-----------------------------------------------------------*/
 
 interface searchItemType {
   id: number
@@ -65,6 +66,7 @@ const Tag = styled.div`
   padding: 0 10px;
   margin-top: 3px;
 `
+
 
 const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))

@@ -1,13 +1,28 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type Keyword = {
+  name: string
+}
+
+export type DocData = {
+  id: number
+  title: string
+  created_at: string
+  color: string
+  repository_url: string
+  keywords: Keyword[]
+}
+
 // 문서 데이터
 export type Doc = {
   id: number
   title: string
   created_at: string
   color: string
-  keywords?: { name: any }[]
+  repo: string
+  tags: string[]
+  keywords?: Keyword[]
 }
 
 type DocState = {
@@ -46,9 +61,23 @@ export const modalOpenStore = create<Modal>((set) => ({
 
 // 모달 내용
 interface modalContent {
-  modalContent: { id: number; title: string; created_at: string; color: string } | null
+  modalContent: {
+    id: number
+    title: string
+    created_at: string
+    color: string
+    repo: string
+    tags: string[]
+  } | null
   setModalContent: (
-    content: { id: number; title: string; created_at: string; color: string } | null,
+    content: {
+      id: number
+      title: string
+      created_at: string
+      color: string
+      repo: string
+      tags: string[]
+    } | null,
   ) => void
 }
 
@@ -76,6 +105,8 @@ interface PreviewContent {
     created_at: string
     color: string
     content: string
+    repo: string
+    tags: string[]
   } | null
   setPreviewContent: (
     content: {
@@ -84,6 +115,8 @@ interface PreviewContent {
       created_at: string
       color: string
       content: string
+      repo: string
+      tags: string[]
     } | null,
   ) => void
 }
@@ -161,6 +194,7 @@ interface SidePeekState {
   isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
 }
+
 export const useSidePeekStore = create<SidePeekState>((set) => ({
   isOpenSideAlways: true,
   toggleOpenSideAlways: () =>
@@ -302,9 +336,10 @@ interface DocIdState {
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
   docId: 27,
-  setDocId: (id: number) => set(() => ({
-    docId: id
-  }))
+  setDocId: (id: number) =>
+    set(() => ({
+      docId: id,
+    })),
 }))
 
 interface ApiUrlState {
@@ -312,9 +347,10 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs/',
+  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
   // apiUrl: 'http://localhost:8000/api/v1/docs/',
-  setApiUrl: (url: string) => set(() => ({
-    apiUrl: url
-  }))
+  setApiUrl: (url: string) =>
+    set(() => ({
+      apiUrl: url,
+    })),
 }))
