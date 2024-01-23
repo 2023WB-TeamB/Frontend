@@ -159,7 +159,7 @@ const SidebarPanel: React.FC = () => {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(
-        `${apiUrl}version`,
+        `${apiUrl}/version`,
         {
           headers: {
             Authorization: `Bearer ${access}`,
