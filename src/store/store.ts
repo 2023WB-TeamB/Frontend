@@ -354,3 +354,16 @@ export const useApiUrlStore = create<ApiUrlState>((set) => ({
       apiUrl: url,
     })),
 }))
+
+// BadgeGuide Modal
+interface GuideStore {
+  isGuideOpen: boolean
+  openGuide: () => void
+  closeGuide: () => void
+}
+
+export const useGuideStore = create<GuideStore>((set) => ({
+  isGuideOpen: false,
+  openGuide: () => set({ isGuideOpen: true }),
+  closeGuide: () => set({ isGuideOpen: false }),
+}))
