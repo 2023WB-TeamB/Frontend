@@ -90,7 +90,7 @@ const TagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  max-height: 10rem;
+  max-height: 9.5rem;
   overflow: hidden;
   margin-top: 0rem;
   line-height: 1.2rem;

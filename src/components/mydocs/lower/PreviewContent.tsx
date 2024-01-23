@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ViewDetailsButton from '../ViewDetailsButton'
 import { cardColorStore, previewOpenStore, useDarkModeStore } from '../../../store/store'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import PalleteButton from '../PalleteButton'
 import DeleteButton from '../DeleteButton'
 
@@ -118,7 +119,7 @@ const TagWrapper = styled.div`
   width: 95%;
   margin-top: 0.5rem;
   line-height: 1.2rem;
-  max-height: 4rem;
+  max-height: 3.9rem;
   overflow: hidden;
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
@@ -134,7 +135,7 @@ const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
 // 문서 미리보기(마크다운 적용)
 const Content = styled.div`
   flex-grow: 1;
-  font-size: 0.4rem;
+  font-size: 0.5rem;
   width: 90%;
   height: 20rem;
   margin-top: 1rem;
@@ -204,7 +205,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
               ))}
             </TagWrapper>
             <Content>
-              <ReactMarkdown>{content}</ReactMarkdown>
+              <ReactMarkdown rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>
             </Content>
           </UpperWrapper>
           <LowerWrapper>
