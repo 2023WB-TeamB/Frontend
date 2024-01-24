@@ -76,6 +76,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   scroll-snap-align: center;
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  transition: ease 0.5s;
 `
 
 const MyDocsPage: React.FC = () => {
