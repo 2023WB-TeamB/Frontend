@@ -112,8 +112,9 @@ const SidebarPanel: React.FC = () => {
   const { searchTemp, setSearchTemp } = useSidePanelSearchStore()
   
   const searchBarRef = useRef<HTMLInputElement>(null)
-  
+
   useEffect(() => {
+    //* 검색 콜백 함수
     const getData = () => {
       setSearchTemp(
         myDocsData.flatMap(([repo, data]) => {
@@ -158,10 +159,15 @@ const SidebarPanel: React.FC = () => {
       console.error('API Error :', error)
     }
   }
-
+  
   useEffect(() => {
     handleGetDocVersions()
   }, [])
+
+  //* 최초 렌더링 검색 결과 공백 방지
+  useEffect(() => {
+    setSearchTemp(myDocsData.flatMap(([repo, data]) => data.map(d => ({ ...d, repo }))));
+  }, [myDocsData]);  
 
   const sidePanelStyle = {
     minWidth: isOpenSidePanel ? '28rem' : '0',
