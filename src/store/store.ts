@@ -335,7 +335,7 @@ interface DocIdState {
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
-  docId: 27,
+  docId: 95,
   setDocId: (id: number) =>
     set(() => ({
       docId: id,
@@ -348,7 +348,7 @@ interface ApiUrlState {
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
   apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
-  // apiUrl: 'http://localhost:8000/api/v1/docs/',
+  // apiUrl: 'http://localhost:8000/api/v1/docs',
   setApiUrl: (url: string) =>
     set(() => ({
       apiUrl: url,
