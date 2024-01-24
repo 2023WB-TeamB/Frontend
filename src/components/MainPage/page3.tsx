@@ -84,10 +84,10 @@ const Animationwrapper = styled.div`
   margin-left: calc((100vw - 1152px) / 2);
   margin-right: calc((100vw - 1152px) / 2);
 
-  @media (max-width: 720px) {
+  /* @media (max-width: 720px) {
     margin-left: 7%;
     margin-right: 7%;
-  }
+  } */
 `
 const Animationwrapper2 = styled.div`
   position: relative;
@@ -110,6 +110,7 @@ const slideUpFade = keyframes`
     opacity: 0;
     transform: translateY(3rem);
   }
+  
   100%{
     opacity: 1;
     transform: translateY(0);
@@ -133,12 +134,18 @@ const movePointer = keyframes`
   0% {
     transform: translateX(0) translateY(0);
   }
-  50%{
-    transform: translateX(-33rem) translateY(-12.5rem);
-  }
-  100% {
+  100%{
+    transform: translateX(31rem) translateY(13rem);
+  }`
+
+const middleMovePointer = keyframes`
+  0% {
     transform: translateX(0) translateY(0);
   }
+  100%{
+    transform: translateX(31rem) translateY(13rem);
+  }
+
   `
 const littlemovePointer = keyframes`
   0%{
@@ -163,7 +170,7 @@ const littlemoveURL = keyframes`
     transform: translateX(0) translateY(0);
   }
   100%{
-    transform: translateX(4.5rem) translateY(23.7rem);
+    transform: translateX(6rem) translateY(23rem);
   }
 `
 
@@ -242,43 +249,9 @@ interface URLprops {
   left?: string
   littletop?: string
   littleleft?: string
+  isDarkMode: boolean
+  visible: boolean
 }
-const URLtext = styled.p<
-  URLprops & {
-    visible: boolean
-    isDarkMode: boolean
-  }
->`
-  font-size: 1rem;
-  top: ${(props) => props.top || '2.85rem'};
-  left: ${(props) => props.left || '12rem'};
-  font-family: 'Inter', sans-serif;
-  position: absolute;
-  white-space: nowrap;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  z-index: 3;
-  animation: ${(props) =>
-    props.visible
-      ? css`
-          ${moveURL} 0.77s ease-out forwards;
-        `
-      : 'none'};
-  animation-delay: 3.7s;
-
-  @media (max-width: 720px) {
-    font-size: 0.8rem;
-    z-index: 3;
-    top: ${(props) => props.littletop || props.top || '3.2rem'};
-    left: ${(props) => props.littleleft || props.left || '8.5rem'};
-    animation: ${(props) =>
-      props.visible
-        ? css`
-            ${littlemoveURL} 0.77s ease-out forwards;
-          `
-        : 'none'};
-    animation-delay: 3.7s;
-  }
-`
 
 //Page (GitPage+gitodoc) : 위치 수정
 interface Page {
@@ -287,6 +260,8 @@ interface Page {
   zindex?: string
   littletop?: string
   littleleft?: string
+  middleTop?: string
+  middleLeft?: string
 }
 const Styledpage = styled.img<Page & { visible: boolean }>`
   width: 42rem;
@@ -302,7 +277,13 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
         `
       : 'none'};
 
-  @media (max-width: 720px) {
+  @media (max-width: 1200px) {
+    width: 42rem;
+    height: 27rem;
+    top: ${(props) => props.middleTop || props.top || '3rem'};
+    left: ${(props) => props.middleLeft || props.left || '0rem'};
+  }
+  @media (max-width: 890px) {
     width: 30rem;
     height: 20rem;
     top: ${(props) => props.littletop || props.top || '3rem'};
@@ -316,17 +297,30 @@ const Styledpointer = styled.img<{ visible: boolean }>`
   height: 3rem;
   position: absolute;
   z-index: 2;
-  top: 17rem;
-  left: 58rem;
+  top: 4rem;
+  left: 25.5em;
   animation: ${(props) =>
     props.visible
       ? css`
-          ${movePointer} 1.9s ease-out
+          ${movePointer} 1s ease-out forwards
         `
       : 'none'};
   animation-delay: 2.5s;
 
-  @media (max-width: 720px) {
+  @media (max-width: 1200px) {
+    width: 3rem;
+    height: 3rem;
+    top: 4rem;
+    left: 34.5em;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${middleMovePointer} 1s ease-out
+          `
+        : 'none'};
+    animation-delay: 2.5s;
+  }
+  @media (max-width: 890px) {
     width: 3rem;
     height: 3rem;
     top: 28rem;
@@ -340,7 +334,50 @@ const Styledpointer = styled.img<{ visible: boolean }>`
     animation-delay: 2.5s;
   }
 `
+const URLtext = styled.p<URLprops>`
+  font-size: 1rem;
+  top: 2.85rem;
+  left: 12rem;
+  font-family: 'Inter', sans-serif;
+  position: absolute;
+  white-space: nowrap;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  z-index: 3;
+  animation: ${(props) =>
+    props.visible
+      ? css`
+          ${moveURL} 1s ease-out forwards;
+        `
+      : 'none'};
+  animation-delay: 2.5s;
 
+  @media (max-width: 1200px) {
+    font-size: 0.8rem;
+    z-index: 3;
+    top: 3.5rem;
+    left: 23rem;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 0.77s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2.5s;
+  }
+  @media (max-width: 890px) {
+    font-size: 0.8rem;
+    z-index: 3;
+    top: ${(props) => props.littletop || props.top || '3.2rem'};
+    left: ${(props) => props.littleleft || props.left || '8.5rem'};
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 0.77s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2.5s;
+  }
+`
 //Publishing
 export const Page3: React.FC = () => {
   const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
@@ -374,8 +411,10 @@ export const Page3: React.FC = () => {
             src={isDarkMode ? gitodocpage_dark : gitodocpage}
             top="0"
             left="30rem"
-            littletop="15rem"
-            littleleft="5rem"
+            littletop=" 15rem"
+            littleleft="26rem"
+            middleTop="10rem"
+            middleLeft="20rem"
             alt="GiToDocpage"
             ref={refi}
             visible={visiblei}
@@ -383,6 +422,8 @@ export const Page3: React.FC = () => {
           <Styledpage
             src={isDarkMode ? GitPage_dark : Gitpage}
             alt="Githubpage"
+            littleleft="15rem"
+            middleLeft="10rem"
             visible={false}
             zindex="0"
           />

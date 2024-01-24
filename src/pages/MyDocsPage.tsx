@@ -48,13 +48,39 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   justify-content: flex-start;
   height: 100%;
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
+  scroll-snap-align: center;
+  @media (max-width: 960px) {
+    height: 25rem;
+    scroll-snap-align: none;
+    background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+  }
 
-  background: ${(props) =>
-    props.isDarkMode
-      ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
-      : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1));
+    opacity: ${(props) => (props.isDarkMode ? 1 : 0)};
+    transition: opacity ease 0.5s;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
+    opacity: ${(props) => (props.isDarkMode ? 0 : 1)};
+    transition: opacity ease 0.5s;
+  }
 `
 
 // 문서 생성 부분(URL, 로딩)
@@ -64,6 +90,9 @@ const Generation = styled.div`
   align-items: center;
   width: 100vw;
   height: 23vh;
+  @media (max-width: 960px) {
+    margin-bottom: 50px;
+  }
 `
 
 //페이지 하단부
@@ -73,13 +102,18 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   align-items: center;
   height: 100%;
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  scroll-snap-align: center;
+  transition: ease 0.5s;
+  @media (max-width: 960px) {
+    scroll-snap-align: none;
+  }
 `
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
   // const apiUrl = 'http://localhost:8000/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({

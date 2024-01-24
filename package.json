@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@tiptap/extension-link": "^2.1.16",
+    "@types/react-responsive": "^8.0.8",
     "axios": "^1.6.5",
     "framer-motion": "^10.18.0",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
+    "react-responsive": "^9.0.2",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
@@ -69,6 +71,7 @@
     "react-color": "^2.19.3",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.21.1",
+    "rehype-raw": "^7.0.0",
     "styled-components": "^6.1.6",
     "sweetalert2": "^11.10.2",
     "typescript": "^5.2.2",

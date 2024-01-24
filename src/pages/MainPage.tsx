@@ -15,13 +15,14 @@ import { useNavigate } from 'react-router-dom'
 /* 각 페이지에 대한 설정 */
 const Container = styled.div<{ isDarkMode: boolean }>`
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   overflow-y: scroll;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   margin: 0;
+  transition: ease 0.5s;
 `
 const Section = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ const LogoWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 7vw;
   gap: 1rem;
 `
 const Arrowwrapper = styled.div`
@@ -109,6 +111,7 @@ const InputBox = styled.input<{ isDarkMode: boolean }>`
   text-align: center;
   font-size: 1.3rem;
   color: ${(props) => (props.isDarkMode ? 'white' : '#1a1a1a')};
+  transition: ease 0.5s;
 
   @media (max-width: 720px) {
     width: 35rem;
@@ -140,7 +143,6 @@ const Styledicon = styled.img<StylediconProps>`
   transform: translate(-50%, -50%);
   width: 2.2rem;
   height: 2.2rem;
-  z-index: 3;
   animation: ${(props) =>
     props.animation
       ? css`

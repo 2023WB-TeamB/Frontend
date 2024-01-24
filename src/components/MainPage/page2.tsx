@@ -37,7 +37,7 @@ function useOnScreen(
 const Section = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +53,7 @@ const Wrapper = styled.div`
   width: 84.25vw;
   margin-bottom: 1rem;
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     gap: 2rem;
   }
 `
@@ -107,7 +107,7 @@ const Styledpage = styled.img`
   transform: translate(-50%, -50%);
   z-index: 0;
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     height: 35rem;
     top: 50%;
   }
@@ -144,7 +144,7 @@ interface DontProps {
 const Smalldont = styled.span`
   font-size: 2.5rem;
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     font-size: 2rem;
   }
 `
@@ -170,8 +170,8 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
         `
       : 'none'};
 
-  @media (max-width: 720px) {
-    font-size: 3rem;
+  @media (max-width: 760px) {
+    font-size: 2.5rem;
     margin-top: 15%;
     margin-bottom: calc(9% - 2rem);
   }
@@ -200,7 +200,7 @@ const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   line-height: 2;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     font-size: ${(props) => props.littleFontSize || props.fontSize || '0.8rem'};
   }
 `
@@ -249,7 +249,7 @@ const ConsoleBox = styled.div<
   color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#0957d0')};
   z-index: 2;
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     font-size: 0.8rem;
   }
 `

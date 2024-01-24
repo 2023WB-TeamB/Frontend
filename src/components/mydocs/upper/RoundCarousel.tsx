@@ -11,6 +11,10 @@ const Wrapper = styled.div`
   width: 100%;
   height: 55vh;
   margin-top: 3vh;
+
+  @media (max-width: 960px) {
+    display: none;
+  }
 `
 const Carousel = styled.div`
   position: relative;
@@ -85,7 +89,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   width: 100%;
-  height: 5.8rem;
+  height: 5.7rem;
   line-height: 1.2rem; // 한 줄당 태그의 높이를 제한
   margin-top: 0.2rem;
   overflow: hidden;
@@ -101,7 +105,6 @@ const Tag = styled.text<{ color: string }>`
   margin-right: 0.2rem;
   padding: 0rem 0.3rem;
 `
-
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
   const [canNext, setCanNext] = useState(true) // next 버튼 활성화
@@ -115,7 +118,6 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setModalContent: state.setModalContent,
   }))
   const maxCards = 10
-
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
   // 버튼 클릭 시 활성화 상태(active) 2초(200ms) 유지
   const handlePrev = () => {

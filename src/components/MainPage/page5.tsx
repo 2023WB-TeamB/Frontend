@@ -163,7 +163,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
         `
       : 'none'};
 
-  @media (max-width: 720px) {
+  @media (max-width: 7px) {
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
 `
@@ -189,7 +189,14 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
         `
       : 'none'};
 
-  @media (max-width: 720px) {
+  @media (max-width: 1100px) {
+    widht: 55rem;
+    height: 31rem;
+    top: 45%;
+    left: 50%;
+  }
+
+  @media (max-width: 760px) {
     widht: 40rem;
     height: 22rem;
     top: 30%;
@@ -226,7 +233,7 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
     background-position: right center;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     width: 16rem;
     heiht: 3rem;
     top: 45%;
@@ -275,6 +282,7 @@ export const Page5: React.FC = () => {
             height="3rem"
             translate="-50%, -50%"
             top="65%"
+            littletop="calc(36% + 5.5rem)"
             left="75%"
             alt="pointer"
           />

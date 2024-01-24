@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
 import Preview from './Preview'
 import getContent from './getContent'
+import { useMediaQuery } from 'react-responsive'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -23,19 +24,20 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100vw;
+  width: 95vw;
 `
 
 const Collection = styled(motion.div)`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
+  /* justify-content: flex-start; */
   align-items: center;
   flex-wrap: wrap;
   position: relative;
   height: 85vh;
   width: 70rem;
-  margin: auto 3vw;
+  /* margin: auto 3vw; */
 `
 
 const Card = styled.div<{ backgroundColor: string }>`
@@ -171,8 +173,20 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     previewContent: state.previewContent,
     setPreviewContent: state.setPreviewContent,
   }))
-  const cardsPerPage = 8 // 한 페이지당 카드 수
-  const totalPageNum = Math.ceil(docs.length / cardsPerPage) // 총 페이지 수를 계산합니다.
+
+  // const cardsPerPage = 8 // 한 페이지당 카드 수
+  const isNotebook = useMediaQuery({
+    query: '(min-width:1057px) and (max-width:1370px)',
+  })
+  const isTablet = useMediaQuery({ query: '(min-width:745px) and (max-width:1056px)' })
+  const isMobile = useMediaQuery({ query: '(max-width:745px)' })
+
+  console.log(isTablet)
+  const cardsPerPage = () => {
+    return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
+  }
+  console.log(cardsPerPage())
+  const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
     id: number
@@ -213,7 +227,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }
 
   // 현재 페이지에 맞는 카드만을 잘라내는 부분
-  const currentCards = docs.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+  const currentCards = docs.slice((currentPage - 1) * cardsPerPage(), currentPage * cardsPerPage())
 
   return (
     <GalleryWrapper>

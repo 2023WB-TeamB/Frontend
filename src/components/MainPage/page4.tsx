@@ -123,7 +123,7 @@ const GuagebarContainer = styled.div`
   width: 29.6rem;
   z-index: 4;
 
-  @media (max-width: 720px) {
+  @media (max-width: 756px) {
     top: 60%;
   }
 `
@@ -324,7 +324,7 @@ const Styledpage = styled.img<Page>`
   transform: translate(-50%, -50%);
   z-index: 0;
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     width: 40rem;
     height: 25rem;
     top: 36%;
@@ -357,21 +357,21 @@ export const Styledicon = styled.img<StylediconProps & { visible: boolean; anima
             ${move} 0.5s ${props.delay || '1s'} ease-out 2;
           `
         : props.animationType === 'movedocument'
-          ? css`
-              ${movedocument} 7s forwards;
-            `
-          : props.animationType === 'openthebox'
-            ? css`
-                ${openthebox} 7s forwards;
-              `
-            : props.animationType === 'vibration'
-              ? css`
-                  ${vibration} 0.1s 4.5s 3;
-                `
-              : 'none'
+        ? css`
+            ${movedocument} 7s forwards;
+          `
+        : props.animationType === 'openthebox'
+        ? css`
+            ${openthebox} 7s forwards;
+          `
+        : props.animationType === 'vibration'
+        ? css`
+            ${vibration} 0.1s 4.5s 3;
+          `
+        : 'none'
       : 'none'};
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     top: ${(props) => props.littletop || props.top || '36%'};
   }
 `
