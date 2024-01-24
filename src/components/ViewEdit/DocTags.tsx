@@ -4,11 +4,12 @@ import { useDocTagStore, useEditorModeStore } from "../../store/store"
 
 const TagStyle = css`
   margin: 5px;
-  padding: 0 10px;
-  border: 2px solid lightseagreen;
-  border-radius: 30px;
+  padding: 2px 10px;
+  border: 1px solid lightseagreen;
+  border-radius: 20px;
   background: transparent;
   color: black;
+  line-height: 1.5rem;
 `
 const TagLabel = styled.label`
   ${TagStyle}

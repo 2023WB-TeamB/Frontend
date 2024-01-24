@@ -73,15 +73,14 @@ const EditorWrapper = styled.div`
   position: relative;
   min-height: 450px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   
   // * Editor Form
   & .editor-content {
     line-height: 1.5rem;
     overflow: hidden;
-    
-    & .tableWrapper {
-      border: 1px solid black;
-    }
   }
   `
 

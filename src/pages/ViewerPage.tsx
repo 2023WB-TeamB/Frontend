@@ -39,8 +39,9 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
 
 const StyledDocFieldWrapper = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 `
 

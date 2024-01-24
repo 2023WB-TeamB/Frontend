@@ -16,16 +16,15 @@ const ViewerWrapper = styled.div`
   position: relative;
   width: 100%;
   max-width: 1280px;
-  min-height: 80vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   transition: ease-in-out .3s;
 `
 
 const Icon = styled.img`
-  margin: 5px;
   width: 30px;
   height: 30px;
 `
@@ -56,7 +55,7 @@ const DistributeContentWrappe = styled.div`
 // ? 문서 제목 내용 구분선
 const DistributeDiv = styled.div`
   width: 90%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -70,28 +69,35 @@ const DistributeDiv = styled.div`
 
 // ? 문서 내용 폼
 const ViewArea = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   width: 80%;
   min-height: 450px;
-  height: 100%;
-  max-height: 75vh;
+  max-height: 70vh;
   font-family: 'Arial', sans-serif;
   overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 `
 
 // ? 문서 제목 폼
 const TitleArea = styled.div`
   width: 90%;
-  height: 100px;
+  max-width: 70vw;
+  height: 80px;
   text-align: left;
   display: flex;
   align-items: center;
 
   & h2,
   & textarea {
-    margin: 0%;
+    margin: 2px;
     font-size: 2rem;
-    padding: 2px;
     border: none;
     font-weight: bold;
     color: #96C;
