@@ -66,6 +66,8 @@ const Tag = styled.div<{ isDarkMode: boolean }>`
   border-radius: 10px;
   padding: 0 10px;
   margin-top: 3px;
+  margin-left: 2px;
+  margin-right: 2px;
 `
 
 const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
