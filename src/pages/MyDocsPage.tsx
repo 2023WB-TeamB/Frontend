@@ -46,7 +46,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* height: 100%; */
+  height: 100%;
   width: 100vw;
   position: relative;
   scroll-snap-align: center;
@@ -55,7 +55,8 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
       ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
       : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
 
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
+    height: 25rem;
     scroll-snap-align: none;
     background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
   }
@@ -68,6 +69,9 @@ const Generation = styled.div`
   align-items: center;
   width: 100vw;
   height: 23vh;
+  @media (max-width: 960px) {
+    margin-bottom: 50px;
+  }
 `
 
 //페이지 하단부
@@ -81,7 +85,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   scroll-snap-align: center;
 
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
     scroll-snap-align: none;
   }
 `

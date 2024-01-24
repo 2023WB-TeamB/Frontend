@@ -37,7 +37,7 @@ const Collection = styled(motion.div)`
   position: relative;
   height: 85vh;
   width: 70rem;
-  margin: auto 3vw;
+  /* margin: auto 3vw; */
 `
 
 const Card = styled.div<{ backgroundColor: string }>`
