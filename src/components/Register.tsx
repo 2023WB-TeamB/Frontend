@@ -143,9 +143,9 @@ function Register() {
   // submit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault() // form요소에서 발생하는 페이지를 다시 로드하는 새로고침 방지
-    // const url = 'https://gitodoc.kro.kr/api/v1/register' // 배포서버
+    const url = 'https://gitodoc.kro.kr/api/v1/register' // 배포서버
     // const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
-    const url = `http://localhost:8000/api/v1/register` // 개발서버
+    // const url = `http://localhost:8000/api/v1/register` // 개발서버
     // 비밀번호와 비밀번호 확인의 일치 여부 확인
     if (data.password !== data.confirmPassword) {
       handlePasswordMismatch()

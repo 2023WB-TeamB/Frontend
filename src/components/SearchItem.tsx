@@ -67,7 +67,6 @@ const Tag = styled.div`
   margin-top: 3px;
 `
 
-
 const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
