@@ -16,6 +16,7 @@ const StyledLittleHeader = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    z-index: 2;
 `
 
 const StyledButton = styled.button`

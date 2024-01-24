@@ -16,13 +16,8 @@ import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
 import LittleHeader from '../components/ViewEdit/LittleHeader'
+import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore, useApiUrlStore } from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
-import {
-  useSidePeekStore,
-  useViewerPageOpenStore,
-  useConfirmBoxStore,
-  useDocIdStore,
-} from '../store/store'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -45,8 +40,9 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
 
 const StyledDocFieldWrapper = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 `
 
@@ -60,14 +56,16 @@ function ViewerPage() {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {apiUrl} = useApiUrlStore()
 
   //? 문서 삭제 API
   const handleDeleteDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}${docId}`, {
+      await axios.delete(
+        `${apiUrl}/${docId}`,
+        {
         headers: {
           Authorization: `Bearer ${access}`,
         },

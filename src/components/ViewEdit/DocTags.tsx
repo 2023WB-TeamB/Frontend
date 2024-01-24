@@ -1,14 +1,15 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
-import { useDocTagStore, useViewerModeStore } from "../../store/store"
+import { useDocTagStore, useEditorModeStore } from "../../store/store"
 
 const TagStyle = css`
   margin: 5px;
-  padding: 0 10px;
-  border: 2px solid lightseagreen;
-  border-radius: 30px;
+  padding: 2px 10px;
+  border: 1px solid lightseagreen;
+  border-radius: 20px;
   background: transparent;
   color: black;
+  line-height: 1.5rem;
 `
 const TagLabel = styled.label`
   ${TagStyle}
@@ -35,7 +36,7 @@ const TagWrapper = styled.div`
 
 const DocTags: React.FC = () => {
     const {tags, addTag, removeTag} = useDocTagStore()
-    const {isViewer} = useViewerModeStore()
+    const {isEditor} = useEditorModeStore()
     const [inputTag, setInputTag] = useState("");
 
     const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -48,12 +49,12 @@ const DocTags: React.FC = () => {
     return (
         <TagWrapper>
             {tags.map((tag, index) => (
-                isViewer ?
-                    <TagLabel>{tag}</TagLabel> 
-                    :
+                isEditor ?
                     <TagButton onClick={() => removeTag(index)}>{tag}</TagButton>
+                    :
+                    <TagLabel>{tag}</TagLabel> 
             ))}
-            {isViewer ? null : 
+            {isEditor && 
                 <input
                     value={inputTag}
                     defaultValue={inputTag}

@@ -18,6 +18,7 @@ const StyledButton = styled.button`
   background-color: transparent;
   font-size: 11px;
   transition: all ease .2s;
+  color: black;
 
   &:hover {
     background-color: lightgray;
@@ -75,7 +76,9 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
 
   return (
     <BubbleMenuWrapper>
-      <StyledButton color={currentColor} onClick={handleButtonClick}>Color</StyledButton>
+      <StyledButton color={currentColor} onClick={handleButtonClick}>
+        Color
+      </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleBold().run()}>
         B
       </StyledButton>

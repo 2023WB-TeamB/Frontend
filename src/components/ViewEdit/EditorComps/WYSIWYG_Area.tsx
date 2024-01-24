@@ -29,7 +29,8 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
-import { useDocContentStore, useViewerModeStore } from "../../../store/store";
+import { useDocContentStore, useEditorModeStore } from "../../../store/store";
+import { marked } from "marked";
 
 const lowlight = createLowlight(common);
 
@@ -73,21 +74,20 @@ const EditorWrapper = styled.div`
   position: relative;
   min-height: 450px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   
   // * Editor Form
   & .editor-content {
     line-height: 1.5rem;
     overflow: hidden;
   }
-  
-  & .tableWrapper {
-    border: 1px solid black;
-  }
-`
+  `
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
-  const {isViewer} = useViewerModeStore()
+  const {isEditor} = useEditorModeStore()
   const {content, setContent} = useDocContentStore()
 
   useEffect(() => {
@@ -98,17 +98,31 @@ const EditorArea: React.FC = () => {
 
   // ? 에디터 객체 생성
   const editor:any = useEditor({
+    editable: isEditor,
     extensions,
-    content,
+    content: marked(content),
     editorProps: {
       attributes: {
         class: 'editor-content',
       },
     },
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML())
+      if (content != '')
+        setContent(editor.getHTML())
     },
   })
+  
+  useEffect(() => {
+    if (!editor) {
+      return undefined
+    }
+
+    editor.setEditable(isEditor)
+  }, [editor, isEditor])
+
+  if (!editor) {
+    return null
+  }
 
   return (
     <>
@@ -117,8 +131,8 @@ const EditorArea: React.FC = () => {
         <BubbleMenu editor={editor}>
           <BubbleMenubar editor={editor}/>
         </BubbleMenu>
+        {isEditor && <BottomMenubar editor={editor}/>}
       </EditorWrapper>
-      {isViewer || <BottomMenubar editor={editor}/>}
     </>
   )
 }

@@ -3,12 +3,10 @@ import { useCallback } from "react";
 import styled from "styled-components"
 
 const BottomOptionBarWrapper = styled.div`
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  width: 100%;
-  height: 40px;
-  border: 1px solid;
-  border-radius: 10px;
+  width: 60%;
+  height: 35px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -16,7 +14,7 @@ const BottomOptionBarWrapper = styled.div`
   overflow: hidden;
   z-index: 1;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 15px;
   background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de);
   background-origin: border-box;
   background-clip: content-box, border-box;
