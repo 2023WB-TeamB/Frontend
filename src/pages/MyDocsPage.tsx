@@ -46,15 +46,19 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100%;
+  /* height: 100%; */
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
-
+  scroll-snap-align: center;
   background: ${(props) =>
     props.isDarkMode
       ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
       : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
+
+  @media (max-width: 760px) {
+    scroll-snap-align: none;
+    background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+  }
 `
 
 // 문서 생성 부분(URL, 로딩)
@@ -73,15 +77,20 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   align-items: center;
   height: 100%;
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  scroll-snap-align: center;
+
+  @media (max-width: 760px) {
+    scroll-snap-align: none;
+  }
 `
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
-  // const apiUrl = 'http://localhost:8000/api/v1/docs'
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
+  // const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  const apiUrl = 'http://localhost:8000/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,
