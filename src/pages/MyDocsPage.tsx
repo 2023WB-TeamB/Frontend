@@ -48,8 +48,13 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   justify-content: flex-start;
   height: 100%;
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
+  scroll-snap-align: center;
+  @media (max-width: 960px) {
+    height: 25rem;
+    scroll-snap-align: none;
+    background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+
 
   &:before {
     content: '';
@@ -85,6 +90,9 @@ const Generation = styled.div`
   align-items: center;
   width: 100vw;
   height: 23vh;
+  @media (max-width: 960px) {
+    margin-bottom: 50px;
+  }
 `
 
 //페이지 하단부
@@ -94,14 +102,18 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   align-items: center;
   height: 100%;
   width: 100vw;
-  scroll-snap-align: center;
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  scroll-snap-align: center;
   transition: ease 0.5s;
+  @media (max-width: 960px) {
+    scroll-snap-align: none;
+  }
 `
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
   // const apiUrl = 'http://localhost:8000/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({

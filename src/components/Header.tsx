@@ -26,9 +26,14 @@ const Container = styled.div<ContainerType>`
   position: fixed;
   border-color: black;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
-  padding: 0 120px;
-  z-index: 3;
+  padding: 0 7.5rem;
+  z-index: 5;
   transition: ease 0.5s;
+ 
+  @media (max-width: 760px) {
+    width: calc(100% - 150px);
+    padding: 0 3.4rem 0 5rem;
+  }
 `
 const Logo = styled.img`
   width: 2rem;
