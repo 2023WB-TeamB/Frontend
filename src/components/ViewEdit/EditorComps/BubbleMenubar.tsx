@@ -76,7 +76,9 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
 
   return (
     <BubbleMenuWrapper>
-      <StyledButton color={currentColor} onClick={handleButtonClick}>Color</StyledButton>
+      <StyledButton color={currentColor} onClick={handleButtonClick}>
+        Color
+      </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleBold().run()}>
         B
       </StyledButton>

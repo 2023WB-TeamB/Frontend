@@ -244,9 +244,11 @@ const DocField: React.FC = () => {
             </ButtonWrapper>
           </DistributeContentWrappe>
         </DistributeDiv>
-        <ViewArea>
-            <EditorArea/>
-        </ViewArea>
+          <ViewArea>
+            {content != '' &&
+              <EditorArea/>
+            }
+          </ViewArea>
       </ViewerWrapper>
     )
 }

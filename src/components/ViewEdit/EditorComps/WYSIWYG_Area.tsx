@@ -129,8 +129,8 @@ const EditorArea: React.FC = () => {
         <BubbleMenu editor={editor}>
           <BubbleMenubar editor={editor}/>
         </BubbleMenu>
+        {isEditor && <BottomMenubar editor={editor}/>}
       </EditorWrapper>
-      {isEditor && <BottomMenubar editor={editor}/>}
     </>
   )
 }
