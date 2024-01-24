@@ -28,6 +28,7 @@ const Container = styled.div<ContainerType>`
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   padding: 0 120px;
   z-index: 3;
+  transition: ease 0.5s;
 `
 const Logo = styled.img`
   width: 2rem;

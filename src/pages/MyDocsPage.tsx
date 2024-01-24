@@ -51,10 +51,31 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   scroll-snap-align: center;
   position: relative;
 
-  background: ${(props) =>
-    props.isDarkMode
-      ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
-      : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1));
+    opacity: ${(props) => (props.isDarkMode ? 1 : 0)};
+    transition: opacity ease 0.5s;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
+    opacity: ${(props) => (props.isDarkMode ? 0 : 1)};
+    transition: opacity ease 0.5s;
+  }
 `
 
 // 문서 생성 부분(URL, 로딩)
@@ -76,6 +97,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   scroll-snap-align: center;
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  transition: ease 0.5s;
 `
 
 const MyDocsPage: React.FC = () => {
