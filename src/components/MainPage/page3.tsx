@@ -77,23 +77,28 @@ const TextWrapper = styled.div`
   height: 15vh;
   gap: 1.3rem;
 `
-const Animationwrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: calc((100vw - 1152px) / 2);
-  margin-right: calc((100vw - 1152px) / 2);
+// const Animationwrapper = styled.div`
+//   display: flex;
+//   /* flex-direction: column; */
+//   /* justify-content: center; */
+//   align-items: center;
+//   /* margin-left: calc((100vw - 1152px) / 2);
+//   margin-right: calc((100vw - 1152px) / 2); */
 
-  @media (max-width: 720px) {
-    margin-left: 7%;
-    margin-right: 7%;
-  }
-`
+//   @media (max-width: 760px) {
+//     margin-left: 7%;
+//     margin-right: 7%;
+//   }
+// `
 const Animationwrapper2 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   position: relative;
-  height: 68vh;
-  width: auto;
-  margin: 0;
+  flex-wrap: wrap;
+  /* height: 68vh;
+  width: 50%; */
+  margin: 50px 100px;
 `
 const Arrowwrapper = styled.div`
   display: flex;
@@ -134,36 +139,62 @@ const movePointer = keyframes`
     transform: translateX(0) translateY(0);
   }
   50%{
-    transform: translateX(-33rem) translateY(-12.5rem);
+    transform: translateX(45rem) translateY(15rem);
   }
   100% {
-    transform: translateX(0) translateY(0);
+    transform: translateX(45rem) translateY(15rem);
   }
   `
+const largeemovePointer = keyframes`
+  0%{
+    transform: translateX(0) translateY(0);
+  }
+  50%{
+    transform: translateX(55rem) translateY(15rem);
+  }
+  100%{
+    transform: translateX(55rem) translateY(15rem);
+  }`
 const littlemovePointer = keyframes`
   0%{
     transform: translateX(0) translateY(0);
   }
   50%{
-    transform: translateX(-10rem) translateY(-23rem);
+    transform: translateX(0) translateY(40rem);
   }
   100%{
-    transform: translateX(0) translateY(0);
+    transform: translateX(0) translateY(40rem);
   }`
 const moveURL = keyframes`
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50%{
+    transform: translateX(45rem) translateY(15rem);
+  }
+  100% {
+    transform: translateX(45rem) translateY(15rem);
+  }
+`
+const largemoveURL = keyframes`
   0%{
     transform: translateX(0) translateY(0);
   }
-  100%{
-    transform: translateX(31rem) translateY(13.2rem);
+  50%{
+    transform: translateX(55rem) translateY(15rem);
   }
-`
+  100%{
+    transform: translateX(55rem) translateY(15rem);
+  }`
 const littlemoveURL = keyframes`
   0%{
     transform: translateX(0) translateY(0);
   }
+  50%{
+    transform: translateX(0) translateY(40rem);
+  }
   100%{
-    transform: translateX(4.5rem) translateY(23.7rem);
+    transform: translateX(0) translateY(40rem);
   }
 `
 
@@ -200,7 +231,7 @@ const Styledarrow = styled.img<StyledarrowProps>`
         `
       : 'none'};
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
     margin-top: 3rem;
   }
 `
@@ -230,53 +261,61 @@ const Dont = styled.h1<
           ${slideUpFade} 1s  ease-out;
         `
       : 'none'};
-
-  @media (max-width: 720px) {
-    font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
-  }
 `
 /*--Dont 컴포넌트와 구별해주기 위해 URL text 추가, 'pasteURL'애니메이션 삭제--*/
-interface URLprops {
-  delay?: string
-  top?: string
-  left?: string
-  littletop?: string
-  littleleft?: string
-}
-const URLtext = styled.p<
-  URLprops & {
-    visible: boolean
-    isDarkMode: boolean
-  }
->`
+// interface URLprops {
+//   delay?: string
+//   top?: string
+//   left?: string
+//   littletop?: string
+//   littleleft?: string
+// }
+const URLtext = styled.p<{ visible: boolean; isDarkMode: boolean }>`
   font-size: 1rem;
-  top: ${(props) => props.top || '2.85rem'};
-  left: ${(props) => props.left || '12rem'};
-  font-family: 'Inter', sans-serif;
   position: absolute;
+  top: 0;
+  left: 10rem;
+  font-family: 'Inter', sans-serif;
   white-space: nowrap;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   z-index: 3;
   animation: ${(props) =>
     props.visible
       ? css`
-          ${moveURL} 0.77s ease-out forwards;
+          ${moveURL} 2s ease-out forwards;
         `
       : 'none'};
-  animation-delay: 3.7s;
+  animation-delay: 2s;
 
-  @media (max-width: 720px) {
-    font-size: 0.8rem;
-    z-index: 3;
-    top: ${(props) => props.littletop || props.top || '3.2rem'};
-    left: ${(props) => props.littleleft || props.left || '8.5rem'};
+  @media (min-width: 1550px) {
+    left: 17rem;
     animation: ${(props) =>
       props.visible
         ? css`
-            ${littlemoveURL} 0.77s ease-out forwards;
+            ${largemoveURL} 2s ease-out forwards;
           `
         : 'none'};
-    animation-delay: 3.7s;
+    animation-delay: 2s;
+  }
+  @media (max-width: 960px) {
+    left: 13.5rem;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 2s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2s;
+  }
+  @media (max-width: 760px) {
+    left: 10rem;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 2s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2s;
   }
 `
 
@@ -288,26 +327,19 @@ interface Page {
   littletop?: string
   littleleft?: string
 }
-const Styledpage = styled.img<Page & { visible: boolean }>`
-  width: 42rem;
-  height: 27rem;
-  position: absolute;
+const Styledpage = styled.img<Page & { visible: boolean; isTarget?: boolean }>`
+  width: 40rem;
+  height: 25rem;
+  position: ${(props) => (props.isTarget ? 'absolute' : 'none')};
   z-index: ${(props) => props.zindex || '1'};
-  top: ${(props) => props.top || '3rem'};
-  left: ${(props) => props.left || '0rem'};
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
   animation: ${(props) =>
     props.visible
       ? css`
-          ${slideinFade} 2.5s ease-out
+          ${slideinFade} 2s ease-out
         `
       : 'none'};
-
-  @media (max-width: 720px) {
-    width: 30rem;
-    height: 20rem;
-    top: ${(props) => props.littletop || props.top || '3rem'};
-    left: ${(props) => props.littleleft || props.left || '0rem'};
-  }
 `
 
 //pointer : 위치수정
@@ -316,28 +348,47 @@ const Styledpointer = styled.img<{ visible: boolean }>`
   height: 3rem;
   position: absolute;
   z-index: 2;
-  top: 17rem;
-  left: 58rem;
+
+  top: 1rem;
+  left: 23.5rem;
   animation: ${(props) =>
     props.visible
       ? css`
-          ${movePointer} 1.9s ease-out
+          ${movePointer} 2s ease-out forwards;
         `
       : 'none'};
-  animation-delay: 2.5s;
+  animation-delay: 2s;
 
-  @media (max-width: 720px) {
-    width: 3rem;
-    height: 3rem;
-    top: 28rem;
-    left: 25rem;
+  @media (min-width: 1550px) {
+    left: 30.5rem;
     animation: ${(props) =>
       props.visible
         ? css`
-            ${littlemovePointer} 1.68s ease-out
+            ${largeemovePointer} 2s ease-out forwards;
           `
         : 'none'};
-    animation-delay: 2.5s;
+    animation-delay: 2s;
+  }
+  @media (max-width: 960px) {
+    left: 27rem;
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemoveURL} 2s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2s;
+  }
+  @media (max-width: 760px) {
+    left: 23.5rem;
+
+    animation: ${(props) =>
+      props.visible
+        ? css`
+            ${littlemovePointer} 2s ease-out forwards;
+          `
+        : 'none'};
+    animation-delay: 2s;
   }
 `
 
@@ -364,30 +415,27 @@ export const Page3: React.FC = () => {
           Copy your repository URL
         </Dont>
       </TextWrapper>
-      <Animationwrapper>
-        <Animationwrapper2>
-          <URLtext isDarkMode={isDarkMode} ref={refd} visible={visibled}>
-            https://github.com/2023WB-TeamB
-          </URLtext>
-          <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
-          <Styledpage
-            src={isDarkMode ? gitodocpage_dark : gitodocpage}
-            top="0"
-            left="30rem"
-            littletop="15rem"
-            littleleft="5rem"
-            alt="GiToDocpage"
-            ref={refi}
-            visible={visiblei}
-          />
-          <Styledpage
-            src={isDarkMode ? GitPage_dark : Gitpage}
-            alt="Githubpage"
-            visible={false}
-            zindex="0"
-          />
-        </Animationwrapper2>
-      </Animationwrapper>
+      {/* <Animationwrapper> */}
+      <Animationwrapper2>
+        <URLtext isDarkMode={isDarkMode} ref={refd} visible={visibled}>
+          https://github.com/2023WB-TeamB
+        </URLtext>
+        <Styledpointer ref={refp} visible={visiblep} src={pointer} alt="pointer" />
+        <Styledpage
+          src={isDarkMode ? GitPage_dark : Gitpage}
+          alt="Githubpage"
+          visible={false}
+          zindex="0"
+        />
+        <Styledpage
+          src={isDarkMode ? gitodocpage_dark : gitodocpage}
+          alt="GiToDocpage"
+          ref={refi}
+          visible={visiblei}
+          isTarget={false}
+        />
+      </Animationwrapper2>
+      {/* </Animationwrapper> */}
       <Arrowwrapper>
         <Styledarrow src={down_arrow} animation alt="downarrow" />
       </Arrowwrapper>
