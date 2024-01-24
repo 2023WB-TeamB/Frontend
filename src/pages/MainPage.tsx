@@ -22,7 +22,7 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   flex-direction: column;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   margin: 0;
-  transition: ease 0.5s;
+  transition: background-color ease 0.5s;
 `
 const Section = styled.div`
   display: flex;

@@ -53,7 +53,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   @media (max-width: 960px) {
     height: 25rem;
     scroll-snap-align: none;
-    background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+    background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   }
 
   &:before {
