@@ -4,12 +4,11 @@ import styled from 'styled-components'
 import SearchItem from './SearchItem'
 import { useModalStore, useSearchStore } from './useModalStore'
 import useDebounce from './useDebounce'
-import { docStore } from '../store/store'
+import { docStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
 /*-----------------------------------------------------------*/
-
 
 interface IconType {
   height: string
@@ -19,9 +18,9 @@ interface IconType {
 }
 
 /**** 스타일 ****/
-const Overlay = styled.div`
+const Overlay = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: ${(props) => (props.isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.2)')};
   top: 0;
   left: 0;
   right: 0;
@@ -31,11 +30,11 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 5; // 재훈님과 얘기해서 수치 조정
 `
-const Container = styled.div`
+const Container = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  color: black;
+  background-color: ${(props) => (props.isDarkMode ? '#2C2C2C' : '#fff')};
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
   height: 450px;
   width: 50rem;
@@ -54,14 +53,14 @@ const SearchWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-const SearchBar = styled.input`
+const SearchBar = styled.input<{ isDarkMode: boolean }>`
   width: 44rem;
   height: 40px;
   font-size: 1.2rem;
   border: none;
   outline: none;
   background-color: transparent;
-  color: #000000;
+  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   ::placeholder {
     color: #c8c8c8;
   }
@@ -80,6 +79,7 @@ const ItemWrapper = styled.div`
 `
 
 const SearchList: React.FC = () => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { searchListClose } = useModalStore()
   const [query, setQuery] = useState('') // 검색 키워드 상태관리
   // const [filteredData, setFilteredData] = useState<Doc[]>([])
@@ -134,8 +134,12 @@ const SearchList: React.FC = () => {
   }, [])
 
   return (
-    <Overlay onClick={handleOverlayClick} onKeyDown={handleKeyPress} tabIndex={0}>
-      <Container>
+    <Overlay
+      onClick={handleOverlayClick}
+      onKeyDown={handleKeyPress}
+      tabIndex={0}
+      isDarkMode={isDarkMode}>
+      <Container isDarkMode={isDarkMode}>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
           <SearchBar
@@ -143,6 +147,7 @@ const SearchList: React.FC = () => {
             onChange={getValue}
             value={query}
             placeholder="Search your itemument..."
+            isDarkMode={isDarkMode}
           />
           <Icon src={imgClose} height="1rem" width="1rem" onClick={handleOnClick} />
         </SearchWrapper>
