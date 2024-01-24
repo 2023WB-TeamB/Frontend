@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ViewDetailsButton from '../ViewDetailsButton'
 import { cardColorStore, previewOpenStore, useDarkModeStore } from '../../../store/store'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import PalleteButton from '../PalleteButton'
 import DeleteButton from '../DeleteButton'
 
@@ -98,10 +99,10 @@ const Repo = styled.p`
 
 // 문서 제목
 const Title = styled.h2`
-  flex-grow: 1;
+  flex-shrink: 0;
   font-size: 2rem;
   width: 95%; // 너비를 지정합니다.
-  max-height: 9rem;
+  max-height: 5.4rem;
   margin: 0;
   word-break: keep-all;
   display: -webkit-box;
@@ -112,11 +113,13 @@ const Title = styled.h2`
 `
 
 const TagWrapper = styled.div`
+  flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
   width: 95%;
-  margin-top: 0.6rem;
-  max-height: 3.6rem;
+  margin-top: 0.5rem;
+  line-height: 1.2rem;
+  max-height: 3.9rem;
   overflow: hidden;
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
@@ -124,14 +127,15 @@ const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   background-color: ${(props) => (props.isDarkMode ? '#454545' : '#f8f8f8')};
   font-size: 0.9rem;
   border-radius: 0.5rem;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   margin-right: 0.5rem;
   padding: 0 0.5rem;
 `
 
 // 문서 미리보기(마크다운 적용)
 const Content = styled.div`
-  font-size: 0.4rem;
+  flex-grow: 1;
+  font-size: 0.5rem;
   width: 90%;
   height: 20rem;
   margin-top: 1rem;
@@ -201,7 +205,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
               ))}
             </TagWrapper>
             <Content>
-              <ReactMarkdown>{content}</ReactMarkdown>
+              <ReactMarkdown rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>
             </Content>
           </UpperWrapper>
           <LowerWrapper>
