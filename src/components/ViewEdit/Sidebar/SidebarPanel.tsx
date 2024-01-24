@@ -86,6 +86,7 @@ const SidePanelTopWrapper = styled.div`
 
 export interface projectData {
   id: number
+  repo?: string
   title: string
   color: string
   created_at: string
@@ -108,24 +109,31 @@ const SidebarPanel: React.FC = () => {
   //* 검색 관련 state
   const [query, setQuery] = useState('') // 검색 키워드 상태관리
   const debouncedQuery = useDebounce(query, 500)
-  // const { searchTemp, setSearchTemp } = useSidePanelSearchStore()
+  const { searchTemp, setSearchTemp } = useSidePanelSearchStore()
   
   const searchBarRef = useRef<HTMLInputElement>(null)
   
   useEffect(() => {
     const getData = () => {
-      // setSearchTemp(
-      //   // myDocsData.filter((doc) => {
-      //   //   const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
-      //   //   const repo = doc.title.toLowerCase().includes(lowerCaseQuery)
-    
-      //   //   return repo
-      //   // }),
-      // )
+      setSearchTemp(
+        myDocsData.flatMap(([repo, data]) => {
+          return data.map(d => ({ ...d, repo }))
+        }).filter((doc) => {
+          const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
+          const repo = doc.repo.toLowerCase().includes(lowerCaseQuery)
+          const title = doc.title.toLowerCase().includes(lowerCaseQuery)
+
+          return (isOpenVersionPanel && repo) || title
+        }),
+      )
     }
     getData()
   }, [debouncedQuery]) // 디바운스로 의존성 주입
 
+  //* 버전 관리의 상태가 변하면 query 초기화
+  useEffect(() => {
+    setQuery('');
+  }, [isOpenGalleryPanel]);
 
   const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value.toLowerCase())
@@ -172,7 +180,10 @@ const SidebarPanel: React.FC = () => {
             ref={searchBarRef}
             onChange={getValue}
             value={query}
-            placeholder="Search your repo..."
+            placeholder={isOpenVersionPanel ? 
+              "Search your repo..." :
+              "Search your project..."
+            }
           />
           <img src={isDarkMode ? searchIcon_dark : searchIcon}></img>
         </SearchArea>
@@ -183,16 +194,20 @@ const SidebarPanel: React.FC = () => {
       {isOpenGalleryPanel && 
         <PreviewTileWrapper isDarkMode={isDarkMode}>
         {myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, projectData] = item
-          return <GalleryPreviewTile title={projectTitle} pages={projectData}/>
+          const [projectTitle, _] = item
+          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
+          return filteredSearchTemp.length > 0 && 
+            <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
         })}
         </PreviewTileWrapper>
       }
       {isOpenVersionPanel &&
         <PreviewTileWrapper isDarkMode={isDarkMode}>
         {myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, projectData] = item
-          return <VersionPreviewTile title={projectTitle} pages={projectData}/>
+          const [projectTitle, _] = item
+          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
+          return filteredSearchTemp.length > 0 && 
+            <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
         })}
         </PreviewTileWrapper>
       }
