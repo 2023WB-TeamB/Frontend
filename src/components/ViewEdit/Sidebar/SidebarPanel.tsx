@@ -90,56 +90,6 @@ export interface projectData {
   created_at: string
 }
 
-//! 임시 데이터
-const tempData: Array<[string, projectData[]]> = [
-  [
-    "Project GTD",
-    [
-      {
-        id: 1,
-        title: "프로젝트 1",
-        color: "#55EE88",
-        created_at: "2022-01-01",
-      },
-      {
-        id: 2,
-        title: "프로젝트 2",
-        color: "#00FF00",
-        created_at: "2022-01-02",
-      },
-    ],
-  ],
-  [
-    "Color Detector Program",
-    [
-      {
-        id: 1,
-        title: "프로젝트 1",
-        color: "#AA55FF",
-        created_at: "2022-01-03",
-      },
-      {
-        id: 2,
-        title: "프로젝트 2",
-        color: "#0088BB",
-        created_at: "2022-01-03",
-      },
-      {
-        id: 3,
-        title: "프로젝트 3",
-        color: "#0000FF",
-        created_at: "2022-01-03",
-      },
-      {
-        id: 4,
-        title: "프로젝트 4",
-        color: "#FFFF00",
-        created_at: "2022-01-04",
-      },
-    ],
-  ],
-];
-
 // 사이드바 확장 패널
 const SidebarPanel: React.FC = () => {
   const { apiUrl } = useApiUrlStore()
@@ -159,7 +109,7 @@ const SidebarPanel: React.FC = () => {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(
-        `${apiUrl}version`,
+        `${apiUrl}/version`,
         {
           headers: {
             Authorization: `Bearer ${access}`,
@@ -170,7 +120,6 @@ const SidebarPanel: React.FC = () => {
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      setMyDocsData(tempData)
     }
   }
 

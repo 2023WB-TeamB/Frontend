@@ -16,7 +16,8 @@ import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
 import LittleHeader from '../components/ViewEdit/LittleHeader'
-import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore } from '../store/store'
+import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore, useApiUrlStore } from '../store/store'
+import { BadgeGuide } from '../components/BadgeGuide'
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -33,14 +34,15 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
   justify-content: flex-start;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  transition: ease .5s;
+  transition: ease 0.5s;
   overflow: hidden;
 `
 
 const StyledDocFieldWrapper = styled.div`
   width: 100%;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 `
 
@@ -54,7 +56,7 @@ function ViewerPage() {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
-  const apiUrl = 'https://gtd.kro.kr/api/v1/docs/'
+  const {apiUrl} = useApiUrlStore()
 
   //? 문서 삭제 API
   const handleDeleteDoc = async () => {
@@ -62,18 +64,17 @@ function ViewerPage() {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       await axios.delete(
-        `${apiUrl}${docId}`,
+        `${apiUrl}/${docId}`,
         {
         headers: {
           Authorization: `Bearer ${access}`,
         },
-        },
-      )
-      console.log("document delete success")
+      })
+      console.log('document delete success')
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      console.log("document delete fail")
+      console.log('document delete fail')
     }
   }
 
@@ -104,23 +105,24 @@ function ViewerPage() {
 
   return (
     <StyledForm isDarkMode={isDarkMode}>
-      <LittleHeader/>
+      <LittleHeader />
       <Sidebar
         list={[
           [isOpenSideAlways ? double_arrow_left : double_arrow_right, , toggleOpenSideAlways],
-          [isDarkMode ? gallery_dark : gallery, "Gallery", openerStore.openGalleryPanel],
-          [isDarkMode ? version_dark : version, "Version", openerStore.openVersionPanel],
-          [isDarkMode ? exportBtn_dark : exportBtn, "Export", openerStore.openOptions],
-          [isDarkMode ? deleteBtn_dark : deleteBtn, "Delete", openConfirmWithDelete],
+          [isDarkMode ? gallery_dark : gallery, 'Gallery', openerStore.openGalleryPanel],
+          [isDarkMode ? version_dark : version, 'Version', openerStore.openVersionPanel],
+          [isDarkMode ? exportBtn_dark : exportBtn, 'Export', openerStore.openOptions],
+          [isDarkMode ? deleteBtn_dark : deleteBtn, 'Delete', openConfirmWithDelete],
           [''],
           [''],
           [''],
           [''],
           [''],
           [''],
-          [exit, "Exit", openConfirmWithExit],
-        ]}/>
-      <SidebarPanel/>
+          [exit, 'Exit', openConfirmWithExit],
+        ]}
+      />
+      <SidebarPanel />
       <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm
         isOpenConfirm={confirmBoxStore.isOpenConfirm}
@@ -131,8 +133,9 @@ function ViewerPage() {
         ]}
       />
       <StyledDocFieldWrapper>
-        <DocField/>
+        <DocField />
       </StyledDocFieldWrapper>
+      <BadgeGuide />
     </StyledForm>
   )
 }

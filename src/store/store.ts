@@ -170,6 +170,17 @@ export const isGeneratingStore = create<Generating>((set) => ({
   setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
+// 문서 생성 시간
+interface GenerateTime {
+  generateTime: number
+  setGenerateTime: (cardId: number) => void
+}
+
+export const generateTimeStore = create<GenerateTime>((set) => ({
+  generateTime: 0,
+  setGenerateTime: (generateTime) => set({ generateTime }),
+}))
+
 /*다크모드*/
 interface State {
   isDarkMode: boolean
@@ -272,16 +283,16 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
     })),
 }))
 
-// ? 뷰어 모드
-interface ViewerModeState {
-  isViewer: boolean
-  toggleViewerMode: () => void
+// ? 편집 모드
+interface EditorModeState {
+  isEditor: boolean
+  toggleEditorMode: () => void
 }
-export const useViewerModeStore = create<ViewerModeState>((set) => ({
-  isViewer: true,
-  toggleViewerMode: () =>
+export const useEditorModeStore = create<EditorModeState>((set) => ({
+  isEditor: false,
+  toggleEditorMode: () =>
     set((state) => ({
-      isViewer: !state.isViewer,
+      isEditor: !state.isEditor,
     })),
 }))
 
@@ -335,7 +346,7 @@ interface DocIdState {
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
   //! 임시 문서 ID 지정
-  docId: 27,
+  docId: 95,
   setDocId: (id: number) =>
     set(() => ({
       docId: id,
@@ -348,9 +359,22 @@ interface ApiUrlState {
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
   apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
-  // apiUrl: 'http://localhost:8000/api/v1/docs/',
+  // apiUrl: 'http://localhost:8000/api/v1/docs',
   setApiUrl: (url: string) =>
     set(() => ({
       apiUrl: url,
     })),
+}))
+
+// BadgeGuide Modal
+interface GuideStore {
+  isGuideOpen: boolean
+  openGuide: () => void
+  closeGuide: () => void
+}
+
+export const useGuideStore = create<GuideStore>((set) => ({
+  isGuideOpen: false,
+  openGuide: () => set({ isGuideOpen: true }),
+  closeGuide: () => set({ isGuideOpen: false }),
 }))

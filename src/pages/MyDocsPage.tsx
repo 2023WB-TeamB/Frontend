@@ -50,15 +50,36 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   width: 100vw;
   position: relative;
   scroll-snap-align: center;
-  background: ${(props) =>
-    props.isDarkMode
-      ? 'linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1))'
-      : 'linear-gradient(white, white 80%, rgb(240, 240, 240, 1));'};
-
   @media (max-width: 960px) {
     height: 25rem;
     scroll-snap-align: none;
     background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1));
+    opacity: ${(props) => (props.isDarkMode ? 1 : 0)};
+    transition: opacity ease 0.5s;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
+    opacity: ${(props) => (props.isDarkMode ? 0 : 1)};
+    transition: opacity ease 0.5s;
   }
 `
 
@@ -84,7 +105,7 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   scroll-snap-align: center;
-
+  transition: ease 0.5s;
   @media (max-width: 960px) {
     scroll-snap-align: none;
   }

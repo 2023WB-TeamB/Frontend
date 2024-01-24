@@ -28,7 +28,8 @@ const Container = styled.div<ContainerType>`
   background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
   padding: 0 7.5rem;
   z-index: 5;
-
+  transition: ease 0.5s;
+ 
   @media (max-width: 760px) {
     width: calc(100% - 150px);
     padding: 0 3.4rem 0 5rem;
@@ -112,8 +113,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
 
   // 로그아웃 API 호출
   const handleClickSignout = async () => {
-    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포서버
-    // const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
+    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
     // const url = 'http://localhost:8000/api/v1/auth' // 개발 서버
     const response = await axios.delete(url)
     Swal.fire({

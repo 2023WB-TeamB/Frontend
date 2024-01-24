@@ -89,7 +89,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   width: 100%;
-  height: 5.8rem;
+  height: 5.7rem;
   line-height: 1.2rem; // 한 줄당 태그의 높이를 제한
   margin-top: 0.2rem;
   overflow: hidden;
