@@ -54,7 +54,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
     height: 25rem;
     scroll-snap-align: none;
     background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
-
+  }
 
   &:before {
     content: '';
