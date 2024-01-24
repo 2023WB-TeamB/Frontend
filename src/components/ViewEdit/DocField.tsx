@@ -8,8 +8,6 @@ import CancelIcon from '../../assets/images/Viewer/cancel.png'
 import EditorArea from "./EditorComps/WYSIWYG_Area"
 import DocTags from './DocTags'
 import axios from 'axios'
-import { marked } from 'marked'
-
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -162,15 +160,6 @@ const DocField: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
   }
-
-  //* 마크다운 -> HTML
-  const convertMarkdownToHtml = async () => {
-    setContent(await marked(content))
-  }
-
-  useEffect(() => {
-    convertMarkdownToHtml()
-  }, [content])
 
   //? 문서 수정 API
   const handleSaveDocContent = async () => {

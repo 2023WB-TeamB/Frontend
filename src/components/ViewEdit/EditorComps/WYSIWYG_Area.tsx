@@ -30,6 +30,7 @@ import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
 import { useDocContentStore, useEditorModeStore } from "../../../store/store";
+import { marked } from "marked";
 
 const lowlight = createLowlight(common);
 
@@ -99,14 +100,15 @@ const EditorArea: React.FC = () => {
   const editor:any = useEditor({
     editable: isEditor,
     extensions,
-    content,
+    content: marked(content),
     editorProps: {
       attributes: {
         class: 'editor-content',
       },
     },
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML())
+      if (content != '')
+        setContent(editor.getHTML())
     },
   })
   
