@@ -1,19 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDarkModeStore } from '../../../store/store'
+import { projectData } from './SidebarPanel';
 
 interface VersionPreviewProps {
-  content: {
-    id: number,
-    title: string,
-    color: string,
-    created_at: string
-  } // 미리보기 문서 내용
+  content: projectData
   isActive?: boolean
 }
 
 // 개별 미리보기 문서 스타일
-const PreviewContent = styled.p<{ isDarkMode: boolean, color: string }>`
+const PreviewContent = styled.div<{ isDarkMode: boolean, color: string }>`
   margin: 6px;
   min-width: 88px;
   width: 88px;

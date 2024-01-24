@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { projectData } from '../components/ViewEdit/Sidebar/SidebarPanel'
 
 export type Keyword = {
   name: string
@@ -366,4 +367,16 @@ export const useGuideStore = create<GuideStore>((set) => ({
   isGuideOpen: false,
   openGuide: () => set({ isGuideOpen: true }),
   closeGuide: () => set({ isGuideOpen: false }),
+}))
+
+interface SidePanelSearchState {
+  searchTemp: projectData[]
+  setSearchTemp: (data: projectData[]) => void
+}
+export const useSidePanelSearchStore = create<SidePanelSearchState>((set) => ({
+  searchTemp: [],
+  setSearchTemp: (data: projectData[]) => 
+    set(() => ({
+      searchTemp: data
+    }))
 }))

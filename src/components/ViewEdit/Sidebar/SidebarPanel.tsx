@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import VersionPreviewTile from './VersionPreviewArea'
 import searchIcon from '../../../assets/images/search.png'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
-import { useApiUrlStore, useDarkModeStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
+import { useApiUrlStore, useDarkModeStore, useSidePanelSearchStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
 import axios from 'axios'
 import GalleryPreviewTile from './GalleryPreviewArea'
+import useDebounce from '../../useDebounce'
 
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: boolean; isOpenSideAlways: boolean; }>`
@@ -88,6 +89,7 @@ export interface projectData {
   title: string
   color: string
   created_at: string
+  keywords: string[]
 }
 
 // 사이드바 확장 패널
@@ -102,7 +104,33 @@ const SidebarPanel: React.FC = () => {
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const isOpenSidePanel = isOpenGalleryPanel || isOpenVersionPanel
+  
+  //* 검색 관련 state
+  const [query, setQuery] = useState('') // 검색 키워드 상태관리
+  const debouncedQuery = useDebounce(query, 500)
+  // const { searchTemp, setSearchTemp } = useSidePanelSearchStore()
+  
+  const searchBarRef = useRef<HTMLInputElement>(null)
+  
+  useEffect(() => {
+    const getData = () => {
+      // setSearchTemp(
+      //   // myDocsData.filter((doc) => {
+      //   //   const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
+      //   //   const repo = doc.title.toLowerCase().includes(lowerCaseQuery)
+    
+      //   //   return repo
+      //   // }),
+      // )
+    }
+    getData()
+  }, [debouncedQuery]) // 디바운스로 의존성 주입
 
+
+  const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value.toLowerCase())
+  }
+  
   //? 문서 조회 API
   const handleGetDocVersions = async () => {
     try {
@@ -140,7 +168,12 @@ const SidebarPanel: React.FC = () => {
       isOpenSideAlways={isOpenSideAlways}>
       <SidePanelTopWrapper>
         <SearchArea isDarkMode={isDarkMode}>
-          <input></input>
+          <input
+            ref={searchBarRef}
+            onChange={getValue}
+            value={query}
+            placeholder="Search your repo..."
+          />
           <img src={isDarkMode ? searchIcon_dark : searchIcon}></img>
         </SearchArea>
         <StyledCloseButton onClick={closeSidePanel}>
