@@ -99,7 +99,7 @@ const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
                 tags: item.tags,
               }
               setCardId(item.id) // 수정/삭제 대상 문서 id 설정
-              // setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
+              setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
               setModalOpen(true) // 모달 열기
             }}
             isDarkMode={isDarkMode}>
