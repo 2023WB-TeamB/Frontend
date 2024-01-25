@@ -153,6 +153,9 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
+    return () => {
+      setContent("")
+    }
   }, [])
 
   const {isEditor, toggleEditorMode} = useEditorModeStore()
