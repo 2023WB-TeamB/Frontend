@@ -36,7 +36,7 @@ interface ToggleTextProps {
 }
 
 // 스위치가 옮겨진 쪽의 글씨는 흰색, 그렇지 않은 쪽은 회색.
-/*다크모드에서도 글씨 잘 보일 수 있도록 색깔 조정했습니다! 색은 이전과 같은데 투명도만 없앴습니다. -채영-*/
+/* 다크모드에서도 글씨 잘 보일 수 있도록 색깔 조정했습니다! 색은 이전과 같은데 투명도만 없앴습니다. -채영-*/
 const Text = styled.p<ToggleTextProps>`
   color: ${(props) => (props.selected ? '#FFFFFF' : '#d2d2d2')};
   z-index: 2;
@@ -45,7 +45,7 @@ const Text = styled.p<ToggleTextProps>`
 
 // isEnglish에 영어/한글 상태 저장
 // store.ts에 저장해놓은 상태관리 함수 호출
-const LanguageToggle = () => {
+function LanguageToggle() {
   const { isEnglish, setIsEnglish } = isEnglishStore()
 
   const onClick = () => {

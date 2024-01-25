@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import ViewDetailsButton from '../ViewDetailsButton'
-import { cardColorStore, previewOpenStore, useDarkModeStore } from '../../../store/store'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
+import ViewDetailsButton from '../ViewDetailsButton'
+import { cardColorStore, previewOpenStore, useDarkModeStore } from '../../../store/store'
 import PalleteButton from '../PalleteButton'
 import DeleteButton from '../DeleteButton'
 
@@ -163,7 +163,7 @@ const CreatedAt = styled.p<{ color: string }>`
 `
 
 interface PreviewContentProps {
-  color?: string
+  color: string
   title: string
   created_at: string
   content: string

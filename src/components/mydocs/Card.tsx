@@ -21,10 +21,15 @@ const Card = styled.div<CardProps>`
   padding: 1.4rem 1.2rem;
   top: 120%;
   left: 50%;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
-  transition: transform 0.3s, visibility 0.4s, opacity 0.4s;
+  transition:
+    transform 0.3s,
+    visibility 0.4s,
+    opacity 0.4s;
 
   // RoundCarousel 컴포넌트로부터 CurrentRotate를 props로 넘겨받아서 회전 수행
   ${({ rotate }) =>

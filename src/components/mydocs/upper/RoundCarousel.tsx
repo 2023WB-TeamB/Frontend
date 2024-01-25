@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
-import { Doc } from '../../../store/store'
+import { Doc, cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
-import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
 import CarouselSkeleton from './CarouselSkeleton'
 
 const Wrapper = styled.div`
@@ -127,8 +126,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setTimeout(() => setPrevButtonActive(false), 200)
     const newRotate = rotate + 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
-    setCanPrev(newRotate <= 180 ? true : false)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360)
+    setCanPrev(newRotate <= 180)
   }
 
   const handleNext = () => {
@@ -137,8 +136,8 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setTimeout(() => setNextButtonActive(false), 200)
     const newRotate = rotate - 360 / maxCards
     setRotate(newRotate)
-    setCanNext(newRotate + 36 * (docs.length - 1) >= 360 ? true : false)
-    setCanPrev(newRotate <= 180 ? true : false)
+    setCanNext(newRotate + 36 * (docs.length - 1) >= 360)
+    setCanPrev(newRotate <= 180)
   }
 
   const handleCardClick = (item: {

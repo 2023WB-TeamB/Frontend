@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
-import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
+import { useMediaQuery } from 'react-responsive'
+import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
+import btn from '../../../assets/images/mydocs/btn.svg'
 import Preview from './Preview'
 import getContent from './getContent'
-import { useMediaQuery } from 'react-responsive'
 import GallerySkeleton from './GallerySkeleton'
 
 const GalleryWrapper = styled.div`
@@ -182,11 +182,11 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const isTablet = useMediaQuery({ query: '(min-width:720px) and (max-width:990px)' })
   const isMobile = useMediaQuery({ query: '(max-width:720px)' })
 
-  console.log(isTablet)
+  // console.log(isTablet)
   const cardsPerPage = () => {
     return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
   }
-  console.log(cardsPerPage())
+  // console.log(cardsPerPage())
   const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
@@ -198,12 +198,16 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     tags: string[]
   }) => {
     setCardId(item.id) // 문서 id 설정
+    setPreviewContent({
+      ...item,
+      content: '',
+    }) // content 없이 item 저장
+    setPreviewOpen(true)
     const content = await getContent(item.id) // content 불러오기
     setPreviewContent({
       ...item,
-      content: content,
-    }) // previewContent에 item과 content를 추가하여 저장
-    setPreviewOpen(true)
+      content,
+    }) // content를 추가하여 item 저장
   }
 
   const handlePrev = () => {
