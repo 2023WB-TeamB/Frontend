@@ -8,27 +8,34 @@ import urlIcon from '../../assets/images/Viewer/url.png'
 import urlIcon_dark from '../../assets/images/Viewer/url_dark.svg'
 import qrCreateIcon from '../../assets/images/Viewer/qr-code-add.png'
 import qrCreateIcon_dark from '../../assets/images/Viewer/qr-code-add_dark.svg'
-import closeIcon from '../../assets/images/Viewer/closeIcon.png'
+import closeIcon from '../../assets/images/Viewer/closeIcon.svg'
 import closeIcon_dark from '../../assets/images/Viewer/closeIcon_dark.svg'
 import OptionButton from './OptionButton'
 import BackDrop from './BackDrop'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import html2canvas from 'html2canvas'
-import { jsPDF }  from 'jspdf'
-import { useApiUrlStore, useDarkModeStore, useDocContentStore, useDocIdStore } from '../../store/store'
+import { jsPDF } from 'jspdf'
+import {
+  useApiUrlStore,
+  useDarkModeStore,
+  useDocContentStore,
+  useDocIdStore,
+} from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
-  width: 400px;
+  width: 350px;
   height: 450px;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(44, 44, 44, 0.95)' : 'rgba(243, 243, 243)'};
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
+    props.isDarkMode ? 'rgba(42, 42, 42, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
+  border: 0.5px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#383838' : '#c8c8c8')};
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,21 +44,20 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   animation: fadeInAnimation 0.2s ease-in-out;
 
   & label {
-    margin: 35px;
+    margin: 60px 35px 10px;
     height: 60px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2.4em;
-    font-style: italic;
-    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    font-size: 2em;
+    font-weight: 400;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   }
   @keyframes fadeInAnimation {
-   0% {
-    transform: scale(0%, 0%);
-   } 
-   100% {
-    transform: scale(100%, 100%);
-   }
+    0% {
+      transform: scale(0%, 0%);
+    }
+    100% {
+      transform: scale(100%, 100%);
+    }
   }
 `
 
@@ -60,7 +66,7 @@ const OptionsWrapper = styled.div`
   height: 60%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 30px;
 `
 
 const CloseButton = styled.button`
@@ -83,8 +89,8 @@ interface ModalOptionsProps {
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
   const { apiUrl } = useApiUrlStore()
-  const {docId} = useDocIdStore()
-  const {title} = useDocContentStore()
+  const { docId } = useDocIdStore()
+  const { title } = useDocContentStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -171,35 +177,34 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   }
 
   //? 다운로드할 컴포넌트 ID
-  const rootElementId = "DocField"
-  
+  const rootElementId = 'DocField'
+
   // * PDF 다운로드
   const downloadPdfDocument = (rootElementId: string) => {
-    const input = document.getElementById(rootElementId);
-    console.log("pdf download start", input)
+    const input = document.getElementById(rootElementId)
+    console.log('pdf download start', input)
     if (input != null)
-      html2canvas(input)
-        .then((canvas) => {
-          const imgData = canvas.toDataURL('image/png');
-          const pdf = new jsPDF('p', 'mm', 'a4');
-          //pdf 가로 세로 사이즈
-          const pageWidth = pdf.internal.pageSize.getWidth();
-          const pageHeight = pdf.internal.pageSize.getHeight();
-          //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
-          const widthRatio = pageWidth / canvas.width;
-          const customHeight = canvas.height * widthRatio;
-          //? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-          pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight);
-          let heightLeft = customHeight;
-          let heightAdd = -pageHeight;
-          // 한 페이지 이상일 경우
-          while (heightLeft >= pageHeight) {
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight);
-            heightLeft -= pageHeight;
-            heightAdd -= pageHeight;
-          }
-          pdf.save(`${title}.pdf`);
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png')
+        const pdf = new jsPDF('p', 'mm', 'a4')
+        //pdf 가로 세로 사이즈
+        const pageWidth = pdf.internal.pageSize.getWidth()
+        const pageHeight = pdf.internal.pageSize.getHeight()
+        //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
+        const widthRatio = pageWidth / canvas.width
+        const customHeight = canvas.height * widthRatio
+        //? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight)
+        let heightLeft = customHeight
+        let heightAdd = -pageHeight
+        // 한 페이지 이상일 경우
+        while (heightLeft >= pageHeight) {
+          pdf.addPage()
+          pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight)
+          heightLeft -= pageHeight
+          heightAdd -= pageHeight
+        }
+        pdf.save(`${title}.pdf`)
       })
   }
 
@@ -216,8 +221,8 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             </CloseButton>
             <label>Export</label>
             <OptionsWrapper>
-              <OptionButton 
-                icon={isDarkMode ? pdfIcon_dark : pdfIcon} 
+              <OptionButton
+                icon={isDarkMode ? pdfIcon_dark : pdfIcon}
                 context="Download as PDF"
                 onClick={() => downloadPdfDocument(rootElementId)}
               />

@@ -5,13 +5,12 @@ import { useDarkModeStore } from '../../store/store'
 const StyledConfirmButton = styled.button<{ isDarkMode: boolean }>`
   width: 130px;
   height: 50px;
-  border: 1px solid transparent;
+  border: 0.9px solid transparent;
   border-radius: 30px;
   background-image: ${(props) =>
     props.isDarkMode
-      ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#fff, #fff)'
-      : 'linear-gradient(#fff, #fff), linear-gradient(#202020, #202020)'};
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+      ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#5e5e5e, #5e5e5e)'
+      : 'linear-gradient(#fff, #fff), linear-gradient(#c8c8c8, #c8c8c8)'};
   background-origin: border-box;
   background-clip: padding-box, border-box;
   transition: linear 0.5s;

@@ -50,6 +50,7 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
   outline: none;
   text-align: center;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  transition: ease 0.5s;
 `
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
