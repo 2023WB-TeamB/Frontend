@@ -15,6 +15,7 @@ const TagStyle = css<TagStyleProps>`
   font-family: 'Inter';
   font-weight: 400;
   line-height: 1.5rem;
+  transition: ease .3s;
 `
 const TagLabel = styled.label<TagStyleProps>`
   ${TagStyle}

@@ -331,9 +331,16 @@ export const useDocTagStore = create<DocTagState>((set) => ({
       tags: list,
     })),
   addTag: (newTag: string) =>
-    set((state) => ({
-      tags: [...state.tags, newTag],
-    })),
+    set((state) => {
+      if (state.tags.includes(newTag)) {
+        return {
+          tags: state.tags,
+        }
+      }
+      return {
+        tags: [...state.tags, newTag],
+      }
+    }),
   removeTag: (index: number) =>
     set((state) => ({
       tags: state.tags.filter((_, i) => i !== index),
@@ -342,16 +349,15 @@ export const useDocTagStore = create<DocTagState>((set) => ({
 
 // ? 현재 문서 ID
 interface DocIdState {
-  docId?: number
+  docId: number | null
   setDocId: (id: number) => void
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
-  //! 임시 문서 ID 지정
-  docId: 95,
-  setDocId: (id: number) =>
-    set(() => ({
-      docId: id,
-    })),
+  docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!) : null,
+  setDocId: (id) => {
+    set(() => ({ docId: id }));
+    localStorage.setItem('docId', id.toString());
+  }
 }))
 
 interface ApiUrlState {

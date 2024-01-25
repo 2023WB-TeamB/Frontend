@@ -53,7 +53,6 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
 
   const handleButtonClick = () => {
     Swal.fire({
-      toast: true,
       title: 'Select Color',
       html: `
         <input type="color" id="colorPicker" value="${currentColor}" />

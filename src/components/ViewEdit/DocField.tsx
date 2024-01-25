@@ -6,6 +6,7 @@ import {
   useDocIdStore,
   useApiUrlStore,
   useDarkModeStore,
+  useSidePeekStore,
 } from '../../store/store'
 import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.svg'
@@ -21,10 +22,10 @@ const ViewerWrapper = styled.div`
   width: 100%;
   max-width: 1280px;
   height: 86vh;
-  display: flex;
+  display: flex;  
   flex-direction: column;
   align-items: center;
-  padding: 10px 12vw;
+  padding: 1rem;
   transition: ease-in-out 0.3s;
 `
 
@@ -66,20 +67,19 @@ const DistributeDiv = styled.div`
 
   & span {
     width: 100%;
-    height: 0.5px;
+    height: 1px;
     background-image: linear-gradient(to right, #7cc0e8, #a565e0);
   }
 `
 
 // ? 문서 내용 폼
 const ViewArea = styled.div`
-  /* margin-top: 10px; */
   width: 85%;
   min-height: 450px;
   max-height: 70vh;
   font-family: 'Inter', sans-serif;
   overflow: auto;
-  padding: 0 27px;
+  padding: 0 27px;  
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -93,10 +93,11 @@ const ViewArea = styled.div`
 // ? 문서 제목 폼
 interface TitleAreaProps {
   isDarkMode: boolean
+  isOpenSideAlways: boolean
 }
 const TitleArea = styled.div<TitleAreaProps>`
   width: 90%;
-  max-width: 70vw;
+  max-width: ${(props) => (props.isOpenSideAlways ? '70vw' : '85vw')};
   height: 80px;
   text-align: left;
   display: flex;
@@ -109,7 +110,6 @@ const TitleArea = styled.div<TitleAreaProps>`
     border: none;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-    background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
     font-family: 'Inter', sans-serif;
     resize: none;
     width: 100%;
@@ -133,6 +133,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 
 const DocField: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { isOpenSideAlways } = useSidePeekStore()
   const { apiUrl } = useApiUrlStore()
   const { title, content, setTitle, setContent } = useDocContentStore()
   const { tags, setTag, addTag } = useDocTagStore()
@@ -162,6 +163,9 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
+    return () => {
+      setContent("")
+    }
   }, [])
 
   const { isEditor, toggleEditorMode } = useEditorModeStore()
@@ -201,18 +205,19 @@ const DocField: React.FC = () => {
 
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
-    ;(await handleSaveDocContent()) && toggleEditorMode()
+    await handleSaveDocContent() && toggleEditorMode()
   }
 
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
+    setContent("")
     await handleGetDoc()
     toggleEditorMode()
   }
 
   return (
     <ViewerWrapper id="DocField">
-      <TitleArea isDarkMode={isDarkMode}>
+      <TitleArea isDarkMode={isDarkMode} isOpenSideAlways={isOpenSideAlways}>
         {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
       <DistributeDiv>
