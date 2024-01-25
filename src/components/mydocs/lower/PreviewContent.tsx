@@ -27,7 +27,9 @@ const Wrapper = styled.div<{ isDarkMode: boolean }>`
   padding: 0 3rem;
   border: 0.03rem solid black;
   border-radius: 1.5rem;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
   position: absolute;
   transition: right 0.5s ease-out;
 `
@@ -44,7 +46,9 @@ const EmptyPage = styled.div<{ color: string }>`
   padding: 0 3rem;
   border: 0.01rem solid black;
   border-radius: 1.5rem;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 // 프리뷰 전체 내용을 묶어놓은 레이아웃
@@ -103,6 +107,7 @@ const Title = styled.h2`
   font-size: 2rem;
   width: 95%; // 너비를 지정합니다.
   max-height: 5.4rem;
+  line-height: 2.5rem;
   margin: 0;
   word-break: keep-all;
   display: -webkit-box;
@@ -117,7 +122,7 @@ const TagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 95%;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   line-height: 1.2rem;
   max-height: 3.9rem;
   overflow: hidden;
