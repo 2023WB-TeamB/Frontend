@@ -172,7 +172,7 @@ function Signin() {
 
         Toast.fire({
           icon: 'success',
-          title: 'welcome!',
+          title: 'Welcome!',
         })
         toggleSignin() // 동작 수행후 모달 닫기
         navigate('/mydocs') // 마이독스 페이지로 이동
