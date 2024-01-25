@@ -5,12 +5,17 @@ import Modal from '../Modal'
 import { Doc } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import { cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
+import CarouselSkeleton from './CarouselSkeleton'
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 55vh;
   margin-top: 3vh;
+
+  @media (max-width: 960px) {
+    display: none;
+  }
 `
 const Carousel = styled.div`
   position: relative;
@@ -101,7 +106,6 @@ const Tag = styled.text<{ color: string }>`
   margin-right: 0.2rem;
   padding: 0rem 0.3rem;
 `
-
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
   const [canNext, setCanNext] = useState(true) // next 버튼 활성화
@@ -115,7 +119,6 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setModalContent: state.setModalContent,
   }))
   const maxCards = 10
-
   // 카드들의 각도에 따라서 버튼을 보여주는 로직
   // 버튼 클릭 시 활성화 상태(active) 2초(200ms) 유지
   const handlePrev = () => {
@@ -155,31 +158,39 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   return (
     <Wrapper>
       <Carousel>
-        {docs.map((doc, i) => {
-          const currentRotate = rotate + i * (360 / maxCards) // 각 카드별 각도
-          const visible =
-            /* 카드의 위치(각도)에 따른 보여주기 속성 결정 */
-            ((currentRotate % 360) + 360) % 360 > 180 && ((currentRotate % 360) + 360) % 360 < 360
-          return (
-            <Card
-              key={doc.id}
-              rotate={currentRotate} // 카드별로 각도 전달
-              visible={visible} // 위치에 따른 카드의 보기 속성 전달
-              backgroundColor={doc.color} // 색상 전달
-              // 카드 클릭하면 모달에 data 전달
-              onClick={() => handleCardClick(doc)}>
-              <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
-              <Title>{doc.title}</Title>
-              <TagWrapper>
-                {doc.tags.map((tag, index) => (
-                  <Tag key={index} color={doc.color}>
-                    {tag}
-                  </Tag>
-                ))}
-              </TagWrapper>
-            </Card>
-          )
-        })}
+        {docs.length === 0
+          ? Array.from({ length: maxCards }).map((_, i) => {
+              const currentRotate = rotate + i * (360 / maxCards)
+              const visible =
+                ((currentRotate % 360) + 360) % 360 > 180 &&
+                ((currentRotate % 360) + 360) % 360 < 360
+              return <CarouselSkeleton key={i} rotate={currentRotate} visible={visible} />
+            })
+          : docs.map((doc, i) => {
+              const currentRotate = rotate + i * (360 / maxCards) // 각 카드별 각도
+              const visible =
+                /* 카드의 위치(각도)에 따른 보여주기 속성 결정 */
+                ((currentRotate % 360) + 360) % 360 > 180 &&
+                ((currentRotate % 360) + 360) % 360 < 360
+              return (
+                <Card
+                  key={doc.id}
+                  rotate={currentRotate}
+                  visible={visible}
+                  backgroundColor={doc.color}
+                  onClick={() => handleCardClick(doc)}>
+                  <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
+                  <Title>{doc.title}</Title>
+                  <TagWrapper>
+                    {doc.tags.map((tag, index) => (
+                      <Tag key={index} color={doc.color}>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </TagWrapper>
+                </Card>
+              )
+            })}
         <PrevButton
           active={prevButtonActive}
           onClick={handlePrev}

@@ -12,6 +12,8 @@ interface searchItemType {
   color: string
   keywords?: { name: any }[]
   // keywords: [name: any]
+  repo: string
+  tags: string[]
 }
 
 interface modalType {
@@ -19,6 +21,8 @@ interface modalType {
   title: string
   created_at: string
   color: string
+  repo: string
+  tags: string[]
 }
 
 const Container = styled.div<{ isDarkMode: boolean }>`
@@ -91,6 +95,8 @@ const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
                 title: item.title,
                 created_at: item.created_at,
                 color: item.color,
+                repo: item.repo,
+                tags: item.tags,
               }
               setCardId(item.id) // 수정/삭제 대상 문서 id 설정
               setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장

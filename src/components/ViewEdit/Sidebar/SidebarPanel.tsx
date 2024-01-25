@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import VersionPreviewTile from './VersionPreviewArea'
 import searchIcon from '../../../assets/images/search.png'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.png'
-import { useApiUrlStore, useDarkModeStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
+import { useApiUrlStore, useDarkModeStore, useSidePanelSearchStore, useSidePeekStore, useViewerPageOpenStore } from '../../../store/store'
 import axios from 'axios'
 import GalleryPreviewTile from './GalleryPreviewArea'
+import useDebounce from '../../useDebounce'
 
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: boolean; isOpenSideAlways: boolean; }>`
@@ -85,9 +86,11 @@ const SidePanelTopWrapper = styled.div`
 
 export interface projectData {
   id: number
+  repo?: string
   title: string
   color: string
   created_at: string
+  keywords: string[]
 }
 
 // 사이드바 확장 패널
@@ -102,7 +105,41 @@ const SidebarPanel: React.FC = () => {
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const isOpenSidePanel = isOpenGalleryPanel || isOpenVersionPanel
+  
+  //* 검색 관련 state
+  const [query, setQuery] = useState('') // 검색 키워드 상태관리
+  const debouncedQuery = useDebounce(query, 500)
+  const { searchTemp, setSearchTemp } = useSidePanelSearchStore()
+  
+  const searchBarRef = useRef<HTMLInputElement>(null)
 
+  useEffect(() => {
+    //* 검색 콜백 함수
+    const getData = () => {
+      setSearchTemp(
+        myDocsData.flatMap(([repo, data]) => {
+          return data.map(d => ({ ...d, repo }))
+        }).filter((doc) => {
+          const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
+          const repo = doc.repo.toLowerCase().includes(lowerCaseQuery)
+          const title = doc.title.toLowerCase().includes(lowerCaseQuery)
+
+          return (isOpenVersionPanel && repo) || title
+        }),
+      )
+    }
+    getData()
+  }, [debouncedQuery]) // 디바운스로 의존성 주입
+
+  //* 버전 관리의 상태가 변하면 query 초기화
+  useEffect(() => {
+    setQuery('');
+  }, [isOpenGalleryPanel]);
+
+  const getValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value.toLowerCase())
+  }
+  
   //? 문서 조회 API
   const handleGetDocVersions = async () => {
     try {
@@ -122,10 +159,15 @@ const SidebarPanel: React.FC = () => {
       console.error('API Error :', error)
     }
   }
-
+  
   useEffect(() => {
     handleGetDocVersions()
   }, [])
+
+  //* 최초 렌더링 검색 결과 공백 방지
+  useEffect(() => {
+    setSearchTemp(myDocsData.flatMap(([repo, data]) => data.map(d => ({ ...d, repo }))));
+  }, [myDocsData]);  
 
   const sidePanelStyle = {
     minWidth: isOpenSidePanel ? '28rem' : '0',
@@ -140,7 +182,15 @@ const SidebarPanel: React.FC = () => {
       isOpenSideAlways={isOpenSideAlways}>
       <SidePanelTopWrapper>
         <SearchArea isDarkMode={isDarkMode}>
-          <input></input>
+          <input
+            ref={searchBarRef}
+            onChange={getValue}
+            value={query}
+            placeholder={isOpenVersionPanel ? 
+              "Search your repo..." :
+              "Search your project..."
+            }
+          />
           <img src={isDarkMode ? searchIcon_dark : searchIcon}></img>
         </SearchArea>
         <StyledCloseButton onClick={closeSidePanel}>
@@ -150,16 +200,20 @@ const SidebarPanel: React.FC = () => {
       {isOpenGalleryPanel && 
         <PreviewTileWrapper isDarkMode={isDarkMode}>
         {myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, projectData] = item
-          return <GalleryPreviewTile title={projectTitle} pages={projectData}/>
+          const [projectTitle, _] = item
+          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
+          return filteredSearchTemp.length > 0 && 
+            <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
         })}
         </PreviewTileWrapper>
       }
       {isOpenVersionPanel &&
         <PreviewTileWrapper isDarkMode={isDarkMode}>
         {myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, projectData] = item
-          return <VersionPreviewTile title={projectTitle} pages={projectData}/>
+          const [projectTitle, _] = item
+          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
+          return filteredSearchTemp.length > 0 && 
+            <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
         })}
         </PreviewTileWrapper>
       }

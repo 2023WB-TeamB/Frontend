@@ -15,14 +15,14 @@ import { useNavigate } from 'react-router-dom'
 /* 각 페이지에 대한 설정 */
 const Container = styled.div<{ isDarkMode: boolean }>`
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   overflow-y: scroll;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   margin: 0;
-  transition: ease 0.5s;
+  transition: background-color ease 0.5s;
 `
 const Section = styled.div`
   display: flex;

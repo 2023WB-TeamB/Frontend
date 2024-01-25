@@ -6,6 +6,7 @@ import LeftArrowIcon_Dark from '../../../assets/images/Viewer/arrow_left_dark.sv
 import RightArrowIcon from '../../../assets/images/Viewer/arrow_right.png'
 import RightArrowIcon_Dark from '../../../assets/images/Viewer/arrow_right_dark.svg'
 import { useDarkModeStore } from '../../../store/store'
+import { projectData } from './SidebarPanel'
 
 const PreviewWrapper = styled.div`
   width: 382px;
@@ -79,12 +80,7 @@ const Slider = styled.span`
 
 interface PreviewTileProps {
   title: string
-  pages: Array<{
-    id: number,
-    title: string,
-    color: string,
-    created_at: string
-  }>
+  pages: Array<projectData>
 }
 
 // 프로젝트 미리보기 타일

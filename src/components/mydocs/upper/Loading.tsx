@@ -276,14 +276,14 @@ export const Animation: React.FC = () => {
 
   // 문서 생성마다 경과 시간 계산하는 로직
   useEffect(() => {
-    let currentTimer = null
-
+    let currentTimer: NodeJS.Timeout | null = null
     if (isGenerating) {
       const currentStartTime = Date.now()
       currentTimer = setInterval(() => {
         setGenerateTime(Date.now() - currentStartTime)
       }, 1000)
     }
+
     return () => {
       if (currentTimer !== null) {
         clearInterval(currentTimer)

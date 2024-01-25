@@ -143,11 +143,12 @@ function Register() {
   // submit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault() // form요소에서 발생하는 페이지를 다시 로드하는 새로고침 방지
-    const url = 'https://gtd.kro.kr/api/v1/register' // 배포서버
+    const url = 'https://gitodoc.kro.kr/api/v1/register' // 배포서버
+    // const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
     // const url = `http://localhost:8000/api/v1/register` // 개발서버
+
     // 비밀번호와 비밀번호 확인의 일치 여부 확인
     if (data.password !== data.confirmPassword) {
-      handlePasswordMismatch()
       return // submit 중단
     }
     try {
@@ -161,10 +162,9 @@ function Register() {
       if (response.status === 200) {
         console.log(response.data)
         console.log('API Response: ', response.status)
-        // alert('회원가입 성공!')
         Toast.fire({
           icon: 'success',
-          title: '회원가입에 성공하였습니다.',
+          title: 'Registration successful!',
         })
         toggleRegister() // 동작 수행후 모달 닫기
       }
@@ -172,10 +172,13 @@ function Register() {
     } catch (error: any) {
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-        // alert('회원가입 실패!')
-        Toast.fire({
-          icon: 'success',
-          title: '회원가입에 실패하였습니다.',
+        Swal.fire({
+          // 로그아웃 알림창
+          title: 'Registration failed!',
+          text: 'Please check the form again',
+          icon: 'warning',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK',
         })
       }
     }
@@ -196,7 +199,7 @@ function Register() {
     <>
       <Overlay>
         <Content isDarkMode={isDarkMode}>
-          <CloseBtn onClick={toggleRegister} />
+          <CloseBtn onClick={toggleRegister} isDarkMode={isDarkMode} />
           <StyledForm onSubmit={handleSubmit}>
             <StyledTitle isDarkMode={isDarkMode}>Register</StyledTitle>
             <StyledNameWrapper>
