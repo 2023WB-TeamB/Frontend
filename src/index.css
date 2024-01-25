@@ -46,13 +46,13 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+/* button:hover {
   border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -65,4 +65,8 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+/* 전역으로 input태그의 테두리 삭제 */
+input:focus {
+  outline: none;
 }

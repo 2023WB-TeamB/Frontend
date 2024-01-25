@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SearchItem from './SearchItem'
 import { useModalStore, useSearchStore } from './useModalStore'
 import useDebounce from './useDebounce'
-import { docStore, useDarkModeStore } from '../store/store'
+import { docStore, useDarkModeStore, Keyword } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
@@ -86,7 +86,6 @@ const SearchList: React.FC = () => {
   const { filteredData, setFilteredData } = useSearchStore()
   const debouncedQuery = useDebounce(query, 500)
   const { docs } = docStore()
-
   const searchBarRef = useRef<HTMLInputElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
   const getValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +101,8 @@ const SearchList: React.FC = () => {
           const keywords = doc.keywords!.some((keyword) =>
             keyword.name.toLowerCase().includes(lowerCaseQuery),
           )
+          // const tags = doc.keywords.map((keyword: Keyword) => keyword.name)
+
           return title || keywords
         }),
       )

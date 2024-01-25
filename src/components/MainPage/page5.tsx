@@ -218,7 +218,7 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   background-size: 200% auto;
   font-family: 'Inter', Helvetica;
   font-size: 1rem;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: white;
   background-image: linear-gradient(to right, #79c5e8, #a26be1, #79c5e8);
   box-shadow: 0 0 1rem ${(props) => (props.isDarkMode ? '#202020' : '#eee')};
   animation: ${(props) =>

@@ -176,10 +176,10 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
 
   // const cardsPerPage = 8 // 한 페이지당 카드 수
   const isNotebook = useMediaQuery({
-    query: '(min-width:1057px) and (max-width:1370px)',
+    query: '(min-width:990px) and (max-width:1290px)',
   })
-  const isTablet = useMediaQuery({ query: '(min-width:745px) and (max-width:1056px)' })
-  const isMobile = useMediaQuery({ query: '(max-width:745px)' })
+  const isTablet = useMediaQuery({ query: '(min-width:720px) and (max-width:990px)' })
+  const isMobile = useMediaQuery({ query: '(max-width:720px)' })
 
   console.log(isTablet)
   const cardsPerPage = () => {

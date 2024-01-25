@@ -53,7 +53,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   @media (max-width: 960px) {
     height: 25rem;
     scroll-snap-align: none;
-    background: ${(props) => (props.isDarkMode ? 'black' : 'white')};
+    background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   }
 
   &:before {
@@ -105,7 +105,6 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   scroll-snap-align: center;
-  transition: ease 0.5s;
   @media (max-width: 960px) {
     scroll-snap-align: none;
   }
@@ -151,6 +150,7 @@ const MyDocsPage: React.FC = () => {
         ...doc,
         repo: doc.repository_url.replace('https://github.com/', ''),
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
+        // tags: doc.tags.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
       console.log(docs)
