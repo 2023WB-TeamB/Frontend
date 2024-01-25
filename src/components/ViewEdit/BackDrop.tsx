@@ -9,7 +9,7 @@ const StyledBackDrop = styled.div<{ isDarkMode: boolean }>`
   width: 100%;
   height: 100%;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(32, 32, 32, 0.50)' : 'rgba(255, 255, 255, 0.15)'};
+    props.isDarkMode ? 'rgba(32, 32, 32, 0.50)' : 'rgba(255, 255, 255, 0.7)'};
   z-index: 999;
 `
 
