@@ -331,9 +331,16 @@ export const useDocTagStore = create<DocTagState>((set) => ({
       tags: list,
     })),
   addTag: (newTag: string) =>
-    set((state) => ({
-      tags: [...state.tags, newTag],
-    })),
+    set((state) => {
+      if (state.tags.includes(newTag)) {
+        return {
+          tags: state.tags,
+        }
+      }
+      return {
+        tags: [...state.tags, newTag],
+      }
+    }),
   removeTag: (index: number) =>
     set((state) => ({
       tags: state.tags.filter((_, i) => i !== index),
