@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SearchItem from './SearchItem'
 import { useModalStore, useSearchStore } from './useModalStore'
 import useDebounce from './useDebounce'
-import { docStore, useDarkModeStore, Keyword } from '../store/store'
+import { docStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
