@@ -44,7 +44,7 @@ const Content = styled.div<{ isDarkMode: boolean }>`
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   border-radius: 50px;
   width: 425px;
-  height: 580px;
+  height: 550px;
   animation: ${modalOpenAnimation} 0.55s ease-in-out;
 `
 const StyledForm = styled.form`
@@ -98,12 +98,12 @@ const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode
 
   margin-bottom: 20px;
 `
-const StyledCheckbox = styled.input`
-  width: 15px;
-  height: 10px;
+// const StyledCheckbox = styled.input`
+//   width: 15px;
+//   height: 10px;
 
-  background-color: blue;
-`
+//   background-color: blue;
+// `
 const StyledDivider = styled.div<{ isDarkMode: boolean }>`
   width: 300px;
   height: 16px;
@@ -128,7 +128,7 @@ interface FormProps {
 function Signin() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const navigate = useNavigate()
-  const [rememberMe, setRememberMe] = useState(false) // remember me 상태
+  // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
   const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore()
   const [data, setData] = useState<FormProps>({
     email: '',
@@ -147,9 +147,9 @@ function Signin() {
     toggleRegister() // 회원가입 모달 open
   }
   // 체크박스 상태관리
-  const handleCheckboxChange = () => {
-    setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
-  }
+  // const handleCheckboxChange = () => {
+  //   setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
+  // }
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     // const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
@@ -238,7 +238,7 @@ function Signin() {
               placeholder="Enter Password"
             />
             {/* Remember me */}
-            <div style={{ margin: 8 }}></div>
+            {/* <div style={{ margin: 8 }}></div>
             <div>
               <StyledCheckbox
                 type="checkbox"
@@ -253,8 +253,8 @@ function Signin() {
                 onClick={handleCheckboxChange}>
                 Rememeber me
               </StyledFont>
-            </div>
-            <div style={{ margin: 8 }}></div>
+            </div> */}
+            <div style={{ margin: 15 }}></div>
             {/* 로그인 버튼 */}
             <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
@@ -289,7 +289,11 @@ function Signin() {
             {/* Join us */}
             <div style={{ margin: 4 }}></div>
             <div>
-              <StyledFont isDarkMode={isDarkMode} fontDark="#fff" fontLight="#000">
+              <StyledFont
+                isDarkMode={isDarkMode}
+                fontDark="#fff"
+                fontLight="#000"
+                onClick={handleClickJoinus}>
                 Join{' '}
               </StyledFont>
               <StyledFont
