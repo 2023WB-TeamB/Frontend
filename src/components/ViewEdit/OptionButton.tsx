@@ -13,11 +13,13 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
   width: 260px;
   height: 60px;
   min-height: 45px;
-  border: 0.5px solid transparent;
+  border: 0.9px solid transparent;
   border-radius: 60px;
-  transition: 0.5s;
-  background-size: 200% auto;
-  background-image: linear-gradient(to right, #7cc0e8, #a565e0, #7cc0e8);
+  transition: linear 0.5s;
+  background-image: ${(props) =>
+    props.isDarkMode
+      ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#5e5e5e,#5e5e5e)'
+      : 'linear-gradient(#fff, #fff), linear-gradient(#c8c8c8,#c8c8c8)'};
   background-origin: border-box;
   background-clip: padding-box, border-box;
   display: flex;
@@ -29,11 +31,14 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
     margin-right: 20px;
     width: 100%;
     text-align: center;
-    color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
   }
 
   &:hover {
-    background-position: right center;
+    background-image: ${(props) =>
+      props.isDarkMode
+        ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(to bottom right, #76cae8, #ad51de)'
+        : 'linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de)'};
   }
 `
 

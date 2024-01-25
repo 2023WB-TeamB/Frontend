@@ -222,7 +222,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
             <label>Export</label>
             <OptionsWrapper>
               <OptionButton
-                icon={isDarkMode ? pdfIcon : pdfIcon_dark}
+                icon={isDarkMode ? pdfIcon_dark : pdfIcon}
                 context="Download as PDF"
                 onClick={() => downloadPdfDocument(rootElementId)}
               />
@@ -231,12 +231,12 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
                 context="Upload to Cloud"
               /> */}
               <OptionButton
-                icon={isDarkMode ? urlIcon : urlIcon_dark}
+                icon={isDarkMode ? urlIcon_dark : urlIcon}
                 context="Copy a URL"
                 onClick={handleCopyClipBoardURL}
               />
               <OptionButton
-                icon={isDarkMode ? qrCreateIcon : qrCreateIcon_dark}
+                icon={isDarkMode ? qrCreateIcon_dark : qrCreateIcon}
                 context="Make a QR code"
                 onClick={showQRCode}
               />
