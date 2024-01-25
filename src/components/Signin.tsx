@@ -213,7 +213,7 @@ function Signin() {
     <>
       <Overlay>
         <Content isDarkMode={isDarkMode}>
-          <CloseBtn onClick={toggleSignin} />
+          <CloseBtn onClick={toggleSignin} isDarkMode={isDarkMode} />
           <StyledForm onSubmit={handleSubmit}>
             <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
             {/* 이메일 */}

@@ -197,7 +197,7 @@ function Register() {
     <>
       <Overlay>
         <Content isDarkMode={isDarkMode}>
-          <CloseBtn onClick={toggleRegister} />
+          <CloseBtn onClick={toggleRegister} isDarkMode={isDarkMode} />
           <StyledForm onSubmit={handleSubmit}>
             <StyledTitle isDarkMode={isDarkMode}>Register</StyledTitle>
             <StyledNameWrapper>
