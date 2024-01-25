@@ -198,12 +198,16 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     tags: string[]
   }) => {
     setCardId(item.id) // 문서 id 설정
+    setPreviewContent({
+      ...item,
+      content: '',
+    }) // content 없이 item 저장
+    setPreviewOpen(true)
     const content = await getContent(item.id) // content 불러오기
     setPreviewContent({
       ...item,
       content,
-    }) // previewContent에 item과 content를 추가하여 저장
-    setPreviewOpen(true)
+    }) // content를 추가하여 item 저장
   }
 
   const handlePrev = () => {
