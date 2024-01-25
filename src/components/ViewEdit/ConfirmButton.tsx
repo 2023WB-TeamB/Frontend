@@ -11,7 +11,6 @@ const StyledConfirmButton = styled.button<{ isDarkMode: boolean }>`
     props.isDarkMode
       ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#fff, #fff)'
       : 'linear-gradient(#fff, #fff), linear-gradient(#202020, #202020)'};
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
   background-origin: border-box;
   background-clip: padding-box, border-box;
   transition: linear 0.5s;
