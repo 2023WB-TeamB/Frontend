@@ -16,7 +16,13 @@ import ModalOptions from '../components/ViewEdit/ModalOptions'
 import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 import DocField from '../components/ViewEdit/DocField'
 import LittleHeader from '../components/ViewEdit/LittleHeader'
-import { useSidePeekStore, useViewerPageOpenStore, useConfirmBoxStore, useDocIdStore, useApiUrlStore } from '../store/store'
+import {
+  useSidePeekStore,
+  useViewerPageOpenStore,
+  useConfirmBoxStore,
+  useDocIdStore,
+  useApiUrlStore,
+} from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
 
 import { useState } from 'react'
@@ -56,16 +62,14 @@ function ViewerPage() {
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
-  const {apiUrl} = useApiUrlStore()
+  const { apiUrl } = useApiUrlStore()
 
   //? 문서 삭제 API
   const handleDeleteDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      await axios.delete(
-        `${apiUrl}/${docId}`,
-        {
+      await axios.delete(`${apiUrl}/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -80,7 +84,7 @@ function ViewerPage() {
 
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
-    setConfirmLabel('정말로 이 문서를 삭제하실껀가요?')
+    setConfirmLabel('Are you sure you want to delete this file?')
     setConfirmAction(() => () => {
       handleDeleteDoc()
     })
@@ -89,7 +93,7 @@ function ViewerPage() {
   }
   // 뷰어 종료 확인
   const openConfirmWithExit = () => {
-    setConfirmLabel('나가기')
+    setConfirmLabel('Are you sure you want to leave this page?')
     setConfirmAction(() => () => {
       navigate('/mydocs')
     })

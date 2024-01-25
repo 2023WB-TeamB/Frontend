@@ -1,22 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
 import ConfirmButton from './ConfirmButton'
-import ConfirmIcon from '../../assets/images/Viewer/confirm.png'
+import ConfirmIcon from '../../assets/images/Viewer/confirm.svg'
 import ConfirmIcon_dark from '../../assets/images/Viewer/confirm_dark.svg'
 import BackDrop from './BackDrop'
 import { useDarkModeStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
-  top: 50%;
+  top: 49%;
   left: 50%;
   transform: translate(-50%, -60%);
-  width: 500px;
-  height: 250px;
+  width: 430px;
+  height: 230px;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(44, 44, 44, 0.95)' : 'rgba(243, 243, 243)'};
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    props.isDarkMode ? 'rgba(44, 44, 44, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.05);
   border-radius: 50px;
+  border: 0.5px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#383838' : '#c8c8c8')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,24 +28,24 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
 `
 
 const ContextWrapper = styled.div<{ isDarkMode: boolean }>`
-  margin-top: 40px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
 
   & img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
   }
 
   & label {
-    margin: 15px;
-    max-width: 250px;
-    height: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 10px;
+    max-width: 300px;
+    height: 40px;
+    font-family: 'Inter', sans-serif;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: 400;
     text-align: center;
     display: flex;
     align-items: center;

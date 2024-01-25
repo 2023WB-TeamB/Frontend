@@ -3,36 +3,35 @@ import styled from 'styled-components'
 import { useDarkModeStore } from '../../store/store'
 
 const Icon = styled.img`
-  width: 40px;
-  height: 40px;
-  margin: 5px;
+  width: 30px;
+  height: 30px;
+  margin: 10px 0px 10px 25px;
 `
 
 const StyledButton = styled.button<{ isDarkMode: boolean }>`
   position: relative;
-  width: 280px;
+  width: 260px;
   height: 60px;
   min-height: 45px;
-  border: 1px solid transparent;
-  border-radius: 20px;
+  border: 0.9px solid transparent;
+  border-radius: 60px;
+  transition: linear 0.5s;
   background-image: ${(props) =>
     props.isDarkMode
-      ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#fff, #fff)'
-      : 'linear-gradient(#fff, #fff), linear-gradient(#202020, #202020)'};
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+      ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#5e5e5e,#5e5e5e)'
+      : 'linear-gradient(#fff, #fff), linear-gradient(#c8c8c8,#c8c8c8)'};
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  transition: linear 0.5s;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
 
   & p {
-    margin-right: 5px;
+    margin-right: 20px;
     width: 100%;
     text-align: center;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
   }
 
   &:hover {
@@ -40,7 +39,6 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
       props.isDarkMode
         ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(to bottom right, #76cae8, #ad51de)'
         : 'linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de)'};
-    transition: linear 0.5s;
   }
 `
 
