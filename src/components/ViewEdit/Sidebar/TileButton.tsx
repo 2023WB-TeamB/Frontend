@@ -21,6 +21,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   transition: background-image 1s;
   overflow: hidden;
   transition: all linear 0.2s;
+  filter: ${(props) => props.isDarkMode ? 'brightness(0) invert(1)' : ''}; */
 
   &:before {
     content: '';
