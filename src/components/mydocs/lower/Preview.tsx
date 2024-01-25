@@ -15,14 +15,16 @@ const PreviewWrapper = styled.div<{ previewOpen: boolean; isDarkMode: boolean }>
   opacity: ${({ previewOpen }) => (previewOpen ? 1 : 0)}; // previewOpen 상태에 따라 opacity 조절
   visibility: ${({ previewOpen }) =>
     previewOpen ? 'visible' : 'hidden'}; // previewOpen 상태에 따라 visibility 조절
-  transition: opacity 0.3s ease, visibility 0.3s ease; // opacity와 visibility에 transition 효과 적용
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease; // opacity와 visibility에 transition 효과 적용
   justify-content: center;
   align-items: center;
   z-index: 3;
 `
 
 interface PreviewContentProps {
-  color?: string
+  color: string
   title: string
   created_at: string
   content: string

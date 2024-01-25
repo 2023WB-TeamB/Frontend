@@ -10,7 +10,7 @@ const getContent = async (id: number) => {
     const response = await axios.get(`${apiUrl}/${id}`, {
       headers: { Authorization: `Bearer ${access}` },
     })
-    const content = response.data.data.content
+    const { content } = response.data.data
     console.log(response)
     return content
   } catch (error) {

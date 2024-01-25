@@ -87,7 +87,7 @@ const SkeletonCard = styled.div<SkeletonCardProps>`
   }
 `
 
-const CarouselSkeleton = ({ rotate, visible }: SkeletonCardProps) => {
+function CarouselSkeleton({ rotate, visible }: SkeletonCardProps) {
   return (
     <SkeletonCard rotate={rotate} visible={visible}>
       <div className="dummy-created-at" />

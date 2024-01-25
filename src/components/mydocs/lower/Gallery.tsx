@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
-import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
+import { useMediaQuery } from 'react-responsive'
+import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
+import btn from '../../../assets/images/mydocs/btn.svg'
 import Preview from './Preview'
 import getContent from './getContent'
-import { useMediaQuery } from 'react-responsive'
 import GallerySkeleton from './GallerySkeleton'
 
 const GalleryWrapper = styled.div`
@@ -201,7 +201,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     const content = await getContent(item.id) // content 불러오기
     setPreviewContent({
       ...item,
-      content: content,
+      content,
     }) // previewContent에 item과 content를 추가하여 저장
     setPreviewOpen(true)
   }

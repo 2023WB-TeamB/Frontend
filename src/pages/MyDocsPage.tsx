@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
 import Description from '../components/mydocs/upper/Description'
@@ -21,8 +23,6 @@ import {
   Keyword,
   previewOpenStore,
 } from '../store/store'
-import axios from 'axios'
-import Swal from 'sweetalert2'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/useModalStore'
 
@@ -95,7 +95,7 @@ const Generation = styled.div`
   }
 `
 
-//페이지 하단부
+// 페이지 하단부
 const Lower = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: center;

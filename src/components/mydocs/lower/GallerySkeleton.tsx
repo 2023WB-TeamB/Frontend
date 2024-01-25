@@ -66,7 +66,7 @@ const SkeletonCard = styled.div`
   }
 `
 
-const GallerySkeleton = () => {
+function GallerySkeleton() {
   return (
     <SkeletonCard>
       <div className="dummy-created-at" />
