@@ -182,11 +182,11 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const isTablet = useMediaQuery({ query: '(min-width:720px) and (max-width:990px)' })
   const isMobile = useMediaQuery({ query: '(max-width:720px)' })
 
-  console.log(isTablet)
+  // console.log(isTablet)
   const cardsPerPage = () => {
     return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
   }
-  console.log(cardsPerPage())
+  // console.log(cardsPerPage())
   const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
