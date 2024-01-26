@@ -150,9 +150,18 @@ const MyDocsPage: React.FC = () => {
       console.log(docs)
     } catch (error) {
       const axiosError = error as AxiosError
+
+      // 아무 문서도 없는 경우
       if (axiosError.response && axiosError.response.status === 404) {
         setIsLoading(false)
-        // 생성했던 문서가 없는 경우
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'info',
+          title: 'Enter the repository URL and create a document!.',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
       } else {
         // 기타 에러 처리
         Swal.fire({
