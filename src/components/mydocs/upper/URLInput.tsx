@@ -100,7 +100,7 @@ export const URLInput: React.FC = () => {
           title: response.data.data.title,
           created_at: response.data.data.created_at,
           color: response.data.data.color,
-          repo: response.data.data.repository_url,
+          repo: url.replace('https://github.com/', ''),
           tags: [],
         }
 
@@ -134,7 +134,7 @@ export const URLInput: React.FC = () => {
 
   // input에 내용이 존재하고 엔터키를 눌렀을 때 제출
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (url != '' && e.key === 'Enter') {
+    if (url !== '' && e.key === 'Enter') {
       e.preventDefault()
       handleGenDoc()
     }
