@@ -15,8 +15,7 @@ import document1 from '../../../assets/images/MainPage/document2.svg'
 import document1_dark from '../../../assets/images/MainPage/document1_dark.svg'
 import loadingpage from '../../../assets/images/mydocs/loadingpage.svg'
 import loadingpage_dark from '../../../assets/images/mydocs/loadingpage_dark.svg'
-import { generateTimeStore, isGeneratingStore, useDarkModeStore } from '../../../store/store'
-import { useEffect } from 'react'
+import { isGeneratingStore, useDarkModeStore } from '../../../store/store'
 
 const AnimationWrapper = styled.div`
   position: relative;
@@ -32,22 +31,12 @@ const Loader = styled.div<{ isDarkMode: boolean }>`
   position: absolute;
   width: 1rem;
   top: 10.4rem;
-  left: -2.5rem;
+  left: -0.5rem;
   aspect-ratio: 1;
   border-radius: 50%;
   border: 0.2rem solid ${(props) => (props.isDarkMode ? '#67b0cba9' : '#76cae89d')};
   border-right-color: ${(props) => (props.isDarkMode ? '#67b1cb' : '#76CAE8')};
   animation: ${spin} 1s infinite linear;
-`
-
-// 문서 생성 시간 타이머
-const Timer = styled.div<{ isDarkMode: boolean }>`
-  position: absolute;
-  font-size: 1.4rem;
-  color: ${(props) => (props.isDarkMode ? '#ffffff' : '#000000')};
-  font-weight: 260;
-  top: 9.95rem;
-  left: -0.7rem;
 `
 
 const movefolder1 = keyframes`
@@ -205,8 +194,8 @@ const vibration = keyframes`
   }
   `
 
-//icon(svg)
-interface Styledicon {
+// icon(svg)
+interface StylediconProps {
   top?: string
   left?: string
   width?: string
@@ -214,7 +203,7 @@ interface Styledicon {
   zindex?: string
   delay?: string
 }
-const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+const Styledicon = styled.img<StylediconProps & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
@@ -228,30 +217,30 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
             ${movefolder1} 7s infinite;
           `
         : props.animationType === 'movefolder2'
-        ? css`
-            ${movefolder2} 7s infinite;
-          `
-        : props.animationType === 'movefile1'
-        ? css`
-            ${movefile1} 7s infinite;
-          `
-        : props.animationType === 'movefile2'
-        ? css`
-            ${movefile2} 7s infinite;
-          `
-        : props.animationType === 'movedocument'
-        ? css`
-            ${movedocument} 7s infinite;
-          `
-        : props.animationType === 'openthebox'
-        ? css`
-            ${openthebox} 7s infinite;
-          `
-        : props.animationType === 'vibration'
-        ? css`
-            ${vibration} 7s infinite;
-          `
-        : 'none'
+          ? css`
+              ${movefolder2} 7s infinite;
+            `
+          : props.animationType === 'movefile1'
+            ? css`
+                ${movefile1} 7s infinite;
+              `
+            : props.animationType === 'movefile2'
+              ? css`
+                  ${movefile2} 7s infinite;
+                `
+              : props.animationType === 'movedocument'
+                ? css`
+                    ${movedocument} 7s infinite;
+                  `
+                : props.animationType === 'openthebox'
+                  ? css`
+                      ${openthebox} 7s infinite;
+                    `
+                  : props.animationType === 'vibration'
+                    ? css`
+                        ${vibration} 7s infinite;
+                      `
+                    : 'none'
       : 'none'};
 `
 
@@ -265,43 +254,15 @@ const Styledpage = styled.img`
   z-index: 0;
 `
 
-//Publishing
+// Publishing
 export const Animation: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isGenerating } = isGeneratingStore()
-  const { generateTime, setGenerateTime } = generateTimeStore((state) => ({
-    generateTime: state.generateTime,
-    setGenerateTime: state.setGenerateTime,
-  }))
-
-  // 문서 생성마다 경과 시간 계산하는 로직
-  useEffect(() => {
-    let currentTimer: NodeJS.Timeout | null = null
-    if (isGenerating) {
-      const currentStartTime = Date.now()
-      currentTimer = setInterval(() => {
-        setGenerateTime(Date.now() - currentStartTime)
-      }, 1000)
-    }
-
-    return () => {
-      if (currentTimer !== null) {
-        clearInterval(currentTimer)
-        setGenerateTime(0)
-      }
-    }
-  }, [isGenerating])
 
   return (
     <AnimationWrapper>
       <Styledpage src={isDarkMode ? loadingpage_dark : loadingpage} alt="loadingpage" />
       {isGenerating && <Loader isDarkMode={isDarkMode} />}
-      <Timer isDarkMode={isDarkMode}>
-        {Math.floor(generateTime / 60000)}:
-        {Math.floor((generateTime % 60000) / 1000)
-          .toFixed(0)
-          .padStart(2, '0')}
-      </Timer>
       <Styledicon
         src={isDarkMode ? githublogo_dark : githublogo}
         visible={false}

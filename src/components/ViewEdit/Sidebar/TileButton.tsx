@@ -11,13 +11,14 @@ const Icon = styled.img`
 `
 
 const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: boolean }>`
+  margin-top: ${(props) => (props.isOpenSideAlways ? '5px' : '0')};
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: ${(props) => (props.isOpenSideAlways ? '120%' : '80%')};
-  height: 8vh;
-  min-height: 45px;
+  height: 9vh;
+  min-height: 70px;
   background-color: transparent;
   transition: background-image 1s;
   overflow: hidden;
@@ -44,7 +45,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
     margin-left: 5px;
     transition: ease 0.3s;
     border-inline-start: 3px solid ${(props) => props.isDarkMode ? '#ddd' : '#222'};
-    background-color: ${(props) => props.isDarkMode ? '#2d2d2d' : '#f2f2f2'};
+    background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f2f2f2')};
   }
 
   &:active:before {

@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { Doc, docStore, isEnglishStore, isGeneratingStore } from '../../../store/store'
-import { useDarkModeStore } from '../../../store/store'
 import Swal from 'sweetalert2'
+import {
+  Doc,
+  docStore,
+  isEnglishStore,
+  isGeneratingStore,
+  useDarkModeStore,
+} from '../../../store/store'
 import colors from './defaultColors.json'
 
 const Wrapper = styled.div`
@@ -77,7 +82,7 @@ export const URLInput: React.FC = () => {
       const color = getRandomColor()
       const response = await axios.post(
         `${apiUrl}`,
-        { repository_url: url, language: language, color: color },
+        { repository_url: url, language, color },
         {
           headers: { Authorization: `Bearer ${access}` },
         },
@@ -96,7 +101,7 @@ export const URLInput: React.FC = () => {
           title: response.data.data.title,
           created_at: response.data.data.created_at,
           color: response.data.data.color,
-          repo: response.data.data.repository_url,
+          repo: url.replace('https://github.com/', ''),
           tags: [],
         }
 
@@ -130,7 +135,7 @@ export const URLInput: React.FC = () => {
 
   // input에 내용이 존재하고 엔터키를 눌렀을 때 제출
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (url != '' && e.key === 'Enter') {
+    if (url !== '' && e.key === 'Enter') {
       e.preventDefault()
       handleGenDoc()
     }

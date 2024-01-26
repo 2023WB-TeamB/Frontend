@@ -1,5 +1,3 @@
-// GradientBtn.tsx
-
 import { styled } from 'styled-components'
 
 const GradientBtn = styled.button<{ isDarkMode: boolean }>`

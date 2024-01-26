@@ -38,6 +38,17 @@ export const docStore = create<DocState>((set) => ({
   addDoc: (doc) => set((state) => ({ docs: [doc, ...state.docs] })),
 }))
 
+// 문서 불러오는 상태 여부
+interface IsLoading {
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
+}
+
+export const isLoadingStore = create<IsLoading>((set) => ({
+  isLoading: false,
+  setIsLoading: (isLoading) => set({ isLoading }),
+}))
+
 // 생성할 문서 언어
 interface Language {
   isEnglish: boolean
@@ -46,7 +57,7 @@ interface Language {
 
 export const isEnglishStore = create<Language>((set) => ({
   isEnglish: false,
-  setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
+  setIsEnglish: (isEnglish) => set({ isEnglish }),
 }))
 
 // 모달 상태
@@ -171,18 +182,7 @@ export const isGeneratingStore = create<Generating>((set) => ({
   setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
-// 문서 생성 시간
-interface GenerateTime {
-  generateTime: number
-  setGenerateTime: (cardId: number) => void
-}
-
-export const generateTimeStore = create<GenerateTime>((set) => ({
-  generateTime: 0,
-  setGenerateTime: (generateTime) => set({ generateTime }),
-}))
-
-/*다크모드*/
+/* 다크모드 */
 interface State {
   isDarkMode: boolean
   toggleDarkMode: () => void
@@ -201,7 +201,7 @@ export const useDarkModeStore = create<State>(
 )
 
 // * 뷰어/에디터 상태
-//? 사이드바 고정 상태
+// ? 사이드바 고정 상태
 interface SidePeekState {
   isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
@@ -215,7 +215,7 @@ export const useSidePeekStore = create<SidePeekState>((set) => ({
     })),
 }))
 
-//? 사이드바 기능 여부 상태
+// ? 사이드바 기능 여부 상태
 interface ViewerPageOpenState {
   isOpenGalleryPanel: boolean
   isOpenVersionPanel: boolean
@@ -257,7 +257,7 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
     })),
 }))
 
-//? 확인 모달창
+// ? 확인 모달창
 interface ConfirmBoxState {
   isOpenConfirm: boolean
   ConfirmLabel: string
@@ -347,7 +347,7 @@ export const useDocTagStore = create<DocTagState>((set) => ({
     })),
 }))
 
-//? 현재 문서 ID
+// ? 현재 문서 ID
 interface DocIdState {
   docId: number | null
   setDocId: (id: number) => void
@@ -392,8 +392,8 @@ interface SidePanelSearchState {
 }
 export const useSidePanelSearchStore = create<SidePanelSearchState>((set) => ({
   searchTemp: [],
-  setSearchTemp: (data: projectData[]) => 
+  setSearchTemp: (data: projectData[]) =>
     set(() => ({
-      searchTemp: data
-    }))
+      searchTemp: data,
+    })),
 }))

@@ -19,7 +19,9 @@ const Content = styled.div<{ isDarkMode: boolean }>`
   padding: 1.7rem 2rem;
   border: 0.03rem solid black;
   border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 interface PageProps {
@@ -42,7 +44,9 @@ const EmptyPage = styled.div<PageProps>`
   padding: 1.7rem 2rem;
   border: 0.01rem solid black;
   border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 // Repo, Title, Tags
@@ -67,10 +71,16 @@ const LowerWrapper = styled.div`
 // 레포 이름
 const Repo = styled.p`
   text-align: left;
-  height: 1.5rem;
+  max-height: 2.5rem;
   font-size: 0.9rem;
   margin-top: 1rem;
-  margin-bottom: 0;
+  margin-bottom: 0.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
 `
 
 // 문서 제목
@@ -123,7 +133,7 @@ const ButtonsContainer = styled.div`
 `
 
 interface ModalContentProps {
-  color?: string
+  color: string
   title: string
   created_at: string
   repo: string

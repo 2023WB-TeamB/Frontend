@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDarkModeStore } from '../../../store/store'
 import styled from 'styled-components'
+import { useDarkModeStore } from '../../../store/store'
 
 const LabelDiv = styled.div`
   height: 20px;

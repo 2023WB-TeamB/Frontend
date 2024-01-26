@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
-import btn from '../../../assets/images/mydocs/btn.svg'
 import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
+import { useMediaQuery } from 'react-responsive'
+import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
+import button from '../../../assets/images/mydocs/button_gallery.svg'
 import Preview from './Preview'
 import getContent from './getContent'
-import { useMediaQuery } from 'react-responsive'
-import GallerySkeleton from './GallerySkeleton'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -37,7 +36,7 @@ const Collection = styled(motion.div)`
   flex-wrap: wrap;
   position: relative;
   height: 85vh;
-  width: 70rem;
+  width: 80vw;
   /* margin: auto 3vw; */
 `
 
@@ -54,12 +53,13 @@ const Card = styled.div<{ backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     `linear-gradient(135deg, ${backgroundColor}, ${darken(0.02, backgroundColor)})`};
   position: relative;
-  font-size: 1.1rem;
   word-break: break-all;
-  width: 13.5rem;
-  height: 17.5rem;
-  padding: 2rem 1.5rem;
-  margin: 0.5rem 2rem;
+  width: 27.5vh;
+  min-width: 13.5rem;
+  height: 37vh;
+  min-height: 17.5rem;
+  padding: 4.22vh 3.17vh;
+  margin: 1.05vh 4.22vh;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
   &:hover {
@@ -121,7 +121,7 @@ const PrevButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(90deg);
+  transform: rotate(90deg) translateX(-10px);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -136,7 +136,7 @@ const NextButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) translateX(-10px);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -148,7 +148,7 @@ const PageDotContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 `
 
 const PageDot = styled.div<{ active: boolean }>`
@@ -182,11 +182,11 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const isTablet = useMediaQuery({ query: '(min-width:720px) and (max-width:990px)' })
   const isMobile = useMediaQuery({ query: '(max-width:720px)' })
 
-  console.log(isTablet)
+  // console.log(isTablet)
   const cardsPerPage = () => {
     return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
   }
-  console.log(cardsPerPage())
+  // console.log(cardsPerPage())
   const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
@@ -198,12 +198,16 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     tags: string[]
   }) => {
     setCardId(item.id) // 문서 id 설정
+    setPreviewContent({
+      ...item,
+      content: '',
+    }) // content 없이 item 저장
+    setPreviewOpen(true)
     const content = await getContent(item.id) // content 불러오기
     setPreviewContent({
       ...item,
-      content: content,
-    }) // previewContent에 item과 content를 추가하여 저장
-    setPreviewOpen(true)
+      content,
+    }) // content를 추가하여 item 저장
   }
 
   const handlePrev = () => {
@@ -234,7 +238,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     <GalleryWrapper>
       <Wrapper>
         <PrevButton active={prevButtonActive} onClick={handlePrev} disabled={currentPage === 1}>
-          <img src={btn} alt="Prev" />
+          <img src={button} alt="Prev" />
         </PrevButton>
         <AnimatePresence mode="wait">
           <Collection
@@ -243,31 +247,26 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
             initial="initial"
             animate="animate"
             exit="exit">
-            {docs.length > 0
-              ? currentCards.map((doc) => (
-                  <Card
-                    key={doc.id}
-                    backgroundColor={doc.color}
-                    onClick={() => handleCardClick(doc)}>
-                    <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
-                    <Title>{doc.title}</Title>
-                    <TagWrapper>
-                      {doc.tags.map((tag, index) => (
-                        <Tag key={index} color={doc.color}>
-                          {tag}
-                        </Tag>
-                      ))}
-                    </TagWrapper>
-                  </Card>
-                ))
-              : Array.from({ length: 8 }).map((_, i) => <GallerySkeleton key={i} />)}
+            {currentCards.map((doc) => (
+              <Card key={doc.id} backgroundColor={doc.color} onClick={() => handleCardClick(doc)}>
+                <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
+                <Title>{doc.title}</Title>
+                <TagWrapper>
+                  {doc.tags.map((tag, index) => (
+                    <Tag key={index} color={doc.color}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </TagWrapper>
+              </Card>
+            ))}
           </Collection>
         </AnimatePresence>
         <NextButton
           active={nextButtonActive}
           onClick={handleNext}
           disabled={currentPage === totalPageNum}>
-          <img src={btn} alt="Next" />
+          <img src={button} alt="Next" />
         </NextButton>
         <Preview
           previewOpen={previewOpen}

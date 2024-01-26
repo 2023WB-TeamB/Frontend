@@ -20,9 +20,9 @@ import axios from 'axios'
 const ViewerWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: 1280px;
+  max-width: 75vw;
   height: 86vh;
-  display: flex;  
+  display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
@@ -79,7 +79,7 @@ const ViewArea = styled.div`
   max-height: 70vh;
   font-family: 'Inter', sans-serif;
   overflow: auto;
-  padding: 0 27px;  
+  padding: 0 27px;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -158,7 +158,7 @@ const DocField: React.FC = () => {
   useEffect(() => {
     handleGetDoc()
     return () => {
-      setContent("")
+      setContent('')
     }
   }, [docId])
 
@@ -199,12 +199,12 @@ const DocField: React.FC = () => {
 
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
-    await handleSaveDocContent() && toggleEditorMode()
+    ;(await handleSaveDocContent()) && toggleEditorMode()
   }
 
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
-    setContent("")
+    setContent('')
     await handleGetDoc()
     toggleEditorMode()
   }

@@ -15,14 +15,16 @@ const ModalWrapper = styled.div<{ modalOpen: boolean; isDarkMode: boolean }>`
   opacity: ${({ modalOpen }) => (modalOpen ? 1 : 0)}; // modalOpen 상태에 따라 opacity 조절
   visibility: ${({ modalOpen }) =>
     modalOpen ? 'visible' : 'hidden'}; // modalOpen 상태에 따라 visibility 조절
-  transition: opacity 0.3s ease, visibility 0.3s ease; // opacity와 visibility에 transition 효과 적용
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease; // opacity와 visibility에 transition 효과 적용
   justify-content: center;
   align-items: center;
   z-index: 3;
 `
 
 interface ModalContentProps {
-  color?: string
+  color: string
   title: string
   created_at: string
   repo: string
