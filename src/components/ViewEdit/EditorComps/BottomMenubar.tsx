@@ -24,12 +24,10 @@ const BottomOptionBarWrapper = styled.div<{ isDarkMode: boolean }>`
   justify-content: center;
   overflow: hidden;
   z-index: 1;
-  border: 1px solid transparent;
+  border: 0.8px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#252525' : '#c8c8c8')};
   border-radius: 10px;
   background-color: ${(props) => (props.isDarkMode ? '#303030' : '#f3f3f3')};
-  /* background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de);
-  background-origin: border-box;
-  background-clip: content-box, border-box; */
   transition: linear 0.3s;
 `
 

@@ -1,7 +1,9 @@
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import styled from 'styled-components'
-import double_arrow_left from '../assets/images/Viewer/double-arrow-left.png'
-import double_arrow_right from '../assets/images/Viewer/double-arrow-right.png'
+import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
+import double_arrow_left_dark from '../assets/images/Viewer/double_arrow_left_dark.svg'
+import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
+import double_arrow_right_dark from '../assets/images/Viewer/double_arrow_right_dark.svg'
 import gallery from '../assets/images/Viewer/gallery button.png'
 import gallery_dark from '../assets/images/Viewer/gallerybutton_dark.svg'
 import version from '../assets/images/Viewer/version button.png'
@@ -112,7 +114,17 @@ function ViewerPage() {
       <LittleHeader />
       <Sidebar
         list={[
-          [isOpenSideAlways ? double_arrow_left : double_arrow_right, , toggleOpenSideAlways],
+          [
+            isOpenSideAlways
+              ? isDarkMode
+                ? double_arrow_left_dark
+                : double_arrow_left
+              : isDarkMode
+              ? double_arrow_right_dark
+              : double_arrow_right,
+            ,
+            toggleOpenSideAlways,
+          ],
           [isDarkMode ? gallery_dark : gallery, 'Gallery', openerStore.openGalleryPanel],
           [isDarkMode ? version_dark : version, 'Version', openerStore.openVersionPanel],
           [isDarkMode ? exportBtn_dark : exportBtn, 'Export', openerStore.openOptions],
