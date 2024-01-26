@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
@@ -19,6 +19,7 @@ import {
   Doc,
   DocData,
   Keyword,
+  isLoadingStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/useModalStore'
@@ -116,6 +117,7 @@ const MyDocsPage: React.FC = () => {
     cardId: state.cardId,
     setCardId: state.setCardId,
   }))
+  const { setIsLoading } = isLoadingStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -130,6 +132,8 @@ const MyDocsPage: React.FC = () => {
 
   const getDocs = async () => {
     try {
+      // 로딩 상태 설정
+      setIsLoading(true)
       // API 호출, 엑세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}`, {
@@ -141,14 +145,25 @@ const MyDocsPage: React.FC = () => {
         ...doc,
         repo: doc.repository_url.replace('https://github.com/', ''),
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
-        // tags: doc.tags.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      // console.log(docs)
+      console.log(docs)
     } catch (error) {
-      // API 호출 실패
-      console.error('API Error: ', error)
-      alert('API 호출에 실패하였습니다.')
+      const axiosError = error as AxiosError
+      if (axiosError.response && axiosError.response.status === 404) {
+        setIsLoading(false)
+        // 생성했던 문서가 없는 경우
+      } else {
+        // 기타 에러 처리
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'error',
+          title: 'Failed to load.',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
+      }
     }
   }
 
@@ -217,9 +232,11 @@ const MyDocsPage: React.FC = () => {
             </Generation>
             <RoundCarousel docs={docs.slice(0, 10)} />
           </Upper>
-          <Lower isDarkMode={isDarkMode}>
-            <Gallery docs={docs} />
-          </Lower>
+          {docs.length !== 0 && (
+            <Lower isDarkMode={isDarkMode}>
+              <Gallery docs={docs} />
+            </Lower>
+          )}
         </ScrollSnap>
       </Container>
     </div>

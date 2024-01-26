@@ -38,6 +38,17 @@ export const docStore = create<DocState>((set) => ({
   addDoc: (doc) => set((state) => ({ docs: [doc, ...state.docs] })),
 }))
 
+// 문서 불러오는 상태 여부
+interface IsLoading {
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
+}
+
+export const isLoadingStore = create<IsLoading>((set) => ({
+  isLoading: false,
+  setIsLoading: (isLoading) => set({ isLoading }),
+}))
+
 // 생성할 문서 언어
 interface Language {
   isEnglish: boolean
