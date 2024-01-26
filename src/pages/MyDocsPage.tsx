@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
 import Description from '../components/mydocs/upper/Description'
@@ -11,7 +13,6 @@ import Gallery from '../components/mydocs/lower/Gallery'
 import {
   cardColorStore,
   cardIdStore,
-  modalOpenStore,
   isDeleteStore,
   useDarkModeStore,
   isGeneratingStore,
@@ -19,10 +20,7 @@ import {
   Doc,
   DocData,
   Keyword,
-  previewOpenStore,
 } from '../store/store'
-import axios from 'axios'
-import Swal from 'sweetalert2'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/useModalStore'
 
@@ -95,7 +93,7 @@ const Generation = styled.div`
   }
 `
 
-//페이지 하단부
+// 페이지 하단부
 const Lower = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: center;
@@ -112,9 +110,9 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
   // const apiUrl = 'http://localhost:8000/api/v1/docs'
+  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,
@@ -123,8 +121,6 @@ const MyDocsPage: React.FC = () => {
     cardColor: state.cardColor,
     setCardColor: state.setCardColor,
   }))
-  const { modalOpen } = modalOpenStore()
-  const { previewOpen } = previewOpenStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -153,7 +149,7 @@ const MyDocsPage: React.FC = () => {
         // tags: doc.tags.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      console.log(docs)
+      // console.log(docs)
     } catch (error) {
       // API 호출 실패
       console.error('API Error: ', error)
@@ -161,14 +157,18 @@ const MyDocsPage: React.FC = () => {
     }
   }
 
+  // 마운트 할 때 문서 조회
   useEffect(() => {
     getDocs()
   }, [])
 
-  // DB에 있는 문서 색상 변경
-  const putColor = async () => {
+  const ChangeColor = async () => {
+    // 클라이언트 문서 색상 변경
+    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc))
+    setDocs(newDocs)
+
     try {
-      // API 호출, 엑세스 토큰
+      // DB에 있는 문서 색상 변경
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
         `${apiUrl}/${cardId}`,
@@ -177,11 +177,11 @@ const MyDocsPage: React.FC = () => {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      console.log(response)
+      // console.log(response)
 
       // 문서 수정 성공
       if (response.status === 200) {
-        console.log('API Response: ', response.status)
+        // console.log('API Response: ', response.status)
       }
     } catch (error: any) {
       // 문서 수정 실패
@@ -193,29 +193,11 @@ const MyDocsPage: React.FC = () => {
     }
   }
 
-  // 모달 창이 닫힐 때 DB 색상 변경 요청
-  useEffect(() => {
-    if (modalOpen === false && cardId !== 0 && isDelete === false) {
-      putColor()
-    }
-  }, [modalOpen])
-
-  // 프리뷰 창이 닫힐 때 DB 색상 변경 요청
-  useEffect(() => {
-    if (previewOpen === false && cardId !== 0 && isDelete === false) {
-      putColor()
-    }
-  }, [previewOpen])
-
-  // 클라이언트 문서 색상 변경
-  const updateCardColor = () => {
-    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc))
-    setDocs(newDocs)
-  }
-
   // 색상 선택 할 때마다 클라이언트 색상 변경
   useEffect(() => {
-    updateCardColor()
+    if (cardId !== 0 && isDelete === false) {
+      ChangeColor()
+    }
   }, [cardColor])
 
   // 문서를 삭제하는 API 요청

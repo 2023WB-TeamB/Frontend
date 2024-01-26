@@ -39,5 +39,9 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0, // require 구문 사용을 허용
     'react/function-component-definition': 'off',
     'no-alert': 'off',
+    'react/no-array-index-key': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'no-nested-ternary': 'off',
+    camelcase: 'off',
   },
 }

@@ -29,22 +29,24 @@ const ImageButton = styled.button`
   }
 `
 
-const ViewDetailsIcon = ({ color }: { color: string }) => (
-  <svg width="27" height="17" viewBox="0 0 27 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M1.35669 17L0 15.4913L6.28662 8.5L0 1.50875L1.35669 0L9 8.5L1.35669 17Z"
-      fill={color}
-    />
-    <path
-      d="M19.3567 17L18 15.4913L24.2866 8.5L18 1.50875L19.3567 0L27 8.5L19.3567 17Z"
-      fill={color}
-    />
-    <path
-      d="M10.3567 17L9 15.4913L15.2866 8.5L9 1.50875L10.3567 0L18 8.5L10.3567 17Z"
-      fill={color}
-    />
-  </svg>
-)
+function ViewDetailsIcon({ color }: { color: string }) {
+  return (
+    <svg width="27" height="17" viewBox="0 0 27 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M1.35669 17L0 15.4913L6.28662 8.5L0 1.50875L1.35669 0L9 8.5L1.35669 17Z"
+        fill={color}
+      />
+      <path
+        d="M19.3567 17L18 15.4913L24.2866 8.5L18 1.50875L19.3567 0L27 8.5L19.3567 17Z"
+        fill={color}
+      />
+      <path
+        d="M10.3567 17L9 15.4913L15.2866 8.5L9 1.50875L10.3567 0L18 8.5L10.3567 17Z"
+        fill={color}
+      />
+    </svg>
+  )
+}
 
 const Text = styled.span<{ color: string }>`
   margin-right: 0.4rem; // 이미지와 글씨 사이의 거리를 늘립니다.

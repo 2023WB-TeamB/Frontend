@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
+import { useEffect } from 'react'
 import githublogo from '../../../assets/images/MainPage/githublogo.svg'
 import githublogo_dark from '../../../assets/images/MainPage/githublogo_dark.svg'
 import file from '../../../assets/images/MainPage/file.svg'
@@ -16,7 +17,6 @@ import document1_dark from '../../../assets/images/MainPage/document1_dark.svg'
 import loadingpage from '../../../assets/images/mydocs/loadingpage.svg'
 import loadingpage_dark from '../../../assets/images/mydocs/loadingpage_dark.svg'
 import { generateTimeStore, isGeneratingStore, useDarkModeStore } from '../../../store/store'
-import { useEffect } from 'react'
 
 const AnimationWrapper = styled.div`
   position: relative;
@@ -205,8 +205,8 @@ const vibration = keyframes`
   }
   `
 
-//icon(svg)
-interface Styledicon {
+// icon(svg)
+interface StylediconProps {
   top?: string
   left?: string
   width?: string
@@ -214,7 +214,7 @@ interface Styledicon {
   zindex?: string
   delay?: string
 }
-const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: string }>`
+const Styledicon = styled.img<StylediconProps & { visible: boolean; animationType: string }>`
   width: ${(props) => props.width || '6rem'};
   height: ${(props) => props.width || '6rem'};
   position: absolute;
@@ -228,30 +228,30 @@ const Styledicon = styled.img<Styledicon & { visible: boolean; animationType: st
             ${movefolder1} 7s infinite;
           `
         : props.animationType === 'movefolder2'
-        ? css`
-            ${movefolder2} 7s infinite;
-          `
-        : props.animationType === 'movefile1'
-        ? css`
-            ${movefile1} 7s infinite;
-          `
-        : props.animationType === 'movefile2'
-        ? css`
-            ${movefile2} 7s infinite;
-          `
-        : props.animationType === 'movedocument'
-        ? css`
-            ${movedocument} 7s infinite;
-          `
-        : props.animationType === 'openthebox'
-        ? css`
-            ${openthebox} 7s infinite;
-          `
-        : props.animationType === 'vibration'
-        ? css`
-            ${vibration} 7s infinite;
-          `
-        : 'none'
+          ? css`
+              ${movefolder2} 7s infinite;
+            `
+          : props.animationType === 'movefile1'
+            ? css`
+                ${movefile1} 7s infinite;
+              `
+            : props.animationType === 'movefile2'
+              ? css`
+                  ${movefile2} 7s infinite;
+                `
+              : props.animationType === 'movedocument'
+                ? css`
+                    ${movedocument} 7s infinite;
+                  `
+                : props.animationType === 'openthebox'
+                  ? css`
+                      ${openthebox} 7s infinite;
+                    `
+                  : props.animationType === 'vibration'
+                    ? css`
+                        ${vibration} 7s infinite;
+                      `
+                    : 'none'
       : 'none'};
 `
 
@@ -265,7 +265,7 @@ const Styledpage = styled.img`
   z-index: 0;
 `
 
-//Publishing
+// Publishing
 export const Animation: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isGenerating } = isGeneratingStore()

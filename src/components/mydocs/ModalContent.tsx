@@ -19,7 +19,9 @@ const Content = styled.div<{ isDarkMode: boolean }>`
   padding: 1.7rem 2rem;
   border: 0.03rem solid black;
   border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 interface PageProps {
@@ -42,7 +44,9 @@ const EmptyPage = styled.div<PageProps>`
   padding: 1.7rem 2rem;
   border: 0.01rem solid black;
   border-radius: 20px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0px 3px 6px rgba(0, 0, 0, 0.16),
+    0px 3px 6px rgba(0, 0, 0, 0.23);
 `
 
 // Repo, Title, Tags
@@ -123,7 +127,7 @@ const ButtonsContainer = styled.div`
 `
 
 interface ModalContentProps {
-  color?: string
+  color: string
   title: string
   created_at: string
   repo: string

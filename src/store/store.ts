@@ -46,7 +46,7 @@ interface Language {
 
 export const isEnglishStore = create<Language>((set) => ({
   isEnglish: false,
-  setIsEnglish: (isEnglish) => set(() => ({ isEnglish: isEnglish })),
+  setIsEnglish: (isEnglish) => set({ isEnglish }),
 }))
 
 // 모달 상태
@@ -182,7 +182,7 @@ export const generateTimeStore = create<GenerateTime>((set) => ({
   setGenerateTime: (generateTime) => set({ generateTime }),
 }))
 
-/*다크모드*/
+/* 다크모드 */
 interface State {
   isDarkMode: boolean
   toggleDarkMode: () => void
@@ -201,7 +201,7 @@ export const useDarkModeStore = create<State>(
 )
 
 // * 뷰어/에디터 상태
-//? 사이드바 고정 상태
+// ? 사이드바 고정 상태
 interface SidePeekState {
   isOpenSideAlways: boolean
   toggleOpenSideAlways: () => void
@@ -215,7 +215,7 @@ export const useSidePeekStore = create<SidePeekState>((set) => ({
     })),
 }))
 
-//? 사이드바 기능 여부 상태
+// ? 사이드바 기능 여부 상태
 interface ViewerPageOpenState {
   isOpenGalleryPanel: boolean
   isOpenVersionPanel: boolean
@@ -257,7 +257,7 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
     })),
 }))
 
-//? 확인 모달창
+// ? 확인 모달창
 interface ConfirmBoxState {
   isOpenConfirm: boolean
   ConfirmLabel: string
@@ -331,27 +331,33 @@ export const useDocTagStore = create<DocTagState>((set) => ({
       tags: list,
     })),
   addTag: (newTag: string) =>
-    set((state) => ({
-      tags: [...state.tags, newTag],
-    })),
+    set((state) => {
+      if (state.tags.includes(newTag)) {
+        return {
+          tags: state.tags,
+        }
+      }
+      return {
+        tags: [...state.tags, newTag],
+      }
+    }),
   removeTag: (index: number) =>
     set((state) => ({
       tags: state.tags.filter((_, i) => i !== index),
     })),
 }))
 
-//? 현재 문서 ID
+// ? 현재 문서 ID
 interface DocIdState {
-  docId?: number
+  docId: number | null
   setDocId: (id: number) => void
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
-  //! 임시 문서 ID 지정
-  docId: 95,
-  setDocId: (id: number) =>
-    set(() => ({
-      docId: id,
-    })),
+  docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!) : null,
+  setDocId: (id) => {
+    set(() => ({ docId: id }));
+    localStorage.setItem('docId', id.toString());
+  }
 }))
 
 interface ApiUrlState {
@@ -386,8 +392,8 @@ interface SidePanelSearchState {
 }
 export const useSidePanelSearchStore = create<SidePanelSearchState>((set) => ({
   searchTemp: [],
-  setSearchTemp: (data: projectData[]) => 
+  setSearchTemp: (data: projectData[]) =>
     set(() => ({
-      searchTemp: data
-    }))
+      searchTemp: data,
+    })),
 }))

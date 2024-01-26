@@ -1,11 +1,18 @@
-
 import React, { useEffect } from 'react'
-import { useEditorModeStore, useDocContentStore, useDocTagStore, useDocIdStore, useApiUrlStore } from '../../store/store'
+import {
+  useEditorModeStore,
+  useDocContentStore,
+  useDocTagStore,
+  useDocIdStore,
+  useApiUrlStore,
+  useDarkModeStore,
+  useSidePeekStore,
+} from '../../store/store'
 import styled from 'styled-components'
-import EditIcon from '../../assets/images/Viewer/edit.png'
-import SaveIcon from '../../assets/images/Viewer/save.png'
-import CancelIcon from '../../assets/images/Viewer/cancel.png'
-import EditorArea from "./EditorComps/WYSIWYG_Area"
+import EditIcon from '../../assets/images/Viewer/edit.svg'
+import SaveIcon from '../../assets/images/Viewer/save.svg'
+import CancelIcon from '../../assets/images/Viewer/cancel.svg'
+import EditorArea from './EditorComps/WYSIWYG_Area'
 import DocTags from './DocTags'
 import axios from 'axios'
 
@@ -14,12 +21,12 @@ const ViewerWrapper = styled.div`
   position: relative;
   width: 100%;
   max-width: 1280px;
-  height: 90vh;
-  display: flex;
+  height: 86vh;
+  display: flex;  
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  transition: ease-in-out .3s;
+  padding: 1rem;
+  transition: ease-in-out 0.3s;
 `
 
 const Icon = styled.img`
@@ -44,10 +51,10 @@ const ButtonWrapper = styled.div`
 `
 
 const DistributeContentWrappe = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
 `
 
 // ? 문서 제목 내용 구분선
@@ -60,19 +67,19 @@ const DistributeDiv = styled.div`
 
   & span {
     width: 100%;
-    height: 2px;
-    background-image: linear-gradient(to bottom right, #76cae8, #ad51de);
+    height: 1px;
+    background-image: linear-gradient(to right, #7cc0e8, #a565e0);
   }
 `
 
 // ? 문서 내용 폼
 const ViewArea = styled.div`
-  margin-top: 10px;
-  width: 80%;
+  width: 85%;
   min-height: 450px;
   max-height: 70vh;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', sans-serif;
   overflow: auto;
+  padding: 0 27px;  
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -84,9 +91,13 @@ const ViewArea = styled.div`
 `
 
 // ? 문서 제목 폼
-const TitleArea = styled.div`
+interface TitleAreaProps {
+  isDarkMode: boolean
+  isOpenSideAlways: boolean
+}
+const TitleArea = styled.div<TitleAreaProps>`
   width: 90%;
-  max-width: 70vw;
+  max-width: ${(props) => (props.isOpenSideAlways ? '70vw' : '85vw')};
   height: 80px;
   text-align: left;
   display: flex;
@@ -94,17 +105,17 @@ const TitleArea = styled.div`
 
   & h2,
   & textarea {
-    margin: 2px;
-    font-size: 2rem;
+    margin: 2px 2px 25px 2px;
+    font-size: 2.2rem;
     border: none;
-    font-weight: bold;
-    color: #96C;
-    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    font-family: 'Inter', sans-serif;
     resize: none;
     width: 100%;
     box-sizing: border-box;
     line-height: 1;
-    height: 2rem;
+    height: 2.2rem;
   }
 
   & h2 {
@@ -121,24 +132,23 @@ const TitleArea = styled.div`
 `
 
 const DocField: React.FC = () => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const { isOpenSideAlways } = useSidePeekStore()
   const { apiUrl } = useApiUrlStore()
-  const {title, content, setTitle, setContent} = useDocContentStore()
-  const {tags, setTag, addTag} = useDocTagStore()
-  const {docId} = useDocIdStore()
+  const { title, content, setTitle, setContent } = useDocContentStore()
+  const { tags, setTag, addTag } = useDocTagStore()
+  const { docId } = useDocIdStore()
 
   //? 문서 조회 API
   const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(
-        `${apiUrl}/${docId}`,
-        {
+      const response = await axios.get(`${apiUrl}/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
-        },
-      )
+      })
       setTitle(response.data.data.title)
       setContent(response.data.data.content)
       setTag([])
@@ -153,9 +163,12 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
+    return () => {
+      setContent("")
+    }
   }, [])
 
-  const {isEditor, toggleEditorMode} = useEditorModeStore()
+  const { isEditor, toggleEditorMode } = useEditorModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
@@ -174,23 +187,22 @@ const DocField: React.FC = () => {
           keywords: tags,
         },
         {
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
         },
       )
       console.log('save success')
-      alert("문서가 저장되었습니다.")
+      alert('문서가 저장되었습니다.')
       return true
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      alert("문서 저장에 실패했습니다.")
+      alert('문서 저장에 실패했습니다.')
       return false
     }
   }
 
-  
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
     await handleSaveDocContent() && toggleEditorMode()
@@ -198,48 +210,41 @@ const DocField: React.FC = () => {
 
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
+    setContent("")
     await handleGetDoc()
     toggleEditorMode()
   }
 
-    return (
-      <ViewerWrapper id='DocField'>
-        <TitleArea>
-          {isEditor ?
-            <textarea value={title} onChange={handleChange}/>
-            :
-            <h2>{title}</h2>
-          }
-        </TitleArea>
-        <DistributeDiv>
-          <span/>
-          <DistributeContentWrappe>
-            <DocTags/>
-            <ButtonWrapper>
-              {isEditor ?
-                <>
-                  <IconButton onClick={saveDoc}>
-                    <Icon src={SaveIcon}/>
-                  </IconButton>
-                  <IconButton onClick={unsaveDoc}>
-                    <Icon src={CancelIcon}/>
-                  </IconButton>
-                </>
-                : 
-                <IconButton onClick={toggleEditorMode}>
-                  <Icon src={EditIcon}/>
+  return (
+    <ViewerWrapper id="DocField">
+      <TitleArea isDarkMode={isDarkMode} isOpenSideAlways={isOpenSideAlways}>
+        {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
+      </TitleArea>
+      <DistributeDiv>
+        <DocTags />
+        <span />
+        <DistributeContentWrappe>
+          <ButtonWrapper>
+            {isEditor ? (
+              <>
+                <IconButton onClick={saveDoc}>
+                  <Icon src={SaveIcon} />
                 </IconButton>
-              }
-            </ButtonWrapper>
-          </DistributeContentWrappe>
-        </DistributeDiv>
-          <ViewArea>
-            {content != '' &&
-              <EditorArea/>
-            }
-          </ViewArea>
-      </ViewerWrapper>
-    )
+                <IconButton onClick={unsaveDoc}>
+                  <Icon src={CancelIcon} />
+                </IconButton>
+              </>
+            ) : (
+              <IconButton onClick={toggleEditorMode}>
+                <Icon src={EditIcon} />
+              </IconButton>
+            )}
+          </ButtonWrapper>
+        </DistributeContentWrappe>
+      </DistributeDiv>
+      <ViewArea>{content != '' && <EditorArea />}</ViewArea>
+    </ViewerWrapper>
+  )
 }
 
 export default DocField

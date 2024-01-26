@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { Doc, docStore, isEnglishStore, isGeneratingStore } from '../../../store/store'
-import { useDarkModeStore } from '../../../store/store'
 import Swal from 'sweetalert2'
+import {
+  Doc,
+  docStore,
+  isEnglishStore,
+  isGeneratingStore,
+  useDarkModeStore,
+} from '../../../store/store'
 import colors from './defaultColors.json'
 
 const Wrapper = styled.div`
@@ -45,6 +50,7 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
   outline: none;
   text-align: center;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  transition: ease 0.5s;
 `
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
@@ -76,7 +82,7 @@ export const URLInput: React.FC = () => {
       const color = getRandomColor()
       const response = await axios.post(
         `${apiUrl}`,
-        { repository_url: url, language: language, color: color },
+        { repository_url: url, language, color },
         {
           headers: { Authorization: `Bearer ${access}` },
         },
