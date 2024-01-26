@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
@@ -107,7 +107,7 @@ const Tag = styled.text<{ color: string }>`
 `
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
-  const [canNext, setCanNext] = useState(true) // next 버튼 활성화
+  const [canNext, setCanNext] = useState(false) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
   const [prevButtonActive, setPrevButtonActive] = useState(false)
   const [nextButtonActive, setNextButtonActive] = useState(false)
@@ -140,6 +140,11 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setCanPrev(newRotate <= 180)
   }
 
+  // 문서가 5개 이상 일 때만 캐러셀 버튼 활성화
+  useEffect(() => {
+    if (docs.length > 4) setCanNext(true)
+  }, [docs.length])
+
   const handleCardClick = (item: {
     id: number
     title: string
@@ -158,7 +163,7 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     <Wrapper>
       <Carousel>
         {docs.length === 0
-          ? Array.from({ length: maxCards }).map((_, i) => {
+          ? Array.from({ length: 4 }).map((_, i) => {
               const currentRotate = rotate + i * (360 / maxCards)
               const visible =
                 ((currentRotate % 360) + 360) % 360 > 180 &&
