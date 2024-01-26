@@ -10,7 +10,7 @@ import { projectData } from './SidebarPanel'
 
 const PreviewWrapper = styled.div`
   width: 382px;
-  margin: 3px 0 3px 0;
+  margin: 3px 0 10px 0;
   position: relative;
   text-align: center;
   display: flex;
@@ -30,7 +30,7 @@ const PreviewWrapper = styled.div`
     margin-left: 9%;
     margin-right: 9%;
     width: 82%;
-    height: 1px;
+    height: 0.5px;
     background-image: linear-gradient(to right, #76cae8, #ad51de);
     border: none;
   }
@@ -104,7 +104,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   return (
     <PreviewWrapper>
       <h3>{title}</h3>
-      <hr/>
+      <hr />
       <SlideWrapper>
         <Button
           onClick={goToPreviousPage}
