@@ -11,7 +11,6 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import {
-  cardColorStore,
   cardIdStore,
   isDeleteStore,
   useDarkModeStore,
@@ -117,10 +116,6 @@ const MyDocsPage: React.FC = () => {
     cardId: state.cardId,
     setCardId: state.setCardId,
   }))
-  const { cardColor } = cardColorStore((state) => ({
-    cardColor: state.cardColor,
-    setCardColor: state.setCardColor,
-  }))
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -161,44 +156,6 @@ const MyDocsPage: React.FC = () => {
   useEffect(() => {
     getDocs()
   }, [])
-
-  const ChangeColor = async () => {
-    // 클라이언트 문서 색상 변경
-    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc))
-    setDocs(newDocs)
-
-    try {
-      // DB에 있는 문서 색상 변경
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.put(
-        `${apiUrl}/${cardId}`,
-        { color: `${cardColor}` },
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        },
-      )
-      // console.log(response)
-
-      // 문서 수정 성공
-      if (response.status === 200) {
-        // console.log('API Response: ', response.status)
-      }
-    } catch (error: any) {
-      // 문서 수정 실패
-      if (error.response) {
-        console.error('API Response: ', error.response)
-        console.log(error.response)
-        alert(error.response.message)
-      }
-    }
-  }
-
-  // 색상 선택 할 때마다 클라이언트 색상 변경
-  useEffect(() => {
-    if (cardId !== 0 && isDelete === false) {
-      ChangeColor()
-    }
-  }, [cardColor])
 
   // 문서를 삭제하는 API 요청
   const deleteDoc = async () => {
