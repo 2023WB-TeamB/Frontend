@@ -9,12 +9,14 @@ interface EmptyCardProps {
 // DB에 문서가 없는 경우
 const EmptyCard = styled.div<EmptyCardProps>`
   position: absolute;
-  width: 9.7rem;
-  height: 13rem;
+  width: 20.5vh;
+  min-width: 9.7rem;
+  height: 27.5vh;
+  min-height: 13rem;
   background: transparent;
   border-radius: 1.5rem;
   border: 0.15rem dashed darkgray;
-  padding: 1.4rem 1.2rem;
+  padding: 2.95vh 2.53vh;
   top: 120%;
   left: 50%;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
@@ -25,7 +27,7 @@ const EmptyCard = styled.div<EmptyCardProps>`
   ${({ rotate }) =>
     rotate !== undefined &&
     css`
-      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(26rem) rotate(-${rotate}deg)
+      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(55.5vh) rotate(-${rotate}deg)
         rotate(${rotate + 90}deg);
     `}
 `
@@ -42,15 +44,17 @@ const pulseAnimation = keyframes`
 
 const SkeletonCard = styled.div<SkeletonCardProps>`
   position: absolute;
-  width: 9.7rem;
-  height: 13rem;
+  width: 20.5vh;
+  min-width: 9.7rem;
+  height: 27.5vh;
+  min-height: 13rem;
   line-height: 1.5rem;
   color: white;
   background: #dddddd;
   border-radius: 1.5rem;
   text-align: left;
   border: 0.08rem solid darkgray;
-  padding: 1.4rem 1.2rem;
+  padding: 2.95vh 2.53vh;
   top: 120%;
   left: 50%;
   box-shadow:
@@ -64,7 +68,7 @@ const SkeletonCard = styled.div<SkeletonCardProps>`
   ${({ rotate }) =>
     rotate !== undefined &&
     css`
-      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(26rem) rotate(-${rotate}deg)
+      transform: translate(-50%, 0%) rotate(${rotate}deg) translate(55.5vh) rotate(-${rotate}deg)
         rotate(${rotate + 90}deg);
     `}
 
