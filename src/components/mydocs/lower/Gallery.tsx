@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
 import { useMediaQuery } from 'react-responsive'
 import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
-import btn from '../../../assets/images/mydocs/btn.svg'
+import button from '../../../assets/images/mydocs/button_gallery.svg'
 import Preview from './Preview'
 import getContent from './getContent'
 import GallerySkeleton from './GallerySkeleton'
@@ -121,7 +121,7 @@ const PrevButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(90deg);
+  transform: rotate(90deg) translateX(-10px);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -136,7 +136,7 @@ const NextButton = styled.button<{ active: boolean }>`
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) translateX(-10px);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -238,7 +238,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     <GalleryWrapper>
       <Wrapper>
         <PrevButton active={prevButtonActive} onClick={handlePrev} disabled={currentPage === 1}>
-          <img src={btn} alt="Prev" />
+          <img src={button} alt="Prev" />
         </PrevButton>
         <AnimatePresence mode="wait">
           <Collection
@@ -271,7 +271,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           active={nextButtonActive}
           onClick={handleNext}
           disabled={currentPage === totalPageNum}>
-          <img src={btn} alt="Next" />
+          <img src={button} alt="Next" />
         </NextButton>
         <Preview
           previewOpen={previewOpen}
