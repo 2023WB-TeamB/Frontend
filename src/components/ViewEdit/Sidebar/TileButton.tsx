@@ -7,6 +7,7 @@ const Icon = styled.img`
   height: 28px;
   z-index: 1;
   transition: filter 0.3s;
+  background: transparent;
 `
 
 const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: boolean }>`
@@ -21,7 +22,11 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   background-color: transparent;
   transition: background-image 1s;
   overflow: hidden;
-  transition: all linear 0.2s;
+  transition: ease 0.3s;
+  border: none;
+  ${Icon} {
+    filter: ${(props) => props.isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)'};
+  }
 
   &:before {
     content: '';
@@ -36,10 +41,10 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   }
 
   &:hover {
-    border: none;
+    filter: none;
     margin-left: 5px;
-    transition: all linear 0.2s;
-    /* border-inline-start: 3px solid black; */
+    transition: ease 0.3s;
+    border-inline-start: 3px solid ${(props) => props.isDarkMode ? '#ddd' : '#222'};
     background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f2f2f2')};
   }
 

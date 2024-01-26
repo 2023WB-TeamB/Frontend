@@ -106,8 +106,10 @@ const TitleArea = styled.div<TitleAreaProps>`
   & h2,
   & textarea {
     margin: 2px 2px 25px 2px;
+    padding: 2px;
     font-size: 2.2rem;
     border: none;
+    outline: none;
     background-color: transparent;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -116,16 +118,7 @@ const TitleArea = styled.div<TitleAreaProps>`
     width: 100%;
     box-sizing: border-box;
     line-height: 1;
-    height: 2.2rem;
-  }
-
-  & h2 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  & textarea {
+    height: 2.7rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -167,7 +160,7 @@ const DocField: React.FC = () => {
     return () => {
       setContent('')
     }
-  }, [])
+  }, [docId])
 
   const { isEditor, toggleEditorMode } = useEditorModeStore()
 

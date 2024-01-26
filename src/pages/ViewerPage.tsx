@@ -5,13 +5,9 @@ import double_arrow_left_dark from '../assets/images/Viewer/double_arrow_left_da
 import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
 import double_arrow_right_dark from '../assets/images/Viewer/double_arrow_right_dark.svg'
 import gallery from '../assets/images/Viewer/gallery button.png'
-import gallery_dark from '../assets/images/Viewer/gallerybutton_dark.svg'
 import version from '../assets/images/Viewer/version button.png'
-import version_dark from '../assets/images/Viewer/versionbutton_dark.svg'
 import exportBtn from '../assets/images/Viewer/share button.png'
-import exportBtn_dark from '../assets/images/Viewer/sharebutton_dark.svg'
 import deleteBtn from '../assets/images/Viewer/delete button.png'
-import deleteBtn_dark from '../assets/images/Viewer/deletebutton_dark.svg'
 import exit from '../assets/images/Viewer/exit button.png'
 import SidebarPanel from '../components/ViewEdit/Sidebar/SidebarPanel'
 import ModalOptions from '../components/ViewEdit/ModalOptions'
@@ -114,21 +110,11 @@ function ViewerPage() {
       <LittleHeader />
       <Sidebar
         list={[
-          [
-            isOpenSideAlways
-              ? isDarkMode
-                ? double_arrow_left_dark
-                : double_arrow_left
-              : isDarkMode
-              ? double_arrow_right_dark
-              : double_arrow_right,
-            ,
-            toggleOpenSideAlways,
-          ],
-          [isDarkMode ? gallery_dark : gallery, 'Gallery', openerStore.openGalleryPanel],
-          [isDarkMode ? version_dark : version, 'Version', openerStore.openVersionPanel],
-          [isDarkMode ? exportBtn_dark : exportBtn, 'Export', openerStore.openOptions],
-          [isDarkMode ? deleteBtn_dark : deleteBtn, 'Delete', openConfirmWithDelete],
+          [isOpenSideAlways ? double_arrow_left : double_arrow_right, , toggleOpenSideAlways],
+          [gallery, 'Gallery', openerStore.openGalleryPanel],
+          [version, 'Version', openerStore.openVersionPanel],
+          [exportBtn, 'Export', openerStore.openOptions],
+          [deleteBtn, 'Delete', openConfirmWithDelete],
           [''],
           [''],
           [''],

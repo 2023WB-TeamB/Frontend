@@ -10,7 +10,7 @@ import { projectData } from './SidebarPanel'
 
 const PreviewWrapper = styled.div`
   width: 382px;
-  margin: 3px 0 10px 0;
+  margin: 3px 0 30px 0;
   position: relative;
   text-align: center;
   display: flex;
@@ -27,6 +27,8 @@ const PreviewWrapper = styled.div`
   }
 
   hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
     margin-left: 9%;
     margin-right: 9%;
     width: 82%;

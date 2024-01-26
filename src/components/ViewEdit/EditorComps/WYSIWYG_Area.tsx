@@ -78,9 +78,11 @@ const EditorWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   
-  // * Editor Form
+  //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
+    padding: 10px;
+    outline: 0;
     overflow: hidden;
   }
   `
@@ -125,15 +127,13 @@ const EditorArea: React.FC = () => {
   }
 
   return (
-    <>
-      <EditorWrapper>
-        <EditorContent editor={editor} ref={editorRef}/>
-        <BubbleMenu editor={editor}>
-          <BubbleMenubar editor={editor}/>
-        </BubbleMenu>
-        {isEditor && <BottomMenubar editor={editor}/>}
-      </EditorWrapper>
-    </>
+    <EditorWrapper>
+      <EditorContent editor={editor} ref={editorRef}/>
+      <BubbleMenu editor={editor}>
+        <BubbleMenubar editor={editor}/>
+      </BubbleMenu>
+      {isEditor && <BottomMenubar editor={editor}/>}
+    </EditorWrapper>
   )
 }
 
