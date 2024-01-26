@@ -1,36 +1,25 @@
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
-// import { searchType } from './SearchList'
 import { cardIdStore, modalContentStore, modalOpenStore, useDarkModeStore } from '../store/store'
 import Modal from '../components/mydocs/Modal'
 /*-----------------------------------------------------------*/
 
-interface searchItemType {
-  id: number
-  title: string
-  created_at: string
-  color: string
-  keywords?: { name: any }[]
-  // keywords: [name: any]
-  repo: string
-  tags: string[]
-}
-
-interface modalType {
+// 인터페이스
+interface SearchItemType {
   id: number
   title: string
   created_at: string
   color: string
   repo: string
   tags: string[]
+  keywords?: { name: string }[]
 }
-
+// 스타일
 const Container = styled.div<{ isDarkMode: boolean }>`
   width: 50rem;
   display: flex;
   flex-direction: column;
   padding: 5px 0;
-
   cursor: pointer;
   &:hover {
     width: 50rem;
@@ -64,7 +53,7 @@ const TagWrapper = styled.div`
   max-width: 35rem;
   margin: 0 20px;
 `
-const Tag = styled.div<{ isDarkMode: boolean }>`
+const Tag = styled.span<{ isDarkMode: boolean }>`
   color: #eb8698;
   background-color: ${(props) => (props.isDarkMode ? '#393939' : '#f8f8f8')};
   border-radius: 10px;
@@ -73,24 +62,24 @@ const Tag = styled.div<{ isDarkMode: boolean }>`
   margin-left: 2px;
   margin-right: 2px;
 `
-
-const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
+// 메인
+const SearchItem: React.FC<{ getData: SearchItemType[] }> = ({ getData }) => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
-  const { modalOpen, setModalOpen } = modalOpenStore() // 모달 활성화
+  const { modalOpen, setModalOpen } = modalOpenStore() // Card 모달 상태관리
   const { modalContent, setModalContent } = modalContentStore((state) => ({
     modalContent: state.modalContent,
     setModalContent: state.setModalContent,
   }))
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
   return (
     <>
       {getData.length > 0 &&
         getData.map((item) => (
           <Container
-            key={item.id}
+            key={item.id} // 각 item에 key값 부여
             onClick={() => {
-              const SearchedModal: modalType = {
+              const SearchedModal = {
                 id: item.id,
                 title: item.title,
                 created_at: item.created_at,
@@ -100,7 +89,7 @@ const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
               }
               setCardId(item.id) // 수정/삭제 대상 문서 id 설정
               setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
-              setModalOpen(true) // 모달 열기
+              setModalOpen(true) // 모달 open
             }}
             isDarkMode={isDarkMode}>
             <TItleDateWrapper>
@@ -109,7 +98,11 @@ const SearchItem: React.FC<{ getData: searchItemType[] }> = ({ getData }) => {
             </TItleDateWrapper>
             <TagWrapper>
               {item.keywords!.length > 0 &&
-                item.keywords!.map((tag) => <Tag isDarkMode={isDarkMode}>{tag.name}</Tag>)}
+                item.keywords!.map((tag) => (
+                  <Tag key={tag.name} isDarkMode={isDarkMode}>
+                    {tag.name}
+                  </Tag>
+                ))}
             </TagWrapper>
           </Container>
         ))}
