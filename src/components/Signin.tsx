@@ -1,9 +1,9 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
+import { useState, ChangeEvent, FormEvent, useEffect, useRef } from 'react'
 import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useDarkModeStore } from '../../src/store/store'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useDarkModeStore } from '../../src/store/store'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
@@ -15,7 +15,7 @@ import imgGithub from '../assets/images/logo_github.png'
 import imgMeta from '../assets/images/logo_meta.png'
 import imgNaver from '../assets/images/logo_naver.png'
 
-/**** 스타일 ****/
+// 애니메이션
 const modalOpenAnimation = keyframes`
 //위에서 아래로 이동
   0% {
@@ -27,6 +27,7 @@ const modalOpenAnimation = keyframes`
     opacity: 1;
   }
 `
+// 스타일
 const Overlay = styled.div`
   position: fixed;
   background-color: rgba(0, 0, 0, 0.2);
@@ -46,6 +47,9 @@ const Content = styled.div<{ isDarkMode: boolean }>`
   width: 425px;
   height: 550px;
   animation: ${modalOpenAnimation} 0.55s ease-in-out;
+  &:focus {
+    outline: none; // focus될때 아웃라인 제거
+  }
 `
 const StyledForm = styled.form`
   display: flex;
@@ -74,18 +78,15 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
   width: 324px;
   font-size: 15px;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-
   border: 0.5px solid;
   border-color: ${(props) => (props.isDarkMode ? '#5e5e5e' : '#c8c8c8')};
   border-radius: 15px;
-
   background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
   padding-left: 20px;
 `
 const StyledSocial = styled.img`
   width: 36px;
   height: 36px;
-
   margin-top: 50px;
   margin: 8px;
 `
@@ -94,16 +95,9 @@ const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode
   font-weight: 200;
   font-family: 'Inter-Regular', Helvetica;
   color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
-  cursor: pointer; /* 마우스를 손가락 형태로 변환 */
-
   margin-bottom: 20px;
+  cursor: pointer; /* 마우스를 손가락 형태로 변환 */
 `
-// const StyledCheckbox = styled.input`
-//   width: 15px;
-//   height: 10px;
-
-//   background-color: blue;
-// `
 const StyledDivider = styled.div<{ isDarkMode: boolean }>`
   width: 300px;
   height: 16px;
@@ -111,26 +105,26 @@ const StyledDivider = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   justify-content: center;
   align-items: center;
-
   font-family: 'Inter';
   font-size: 16px;
   color: ${(props) => (props.isDarkMode ? '#c8c8c8' : '#bbbbbb')};
   font-weight: 400;
 `
+// const StyledCheckbox = styled.input`
+//   width: 15px;
+//   height: 10px;
 
-/**** 인터페이스 ****/
-interface FormProps {
-  email: string
-  password: string
-}
+//   background-color: blue;
+// `
 
-/**** 메인 ****/
-function Signin() {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  const navigate = useNavigate()
+// 메인
+const Signin = () => {
   // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
-  const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore()
-  const [data, setData] = useState<FormProps>({
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode) // 다크모드 상태관리
+  const navigate = useNavigate()
+  const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
+  const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
+  const [data, setData] = useState({
     email: '',
     password: '',
   })
@@ -142,19 +136,33 @@ function Signin() {
       [name]: value, // key값을 기준으로 value를 가져옴
     }))
   }
-  // 모달 상태관리
+  // 로그인, 회원가입 모달 토글
   const handleClickJoinus = () => {
-    toggleRegister() // 회원가입 모달 open
+    toggleRegister() // 회원가입 모달 Open
+    toggleSignin() // 로그인 모달 close
   }
-  // 체크박스 상태관리
-  // const handleCheckboxChange = () => {
-  //   setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
-  // }
+  // Overlay를 클릭한 경우 모달 close
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      toggleSignin()
+    }
+  }
+  // ESC 키를 누른 경우 모달 close
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      toggleSignin()
+    }
+  }
+  // 모달에 focus를 주어서 ESC키 이벤트가 발생하도록 한다.
+  useEffect(() => {
+    if (modalRef.current) {
+      // 참조된 DOM요소를 확인하고 존재한다면
+      modalRef.current.focus() // 해당 요소에 focus를 둔다
+    }
+  }, [])
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    // const url = 'https://gtd.kro.kr/api/v1/auth' // 배포서버
     const url = 'https://gitodoc.kro.kr/api/v1/auth'
-    // const url = 'http://localhost:8000/api/v1/auth' // 개발서버
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
@@ -167,9 +175,7 @@ function Signin() {
         // 로컬 스토리지에 토큰 저장, response.data.token.[토큰이름] 은 서버에서 전달됨
         localStorage.setItem('accessToken', response.data.token.access)
         localStorage.setItem('refreshToken', response.data.token.refresh)
-
         console.log('API Response: ', response.status)
-
         Toast.fire({
           icon: 'success',
           title: 'Welcome!',
@@ -179,16 +185,13 @@ function Signin() {
       }
       // 로그인 실패 시
     } catch (error: any) {
-      // error의 타입을 any로 명시해야함
       if (error.response.status === 400) {
         console.error('API Response: ', error.response.status)
-
         // 비밀번호 초기화
         setData((prevData) => ({
           ...prevData,
           password: '',
         }))
-
         Toast.fire({
           icon: 'error',
           title: 'Sign in failed',
@@ -197,7 +200,7 @@ function Signin() {
       }
     }
   }
-  // sweetAlert2 toast창 라이브러리
+  // sweetAlert2 toast창
   const Toast = Swal.mixin({
     toast: true,
     position: 'bottom-right',
@@ -209,10 +212,14 @@ function Signin() {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     },
   })
+  // 체크박스 상태관리
+  // const handleCheckboxChange = () => {
+  //   setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
+  // }
   return (
     <>
-      <Overlay>
-        <Content isDarkMode={isDarkMode}>
+      <Overlay onClick={handleOverlayClick}>
+        <Content isDarkMode={isDarkMode} onKeyDown={handleKeyPress} ref={modalRef} tabIndex={0}>
           <CloseBtn onClick={toggleSignin} isDarkMode={isDarkMode} />
           <StyledForm onSubmit={handleSubmit}>
             <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
@@ -227,7 +234,7 @@ function Signin() {
               placeholder="Enter Email"
             />
             {/* 비밀번호 */}
-            <div style={{ margin: 8 }}></div>
+            <div style={{ margin: 8 }} />
             <StyledName isDarkMode={isDarkMode}>Password</StyledName>
             <StyledInput
               isDarkMode={isDarkMode}
@@ -236,6 +243,7 @@ function Signin() {
               value={data.password}
               onChange={handleChange}
               placeholder="Enter Password"
+              autoComplete="off"
             />
             {/* Remember me */}
             {/* <div style={{ margin: 8 }}></div>
@@ -254,11 +262,11 @@ function Signin() {
                 Rememeber me
               </StyledFont>
             </div> */}
-            <div style={{ margin: 15 }}></div>
+            <div style={{ margin: 15 }} />
             {/* 로그인 버튼 */}
             <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
-            <div style={{ margin: 10 }}></div>
+            <div style={{ margin: 10 }} />
             <StyledDivider isDarkMode>
               <div
                 style={{
@@ -266,7 +274,8 @@ function Signin() {
                   width: 300,
                   height: 4,
                   borderBottom: isDarkMode ? '0.5px solid #5e5e5e' : '0.5px solid #c8c8c8',
-                }}></div>
+                }}
+              />
               <div
                 style={{
                   position: 'absolute',
@@ -278,7 +287,7 @@ function Signin() {
                 &nbsp;or&nbsp;
               </div>
             </StyledDivider>
-            <div style={{ margin: 8 }}></div>
+            <div style={{ margin: 8 }} />
             <div>
               <StyledSocial src={imgGoogle} />
               <StyledSocial src={imgGithub} />
@@ -287,21 +296,21 @@ function Signin() {
               {/* TODO: 소셜로그인 기능 구현 */}
             </div>
             {/* Join us */}
-            <div style={{ margin: 4 }}></div>
+            <div style={{ margin: 4 }} />
             <div>
               <StyledFont
                 isDarkMode={isDarkMode}
                 fontDark="#fff"
                 fontLight="#000"
                 onClick={handleClickJoinus}>
-                Join{' '}
+                Don&apos;t have an account? {/* &apos = "'" */}
               </StyledFont>
               <StyledFont
                 isDarkMode={isDarkMode}
                 fontDark="#7AC4E8"
                 fontLight="#7AC4E8"
                 onClick={handleClickJoinus}>
-                us?
+                Create one
               </StyledFont>
             </div>
           </StyledForm>
