@@ -1,9 +1,7 @@
-// import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-// import { useState, useEffect } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
 import { useModalStore } from './useModalStore'
@@ -16,7 +14,23 @@ import imgLogo from '../assets/images/LOGO1.svg'
 import imgSearch from '../assets/images/search.svg'
 import imgSearchDark from '../assets/images/search_dark.svg'
 
-/*** 스타일링 ***/
+// 인터페이스
+interface HeaderType {
+  isGetToken: boolean
+}
+interface IconType {
+  height: string
+  width: string
+  isDarkMode?: boolean
+}
+interface ContainerType {
+  isDarkMode: boolean
+  // showBorder: boolean
+}
+interface SignType {
+  isDarkMode: boolean
+}
+// 스타일
 const Container = styled.div<ContainerType>`
   display: flex;
   justify-content: space-between;
@@ -63,27 +77,10 @@ const SignInOut = styled.div<SignType>`
   align-self: flex-start;
   cursor: pointer;
 `
-/***  인터페이스 ***/
-interface HeaderType {
-  isGetToken: boolean
-}
-interface IconType {
-  height: string
-  width: string
-  isDarkMode?: boolean
-}
-interface ContainerType {
-  isDarkMode: boolean
-  // showBorder: boolean
-}
-interface SignType {
-  isDarkMode: boolean
-}
-
+// 메인
 const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
-  // const [scrollPosition, setScrollPosition] = useState(0)
   const navigate = useNavigate()
 
   // 스크롤 이벤트 핸들러 함수
@@ -99,25 +96,25 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   //   }
   // }, []) // 빈 배열은 마운트/언마운트 시에만 실행
 
+  // 로그인 모달 클릭 이벤트
   const handleClickSignin = () => {
     toggleSignin() // 로그인 open/close 토글
   }
+  // 다크모드 클릭 이벤트
   const handleDarkMode = () => {
     toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
-
+  // 검색 모달 클릭 이벤트
   const handleClickSearch = async (e: React.MouseEvent) => {
     e.preventDefault()
     searchListOpen()
   }
-
-  // 로그아웃 API 호출
+  // 로그아웃 API 호출 이벤트
   const handleClickSignout = async () => {
     const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
-    // const url = 'http://localhost:8000/api/v1/auth' // 개발 서버
     const response = await axios.delete(url)
+    // 로그아웃 알림창
     Swal.fire({
-      // 로그아웃 알림창
       title: 'Sign out',
       text: 'Do you want to signed out?',
       icon: 'warning',
@@ -136,9 +133,10 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
           confirmButtonColor: '#3085d6',
           confirmButtonText: 'OK',
         })
+        // 로그아웃 성공 시
         if (response.status === 202) {
           console.log('API Response: ', response.status)
-          // 로그아웃 성공 시, 로컬스토리지에서 토큰 삭제 후 메인페이지 이동
+          // 로컬스토리지에서 토큰 삭제
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
           navigate('/') // 메인페이지로 이동
@@ -151,8 +149,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     <>
       {isGetToken ? (
         <Container isDarkMode={isDarkMode}>
-          <Logo src={imgLogo}></Logo>
-          {/* <span>현재 스크롤 위치: {scrollPosition}px</span> */}
+          <Logo src={imgLogo} />
           <RightWrapper>
             {/* 다크모드 */}
             <Icon
@@ -170,7 +167,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
         </Container>
       ) : (
         <Container isDarkMode={isDarkMode}>
-          <Logo src={imgLogo}></Logo>
+          <Logo src={imgLogo} />
           <RightWrapper>
             {/* 검색 */}
             <Icon

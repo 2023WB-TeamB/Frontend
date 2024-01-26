@@ -10,14 +10,14 @@ import imgSearch from '../assets/images/search.svg'
 import imgClose from '../assets/images/close.png'
 /*-----------------------------------------------------------*/
 
+// 인터페이스
 interface IconType {
   height: string
   width: string
   isDarkMode?: boolean
   onClick?: () => void
 }
-
-/**** 스타일 ****/
+// 스타일
 const Overlay = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
   background-color: ${(props) => (props.isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.2)')};
@@ -38,8 +38,21 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   border-radius: 20px;
   height: 450px;
   width: 50rem;
-  padding: 10px 0;
+  padding: 0 0 20px 0;
   z-index: 5;
+
+  /* Webkit 브라우저에만 적용되는 스크롤 스타일 */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  /* 스크롤 영역, 바디 */
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  /* 스크롤 핸들(드래그하는 부분) */
+  ::-webkit-scrollbar-thumb {
+    background-color: ${(props) => (props.isDarkMode ? '#414141' : '#f0f0f0')};
+  }
 `
 const Icon = styled.img<IconType>`
   display: flex;
@@ -66,29 +79,27 @@ const SearchBar = styled.input<{ isDarkMode: boolean }>`
   }
 `
 const Divider = styled.div`
-  width: 50rem;
+  width: auto;
   border-top: 1px solid #c8c8c8;
-  margin: 10px 0;
 `
 const ItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  height: 100%;
   justify-content: space-between;
   align-items: flex-start;
   overflow-x: hidden;
 `
-
+// 메인
 const SearchList: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  const { searchListClose } = useModalStore()
-  const [query, setQuery] = useState('') // 검색 키워드 상태관리
-  // const [filteredData, setFilteredData] = useState<Doc[]>([])
-  const { filteredData, setFilteredData } = useSearchStore()
-  const debouncedQuery = useDebounce(query, 500)
-  const { docs } = docStore()
+  const { searchListClose } = useModalStore() // 검색 모달 상태고나리
+  const [query, setQuery] = useState('') // 검색어 상태관리
+  const { filteredData, setFilteredData } = useSearchStore() // 필터링된 검색결과 상태관리
+  const debouncedQuery = useDebounce(query, 500) // query에 대해 500ms동안의 연속된 이벤트중의 마지막을 호출한다
+  const { docs } = docStore() // 변환된 문서 상태관리
   const searchBarRef = useRef<HTMLInputElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
-  const getValue = (e: ChangeEvent<HTMLInputElement>) => {
+  // docs의 문서를 title, keywords로 검색
+  const getDocument = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value.toLowerCase())
   }
   // 필터링 로직
@@ -97,30 +108,27 @@ const SearchList: React.FC = () => {
       setFilteredData(
         docs.filter((doc) => {
           const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
-          const title = doc.title.toLowerCase().includes(lowerCaseQuery)
-          const keywords = doc.keywords!.some((keyword) =>
-            keyword.name.toLowerCase().includes(lowerCaseQuery),
-          )
-          // const tags = doc.keywords.map((keyword: Keyword) => keyword.name)
-
+          const title = doc.title.includes(lowerCaseQuery)
+          const keywords = doc.keywords!.some((keyword) => keyword.name.includes(lowerCaseQuery))
+          // keywords안의 elements를 keyword검색
           return title || keywords
         }),
       )
     }
     getData()
-  }, [debouncedQuery]) // 디바운스로 의존성을 준다
+  }, [debouncedQuery]) // 디바운스로 연속된 이벤트에대해 의존성을 준다
 
-  // 검색내용 삭제
+  // 검색내용 삭제 이벤트
   const handleOnClick = () => {
     setQuery('')
   }
-  // Overlay를 클릭한 경우에만 searchListClose 호출
+  // Overlay를 클릭한 경우 모달 close
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       searchListClose()
     }
   }
-  // ESC 키를 누른 경우 searchListClose 호출
+  // ESC 키를 누른 경우 모달 close
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       searchListClose()
@@ -137,15 +145,15 @@ const SearchList: React.FC = () => {
   return (
     <Overlay
       onClick={handleOverlayClick}
-      onKeyDown={handleKeyPress}
-      tabIndex={0}
+      tabIndex={0} // keybord의 focus를 받을수 없는 div, span 요소도 focus가 가능하게 함
       isDarkMode={isDarkMode}>
       <Container isDarkMode={isDarkMode}>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
           <SearchBar
             ref={searchBarRef} // useRef가 참조할 요소
-            onChange={getValue}
+            onKeyDown={handleKeyPress}
+            onChange={getDocument}
             value={query}
             placeholder="Search your itemument..."
             isDarkMode={isDarkMode}
@@ -154,6 +162,7 @@ const SearchList: React.FC = () => {
         </SearchWrapper>
         <Divider />
         <ItemWrapper>{query && <SearchItem getData={filteredData} />}</ItemWrapper>
+        <Divider />
       </Container>
     </Overlay>
   )

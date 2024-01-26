@@ -1,5 +1,3 @@
-//closebtn.tsx
-
 import styled from 'styled-components'
 import imgCloseBtn from '../assets/images/close.png'
 
