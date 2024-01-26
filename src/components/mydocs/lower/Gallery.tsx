@@ -7,7 +7,6 @@ import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../.
 import button from '../../../assets/images/mydocs/button_gallery.svg'
 import Preview from './Preview'
 import getContent from './getContent'
-import GallerySkeleton from './GallerySkeleton'
 
 const GalleryWrapper = styled.div`
   display: flex;
@@ -248,24 +247,19 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
             initial="initial"
             animate="animate"
             exit="exit">
-            {docs.length > 0
-              ? currentCards.map((doc) => (
-                  <Card
-                    key={doc.id}
-                    backgroundColor={doc.color}
-                    onClick={() => handleCardClick(doc)}>
-                    <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
-                    <Title>{doc.title}</Title>
-                    <TagWrapper>
-                      {doc.tags.map((tag, index) => (
-                        <Tag key={index} color={doc.color}>
-                          {tag}
-                        </Tag>
-                      ))}
-                    </TagWrapper>
-                  </Card>
-                ))
-              : Array.from({ length: 8 }).map((_, i) => <GallerySkeleton key={i} />)}
+            {currentCards.map((doc) => (
+              <Card key={doc.id} backgroundColor={doc.color} onClick={() => handleCardClick(doc)}>
+                <CreatedAt>{doc.created_at.slice(0, 10)}</CreatedAt>
+                <Title>{doc.title}</Title>
+                <TagWrapper>
+                  {doc.tags.map((tag, index) => (
+                    <Tag key={index} color={doc.color}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </TagWrapper>
+              </Card>
+            ))}
           </Collection>
         </AnimatePresence>
         <NextButton
