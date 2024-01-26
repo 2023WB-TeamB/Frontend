@@ -21,14 +21,14 @@ const StyledSidebarPanel = styled.div<{ isOpenSidePanel: boolean; isDarkMode: bo
 `
 
 // 미리보기 타일 묶음
-const PreviewTileWrapper = styled.div<{ isDarkMode: boolean }>`
+const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel: boolean }>`
   margin-top: 5px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
-  width: 85%;
+  width: ${(props) => props.isOpenGalleryPanel ? '100%' : '85%'};
   overflow-y: auto;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   &::-webkit-scrollbar {
@@ -90,7 +90,7 @@ export interface projectData {
   title: string
   color: string
   created_at: string
-  keywords: string[]
+  keywords: Array<{name: string}>
 }
 
 // 사이드바 확장 패널
@@ -197,26 +197,24 @@ const SidebarPanel: React.FC = () => {
           <img src={closeIcon}/>
         </StyledCloseButton>
       </SidePanelTopWrapper>
+      <PreviewTileWrapper isDarkMode={isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
       {isOpenGalleryPanel && 
-        <PreviewTileWrapper isDarkMode={isDarkMode}>
-        {myDocsData.length > 0 && myDocsData.map((item) => {
+        (myDocsData.length > 0 && myDocsData.map((item) => {
           const [projectTitle, _] = item
           const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
           return filteredSearchTemp.length > 0 && 
             <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        })}
-        </PreviewTileWrapper>
+        }))
       }
       {isOpenVersionPanel &&
-        <PreviewTileWrapper isDarkMode={isDarkMode}>
-        {myDocsData.length > 0 && myDocsData.map((item) => {
+        (myDocsData.length > 0 && myDocsData.map((item) => {
           const [projectTitle, _] = item
           const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
           return filteredSearchTemp.length > 0 && 
             <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        })}
-        </PreviewTileWrapper>
+        }))
       }
+      </PreviewTileWrapper>
     </StyledSidebarPanel>
   )
 }

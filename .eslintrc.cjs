@@ -40,5 +40,7 @@ module.exports = {
     ], // .js, .jsx, .ts, .tsx 확장자 파일에서 JSX를 사용할 수 있도록 허용
     "jsx-a11y/no-noninteractive-element-interactions": 0, // 상호 작용하지 않는 요소에 이벤트 핸들러 사용을 허용
     "@typescript-eslint/no-var-requires": 0, // require 구문 사용을 허용
+    "react/function-component-definition": "off",
+    "no-alert": "off",
   },
 };

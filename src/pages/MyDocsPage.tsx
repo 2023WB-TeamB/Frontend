@@ -195,17 +195,17 @@ const MyDocsPage: React.FC = () => {
 
   // 모달 창이 닫힐 때 DB 색상 변경 요청
   useEffect(() => {
-    if (modalOpen === false && cardId !== 0 && isDelete === false) {
+    if ((modalOpen === false || previewOpen === false) && cardId !== 0 && isDelete === false) {
       putColor()
     }
-  }, [modalOpen])
+  }, [modalOpen, previewOpen])
 
   // 프리뷰 창이 닫힐 때 DB 색상 변경 요청
-  useEffect(() => {
-    if (previewOpen === false && cardId !== 0 && isDelete === false) {
-      putColor()
-    }
-  }, [previewOpen])
+  // useEffect(() => {
+  //   if ( && cardId !== 0 && isDelete === false) {
+  //     putColor()
+  //   }
+  // }, [previewOpen])
 
   // 클라이언트 문서 색상 변경
   const updateCardColor = () => {

@@ -36,7 +36,7 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
       : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #7CC0E8, #A565E0)'};
   background-origin: border-box;
   background-clip: content-box, border-box;
-  transition: linear 0.2s;
+  transition: ease-in-out 0.3s;
   overflow: hidden;
 `
 
