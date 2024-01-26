@@ -1,6 +1,7 @@
-import styled, { keyframes, css } from 'styled-components'
-import { GlobalStyle } from '../GlobalStyle'
 import React, { useEffect } from 'react'
+import styled, { keyframes, css } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { GlobalStyle } from '../GlobalStyle'
 import Signin from '../components/Signin.tsx'
 import Header from '../components/Header'
 import { Page3 } from '../components/MainPage/page3'
@@ -10,7 +11,6 @@ import { Page2 } from '../components/MainPage/page2'
 import down_arrow from '../assets/images/MainPage/down_arrow.svg'
 import { useLocalStorageStore, useModalStore } from '../components/useModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
-import { useNavigate } from 'react-router-dom'
 
 /* 각 페이지에 대한 설정 */
 const Container = styled.div<{ isDarkMode: boolean }>`
@@ -34,7 +34,7 @@ const Section = styled.div`
   position: relative;
 `
 
-/*-----Wrapper----- */
+/* -----Wrapper----- */
 const LogoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,7 +51,7 @@ const Arrowwrapper = styled.div`
   width: 20vw;
 `
 
-//Logo
+// Logo
 const Main = styled.h1`
   font-size: 8rem;
   font-weight: 700;
@@ -74,7 +74,7 @@ const Smalli = styled.span`
   }
 `
 
-//Join us 부분
+// Join us 부분
 export const Sub = styled.h1<{ isDarkMode: boolean }>`
   font-size: 1.2rem;
   font-weight: 400;
@@ -87,7 +87,7 @@ export const Sub = styled.h1<{ isDarkMode: boolean }>`
   }
 `
 
-//InputBox
+// InputBox
 const InputBoxWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -118,7 +118,7 @@ const InputBox = styled.input<{ isDarkMode: boolean }>`
   }
 `
 
-/*----down-arrow animation-----*/
+/* ----down-arrow animation----- */
 const down_down = keyframes`
   0% {
     transform: translateY(0);
@@ -151,7 +151,7 @@ const Styledicon = styled.img<StylediconProps>`
       : 'none'};
 `
 
-/*** Publishing ***/
+/* ** Publishing ** */
 const MainPage: React.FC = () => {
   const { isSigninOpen, toggleSignin } = useModalStore() // 로그인 모달 상태
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -170,7 +170,7 @@ const MainPage: React.FC = () => {
   const handleSigninOpen = () => {
     toggleSignin() // 로그인 open/close 토글
   }
-  /**InputBox -> Enter -> Register모달**/
+  /* *InputBox -> Enter -> Register모달* */
   const handleEnter = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSigninOpen()
