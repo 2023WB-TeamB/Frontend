@@ -20,12 +20,12 @@ import axios from 'axios'
 const ViewerWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: 100vw;
+  max-width: 75vw;
   height: 86vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem 5rem;
+  padding: 1rem;
   transition: ease-in-out 0.3s;
 `
 
