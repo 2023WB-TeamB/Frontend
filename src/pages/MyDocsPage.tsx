@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
@@ -11,7 +11,6 @@ import URLInput from '../components/mydocs/upper/URLInput'
 import RoundCarousel from '../components/mydocs/upper/RoundCarousel'
 import Gallery from '../components/mydocs/lower/Gallery'
 import {
-  cardColorStore,
   cardIdStore,
   isDeleteStore,
   useDarkModeStore,
@@ -20,6 +19,7 @@ import {
   Doc,
   DocData,
   Keyword,
+  isLoadingStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/useModalStore'
@@ -117,10 +117,7 @@ const MyDocsPage: React.FC = () => {
     cardId: state.cardId,
     setCardId: state.setCardId,
   }))
-  const { cardColor } = cardColorStore((state) => ({
-    cardColor: state.cardColor,
-    setCardColor: state.setCardColor,
-  }))
+  const { setIsLoading } = isLoadingStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -135,6 +132,8 @@ const MyDocsPage: React.FC = () => {
 
   const getDocs = async () => {
     try {
+      // 로딩 상태 설정
+      setIsLoading(true)
       // API 호출, 엑세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.get(`${apiUrl}`, {
@@ -146,14 +145,34 @@ const MyDocsPage: React.FC = () => {
         ...doc,
         repo: doc.repository_url.replace('https://github.com/', ''),
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
-        // tags: doc.tags.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      // console.log(docs)
+      console.log(docs)
     } catch (error) {
-      // API 호출 실패
-      console.error('API Error: ', error)
-      alert('API 호출에 실패하였습니다.')
+      const axiosError = error as AxiosError
+
+      // 아무 문서도 없는 경우
+      if (axiosError.response && axiosError.response.status === 404) {
+        setIsLoading(false)
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'info',
+          title: 'Enter the repository URL and create a document!.',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
+      } else {
+        // 기타 에러 처리
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'error',
+          title: 'Failed to load.',
+          showConfirmButton: false,
+          timer: 3000,
+          toast: true,
+        })
+      }
     }
   }
 
@@ -161,44 +180,6 @@ const MyDocsPage: React.FC = () => {
   useEffect(() => {
     getDocs()
   }, [])
-
-  const ChangeColor = async () => {
-    // 클라이언트 문서 색상 변경
-    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color: cardColor } : doc))
-    setDocs(newDocs)
-
-    try {
-      // DB에 있는 문서 색상 변경
-      const access = localStorage.getItem('accessToken')
-      const response = await axios.put(
-        `${apiUrl}/${cardId}`,
-        { color: `${cardColor}` },
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        },
-      )
-      // console.log(response)
-
-      // 문서 수정 성공
-      if (response.status === 200) {
-        // console.log('API Response: ', response.status)
-      }
-    } catch (error: any) {
-      // 문서 수정 실패
-      if (error.response) {
-        console.error('API Response: ', error.response)
-        console.log(error.response)
-        alert(error.response.message)
-      }
-    }
-  }
-
-  // 색상 선택 할 때마다 클라이언트 색상 변경
-  useEffect(() => {
-    if (cardId !== 0 && isDelete === false) {
-      ChangeColor()
-    }
-  }, [cardColor])
 
   // 문서를 삭제하는 API 요청
   const deleteDoc = async () => {
@@ -260,9 +241,11 @@ const MyDocsPage: React.FC = () => {
             </Generation>
             <RoundCarousel docs={docs.slice(0, 10)} />
           </Upper>
-          <Lower isDarkMode={isDarkMode}>
-            <Gallery docs={docs} />
-          </Lower>
+          {docs.length !== 0 && (
+            <Lower isDarkMode={isDarkMode}>
+              <Gallery docs={docs} />
+            </Lower>
+          )}
         </ScrollSnap>
       </Container>
     </div>

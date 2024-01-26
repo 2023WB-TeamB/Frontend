@@ -38,6 +38,17 @@ export const docStore = create<DocState>((set) => ({
   addDoc: (doc) => set((state) => ({ docs: [doc, ...state.docs] })),
 }))
 
+// 문서 불러오는 상태 여부
+interface IsLoading {
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
+}
+
+export const isLoadingStore = create<IsLoading>((set) => ({
+  isLoading: false,
+  setIsLoading: (isLoading) => set({ isLoading }),
+}))
+
 // 생성할 문서 언어
 interface Language {
   isEnglish: boolean
@@ -169,17 +180,6 @@ type Generating = {
 export const isGeneratingStore = create<Generating>((set) => ({
   isGenerating: false,
   setIsGenerating: (isGenerating) => set({ isGenerating }),
-}))
-
-// 문서 생성 시간
-interface GenerateTime {
-  generateTime: number
-  setGenerateTime: (cardId: number) => void
-}
-
-export const generateTimeStore = create<GenerateTime>((set) => ({
-  generateTime: 0,
-  setGenerateTime: (generateTime) => set({ generateTime }),
 }))
 
 /* 다크모드 */

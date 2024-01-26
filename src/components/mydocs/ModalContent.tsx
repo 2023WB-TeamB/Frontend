@@ -71,10 +71,16 @@ const LowerWrapper = styled.div`
 // 레포 이름
 const Repo = styled.p`
   text-align: left;
-  height: 1.5rem;
+  max-height: 2.5rem;
   font-size: 0.9rem;
   margin-top: 1rem;
-  margin-bottom: 0;
+  margin-bottom: 0.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
 `
 
 // 문서 제목
