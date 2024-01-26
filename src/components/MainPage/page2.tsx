@@ -7,7 +7,7 @@ import page2 from '../../assets/images/MainPage/page2.svg'
 import page2_dark from '../../assets/images/MainPage/page2_dark.svg'
 import { useDarkModeStore } from '../../store/store'
 
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -33,7 +33,7 @@ function useOnScreen(
   return [ref, visible]
 }
 
-/*------Wrapper------*/
+/* ------Wrapper------ */
 const Section = styled.div`
   position: relative;
   width: 100vw;
@@ -57,7 +57,7 @@ const Wrapper = styled.div`
     gap: 2rem;
   }
 `
-//console에 있는 gitodoc 글씨와 keep scrolling을 위한 wrapper 추가
+// console에 있는 gitodoc 글씨와 keep scrolling을 위한 wrapper 추가
 const Centerwrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -67,7 +67,7 @@ const Centerwrapper = styled.div`
   height: auto;
 `
 
-//keyframes
+// keyframes
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -96,8 +96,8 @@ const down_down = keyframes`
     opacity: 0;
   }
 `
-/*** page.svg 추가 ***/
-//Page.svg
+
+// Page.svg
 const Styledpage = styled.img`
   /* width: 85vw; */
   width: 70vw;
@@ -113,7 +113,7 @@ const Styledpage = styled.img`
     top: 50%;
   }
 `
-//icon(svg)
+// icon(svg)
 interface StylediconProps {
   top?: string
   left?: string
@@ -136,7 +136,7 @@ const Styledicon = styled.img<StylediconProps>`
       : 'none'};
 `
 
-//Text(DMSerifDisplay)
+// Text(DMSerifDisplay)
 interface DontProps {
   fontSize?: string
   top?: string
@@ -178,7 +178,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   }
 `
 
-//Text(Mono)
+// Text(Mono)
 interface MonoProps {
   fontSize?: string
   marginleft?: string
@@ -216,8 +216,8 @@ const Hilight = styled.span<
     props.isDarkMode ? props.hilightDark : props.hilightLight || 'black'};
 `
 
-//Console : 위치 수정 및 리팩토링
-interface ConsoleBox {
+// Console : 위치 수정 및 리팩토링
+interface ConsoleBoxProps {
   background?: string
   height?: string
   width?: string
@@ -225,7 +225,7 @@ interface ConsoleBox {
   left?: string
 }
 const ConsoleBox = styled.div<
-  ConsoleBox & {
+  ConsoleBoxProps & {
     backgroundLight: string
     backgroundDark: string
     borderDark: string
@@ -259,7 +259,7 @@ const BlinkText = styled.p`
   animation: ${blink} 1s step-start infinite;
 `
 
-//Publishing
+// Publishing
 export const Page2: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.1 })
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
@@ -268,7 +268,7 @@ export const Page2: React.FC = () => {
     <Section>
       <Wrapper>
         <Dont ref={ref} visible={visible} isDarkMode={isDarkMode}>
-          Don't just code. <br />
+          Don&apos;t just code. <br />
           <Smalldont>Document. Refine. Archive. Share.</Smalldont>
         </Dont>
         <ConsoleBox
@@ -295,7 +295,7 @@ export const Page2: React.FC = () => {
           />
         </ConsoleBox>
         <MonoText isDarkMode={isDarkMode}>
-          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn't the end of the journey.
+          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn&apos;t the end of the journey.
           <br />
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
           Detail.
@@ -309,9 +309,8 @@ export const Page2: React.FC = () => {
           <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
           ensuring your project is not just done, but perfected.{' '}
           <BlinkText>
-            <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode}>
-              &ensp;
-            </Hilight>
+            <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode} />
+            &ensp;
           </BlinkText>
         </MonoText>
       </Wrapper>
@@ -325,13 +324,7 @@ export const Page2: React.FC = () => {
           isDarkMode={isDarkMode}>
           Keep scrolling if you want to make your project perfect
         </MonoText>
-        <Styledicon
-          src={down_arrow}
-          width="2.2rem"
-          height="2.2rem"
-          animation={true}
-          alt="downarrow"
-        />
+        <Styledicon src={down_arrow} width="2.2rem" height="2.2rem" animation alt="downarrow" />
       </Centerwrapper>
       <Styledpage src={isDarkMode ? page2_dark : page2} alt="page image" />
     </Section>
