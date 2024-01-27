@@ -4,7 +4,6 @@ import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
-import Description from '../components/mydocs/upper/Description'
 import Documentation from '../components/mydocs/upper/Documentation'
 import LanguageToggle from '../components/mydocs/upper/LanguageToggle'
 import URLInput from '../components/mydocs/upper/URLInput'
@@ -227,7 +226,7 @@ const MyDocsPage: React.FC = () => {
         <ScrollSnap>
           <Upper isDarkMode={isDarkMode}>
             <GiToDoc />
-            <Description />
+            {/* <Description /> */}
             <Generation>
               {isGenerating ? (
                 <Animation />
