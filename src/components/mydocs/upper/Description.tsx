@@ -13,7 +13,7 @@ const LabelDiv = styled.div`
 
 const TextWrapper = styled.p<{ isDarkMode: boolean }>`
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
   font-size: 1rem;
   font-weight: 400;
   height: 20px;
