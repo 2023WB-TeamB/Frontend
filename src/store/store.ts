@@ -301,12 +301,15 @@ export const useEditorModeStore = create<EditorModeState>((set) => ({
 interface DocContentState {
   title: string
   content: string
+  color: string
   setTitle: (value: string) => void
   setContent: (value: string) => void
+  setColor: (value: string) => void
 }
 export const useDocContentStore = create<DocContentState>((set) => ({
   title: '',
   content: '',
+  color: '#fff',
   setTitle: (value: string) =>
     set(() => ({
       title: value,
@@ -314,6 +317,10 @@ export const useDocContentStore = create<DocContentState>((set) => ({
   setContent: (value: string) =>
     set(() => ({
       content: value,
+    })),
+  setColor: (value: string) =>
+    set(() => ({
+      color: value,
     })),
 }))
 
