@@ -125,7 +125,7 @@ const down_down = keyframes`
     opacity: 0
   }
   50% {
-    opacity: 0.8;
+    opacity: 1;
   }
   100% {
     transform: translateY(1rem);
@@ -146,7 +146,7 @@ const Styledicon = styled.img<StylediconProps>`
   animation: ${(props) =>
     props.animation
       ? css`
-          ${down_down} 2s ease-out infinite
+          ${down_down} 1.2s ease-out infinite
         `
       : 'none'};
 `
