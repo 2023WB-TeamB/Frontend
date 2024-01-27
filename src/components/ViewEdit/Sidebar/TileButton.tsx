@@ -7,21 +7,26 @@ const Icon = styled.img`
   height: 28px;
   z-index: 1;
   transition: filter 0.3s;
+  background: transparent;
 `
 
 const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: boolean }>`
+  margin-top: ${(props) => (props.isOpenSideAlways ? '5px' : '0')};
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: ${(props) => (props.isOpenSideAlways ? '120%' : '80%')};
-  height: 8vh;
-  min-height: 45px;
+  height: 9vh;
+  min-height: 70px;
   background-color: transparent;
   transition: background-image 1s;
   overflow: hidden;
-  transition: all linear 0.2s;
-  filter: ${(props) => props.isDarkMode ? 'brightness(0) invert(1)' : ''}; */
+  transition: ease 0.3s;
+  border: none;
+  ${Icon} {
+    filter: ${(props) => props.isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)'};
+  }
 
   &:before {
     content: '';
@@ -36,11 +41,11 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   }
 
   &:hover {
-    border: none;
+    filter: none;
     margin-left: 5px;
-    transition: all linear 0.2s;
-    border-inline-start: 3px solid black;
-    background-color: #f2f2f2;
+    transition: ease 0.3s;
+    border-inline-start: 3px solid ${(props) => props.isDarkMode ? '#ddd' : '#222'};
+    background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f2f2f2')};
   }
 
   &:active:before {

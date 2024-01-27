@@ -94,11 +94,18 @@ const LowerWrapper = styled.div`
 
 // 레포 이름
 const Repo = styled.p`
+  flex-shrink: 0;
   text-align: left;
-  height: 1.5rem;
+  max-height: 2.8rem;
   font-size: 1.05rem;
   margin-top: 0;
-  margin-bottom: 0rem;
+  margin-bottom: 0.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
 `
 
 // 문서 제목
@@ -142,7 +149,6 @@ const Content = styled.div`
   flex-grow: 1;
   font-size: 0.5rem;
   width: 90%;
-  height: 20rem;
   margin-top: 1rem;
   padding: 0 1.2rem;
   border-top: 0.05rem solid darkgray;

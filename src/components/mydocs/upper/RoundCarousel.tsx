@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
 import { Doc, cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
-import btn from '../../../assets/images/mydocs/btn.svg'
 import CarouselSkeleton from './CarouselSkeleton'
+import btn from '../../../assets/images/mydocs/btn.svg'
 
 const Wrapper = styled.div`
   position: relative;
@@ -27,15 +27,15 @@ const Carousel = styled.div`
 // 버튼 클릭될(active) 때 색깔 흐려지는 효과,  focus 테두리 none
 // 캐러셀 왼쪽 끝에서 Prev 버튼 비활성화(disabled) & 숨기기(hidden)
 const PrevButton = styled.button<{ active: boolean }>`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   position: absolute;
   left: 15vw;
-  top: 25vh;
-  transform: translateY(-50%) rotate(45deg);
+  bottom: 20vh;
+  transform: translate(-65%, 0%) rotate(40deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -45,15 +45,15 @@ const PrevButton = styled.button<{ active: boolean }>`
 
 // 캐러셀 오른쪽 끝에서 Next 버튼 비활성화(disabled) & 숨기기(hidden)
 const NextButton = styled.button<{ active: boolean }>`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   position: absolute;
   right: 15vw;
-  top: 25vh;
-  transform: translateY(-50%) rotate(-45deg);
+  bottom: 20vh;
+  transform: translate(15%, 40%) rotate(-40deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -107,7 +107,7 @@ const Tag = styled.text<{ color: string }>`
 `
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
-  const [canNext, setCanNext] = useState(true) // next 버튼 활성화
+  const [canNext, setCanNext] = useState(false) // next 버튼 활성화
   const [rotate, setRotate] = useState(216)
   const [prevButtonActive, setPrevButtonActive] = useState(false)
   const [nextButtonActive, setNextButtonActive] = useState(false)
@@ -140,6 +140,11 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     setCanPrev(newRotate <= 180)
   }
 
+  // 문서가 5개 이상 일 때만 캐러셀 버튼 활성화
+  useEffect(() => {
+    if (docs.length > 4) setCanNext(true)
+  }, [docs.length])
+
   const handleCardClick = (item: {
     id: number
     title: string
@@ -158,7 +163,7 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     <Wrapper>
       <Carousel>
         {docs.length === 0
-          ? Array.from({ length: maxCards }).map((_, i) => {
+          ? Array.from({ length: 4 }).map((_, i) => {
               const currentRotate = rotate + i * (360 / maxCards)
               const visible =
                 ((currentRotate % 360) + 360) % 360 > 180 &&
@@ -194,13 +199,13 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           active={prevButtonActive}
           onClick={handlePrev}
           style={{ visibility: canPrev ? 'visible' : 'hidden' }}>
-          <img src={btn} alt="Prev" />
+          <img src={btn} alt="prev" />
         </PrevButton>
         <NextButton
           active={nextButtonActive}
           onClick={handleNext}
           style={{ visibility: canNext ? 'visible' : 'hidden' }}>
-          <img src={btn} alt="Prev" />
+          <img src={btn} alt="next" />
         </NextButton>
       </Carousel>
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />

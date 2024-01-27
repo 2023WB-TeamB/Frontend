@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { CirclePicker, ColorResult } from 'react-color'
-import { cardColorStore, previewOpenStore } from '../../store/store'
+import axios from 'axios'
+import { cardColorStore, cardIdStore, docStore, previewOpenStore } from '../../store/store'
 
 function PaletteIcon({ color }: { color: string }) {
   return (
@@ -57,12 +58,15 @@ const Overlay = styled.div`
 `
 
 function PalleteButton() {
+  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
   const { previewOpen } = previewOpenStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
     setCardColor: state.setCardColor,
   }))
+  const { docs, setDocs } = docStore()
+  const { cardId } = cardIdStore()
 
   // 모달 창 닫힐 때 색상 선택 도구 자동으로 닫히게 함
   useEffect(() => {
@@ -81,9 +85,38 @@ function PalleteButton() {
     setDisplayColorPicker(false)
   }
 
+  const ChangeColor = async (color: string) => {
+    // 클라이언트 문서 색상 변경
+    const newDocs = docs.map((doc) => (doc.id === cardId ? { ...doc, color } : doc))
+    setDocs(newDocs)
+
+    try {
+      // DB에 있는 문서 색상 변경
+      const access = localStorage.getItem('accessToken')
+      const response = await axios.put(
+        `${apiUrl}/${cardId}`,
+        { color: `${color}` },
+        {
+          headers: { Authorization: `Bearer ${access}` },
+        },
+      )
+      // 문서 수정 성공
+      if (response.status === 200) {
+        // console.log('API Response: ', response)
+      }
+    } catch (error: any) {
+      // 문서 수정 실패
+      if (error.response) {
+        console.error('API Response: ', error.response)
+        // alert(error.response.message)
+      }
+    }
+  }
+
   // 선택한 색상 cardColor 상태에 저장 => 모달 색상 변경(Here) / 모달 닫을 때 카드 색상 변경(MyDocsPage)
   const handleChange = (color: ColorResult) => {
     setCardColor(color.hex)
+    ChangeColor(color.hex)
   }
 
   return (

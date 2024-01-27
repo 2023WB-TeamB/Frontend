@@ -20,9 +20,9 @@ import axios from 'axios'
 const ViewerWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: 1280px;
+  max-width: 75vw;
   height: 86vh;
-  display: flex;  
+  display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
@@ -79,7 +79,7 @@ const ViewArea = styled.div`
   max-height: 70vh;
   font-family: 'Inter', sans-serif;
   overflow: auto;
-  padding: 0 27px;  
+  padding: 0 27px;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -106,8 +106,11 @@ const TitleArea = styled.div<TitleAreaProps>`
   & h2,
   & textarea {
     margin: 2px 2px 25px 2px;
+    padding: 2px;
     font-size: 2.2rem;
     border: none;
+    outline: none;
+    background-color: transparent;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
     font-family: 'Inter', sans-serif;
@@ -115,16 +118,7 @@ const TitleArea = styled.div<TitleAreaProps>`
     width: 100%;
     box-sizing: border-box;
     line-height: 1;
-    height: 2.2rem;
-  }
-
-  & h2 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  & textarea {
+    height: 2.7rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -164,9 +158,9 @@ const DocField: React.FC = () => {
   useEffect(() => {
     handleGetDoc()
     return () => {
-      setContent("")
+      setContent('')
     }
-  }, [])
+  }, [docId])
 
   const { isEditor, toggleEditorMode } = useEditorModeStore()
 
@@ -205,12 +199,12 @@ const DocField: React.FC = () => {
 
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
-    await handleSaveDocContent() && toggleEditorMode()
+    ;(await handleSaveDocContent()) && toggleEditorMode()
   }
 
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
-    setContent("")
+    setContent('')
     await handleGetDoc()
     toggleEditorMode()
   }

@@ -15,7 +15,7 @@ const WrapperArea = styled.div<{ isOpenSideAlways: boolean }>`
 const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSideAlways: boolean }>`
   position: relative;
   height: ${(props) => (props.isOpenSideAlways ? '100vh' : '80vh')};
-  width: ${(props) => (props.isOpenSideAlways ? '10rem' : '5rem')};
+  width: ${(props) => (props.isOpenSideAlways ? '10rem' : '5.5rem')};
   top: 50%;
   transform: translate(${({ isOpenSide }) => (isOpenSide ? `30%` : `-20%`)}, -50%);
   display: flex;
@@ -29,14 +29,14 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
       ? ``
       : `border-top: 0.8px solid transparent;
       border-bottom: 0.8px solid transparent;`};
-  border-radius: ${(props) => (props.isOpenSideAlways ? '0' : '10px')};
+  border-radius: ${(props) => (props.isOpenSideAlways ? '0' : '17px')};
   background-image: ${(props) =>
     props.isDarkMode
       ? 'linear-gradient(#202020, #202020), linear-gradient(to bottom, #7CC0E8, #A565E0)'
       : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #7CC0E8, #A565E0)'};
   background-origin: border-box;
   background-clip: content-box, border-box;
-  transition: linear 0.2s;
+  transition: ease-in-out 0.3s;
   overflow: hidden;
 `
 
