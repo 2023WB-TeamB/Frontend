@@ -43,38 +43,37 @@ const CreatedAt = styled.div`
 
 const Title = styled.div`
   text-align: left;
-  font-size: .5rem;
+  font-size: .7rem;
   font-weight: 700;
-  line-height: .75rem;
-  font-family: 'Inter';
-  margin-top: 0.2rem;
+  line-height: .9rem;
+  margin-top: 0.5rem;
   word-break: keep-all;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-const TagWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  width: 100%;
-  line-height: .75rem; // 한 줄당 태그의 높이를 제어합니다.
-  margin-top: 0.3rem;
-  overflow: hidden; // 내용이 넘치면 숨깁니다.
-`
+// const TagWrapper = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   align-content: flex-start;
+//   width: 100%;
+//   line-height: .75rem; // 한 줄당 태그의 높이를 제어합니다.
+//   margin-top: 0.3rem;
+//   overflow: hidden; // 내용이 넘치면 숨깁니다.
+// `
 
-const Tag = styled.text<{ color: string }>`
-  color: ${({ color }) => color};
-  background-color: #f1f1f1;
-  font-size: 0.47rem;
-  border-radius: 0.65rem;
-  margin-top: 0.2rem;
-  margin-right: 0.15rem;
-  padding: 0rem 0.2rem;
-`
+// const Tag = styled.text<{ color: string }>`
+//   color: ${({ color }) => color};
+//   background-color: #f1f1f1;
+//   font-size: 0.47rem;
+//   border-radius: 0.65rem;
+//   margin-top: 0.2rem;
+//   margin-right: 0.15rem;
+//   padding: 0rem 0.2rem;
+// `
 
 const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
   const {setDocId} = useDocIdStore()
@@ -90,13 +89,13 @@ const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
     >
       <CreatedAt>{content.created_at.slice(0, 10)}</CreatedAt>
       <Title>{content.title}</Title>
-      <TagWrapper>
+      {/* <TagWrapper>
         {content.keywords.map((tag, index) => (
           <Tag key={index} color={content.color}>
             {tag.name}
           </Tag>
         ))}
-      </TagWrapper>
+      </TagWrapper> */}
     </Card>
   )
 }

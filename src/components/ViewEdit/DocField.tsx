@@ -127,7 +127,7 @@ const DocField: React.FC = () => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
   const { apiUrl } = useApiUrlStore()
-  const { title, content, setTitle, setContent } = useDocContentStore()
+  const { title, content, setTitle, setContent, setColor } = useDocContentStore()
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
 
@@ -143,6 +143,7 @@ const DocField: React.FC = () => {
       })
       setTitle(response.data.data.title)
       setContent(response.data.data.content)
+      setColor(response.data.data.color)
       setTag([])
       Object.keys(response.data.data.keywords).forEach((key) => {
         const keyword = response.data.data.keywords[key];
