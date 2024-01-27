@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
 import { useMediaQuery } from 'react-responsive'
 import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
-import button from '../../../assets/images/mydocs/button_gallery.svg'
+import btn from '../../../assets/images/mydocs/btn.svg'
 import Preview from './Preview'
 import getContent from './getContent'
 
@@ -104,7 +104,7 @@ const Tag = styled.text<{ color: string }>`
   color: ${({ color }) => color};
   background-color: #f1f1f1;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 350;
   border-radius: 0.65rem;
   margin-top: 0.25rem;
   margin-right: 0.2rem;
@@ -115,13 +115,13 @@ const Tag = styled.text<{ color: string }>`
 // 버튼 클릭될(active) 때 색깔 흐려지는 효과,  focus 테두리 none
 // 캐러셀 왼쪽 끝에서 Prev 버튼 비활성화(disabled) & 숨기기(hidden)
 const PrevButton = styled.button<{ active: boolean }>`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(90deg) translateX(-10px);
+  transform: rotate(90deg) translate(-15px, -30%);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -130,13 +130,13 @@ const PrevButton = styled.button<{ active: boolean }>`
 `
 
 const NextButton = styled.button<{ active: boolean }>`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   position: relative;
-  transform: rotate(-90deg) translateX(-10px);
+  transform: rotate(-90deg) translate(-15px, -30%);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -238,7 +238,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     <GalleryWrapper>
       <Wrapper>
         <PrevButton active={prevButtonActive} onClick={handlePrev} disabled={currentPage === 1}>
-          <img src={button} alt="Prev" />
+          <img src={btn} alt="Prev" />
         </PrevButton>
         <AnimatePresence mode="wait">
           <Collection
@@ -266,7 +266,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           active={nextButtonActive}
           onClick={handleNext}
           disabled={currentPage === totalPageNum}>
-          <img src={button} alt="Next" />
+          <img src={btn} alt="Next" />
         </NextButton>
         <Preview
           previewOpen={previewOpen}
