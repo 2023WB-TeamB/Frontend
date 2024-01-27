@@ -44,7 +44,6 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   & h3 {
     margin: 60px 35px 10px;
     height: 60px;
-    font-family: 'Inter', sans-serif;
     font-size: 2em;
     font-weight: 400;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};

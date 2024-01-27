@@ -22,7 +22,7 @@ import down_arrow from '../../assets/images/MainPage/down_arrow.svg'
 import { Blue } from '../../components/MainPage/page2'
 import { useDarkModeStore } from '../../store/store'
 
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -47,7 +47,7 @@ function useOnScreen(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(icon에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(icon에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -73,7 +73,7 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-/*-----Wrapper------*/
+/* -----Wrapper------ */
 const Section = styled.div`
   position: relative;
   width: 100vw;
@@ -104,7 +104,7 @@ const Animationwrapper2 = styled.div`
   width: 80vw;
   margin: 0;
 `
-//안의 animation을 페이지의 가운데에 위치시켜주기 위해 wrapper 생성
+// 안의 animation을 페이지의 가운데에 위치시켜주기 위해 wrapper 생성
 const Animationwrapper3 = styled.div`
   position: relative;
   padding-top: 10vh;
@@ -113,7 +113,7 @@ const Animationwrapper3 = styled.div`
   width: 60vw;
   margin: 0;
 `
-//게이지바를 페이지 안의 중앙에 위치시키면서 왼쪽에서 오른쪽으로 가는 애니메이션을 구현하기 위해 wrapper 추가
+// 게이지바를 페이지 안의 중앙에 위치시키면서 왼쪽에서 오른쪽으로 가는 애니메이션을 구현하기 위해 wrapper 추가
 const GuagebarContainer = styled.div`
   position: absolute;
   top: 75%;
@@ -136,7 +136,7 @@ const Arrowwrapper = styled.div`
   width: 99vw;
 `
 
-//keyframes : 'translate(-50%,-50%)를 추가하여 위치를 재조정(Styledicon 관련)'
+// keyframes
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -220,14 +220,14 @@ const progress = keyframes`
     z-index: 4;
   }`
 
-/*----down-arrow animation-----*/
+/* ----down-arrow animation----- */
 const down_down = keyframes`
 0% {
   transform: translateY(0);
   opacity: 0
 }
 50% {
-  opacity: 0.8;
+  opacity: 1;
 }
 100% {
   transform: translateY(1rem);
@@ -249,12 +249,12 @@ const Styledarrow = styled.img<StyledarrowProps>`
   animation: ${(props) =>
     props.animation
       ? css`
-          ${down_down} 2s ease-out infinite
+          ${down_down} 1.2s ease-out infinite
         `
       : 'none'};
 `
 
-//Text
+// Text
 interface DontProps {
   fontSize?: string
   top?: string
@@ -295,7 +295,7 @@ const Dont = styled.div<
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
 `
-/*--flex로 인하여 guagebar 따로 추가(원래 Dont였습니다)--*/
+// Guagebar
 const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
   height: 100%;
   border-radius: 6.5rem;
@@ -309,7 +309,7 @@ const Guagebar = styled.div<{ visible: boolean; isDarkMode: boolean }>`
       : 'none'};
 `
 
-//Page.svg
+// Page.svg
 interface Page {
   top?: string
   left?: string
@@ -331,7 +331,7 @@ const Styledpage = styled.img<Page>`
   }
 `
 
-//icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
+// icon(svg) : 정가운데에 있는 GTD logobox를 토대로 위치 재조정해줬습니다.
 interface StylediconProps {
   top?: string
   left?: string
@@ -357,18 +357,18 @@ export const Styledicon = styled.img<StylediconProps & { visible: boolean; anima
             ${move} 0.5s ${props.delay || '1s'} ease-out 2;
           `
         : props.animationType === 'movedocument'
-        ? css`
-            ${movedocument} 7s forwards;
-          `
-        : props.animationType === 'openthebox'
-        ? css`
-            ${openthebox} 7s forwards;
-          `
-        : props.animationType === 'vibration'
-        ? css`
-            ${vibration} 0.1s 4.5s 3;
-          `
-        : 'none'
+          ? css`
+              ${movedocument} 7s forwards;
+            `
+          : props.animationType === 'openthebox'
+            ? css`
+                ${openthebox} 7s forwards;
+              `
+            : props.animationType === 'vibration'
+              ? css`
+                  ${vibration} 0.1s 4.5s 3;
+                `
+              : 'none'
       : 'none'};
 
   @media (max-width: 760px) {
@@ -376,8 +376,7 @@ export const Styledicon = styled.img<StylediconProps & { visible: boolean; anima
   }
 `
 
-//Publishing
-/*--icon들의 경우 calc를 이용하여 중앙에 있는 로고박스를 기준으로 위치 수정--*/
+// Publishing
 export const Page4: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
@@ -413,7 +412,7 @@ export const Page4: React.FC = () => {
             <GuagebarContainer>
               <Guagebar isDarkMode={isDarkMode} visible={visible} ref={ref} />
             </GuagebarContainer>
-            {/**아이콘**/}
+            {/* *아이콘* */}
             <Styledicon
               src={isDarkMode ? githublogo_dark : githublogo}
               visible={false}

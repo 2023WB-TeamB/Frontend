@@ -9,7 +9,7 @@ import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
 import { useModalStore } from '../useModalStore'
 
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Dont에 사용)
 function useOnScreen(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLDivElement | null>, boolean] {
@@ -33,7 +33,7 @@ function useOnScreen(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Page.svg에 사용)
 function useOnScreenImg(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLImageElement | null>, boolean] {
@@ -58,7 +58,7 @@ function useOnScreenImg(
 
   return [ref, visible]
 }
-//해당화면이 사용자에게 보이는지 관찰해주는 API(Button에 사용)
+// 해당화면이 사용자에게 보이는지 관찰해주는 API(Button에 사용)
 function useOnScreenImg2(
   options: IntersectionObserverInit,
 ): [MutableRefObject<HTMLButtonElement | null>, boolean] {
@@ -84,7 +84,7 @@ function useOnScreenImg2(
   return [ref, visible]
 }
 
-/*-----Wrapper------*/
+/* -----Wrapper------*/
 const Section = styled.div`
   position: relative;
   width: 100vw;
@@ -117,7 +117,7 @@ const Animationwrapper2 = styled.div`
   margin: 0;
 `
 
-//keyframes
+// keyframes
 const slideUpFade = keyframes`
   0%{
     opacity: 0;
@@ -139,7 +139,7 @@ const slideinFade = keyframes`
   }
 `
 
-//Text
+// Text
 interface DontProps {
   fontSize?: string
   top?: string
@@ -167,7 +167,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
 `
-//Page.svg
+// Page.svg
 interface Page {
   top?: string
   left?: string
@@ -204,7 +204,7 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
   }
 `
 
-//Button
+// Button
 const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   position: absolute;
   border-radius: 4.09rem;
@@ -216,7 +216,7 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   text-align: center;
   transition: 0.5s;
   background-size: 200% auto;
-  font-family: 'Inter', Helvetica;
+  /* font-family: 'Inter', Helvetica; */
   font-size: 1rem;
   color: white;
   background-image: linear-gradient(to right, #79c5e8, #a26be1, #79c5e8);
@@ -241,14 +241,14 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   }
 `
 
-//Publishing
+// Publishing
 export const Page5: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.01 })
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg2({ threshold: 0.01 })
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
-  //Register modal
+  // Register modal
   const { isRegisterOpen, toggleRegister } = useModalStore()
   const handleRegisterOpen = () => {
     toggleRegister()

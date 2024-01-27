@@ -69,7 +69,6 @@ const SearchArea = styled.div<{ isDarkMode: boolean }>`
     border-radius: 30px;
     font-size: 1em;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-    font-family: 'Inter';
 
     &:focus {
       outline: none;

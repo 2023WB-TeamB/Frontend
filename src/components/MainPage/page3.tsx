@@ -31,7 +31,7 @@ interface URLprops {
   isDarkMode: boolean
   visible: boolean
 }
-//Page (GitPage+gitodoc) : 위치 수정
+// Page (GitPage+gitodoc) : 위치 수정
 interface Page {
   top?: string
   left?: string
@@ -170,7 +170,7 @@ const down_down = keyframes`
   opacity: 0
 }
 50% {
-  opacity: 0.8;
+  opacity: 1;
 }
 100% {
   transform: translateY(1rem);
@@ -188,14 +188,14 @@ const Styledarrow = styled.img<StyledarrowProps>`
   animation: ${(props) =>
     props.animation
       ? css`
-          ${down_down} 2s ease-out infinite
+          ${down_down} 1.2s ease-out infinite
         `
       : 'none'};
   @media (max-width: 720px) {
     margin-top: 3rem;
   }
 `
-//Text
+// Text
 const Dont = styled.h1<DontProps>`
   font-size: ${(props) => props.fontSize || '3rem'};
   font-weight: 400;
@@ -216,7 +216,7 @@ const Dont = styled.h1<DontProps>`
     font-size: ${(props) => props.littleFontSize || props.fontSize || '2.5rem'};
   }
 `
-/*--Dont 컴포넌트와 구별해주기 위해 URL text 추가, 'pasteURL'애니메이션 삭제--*/
+// Styled page
 const Styledpage = styled.img<Page & { visible: boolean }>`
   width: 42rem;
   height: 27rem;
@@ -243,7 +243,7 @@ const Styledpage = styled.img<Page & { visible: boolean }>`
     left: ${(props) => props.responseLeft890 || props.left || '0rem'};
   }
 `
-//pointer : 위치수정
+// pointer : 위치수정
 const Styledpointer = styled.img<{ visible: boolean }>`
   width: 5rem;
   height: 3rem;
@@ -286,7 +286,7 @@ const URLtext = styled.p<URLprops>`
   font-size: 1rem;
   top: 2.85rem;
   left: 12rem;
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
   position: absolute;
   white-space: nowrap;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -373,9 +373,9 @@ function useOnScreenImg(
   return [ref, visible]
 }
 
-//Publishing
+// Publishing
 export const Page3: React.FC = () => {
-  const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) //threshold 비율이 보이는 순간 애니메이션
+  const [refd, visibled] = useOnScreenDiv({ threshold: 0.01 }) // threshold 비율이 보이는 순간 애니메이션
   const [refi, visiblei] = useOnScreenImg({ threshold: 0.01 })
   const [refp, visiblep] = useOnScreenImg({ threshold: 0.01 })
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)

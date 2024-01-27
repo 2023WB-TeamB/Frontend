@@ -60,7 +60,7 @@ const StyledForm = styled.form`
 const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 300;
-  font-family: 'Inter-Regular', Helvetica;
+  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
@@ -69,7 +69,7 @@ const StyledName = styled.div<{ isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
   font-weight: 200;
-  font-family: 'Inter-Regular', Helvetica;
+  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
@@ -93,7 +93,7 @@ const StyledSocial = styled.img`
 const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 200;
-  font-family: 'Inter-Regular', Helvetica;
+  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
   margin-bottom: 20px;
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
@@ -105,7 +105,7 @@ const StyledDivider = styled.div<{ isDarkMode: boolean }>`
   position: relative;
   justify-content: center;
   align-items: center;
-  font-family: 'Inter';
+  /* font-family: 'Inter'; */
   font-size: 16px;
   color: ${(props) => (props.isDarkMode ? '#c8c8c8' : '#bbbbbb')};
   font-weight: 400;
