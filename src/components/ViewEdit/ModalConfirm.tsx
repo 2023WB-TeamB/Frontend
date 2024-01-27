@@ -43,7 +43,6 @@ const ContextWrapper = styled.div<{ isDarkMode: boolean }>`
     margin: 10px;
     max-width: 300px;
     height: 40px;
-    font-family: 'Inter', sans-serif;
     font-size: 1em;
     font-weight: 400;
     text-align: center;

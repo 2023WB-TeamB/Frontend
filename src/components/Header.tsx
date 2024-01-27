@@ -8,8 +8,8 @@ import { useModalStore } from './useModalStore'
 import SearchList from './SearchList'
 import { useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
-import imgDarkMode from '../assets/images/dark_mode.svg'
-import imgWhiteMode from '../assets/images/white_mode.svg'
+import imgDarkMode from '../assets/images/moon.svg'
+import imgWhiteMode from '../assets/images/sun.svg'
 import imgLogo from '../assets/images/LOGO1.svg'
 import imgSearch from '../assets/images/search.svg'
 import imgSearchDark from '../assets/images/search_dark.svg'
@@ -64,7 +64,6 @@ const Icon = styled.img<IconType>`
   width: ${(props) => props.width};
   margin-left: 10px;
   cursor: pointer;
-
   &:hover {
     border-radius: 50%;
     background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
@@ -72,9 +71,10 @@ const Icon = styled.img<IconType>`
 `
 const SignInOut = styled.div<SignType>`
   font-size: 1.3rem;
+  font-weight: 500;
   color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
   margin-left: 10px;
-  align-self: flex-start;
+  /* align-self: flex-start; */
   cursor: pointer;
 `
 // 메인
@@ -154,14 +154,14 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
             {/* 다크모드 */}
             <Icon
               isDarkMode={isDarkMode}
-              src={isDarkMode ? imgWhiteMode : imgDarkMode}
-              height="2rem"
-              width="2rem"
+              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              height="2.2rem"
+              width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그인 */}
             <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignin}>
-              sign-in
+              Sign-in
             </SignInOut>
           </RightWrapper>
         </Container>
@@ -180,14 +180,14 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
             {/* 다크모드 */}
             <Icon
               isDarkMode={isDarkMode}
-              src={isDarkMode ? imgWhiteMode : imgDarkMode}
-              height="2rem"
-              width="2rem"
+              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              height="2.2rem"
+              width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그아웃 */}
             <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
-              sign-out
+              Sign-out
             </SignInOut>
           </RightWrapper>
         </Container>

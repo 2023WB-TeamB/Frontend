@@ -77,7 +77,6 @@ const ViewArea = styled.div`
   width: 85%;
   min-height: 450px;
   max-height: 70vh;
-  font-family: 'Inter', sans-serif;
   overflow: auto;
   padding: 0 27px;
 
@@ -113,7 +112,6 @@ const TitleArea = styled.div<TitleAreaProps>`
     background-color: transparent;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-    font-family: 'Inter', sans-serif;
     resize: none;
     width: 100%;
     box-sizing: border-box;
