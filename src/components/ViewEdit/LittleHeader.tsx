@@ -42,7 +42,11 @@ const LittleHeader = () => {
   return (
     <StyledLittleHeader>
       <StyledButton onClick={toggleDarkMode}>
-        <Icon src={isDarkMode ? DarkModeIcon : WhiteModeIcon} isDarkMode={isDarkMode}></Icon>
+        <Icon 
+          src={isDarkMode ? DarkModeIcon : WhiteModeIcon} 
+          alt='darkModeChange'
+          isDarkMode={isDarkMode}
+        />
       </StyledButton>
     </StyledLittleHeader>
   )

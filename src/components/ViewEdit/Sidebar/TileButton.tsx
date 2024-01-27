@@ -58,7 +58,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
     }
   }
 
-  & label {
+  & h3 {
     margin-left: 15px;
     font-size: 16px;
     color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
@@ -78,9 +78,9 @@ const DumpArea = styled.div`
 `
 
 interface ButtonProps {
-  icon?: string
-  name?: string
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  icon: string
+  name: string | undefined
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined
 }
 
 // 사이드바 타일버튼 기본 양식
@@ -90,8 +90,8 @@ const TileButton: React.FC<ButtonProps> = ({ icon, name, onClick }) => {
 
   return icon !== '' ? (
     <StyledTileButton onClick={onClick} isOpenSideAlways={isOpenSideAlways} isDarkMode={isDarkMode}>
-      <Icon src={icon}></Icon>
-      {isOpenSideAlways && <label>{name}</label>}
+      <Icon src={icon} />
+      {isOpenSideAlways && <h3>{name}</h3>}
     </StyledTileButton>
   ) : (
     <DumpArea />

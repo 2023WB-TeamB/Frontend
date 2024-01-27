@@ -39,7 +39,7 @@ const ContextWrapper = styled.div<{ isDarkMode: boolean }>`
     height: 55px;
   }
 
-  & label {
+  & h3 {
     margin: 10px;
     max-width: 300px;
     height: 40px;
@@ -60,60 +60,43 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
 `
 
-/* 
-// 닫기 버튼이 필요한가??
-const CloseButton = styled.button`
-    margin: 20px;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-`;
-*/
-
 interface ModalConfirmProps {
-  icon?: string
-  label?: string
-  confirmOption?: Array<
-    [option: string, onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void]
+  label: string
+  confirmOption: Array<
+    [option: string, onClick: (event: React.MouseEvent<HTMLButtonElement>) => void]
   >
   isOpenConfirm: boolean
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
   isOpenConfirm,
-  icon,
   label,
   confirmOption,
 }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
-  return (
-    <>
-      {isOpenConfirm && (
-        <>
-          <BackDrop />
-          <ModalWrapper isDarkMode={isDarkMode}>
-            <ContextWrapper isDarkMode={isDarkMode}>
-              <img src={icon || isDarkMode ? ConfirmIcon_dark : ConfirmIcon}></img>
-              <label>{label}</label>
-            </ContextWrapper>
-            <ButtonWrapper>
-              {confirmOption &&
-                confirmOption.map((item) => {
-                  const [option, onClick] = item
-                  return <ConfirmButton context={option} onClick={onClick} />
-                })}
-            </ButtonWrapper>
-          </ModalWrapper>
-        </>
-      )}
-    </>
-  )
+  if (isOpenConfirm)
+    return (
+      <>
+        <BackDrop />
+        <ModalWrapper isDarkMode={isDarkMode}>
+          <ContextWrapper isDarkMode={isDarkMode}>
+            <img 
+              src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
+              alt="Confirm Icon"
+            />
+            <h3>{label}</h3>
+          </ContextWrapper>
+          <ButtonWrapper>
+            {confirmOption &&
+              confirmOption.map((item) => {
+                const [option, onClick] = item
+                return <ConfirmButton context={option} onClick={onClick} />
+              })}
+          </ButtonWrapper>
+        </ModalWrapper>
+      </>
+    )
+  return (undefined)
 }
 
 export default ModalConfirm

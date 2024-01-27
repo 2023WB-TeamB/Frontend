@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import { darken } from 'polished';
 import { useDocIdStore } from '../../../store/store'
 import { projectData } from './SidebarPanel';
-import { darken } from 'polished';
 
 interface VersionPreviewProps {
   content: projectData
-  isActive?: boolean
 }
 
 const Card = styled.div<{ color: string }>`

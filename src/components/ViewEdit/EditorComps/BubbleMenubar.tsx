@@ -1,8 +1,8 @@
 import { Editor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
-import { useDarkModeStore } from '../../../store/store'
 import styled from 'styled-components'
 import Swal from 'sweetalert2'
+import { useDarkModeStore } from '../../../store/store'
 import bold from '../../../assets/images/Viewer/bold.svg'
 import bold_dark from '../../../assets/images/Viewer/bold_dark.svg'
 import italic from '../../../assets/images/Viewer/italic.svg'
@@ -93,30 +93,54 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
   return (
     <BubbleMenuWrapper isDarkMode={isDarkMode}>
       <StyledButton color={currentColor} onClick={handleButtonClick} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? color_dark : color} />
+        <img 
+          src={isDarkMode ? color_dark : color}
+          alt='color'
+        />
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleBold().run()} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? bold_dark : bold} />
+        <img 
+          src={isDarkMode ? bold_dark : bold}
+          alt='bold'
+        />
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleItalic().run()} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? italic_dark : italic} />
+        <img 
+          src={isDarkMode ? italic_dark : italic} 
+          alt='italic'
+        />
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleUnderline().run()} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? underline_dark : underline} />
+        <img 
+          src={isDarkMode ? underline_dark : underline} 
+          alt='underline'
+        />
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleStrike().run()} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? strikethrough_dark : strikethrough} />
+        <img 
+          src={isDarkMode ? strikethrough_dark : strikethrough} 
+          alt='strike'
+        />
       </StyledButton>
       <StyledButton onClick={() => editor.chain().toggleCodeBlock().run()} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? code_dark : code} />
+        <img 
+          src={isDarkMode ? code_dark : code} 
+          alt='codeblock'
+        />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().toggleTaskList().run()}
         isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? checkbox_dark : checkbox} />
+        <img 
+          src={isDarkMode ? checkbox_dark : checkbox} 
+          alt='checkbox'
+        />
       </StyledButton>
       <StyledButton onClick={setLink} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? link_dark : link} />
+        <img 
+          src={isDarkMode ? link_dark : link} 
+          alt='link'
+        />
       </StyledButton>
     </BubbleMenuWrapper>
   )
