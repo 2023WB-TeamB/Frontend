@@ -14,6 +14,10 @@ interface SearchItemType {
   tags: string[]
   keywords?: { name: string }[]
 }
+interface TagType {
+  isDarkMode: boolean
+  color: string
+}
 // 스타일
 const Container = styled.div<{ isDarkMode: boolean }>`
   width: 50rem;
@@ -53,8 +57,9 @@ const TagWrapper = styled.div`
   max-width: 35rem;
   margin: 0 20px;
 `
-const Tag = styled.span<{ isDarkMode: boolean }>`
-  color: #eb8698;
+const Tag = styled.span<TagType>`
+  /* color: #eb8698; */
+  color: ${(props) => props.color};
   background-color: ${(props) => (props.isDarkMode ? '#393939' : '#f8f8f8')};
   border-radius: 10px;
   padding: 0 10px;
@@ -99,7 +104,7 @@ const SearchItem: React.FC<{ getData: SearchItemType[] }> = ({ getData }) => {
             <TagWrapper>
               {item.keywords!.length > 0 &&
                 item.keywords!.map((tag) => (
-                  <Tag key={tag.name} isDarkMode={isDarkMode}>
+                  <Tag key={tag.name} color={item.color} isDarkMode={isDarkMode}>
                     {tag.name}
                   </Tag>
                 ))}

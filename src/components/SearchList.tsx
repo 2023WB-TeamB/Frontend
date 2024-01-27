@@ -38,7 +38,7 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   border-radius: 20px;
   height: 450px;
   width: 50rem;
-  padding: 0 0 20px 0;
+  padding: 10px 0 20px 0;
   z-index: 5;
 
   /* Webkit 브라우저에만 적용되는 스크롤 스타일 */
@@ -65,6 +65,7 @@ const SearchWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 5px;
 `
 const SearchBar = styled.input<{ isDarkMode: boolean }>`
   width: 44rem;
@@ -78,9 +79,10 @@ const SearchBar = styled.input<{ isDarkMode: boolean }>`
     color: #c8c8c8;
   }
 `
-const Divider = styled.div`
+const Divider = styled.div<{ isVisible: boolean }>`
   width: auto;
   border-top: 1px solid #c8c8c8;
+  visibility: ${(props) => (props.isVisible ? 'visible' : 'hidden')};
 `
 const ItemWrapper = styled.div`
   height: 100%;
@@ -155,14 +157,14 @@ const SearchList: React.FC = () => {
             onKeyDown={handleKeyPress}
             onChange={getDocument}
             value={query}
-            placeholder="Search your itemument..."
+            placeholder="Search your Document..."
             isDarkMode={isDarkMode}
           />
           <Icon src={imgClose} height="1rem" width="1rem" onClick={handleOnClick} />
         </SearchWrapper>
-        <Divider />
+        <Divider isVisible />
         <ItemWrapper>{query && <SearchItem getData={filteredData} />}</ItemWrapper>
-        <Divider />
+        <Divider isVisible={false} />
       </Container>
     </Overlay>
   )
