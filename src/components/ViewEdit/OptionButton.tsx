@@ -43,9 +43,9 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
 `
 
 interface OptionProps {
-  icon?: string
-  context?: string
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  icon: string
+  context: string
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const OptionButton: React.FC<OptionProps> = ({ icon, context, onClick }) => {
@@ -53,7 +53,7 @@ const OptionButton: React.FC<OptionProps> = ({ icon, context, onClick }) => {
 
   return (
     <StyledButton isDarkMode={isDarkMode} onClick={onClick}>
-      <Icon src={icon}></Icon>
+      <Icon src={icon} />
       <p>{context}</p>
     </StyledButton>
   )

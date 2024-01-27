@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/react'
 import { useCallback } from 'react'
-import { useDarkModeStore } from '../../../store/store'
 import styled from 'styled-components'
+import { useDarkModeStore } from '../../../store/store'
 import undo_dark from '../../../assets/images/Viewer/undo_dark.svg'
 import undo from '../../../assets/images/Viewer/undo.svg'
 import redo_dark from '../../../assets/images/Viewer/redo_dark.svg'
@@ -59,7 +59,7 @@ const TopMenubar = ({ editor }: BottomMenubarProps) => {
     }
   }, [editor])
 
-  //? 테이블 추가
+  // ? 테이블 추가
   const addTable = () => {
     editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run()
   }
@@ -73,24 +73,39 @@ const TopMenubar = ({ editor }: BottomMenubarProps) => {
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().undo()}
         isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? undo_dark : undo} />
+        <img 
+          src={isDarkMode ? undo_dark : undo}
+          alt='undo' 
+        />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().redo()}
         isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? redo_dark : redo} />
+        <img 
+          src={isDarkMode ? redo_dark : redo}
+          alt='redo' 
+        />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
         isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? line_dark : line} />
+        <img 
+          src={isDarkMode ? line_dark : line}
+          alt='line' 
+        />
       </StyledButton>
       <StyledButton onClick={addImage} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? photolibrary_dark : photolibrary} />
+        <img 
+          src={isDarkMode ? photolibrary_dark : photolibrary}
+          alt='imageInput'
+        />
       </StyledButton>
       <StyledButton onClick={addTable} isDarkMode={isDarkMode}>
-        <img src={isDarkMode ? table_dark : table} />
+        <img 
+          src={isDarkMode ? table_dark : table}
+          alt='table' 
+        />
       </StyledButton>
     </BottomOptionBarWrapper>
   )

@@ -32,8 +32,8 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
   border-radius: ${(props) => (props.isOpenSideAlways ? '0' : '17px')};
   background-image: ${(props) =>
     props.isDarkMode
-      ? 'linear-gradient(#202020, #202020), linear-gradient(to bottom, #7CC0E8, #A565E0)'
-      : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #7CC0E8, #A565E0)'};
+      ? 'linear-gradient(#202020, #202020), linear-gradient(to bottom, #555, #555)'
+      : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #ccc, #ccc)'};
   background-origin: border-box;
   background-clip: content-box, border-box;
   transition: ease-in-out 0.3s;
@@ -42,9 +42,11 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
 
 // list : [icon, name, onClick]
 interface SidebarProps {
-  list: Array<
-    [icon: string, name?: string, onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void]
-  >
+  list: Array<[
+    icon: string, 
+    name: string | undefined, 
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined
+  ]>
 }
 
 // 사이드바

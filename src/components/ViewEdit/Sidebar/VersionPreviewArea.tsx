@@ -32,7 +32,7 @@ const PreviewWrapper = styled.div`
     margin-left: 9%;
     margin-right: 9%;
     width: 82%;
-    height: 0.5px;
+    height: 1px;
     background-image: linear-gradient(to right, #76cae8, #ad51de);
     border: none;
   }
@@ -110,7 +110,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
       <SlideWrapper>
         <Button
           onClick={goToPreviousPage}
-          imageUrl={isDarkMode ? LeftArrowIcon_Dark : LeftArrowIcon}></Button>
+          imageUrl={isDarkMode ? LeftArrowIcon_Dark : LeftArrowIcon} />
         <PageWrapper>
           <Slider style={style}>
             {pages.map((page, index) => (
@@ -120,7 +120,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
         </PageWrapper>
         <Button
           onClick={goToNextPage}
-          imageUrl={isDarkMode ? RightArrowIcon_Dark : RightArrowIcon}></Button>
+          imageUrl={isDarkMode ? RightArrowIcon_Dark : RightArrowIcon} />
       </SlideWrapper>
     </PreviewWrapper>
   )

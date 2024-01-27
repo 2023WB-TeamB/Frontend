@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
+import axios from 'axios'
 import {
   useEditorModeStore,
   useDocContentStore,
@@ -8,13 +10,11 @@ import {
   useDarkModeStore,
   useSidePeekStore,
 } from '../../store/store'
-import styled from 'styled-components'
 import EditIcon from '../../assets/images/Viewer/edit.svg'
 import SaveIcon from '../../assets/images/Viewer/save.svg'
 import CancelIcon from '../../assets/images/Viewer/cancel.svg'
 import EditorArea from './EditorComps/WYSIWYG_Area'
 import DocTags from './DocTags'
-import axios from 'axios'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -68,7 +68,7 @@ const DistributeDiv = styled.div`
   & span {
     width: 100%;
     height: 1px;
-    background-image: linear-gradient(to right, #7cc0e8, #a565e0);
+    background-image: linear-gradient(to right, #ccc, #ccc);
   }
 `
 
@@ -133,7 +133,7 @@ const DocField: React.FC = () => {
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
 
-  //? 문서 조회 API
+  // ? 문서 조회 API
   const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -146,9 +146,10 @@ const DocField: React.FC = () => {
       setTitle(response.data.data.title)
       setContent(response.data.data.content)
       setTag([])
-      for (const key in response.data.data.keywords) {
-        addTag(response.data.data.keywords[key].name)
-      }
+      Object.keys(response.data.data.keywords).forEach((key) => {
+        const keyword = response.data.data.keywords[key];
+        addTag(keyword.name);
+      });
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
@@ -168,7 +169,7 @@ const DocField: React.FC = () => {
     setTitle(e.target.value)
   }
 
-  //? 문서 수정 API
+  // ? 문서 수정 API
   const handleSaveDocContent = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -176,8 +177,8 @@ const DocField: React.FC = () => {
       await axios.put(
         `${apiUrl}/${docId}`,
         {
-          title: title,
-          content: content,
+          title,
+          content,
           keywords: tags,
         },
         {
@@ -199,7 +200,8 @@ const DocField: React.FC = () => {
 
   const saveDoc = async () => {
     // 저장 성공시 뷰어로 전환
-    ;(await handleSaveDocContent()) && toggleEditorMode()
+    await handleSaveDocContent()
+    toggleEditorMode()
   }
 
   const unsaveDoc = async () => {
@@ -236,7 +238,11 @@ const DocField: React.FC = () => {
           </ButtonWrapper>
         </DistributeContentWrappe>
       </DistributeDiv>
-      <ViewArea>{content != '' && <EditorArea />}</ViewArea>
+      <ViewArea>
+        {content &&
+          <EditorArea />
+        }
+      </ViewArea>
     </ViewerWrapper>
   )
 }

@@ -18,7 +18,7 @@ const PreviewContentWrapper = styled.div<{ isDarkMode: boolean, color: string }>
   margin-block: 10px;
   width: 100%;
   height: 8rem;
-  background-color: #e6e6e6;
+  background-color: #f8f8f8;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -52,7 +52,8 @@ const TopContent = styled.div`
   }
 `
 const TitleContent = styled.div`
-  padding: 5px;
+  margin-left: 10px;
+  padding: 0px;
   width: 100%;
   height: 3rem;
   overflow: hidden;
@@ -138,7 +139,7 @@ const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
       onClick={handlePreviewDoc}  
     >
       <TopContent>
-        <label>{content.repo}</label>
+        <label htmlFor="repoInput">{content.repo}</label>
         <p>{content.created_at}</p>
       </TopContent>
       <TitleContent>
