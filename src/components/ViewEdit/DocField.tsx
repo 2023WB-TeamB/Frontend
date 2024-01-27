@@ -111,6 +111,7 @@ const TitleArea = styled.div<TitleAreaProps>`
     border: none;
     outline: none;
     background-color: transparent;
+    font-family: Inter;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
     font-family: 'Inter', sans-serif;
@@ -147,9 +148,9 @@ const DocField: React.FC = () => {
       setContent(response.data.data.content)
       setTag([])
       Object.keys(response.data.data.keywords).forEach((key) => {
-        const keyword = response.data.data.keywords[key];
-        addTag(keyword.name);
-      });
+        const keyword = response.data.data.keywords[key]
+        addTag(keyword.name)
+      })
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
@@ -238,11 +239,7 @@ const DocField: React.FC = () => {
           </ButtonWrapper>
         </DistributeContentWrappe>
       </DistributeDiv>
-      <ViewArea>
-        {content &&
-          <EditorArea />
-        }
-      </ViewArea>
+      <ViewArea>{content && <EditorArea />}</ViewArea>
     </ViewerWrapper>
   )
 }
