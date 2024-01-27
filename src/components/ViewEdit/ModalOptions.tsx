@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import html2canvas from 'html2canvas'
+import { jsPDF } from 'jspdf'
 import pdfIcon from '../../assets/images/Viewer/pdf.png'
 import pdfIcon_dark from '../../assets/images/Viewer/pdf_dark.svg'
-// import cloudIcon from '../../assets/images/Viewer/upload-cloud.png'
-// import cloudIcon_dark from '../../assets/images/Viewer/upload-cloud_dark.svg'
 import urlIcon from '../../assets/images/Viewer/url.png'
 import urlIcon_dark from '../../assets/images/Viewer/url_dark.svg'
 import qrCreateIcon from '../../assets/images/Viewer/qr-code-add.png'
@@ -12,10 +14,6 @@ import closeIcon from '../../assets/images/Viewer/closeIcon.svg'
 import closeIcon_dark from '../../assets/images/Viewer/closeIcon_dark.svg'
 import OptionButton from './OptionButton'
 import BackDrop from './BackDrop'
-import axios from 'axios'
-import Swal from 'sweetalert2'
-import html2canvas from 'html2canvas'
-import { jsPDF } from 'jspdf'
 import {
   useApiUrlStore,
   useDarkModeStore,
@@ -43,7 +41,7 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   z-index: 1000;
   animation: fadeInAnimation 0.2s ease-in-out;
 
-  & label {
+  & h3 {
     margin: 60px 35px 10px;
     height: 60px;
     font-family: 'Inter', sans-serif;
@@ -84,7 +82,7 @@ const CloseButton = styled.button`
 
 interface ModalOptionsProps {
   isOpenOptions: boolean
-  onClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClose: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
@@ -176,7 +174,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     })
   }
 
-  //? 다운로드할 컴포넌트 ID
+  // ? 다운로드할 컴포넌트 ID
   const rootElementId = 'DocField'
 
   // * PDF 다운로드
@@ -186,14 +184,15 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
     if (input != null)
       html2canvas(input).then((canvas) => {
         const imgData = canvas.toDataURL('image/png')
+        // eslint-disable-next-line new-cap
         const pdf = new jsPDF('p', 'mm', 'a4')
-        //pdf 가로 세로 사이즈
+        // pdf 가로 세로 사이즈
         const pageWidth = pdf.internal.pageSize.getWidth()
         const pageHeight = pdf.internal.pageSize.getHeight()
-        //이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
+        // 이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
         const widthRatio = pageWidth / canvas.width
         const customHeight = canvas.height * widthRatio
-        //? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+        // ? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
         pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight)
         let heightLeft = customHeight
         let heightAdd = -pageHeight
@@ -210,42 +209,40 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
-  return (
-    <>
-      {isOpenOptions && (
-        <>
-          <BackDrop />
-          <ModalWrapper isDarkMode={isDarkMode}>
-            <CloseButton onClick={onClose}>
-              <img src={isDarkMode ? closeIcon_dark : closeIcon} alt="Close" />
-            </CloseButton>
-            <label>Export</label>
-            <OptionsWrapper>
-              <OptionButton
-                icon={isDarkMode ? pdfIcon_dark : pdfIcon}
-                context="Download as PDF"
-                onClick={() => downloadPdfDocument(rootElementId)}
-              />
-              {/* <OptionButton
-                icon={isDarkMode ? cloudIcon_dark : cloudIcon}
-                context="Upload to Cloud"
-              /> */}
-              <OptionButton
-                icon={isDarkMode ? urlIcon_dark : urlIcon}
-                context="Copy a URL"
-                onClick={handleCopyClipBoardURL}
-              />
-              <OptionButton
-                icon={isDarkMode ? qrCreateIcon_dark : qrCreateIcon}
-                context="Make a QR code"
-                onClick={showQRCode}
-              />
-            </OptionsWrapper>
-          </ModalWrapper>
-        </>
-      )}
-    </>
-  )
+  if (isOpenOptions)
+    return (
+      <>
+        <BackDrop />
+        <ModalWrapper isDarkMode={isDarkMode}>
+          <CloseButton onClick={onClose}>
+            <img src={isDarkMode ? closeIcon_dark : closeIcon} alt="Close" />
+          </CloseButton>
+          <h3>Export</h3>
+          <OptionsWrapper>
+            <OptionButton
+              icon={isDarkMode ? pdfIcon_dark : pdfIcon}
+              context="Download as PDF"
+              onClick={() => downloadPdfDocument(rootElementId)}
+            />
+            {/* <OptionButton
+              icon={isDarkMode ? cloudIcon_dark : cloudIcon}
+              context="Upload to Cloud"
+            /> */}
+            <OptionButton
+              icon={isDarkMode ? urlIcon_dark : urlIcon}
+              context="Copy a URL"
+              onClick={handleCopyClipBoardURL}
+            />
+            <OptionButton
+              icon={isDarkMode ? qrCreateIcon_dark : qrCreateIcon}
+              context="Make a QR code"
+              onClick={showQRCode}
+            />
+          </OptionsWrapper>
+        </ModalWrapper>
+      </>
+    )
+  return (undefined)
 }
 
 export default ModalOptions

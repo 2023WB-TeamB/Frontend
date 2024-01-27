@@ -4,8 +4,6 @@ import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import BottomMenubar from './BottomMenubar'
-import BubbleMenubar from './BubbleMenubar'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
@@ -29,8 +27,10 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from "lowlight";
-import { useDocContentStore, useEditorModeStore } from "../../../store/store";
 import { marked } from "marked";
+import BubbleMenubar from './BubbleMenubar'
+import BottomMenubar from './BottomMenubar'
+import { useDocContentStore, useEditorModeStore } from "../../../store/store";
 
 const lowlight = createLowlight(common);
 
@@ -109,17 +109,14 @@ const EditorArea: React.FC = () => {
       },
     },
     onUpdate: ({ editor }) => {
-      if (content != '')
+      if (content !== '')
         setContent(editor.getHTML())
     },
   })
   
   useEffect(() => {
-    if (!editor) {
-      return undefined
-    }
-
-    editor.setEditable(isEditor)
+    if (editor)
+      editor.setEditable(isEditor)
   }, [editor, isEditor])
 
   if (!editor) {

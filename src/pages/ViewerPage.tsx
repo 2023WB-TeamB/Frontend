@@ -1,5 +1,8 @@
-import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import styled from 'styled-components'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
 import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
 import gallery from '../assets/images/Viewer/gallery button.png'
@@ -18,13 +21,8 @@ import {
   useConfirmBoxStore,
   useDocIdStore,
   useApiUrlStore,
-} from '../store/store'
+ useDarkModeStore } from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
-
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDarkModeStore } from '../store/store'
-import axios from 'axios'
 
 const StyledForm = styled.div<{ isDarkMode: boolean }>`
   min-width: 100vw;
@@ -60,7 +58,7 @@ function ViewerPage() {
 
   const { apiUrl } = useApiUrlStore()
 
-  //? 문서 삭제 API
+  // ? 문서 삭제 API
   const handleDeleteDoc = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -99,7 +97,8 @@ function ViewerPage() {
 
   // 확인 모달창 핸들러
   const handleConfirmYes = () => {
-    confirmAction && confirmAction()
+    if (confirmAction)
+      confirmAction();
     confirmBoxStore.closeConfirm()
   }
 
@@ -108,17 +107,17 @@ function ViewerPage() {
       <LittleHeader />
       <Sidebar
         list={[
-          [isOpenSideAlways ? double_arrow_left : double_arrow_right, , toggleOpenSideAlways],
+          [isOpenSideAlways ? double_arrow_left : double_arrow_right, '', toggleOpenSideAlways],
           [gallery, 'Gallery', openerStore.openGalleryPanel],
           [version, 'Version', openerStore.openVersionPanel],
           [exportBtn, 'Export', openerStore.openOptions],
           [deleteBtn, 'Delete', openConfirmWithDelete],
-          [''],
-          [''],
-          [''],
-          [''],
-          [''],
-          [''],
+          ['', undefined, () => undefined],
+          ['', undefined, () => undefined],
+          ['', undefined, () => undefined],
+          ['', undefined, () => undefined],
+          ['', undefined, () => undefined],
+          ['', undefined, () => undefined],
           [exit, 'Exit', openConfirmWithExit],
         ]}
       />

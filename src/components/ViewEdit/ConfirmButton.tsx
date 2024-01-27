@@ -27,7 +27,7 @@ const StyledConfirmButton = styled.button<{ isDarkMode: boolean }>`
 
 interface ConfirmButtonProps {
   context: string
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({ context, onClick }) => {

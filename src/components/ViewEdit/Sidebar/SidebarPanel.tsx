@@ -199,10 +199,18 @@ const SidebarPanel: React.FC = () => {
               isOpenVersionPanel ? 'Search your repository...' : 'Search your project...'
             }
           />
-          <img src={isDarkMode ? searchIcon_dark : searchIcon} style={{ margin: 10, width: 25 }} />
+          <img
+            src={isDarkMode ? searchIcon_dark : searchIcon}
+            alt=""
+            style={{ margin: 10, width: 25 }} 
+          />
         </SearchArea>
         <StyledCloseButton onClick={closeSidePanel}>
-          <img src={isDarkMode ? closeIcon_dark : closeIcon} style={{ width: 40 }} />
+          <img 
+            src={isDarkMode ? closeIcon_dark : closeIcon}
+            alt="" 
+            style={{ width: 40 }} 
+          />
         </StyledCloseButton>
       </SidePanelTopWrapper>
       <PreviewTileWrapper isDarkMode={isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
