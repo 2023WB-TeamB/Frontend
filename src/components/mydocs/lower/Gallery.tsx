@@ -79,7 +79,7 @@ const Title = styled.div`
   font-size: 1.26rem;
   font-weight: 700;
   line-height: 1.7rem;
-  font-family: 'Inter';
+  /* font-family: 'Inter'; */
   margin-top: 0.5rem;
   word-break: keep-all;
   display: -webkit-box;
