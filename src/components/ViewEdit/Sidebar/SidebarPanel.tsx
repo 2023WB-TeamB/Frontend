@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import VersionPreviewTile from './VersionPreviewArea'
-import searchIcon from '../../../assets/images/search.png'
+import searchIcon from '../../../assets/images/search.svg'
 import searchIcon_dark from '../../../assets/images/search_dark.svg'
 import closeIcon from '../../../assets/images/Viewer/closeIcon.svg'
 import closeIcon_dark from '../../../assets/images/Viewer/closeIcon_dark.svg'
@@ -12,7 +13,6 @@ import {
   useSidePeekStore,
   useViewerPageOpenStore,
 } from '../../../store/store'
-import axios from 'axios'
 import GalleryPreviewTile from './GalleryPreviewArea'
 import useDebounce from '../../useDebounce'
 
@@ -40,7 +40,7 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel:
   flex-direction: column;
   align-items: center;
   height: 100%;
-  width: ${(props) => props.isOpenGalleryPanel ? '100%' : '85%'};
+  width: ${(props) => (props.isOpenGalleryPanel ? '100%' : '85%')};
   overflow-y: auto;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   &::-webkit-scrollbar {
@@ -103,7 +103,7 @@ export interface projectData {
   title: string
   color: string
   created_at: string
-  keywords: Array<{name: string}>
+  keywords: Array<{ name: string }>
 }
 
 // 사이드바 확장 패널
@@ -151,7 +151,7 @@ const SidebarPanel: React.FC = () => {
     setQuery(e.target.value.toLowerCase())
   }
 
-  //? 문서 조회 API
+  // ? 문서 조회 API
   const handleGetDocVersions = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -199,31 +199,35 @@ const SidebarPanel: React.FC = () => {
               isOpenVersionPanel ? 'Search your repository...' : 'Search your project...'
             }
           />
-          <img
-            src={isDarkMode ? searchIcon_dark : searchIcon}
-            style={{ margin: 10, width: 25 }}></img>
+          <img src={isDarkMode ? searchIcon_dark : searchIcon} style={{ margin: 10, width: 25 }} />
         </SearchArea>
         <StyledCloseButton onClick={closeSidePanel}>
           <img src={isDarkMode ? closeIcon_dark : closeIcon} style={{ width: 40 }} />
         </StyledCloseButton>
       </SidePanelTopWrapper>
       <PreviewTileWrapper isDarkMode={isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
-      {isOpenGalleryPanel && 
-        (myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, _] = item
-          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
-          return filteredSearchTemp.length > 0 && 
-            <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        }))
-      }
-      {isOpenVersionPanel &&
-        (myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, _] = item
-          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
-          return filteredSearchTemp.length > 0 && 
-            <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        }))
-      }
+        {isOpenGalleryPanel &&
+          myDocsData.length > 0 &&
+          myDocsData.map((item) => {
+            const [projectTitle, _] = item
+            const filteredSearchTemp = searchTemp.filter((doc) => doc.repo === projectTitle)
+            return (
+              filteredSearchTemp.length > 0 && (
+                <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp} />
+              )
+            )
+          })}
+        {isOpenVersionPanel &&
+          myDocsData.length > 0 &&
+          myDocsData.map((item) => {
+            const [projectTitle, _] = item
+            const filteredSearchTemp = searchTemp.filter((doc) => doc.repo === projectTitle)
+            return (
+              filteredSearchTemp.length > 0 && (
+                <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp} />
+              )
+            )
+          })}
       </PreviewTileWrapper>
     </StyledSidebarPanel>
   )

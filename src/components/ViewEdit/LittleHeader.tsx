@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import DarkModeIcon from '../../assets/images/dark_mode.svg'
-import WhiteModeIcon from '../../assets/images/white_mode.svg'
+import DarkModeIcon from '../../assets/images/moon.svg'
+import WhiteModeIcon from '../../assets/images/sun.svg'
 import { useDarkModeStore } from '../../store/store'
 
 const StyledLittleHeader = styled.div`
@@ -42,7 +42,7 @@ const LittleHeader = () => {
   return (
     <StyledLittleHeader>
       <StyledButton onClick={toggleDarkMode}>
-        <Icon src={isDarkMode ? DarkModeIcon : WhiteModeIcon} isDarkMode={isDarkMode}></Icon>
+        <Icon src={isDarkMode ? DarkModeIcon : WhiteModeIcon} isDarkMode={isDarkMode} />
       </StyledButton>
     </StyledLittleHeader>
   )
