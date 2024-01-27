@@ -40,7 +40,7 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel:
   flex-direction: column;
   align-items: center;
   height: 100%;
-  width: ${(props) => props.isOpenGalleryPanel ? '100%' : '85%'};
+  width: ${(props) => (props.isOpenGalleryPanel ? '100%' : '85%')};
   overflow-y: auto;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   &::-webkit-scrollbar {
@@ -69,7 +69,6 @@ const SearchArea = styled.div<{ isDarkMode: boolean }>`
     border-radius: 30px;
     font-size: 1em;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
-    font-family: 'Inter';
 
     &:focus {
       outline: none;
@@ -103,7 +102,7 @@ export interface projectData {
   title: string
   color: string
   created_at: string
-  keywords: Array<{name: string}>
+  keywords: Array<{ name: string }>
 }
 
 // 사이드바 확장 패널
@@ -208,22 +207,28 @@ const SidebarPanel: React.FC = () => {
         </StyledCloseButton>
       </SidePanelTopWrapper>
       <PreviewTileWrapper isDarkMode={isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
-      {isOpenGalleryPanel && 
-        (myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, _] = item
-          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
-          return filteredSearchTemp.length > 0 && 
-            <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        }))
-      }
-      {isOpenVersionPanel &&
-        (myDocsData.length > 0 && myDocsData.map((item) => {
-          const [projectTitle, _] = item
-          const filteredSearchTemp = searchTemp.filter(doc => doc.repo === projectTitle);
-          return filteredSearchTemp.length > 0 && 
-            <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp}/>
-        }))
-      }
+        {isOpenGalleryPanel &&
+          myDocsData.length > 0 &&
+          myDocsData.map((item) => {
+            const [projectTitle, _] = item
+            const filteredSearchTemp = searchTemp.filter((doc) => doc.repo === projectTitle)
+            return (
+              filteredSearchTemp.length > 0 && (
+                <GalleryPreviewTile title={projectTitle} pages={filteredSearchTemp} />
+              )
+            )
+          })}
+        {isOpenVersionPanel &&
+          myDocsData.length > 0 &&
+          myDocsData.map((item) => {
+            const [projectTitle, _] = item
+            const filteredSearchTemp = searchTemp.filter((doc) => doc.repo === projectTitle)
+            return (
+              filteredSearchTemp.length > 0 && (
+                <VersionPreviewTile title={projectTitle} pages={filteredSearchTemp} />
+              )
+            )
+          })}
       </PreviewTileWrapper>
     </StyledSidebarPanel>
   )

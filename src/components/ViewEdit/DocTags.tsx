@@ -12,10 +12,9 @@ const TagStyle = css<TagStyleProps>`
   background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#F8F8F8')};
   color: #eb8698;
   font-size: 15px;
-  font-family: 'Inter';
   font-weight: 400;
   line-height: 1.5rem;
-  transition: ease .3s;
+  transition: ease 0.3s;
 `
 const TagLabel = styled.label<TagStyleProps>`
   ${TagStyle}
@@ -39,7 +38,6 @@ const TagWrapper = styled.div<TagStyleProps>`
     border: none;
     border-radius: 18px;
     font-size: 15px;
-    font-family: 'Inter';
     font-weight: 400;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   }

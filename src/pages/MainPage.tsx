@@ -78,7 +78,7 @@ const Smalli = styled.span`
 export const Sub = styled.h1<{ isDarkMode: boolean }>`
   font-size: 1.2rem;
   font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   white-space: nowrap;
 

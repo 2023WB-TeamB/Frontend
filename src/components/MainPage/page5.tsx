@@ -216,7 +216,7 @@ const Startbutton = styled.button<{ visible: boolean; isDarkMode: boolean }>`
   text-align: center;
   transition: 0.5s;
   background-size: 200% auto;
-  font-family: 'Inter', Helvetica;
+  /* font-family: 'Inter', Helvetica; */
   font-size: 1rem;
   color: white;
   background-image: linear-gradient(to right, #79c5e8, #a26be1, #79c5e8);
