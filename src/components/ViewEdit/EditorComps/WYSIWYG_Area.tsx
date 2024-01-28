@@ -121,20 +121,19 @@ const EditorArea: React.FC = () => {
     return null
   }
 
-  const uploadImageToS3 = async (file: any) => {
-    const s3Endpoint = 'https://your-s3-bucket.s3.amazonaws.com'
+  const uploadImageToServer = async (file: any) => {
     const formData = new FormData()
     formData.append('file', file)
 
     try {
-      const response = await fetch(`${s3Endpoint}/your-upload-path`, {
+      const response = await fetch('your-server-upload-endpoint', {
         method: 'POST',
         body: formData,
       })
 
       if (response.ok) {
         const data = await response.json()
-        return data.imageUrl // S3에 업로드된 이미지 URL
+        return data.imageUrl // 서버에서 받은 CDN 이미지 URL
       } else {
         throw new Error('Image upload failed')
       }
@@ -146,15 +145,18 @@ const EditorArea: React.FC = () => {
 
   // 이미지 드롭 기능
   const handleDrop = async (event: any) => {
-    const cloudFrontEndpoint = 'https://your-cloudfront-domain'
     event.preventDefault()
     const file = event.dataTransfer.files[0]
 
     if (file && file.type.includes('image/')) {
-      const imageUrl = await uploadImageToS3(file)
-      const cdnImageUrl = `${cloudFrontEndpoint}/${imageUrl}`
-      // 클라이언트에서 CDN 이미지 URL 활용
-      console.log('CDN 이미지 URL:', cdnImageUrl)
+      const imageUrl = await uploadImageToServer(file)
+      // 클라이언트에서 서버에서 받은 CDN 이미지 URL 활용
+      console.log('CDN 이미지 URL:', imageUrl)
+
+      // 이미지 삽입
+      if (imageUrl) {
+        editor.chain().focus().setImage({ src: imageUrl }).run()
+      }
     }
   }
 
