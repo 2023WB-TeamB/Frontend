@@ -1,4 +1,4 @@
-import "./TiptapStyles.css";
+import './TiptapStyles.css'
 
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -26,19 +26,19 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
-import { common, createLowlight } from "lowlight";
-import { marked } from "marked";
+import { common, createLowlight } from 'lowlight'
+import { marked } from 'marked'
 import BubbleMenubar from './BubbleMenubar'
 import BottomMenubar from './BottomMenubar'
-import { useDocContentStore, useEditorModeStore } from "../../../store/store";
+import { useDocContentStore, useEditorModeStore } from '../../../store/store'
 
-const lowlight = createLowlight(common);
+const lowlight = createLowlight(common)
 
 // ? TipTap 확장 모듈
 const extensions = [
   StarterKit,
-  Document, 
-  Paragraph, 
+  Document,
+  Paragraph,
   Text,
   Bold,
   Italic,
@@ -47,7 +47,7 @@ const extensions = [
   CodeBlockLowlight.configure({
     lowlight,
   }),
-  TextStyle, 
+  TextStyle,
   Color,
   HorizontalRule,
   Typography,
@@ -77,7 +77,7 @@ const EditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
@@ -85,12 +85,12 @@ const EditorWrapper = styled.div`
     outline: 0;
     overflow: hidden;
   }
-  `
+`
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
-  const {isEditor} = useEditorModeStore()
-  const {content, setContent} = useDocContentStore()
+  const { isEditor } = useEditorModeStore()
+  const { content, setContent } = useDocContentStore()
 
   useEffect(() => {
     if (editorRef.current) {
@@ -99,7 +99,7 @@ const EditorArea: React.FC = () => {
   }, [])
 
   // ? 에디터 객체 생성
-  const editor:any = useEditor({
+  const editor: any = useEditor({
     editable: isEditor,
     extensions,
     content: marked(content),
@@ -109,50 +109,67 @@ const EditorArea: React.FC = () => {
       },
     },
     onUpdate: ({ editor }) => {
-      if (content !== '')
-        setContent(editor.getHTML())
+      if (content !== '') setContent(editor.getHTML())
     },
   })
-  
+
   useEffect(() => {
-    if (editor)
-      editor.setEditable(isEditor)
+    if (editor) editor.setEditable(isEditor)
   }, [editor, isEditor])
 
   if (!editor) {
     return null
   }
 
-  // 이미지 드롭 기능
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.includes('image/')) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imageDataURL = reader.result as string;
-        insertImage(imageDataURL);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const uploadImageToS3 = async (file: any) => {
+    const s3Endpoint = 'https://your-s3-bucket.s3.amazonaws.com'
+    const formData = new FormData()
+    formData.append('file', file)
 
-  const insertImage = (imageURL: string) => {
-    editor.chain().focus().setImage({ src: imageURL }).run();
-  };
+    try {
+      const response = await fetch(`${s3Endpoint}/your-upload-path`, {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        return data.imageUrl // S3에 업로드된 이미지 URL
+      } else {
+        throw new Error('Image upload failed')
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      return null
+    }
+  }
+
+  // 이미지 드롭 기능
+  const handleDrop = async (event: any) => {
+    const cloudFrontEndpoint = 'https://your-cloudfront-domain'
+    event.preventDefault()
+    const file = event.dataTransfer.files[0]
+
+    if (file && file.type.includes('image/')) {
+      const imageUrl = await uploadImageToS3(file)
+      const cdnImageUrl = `${cloudFrontEndpoint}/${imageUrl}`
+      // 클라이언트에서 CDN 이미지 URL 활용
+      console.log('CDN 이미지 URL:', cdnImageUrl)
+    }
+  }
 
   return (
     <EditorWrapper>
-      <EditorContent 
-        editor={editor} 
-        ref={editorRef} 
+      <EditorContent
+        editor={editor}
+        ref={editorRef}
         onDrop={handleDrop}
         onDragOver={(event) => event.preventDefault()}
       />
       <BubbleMenu editor={editor}>
-        <BubbleMenubar editor={editor}/>
+        <BubbleMenubar editor={editor} />
       </BubbleMenu>
-      {isEditor && <BottomMenubar editor={editor}/>}
+      {isEditor && <BottomMenubar editor={editor} />}
     </EditorWrapper>
   )
 }
