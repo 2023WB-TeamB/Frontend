@@ -111,7 +111,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   }
   // 로그아웃 API 호출 이벤트
   const handleClickSignout = async () => {
-    const url = 'localhost:8000/api/v1/auth' // 배포 서버
+    const url = 'http://localhost:8000/api/v1/auth' // 배포 서버
     const response = await axios.delete(url)
     // 로그아웃 알림창
     Swal.fire({

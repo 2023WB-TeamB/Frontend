@@ -162,7 +162,7 @@ const Signin = () => {
   }, [])
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = 'localhost:8000/api/v1/auth'
+    const url = 'http://localhost:8000/api/v1/auth'
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
