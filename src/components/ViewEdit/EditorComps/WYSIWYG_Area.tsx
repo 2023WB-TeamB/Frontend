@@ -126,9 +126,16 @@ const EditorArea: React.FC = () => {
   const uploadImageToServer = async (file: any) => {
     const formData = new FormData()
     formData.append('file', file)
-    console.log(file)
+
+    // Set config for axios
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+
     try {
-      const response = await axios.post('localhost:8000/api/v1/docs/img', formData)
+      const response = await axios.post('http://localhost:8000/api/v1/docs/img', formData, config)
       return response.data.imageUrl // 서버에서 받은 CDN 이미지 URL
     } catch (error) {
       console.error('Error uploading image:', error)
