@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import Card from '../Card'
 import Modal from '../Modal'
 import { Doc, cardIdStore, modalContentStore, modalOpenStore } from '../../../store/store'
 import CarouselSkeleton from './CarouselSkeleton'
 import btn from '../../../assets/images/mydocs/btn.svg'
+import down_arrow from '../../../assets/images/MainPage/down_arrow.svg'
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 55vh;
+  height: 57vh;
   margin-top: 3vh;
 
   @media (max-width: 960px) {
@@ -35,7 +36,7 @@ const PrevButton = styled.button<{ active: boolean }>`
   position: absolute;
   left: 15vw;
   bottom: 20vh;
-  transform: translate(-65%, 0%) rotate(40deg);
+  transform: translate(-65%, 0%) rotate(90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -53,7 +54,7 @@ const NextButton = styled.button<{ active: boolean }>`
   position: absolute;
   right: 15vw;
   bottom: 20vh;
-  transform: translate(15%, 40%) rotate(-40deg);
+  transform: translate(15%, 40%) rotate(-90deg);
   opacity: ${({ active }) => (active ? '0.5' : '1')};
   visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   &:focus {
@@ -99,12 +100,47 @@ const Tag = styled.text<{ color: string }>`
   color: ${({ color }) => color};
   background-color: #e4e4e4;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 300;
   border-radius: 0.65rem;
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
   margin-right: 0.2rem;
   padding: 0rem 0.3rem;
 `
+
+const down_down = keyframes`
+  0% {
+    transform: translateY(0);
+    opacity: 0
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+`
+
+// icon(svg)
+interface StylediconProps {
+  animation: boolean
+}
+
+const Styledicon = styled.img<StylediconProps>`
+  position: absolute;
+  bottom: 1.5rem;
+  left: calc(50% - 1.1rem);
+  width: 2.2rem;
+  height: 2.2rem;
+  z-index: 3;
+  animation: ${(props) =>
+    props.animation
+      ? css`
+          ${down_down} 1.2s ease-out infinite
+        `
+      : 'none'};
+`
+
 const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   const [canPrev, setCanPrev] = useState(false) // prev 버튼 활성화
   const [canNext, setCanNext] = useState(false) // next 버튼 활성화
@@ -207,6 +243,7 @@ const RoundCarousel: React.FC<{ docs: Doc[] }> = ({ docs }) => {
           style={{ visibility: canNext ? 'visible' : 'hidden' }}>
           <img src={btn} alt="next" />
         </NextButton>
+        <Styledicon src={down_arrow} animation alt="downarrow" />
       </Carousel>
       <Modal modalOpen={modalOpen} modalContent={modalContent} setModalOpen={setModalOpen} />
     </Wrapper>
