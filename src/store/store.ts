@@ -362,9 +362,9 @@ interface DocIdState {
 export const useDocIdStore = create<DocIdState>((set) => ({
   docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!) : null,
   setDocId: (id) => {
-    set(() => ({ docId: id }));
-    localStorage.setItem('docId', id.toString());
-  }
+    set(() => ({ docId: id }))
+    localStorage.setItem('docId', id.toString())
+  },
 }))
 
 interface ApiUrlState {
@@ -372,8 +372,8 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
-  // apiUrl: 'http://localhost:8000/api/v1/docs',
+  // apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
+  apiUrl: 'localhost:8000/api/v1/docs',
   setApiUrl: (url: string) =>
     set(() => ({
       apiUrl: url,
