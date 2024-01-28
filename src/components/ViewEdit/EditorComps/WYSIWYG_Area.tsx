@@ -31,6 +31,7 @@ import { marked } from 'marked'
 import BubbleMenubar from './BubbleMenubar'
 import BottomMenubar from './BottomMenubar'
 import { useDocContentStore, useEditorModeStore } from '../../../store/store'
+import axios from 'axios'
 
 const lowlight = createLowlight(common)
 
@@ -121,22 +122,14 @@ const EditorArea: React.FC = () => {
     return null
   }
 
+  // 이미지 업로드 함수
   const uploadImageToServer = async (file: any) => {
     const formData = new FormData()
     formData.append('file', file)
 
     try {
-      const response = await fetch('your-server-upload-endpoint', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        return data.imageUrl // 서버에서 받은 CDN 이미지 URL
-      } else {
-        throw new Error('Image upload failed')
-      }
+      const response = await axios.post('localhost:8000/api/v1/docs/img', formData)
+      return response.data.imageUrl // 서버에서 받은 CDN 이미지 URL
     } catch (error) {
       console.error('Error uploading image:', error)
       return null
