@@ -108,8 +108,8 @@ function ViewerPage() {
       <Sidebar
         list={[
           [isOpenSideAlways ? double_arrow_left : double_arrow_right, '', toggleOpenSideAlways],
-          [gallery, 'Gallery', openerStore.openGalleryPanel],
-          [version, 'Version', openerStore.openVersionPanel],
+          [gallery, 'Document', openerStore.openGalleryPanel],
+          [version, 'Project', openerStore.openVersionPanel],
           [exportBtn, 'Export', openerStore.openOptions],
           [deleteBtn, 'Delete', openConfirmWithDelete],
           ['', undefined, () => undefined],
