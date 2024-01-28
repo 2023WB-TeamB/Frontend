@@ -28,6 +28,7 @@ const Card = styled.div<{ color: string }>`
   word-break: break-all;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
   &:hover {
     //호버 시 카드 커지는 효과
     transform: scale(1.08);

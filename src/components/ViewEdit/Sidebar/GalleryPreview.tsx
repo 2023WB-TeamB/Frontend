@@ -26,6 +26,7 @@ const PreviewContentWrapper = styled.div<{ isDarkMode: boolean, color: string }>
   align-items: flex-start;
   justify-content: flex-start;
   border-inline-start: 4px solid ${(props) => props.color};
+  cursor: pointer;
 `
 const TopContent = styled.div`
   margin: 5px 5px 0px 5px;

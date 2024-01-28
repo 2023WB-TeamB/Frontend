@@ -1,6 +1,7 @@
 import { Editor } from '@tiptap/react'
 import { useCallback } from 'react'
 import styled from 'styled-components'
+import Swal from 'sweetalert2'
 import { useDarkModeStore } from '../../../store/store'
 import undo_dark from '../../../assets/images/Viewer/undo_dark.svg'
 import undo from '../../../assets/images/Viewer/undo.svg'
@@ -52,11 +53,21 @@ interface BottomMenubarProps {
 const TopMenubar = ({ editor }: BottomMenubarProps) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const addImage = useCallback(() => {
-    const url = window.prompt('URL')
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-    }
+    Swal.fire({
+      title: "Input Image URL",
+      input: "url",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Add",
+      showLoaderOnConfirm: true,
+      preConfirm: async (url) => {
+        console.log(url)
+        editor.chain().focus().setImage({ src: url }).run()
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
   }, [editor])
 
   // ? 테이블 추가

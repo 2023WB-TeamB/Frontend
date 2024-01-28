@@ -67,7 +67,7 @@ const DistributeDiv = styled.div`
 
   & span {
     width: 100%;
-    height: 1px;
+    min-height: 1px;
     background-image: linear-gradient(to right, #ccc, #ccc);
   }
 `
@@ -104,7 +104,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 
   & h2,
   & textarea {
-    margin: 2px 2px 25px 2px;
+    margin: 2px 2px 20px 2px;
     padding: 2px;
     font-size: 2.2rem;
     border: none;
