@@ -123,9 +123,32 @@ const EditorArea: React.FC = () => {
     return null
   }
 
+  // 이미지 드롭 기능
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file && file.type.includes('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageDataURL = reader.result as string;
+        insertImage(imageDataURL);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const insertImage = (imageURL: string) => {
+    editor.chain().focus().setImage({ src: imageURL }).run();
+  };
+
   return (
     <EditorWrapper>
-      <EditorContent editor={editor} ref={editorRef}/>
+      <EditorContent 
+        editor={editor} 
+        ref={editorRef} 
+        onDrop={handleDrop}
+        onDragOver={(event) => event.preventDefault()}
+      />
       <BubbleMenu editor={editor}>
         <BubbleMenubar editor={editor}/>
       </BubbleMenu>

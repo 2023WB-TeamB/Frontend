@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { CirclePicker, ColorResult } from 'react-color'
 import axios from 'axios'
 import { cardColorStore, cardIdStore, docStore, previewOpenStore } from '../../store/store'
+import { desaturate } from 'polished'
 
 function PaletteIcon({ color }: { color: string }) {
   return (
@@ -34,6 +35,29 @@ const ButtonWrapper = styled.button`
     outline: none; // 포커스 시 테두리가 나타나지 않도록 설정
   }
 `
+
+const colors = [
+  '#f44336',
+  '#e91e63',
+  '#9c27b0',
+  '#673ab7',
+  '#3f51b5',
+  '#2196f3',
+  '#03a9f4',
+  '#00bcd4',
+  '#009688',
+  '#4caf50',
+  '#8bc34a',
+  '#c4d432',
+  '#f6d738',
+  '#ffc107',
+  '#ff9800',
+  '#ff5722',
+  '#795548',
+  '#607d8b',
+]
+
+const loweredSaturationColors = colors.map((color) => desaturate(0.15, color))
 
 // 색상 선택 도구를 감싸는 컴포넌트
 const ColorPickerWrapper = styled.div`
@@ -126,7 +150,11 @@ function PalleteButton() {
         <>
           <Overlay onClick={handleClose} />
           <ColorPickerWrapper>
-            <CirclePicker color={cardColor} onChange={handleChange} />
+            <CirclePicker
+              colors={loweredSaturationColors}
+              color={cardColor}
+              onChange={handleChange}
+            />
           </ColorPickerWrapper>
         </>
       ) : null}

@@ -7,34 +7,49 @@ interface TagStyleProps {
   color: string | undefined
 }
 const TagStyle = css<TagStyleProps>`
-  margin: 5px 5px 15px 5px;
-  padding: 2px 10px;
+  display: inline-block;
+  max-width: 100%;
+  margin: 3px 3px;
   border-radius: 17px;
   background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#F8F8F8')};
   color: ${(props) => props.color};
   font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.2rem;
+  font-weight: 500;
+  line-height: 1rem;
+  border: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-block: 6px;
+  padding-inline: 12px;
   transition: ease .3s;
-`
-const TagLabel = styled.label<TagStyleProps>`
-  ${TagStyle}
-  
+  border-block-end: 1px solid;
 `
 const TagButton = styled.button<TagStyleProps>`
   ${TagStyle}
 `
 const TagWrapper = styled.div<{ isDarkMode: boolean }>`
   position: relative;
+  left: 0;
   width: 100%;
-  height: 45px;
+  height: 100%;
+  padding: 0;
+  margin-bottom: 5px;
   background-color: transparent;
   display: flex;
   flex-direction: row;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: horizontal;
+  text-overflow: ellipsis;
 
   & input {
-    width: 30rem;
-    margin: 5px 5px 15px 5px;
+    position: sticky;
+    left: 0;
+    bottom: -2.2rem;
+    width: auto;
+    height: 1.7rem;
     padding: 2px 10px;
     background: transparent;
     border: none;
@@ -71,9 +86,9 @@ const DocTags: React.FC = () => {
             {tag}
           </TagButton>
         ) : (
-          <TagLabel isDarkMode={isDarkMode} color={color}>
+          <TagButton isDarkMode={isDarkMode} color={color}>
             {tag}
-          </TagLabel>
+          </TagButton>
         ),
       )}
       {isEditor && (
