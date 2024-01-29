@@ -1,4 +1,4 @@
-import "./TiptapStyles.css";
+import "./EditorStyles.css";
 
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
