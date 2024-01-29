@@ -9,11 +9,11 @@ interface TagStyleProps {
 const TagStyle = css<TagStyleProps>`
   display: inline-block;
   max-width: 100%;
-  margin: 3px 3px;
+  margin: 0px 3px 8px;
   border-radius: 17px;
-  background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#F8F8F8')};
+  background-color: ${(props) => (props.isDarkMode ? '#282828' : '#F8F8F8')};
   color: ${(props) => props.color};
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   line-height: 1rem;
   border: none;
@@ -23,7 +23,8 @@ const TagStyle = css<TagStyleProps>`
   padding-block: 6px;
   padding-inline: 12px;
   transition: ease .3s;
-  border-block-end: 1px solid;
+  /* border-block-end: 1px solid #eee;
+  border-inline-end: 1px solid #eee; */
 `
 const TagButton = styled.button<TagStyleProps>`
   ${TagStyle}
@@ -34,7 +35,7 @@ const TagWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 100%;
   height: 100%;
   padding: 0;
-  margin-bottom: 5px;
+  margin-top: 1rem;
   background-color: transparent;
   display: flex;
   flex-direction: row;
