@@ -107,9 +107,9 @@ const TagWrapper = styled.div`
 `
 const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
   color: ${({ color }) => color};
-  background-color: ${(props) => (props.isDarkMode ? '#454545' : '#f8f8f8')};
+  background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f8f8f8')};
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 550;
   border-radius: 0.5rem;
   margin-right: 0.5rem;
   margin-top: 0.6rem;
