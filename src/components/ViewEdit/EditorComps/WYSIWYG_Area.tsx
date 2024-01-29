@@ -3,7 +3,6 @@ import "./EditorStyles.css";
 import { BubbleMenu, Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
-import styled from 'styled-components'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
@@ -81,11 +80,11 @@ const EditorWrapper = styled.div`
   //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
-    padding: 10px;
+    padding: .1rem .1rem 0px;
     outline: 0;
     overflow: hidden;
   }
-  `
+`
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
@@ -142,6 +141,10 @@ const EditorArea: React.FC = () => {
   const insertImage = (imageURL: string) => {
     editor.chain().focus().setImage({ src: imageURL }).run();
   };
+
+  // const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
+
+  // }
 
   return (
     <EditorWrapper>
