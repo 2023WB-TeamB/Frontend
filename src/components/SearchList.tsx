@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
 import SearchItem from './SearchItem'
-import { useModalStore, useSearchStore } from './useModalStore'
+import { useModalStore, useSearchStore } from './ModalStore'
 import useDebounce from './useDebounce'
 import { docStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/

@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Swal from 'sweetalert2'
+import { useState } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
-import { useDarkModeStore } from '../store/store'
+import { useDarkModeStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
+import ModalOptions from '../components/ViewEdit/ModalOptions'
+import ModalConfirm from '../components/ViewEdit/ModalConfirm'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/moon.svg'
 import imgWhiteMode from '../assets/images/sun.svg'
@@ -74,7 +76,6 @@ const SignInOut = styled.div<SignType>`
   font-weight: 500;
   color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
   margin-left: 10px;
-  /* align-self: flex-start; */
   cursor: pointer;
 `
 // 메인
@@ -82,19 +83,10 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const navigate = useNavigate()
-
-  // 스크롤 이벤트 핸들러 함수
-  // const handleScroll = () => {
-  //   setScrollPosition(window.scrollY)
-  // }
-  // useEffect(() => {
-  //   // 컴포넌트가 마운트되면 스크롤 이벤트 리스너 등록
-  //   window.addEventListener('scroll', handleScroll)
-  //   // 컴포넌트가 언마운트되면 이벤트 리스너 제거
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, []) // 빈 배열은 마운트/언마운트 시에만 실행
+  const openerStore = useViewerPageOpenStore()
+  const confirmBoxStore = useConfirmBoxStore()
+  const [confirmLabel, setConfirmLabel] = useState('')
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
 
   // 로그인 모달 클릭 이벤트
   const handleClickSignin = () => {
@@ -104,45 +96,38 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const handleDarkMode = () => {
     toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
-  // 검색 모달 클릭 이벤트
+  // 검색 모달 클릭 이벤트 핸들러
   const handleClickSearch = async (e: React.MouseEvent) => {
     e.preventDefault()
     searchListOpen()
   }
+  // 확인 모달창 핸들러
+  const handleConfirmYes = () => {
+    if (confirmAction) confirmAction()
+    confirmBoxStore.closeConfirm()
+  }
+  // Signout 클릭 이벤트 핸들러
+  const handleClickSignout = () => {
+    setConfirmLabel('Are you sure you want to leave this page?')
+    setConfirmAction(() => () => {
+      handleSignout()
+    })
+    confirmBoxStore.setConfirmLabel(confirmLabel)
+    confirmBoxStore.openConfirm()
+  }
+
   // 로그아웃 API 호출 이벤트
-  const handleClickSignout = async () => {
+  const handleSignout = async () => {
     const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
     const response = await axios.delete(url)
-    // 로그아웃 알림창
-    Swal.fire({
-      title: 'Sign out',
-      text: 'Do you want to signed out?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      // 로그아웃 확인 클릭 시
-      if (result.isConfirmed) {
-        Swal.fire({
-          // title: '로그아웃',
-          text: "You're signed out of GiToDoc",
-          icon: 'success',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'OK',
-        })
-        // 로그아웃 성공 시
-        if (response.status === 202) {
-          console.log('API Response: ', response.status)
-          // 로컬스토리지에서 토큰 삭제
-          localStorage.removeItem('accessToken')
-          localStorage.removeItem('refreshToken')
-          navigate('/') // 메인페이지로 이동
-        }
-      }
-    })
+    // 로그아웃 성공 시
+    if (response.status === 202) {
+      console.log('API Response: ', response.status)
+      // 로컬스토리지에서 토큰 삭제
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      navigate('/') // 메인페이지로 이동
+    }
   }
 
   return (
@@ -192,6 +177,15 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
           </RightWrapper>
         </Container>
       )}
+      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
+      <ModalConfirm
+        isOpenConfirm={confirmBoxStore.isOpenConfirm}
+        label={confirmLabel}
+        confirmOption={[
+          ['Yes', handleConfirmYes],
+          ['No', confirmBoxStore.closeConfirm],
+        ]}
+      />
       {/* 모달 */}
       {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}

@@ -9,7 +9,7 @@ import { Page4 } from '../components/MainPage/page4'
 import { Page5 } from '../components/MainPage/page5'
 import { Page2 } from '../components/MainPage/page2'
 import down_arrow from '../assets/images/MainPage/down_arrow.svg'
-import { useLocalStorageStore, useModalStore } from '../components/useModalStore.tsx'
+import { useLocalStorageStore, useModalStore } from '../components/ModalStore.tsx'
 import { useDarkModeStore } from '../store/store'
 
 /* 각 페이지에 대한 설정 */

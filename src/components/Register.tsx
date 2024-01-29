@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './ModalStore'
 import { useDarkModeStore } from '../store/store'
 
 // 인터페이스

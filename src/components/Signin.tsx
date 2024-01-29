@@ -8,7 +8,7 @@ import { useDarkModeStore } from '../../src/store/store'
 import Register from './Register'
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './ModalStore'
 /*-----------------------------------------------------------*/
 import imgGoogle from '../assets/images/logo_google.png'
 import imgGithub from '../assets/images/logo_github.png'
