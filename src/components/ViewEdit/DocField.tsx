@@ -11,6 +11,7 @@ import {
   useDarkModeStore,
   useSidePeekStore,
   useEditorObjectStore,
+  useConfirmBoxStore,
 } from '../../store/store'
 import EditIcon from '../../assets/images/Viewer/edit.svg'
 import SaveIcon from '../../assets/images/Viewer/save.svg'
@@ -146,6 +147,7 @@ const DocField: React.FC = () => {
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
   const { editor, setEditor } = useEditorObjectStore()
+  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -234,11 +236,16 @@ const DocField: React.FC = () => {
   }
 
   const unsaveDoc = async () => {
-    // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
-    setContent('')
-    setEditor(null)
-    await handleGetDoc()
-    toggleEditorMode()
+    // 취소 확인
+    setConfirmLabel("Are you sure you want to cancel without saving your modifications?")
+    setConfirmAction(async () => {
+      // 문서 정보 다시 가져오며 뷰어로 전환
+      setContent('')
+      setEditor(null)
+      await handleGetDoc()
+      toggleEditorMode()
+    })
+    openConfirm()
   }
 
   return (
