@@ -352,6 +352,16 @@ export const useDocTagStore = create<DocTagState>((set) => ({
     })),
 }))
 
+// ? 에디터 객체
+interface EditorObjectState {
+  editor: Editor | null
+  setEditor: (editor: Editor | null) => void
+}
+export const useEditorObjectStore = create<EditorObjectState>((set) => ({
+  editor: null,
+  setEditor: (editor) => set(() => ({ editor })),
+}))
+
 // ? 현재 문서 ID
 interface DocIdState {
   docId: number | null

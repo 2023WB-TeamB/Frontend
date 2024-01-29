@@ -9,12 +9,14 @@ import {
   useApiUrlStore,
   useDarkModeStore,
   useSidePeekStore,
+  useEditorObjectStore,
 } from '../../store/store'
 import EditIcon from '../../assets/images/Viewer/edit.svg'
 import SaveIcon from '../../assets/images/Viewer/save.svg'
 import CancelIcon from '../../assets/images/Viewer/cancel.svg'
 import EditorArea from './EditorComps/WYSIWYG_Area'
 import DocTags from './DocTags'
+import FixedMenubar from './EditorComps/FixedMenubar'
 
 // ? 문서 전체 폼
 const ViewerWrapper = styled.div`
@@ -131,6 +133,7 @@ const DocField: React.FC = () => {
   const { title, content, setTitle, setContent, setColor } = useDocContentStore()
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
+  const { editor, setEditor } = useEditorObjectStore()
 
   // ? 문서 조회 API
   const handleGetDoc = async () => {
@@ -160,6 +163,7 @@ const DocField: React.FC = () => {
     handleGetDoc()
     return () => {
       setContent('')
+      setEditor(null)
     }
   }, [docId])
 
@@ -207,6 +211,7 @@ const DocField: React.FC = () => {
   const unsaveDoc = async () => {
     // 저장 취소 시 문서 정보 다시 가져오며 뷰어로 전환
     setContent('')
+    setEditor(null)
     await handleGetDoc()
     toggleEditorMode()
   }
