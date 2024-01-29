@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import {
   useEditorModeStore,
   useDocContentStore,
@@ -146,6 +147,14 @@ const DocField: React.FC = () => {
   const { docId } = useDocIdStore()
   const { editor, setEditor } = useEditorObjectStore()
 
+  // * Toast 알림창
+  const ToastInfor = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1800,
+  })
+
   // ? 문서 조회 API
   const handleGetDoc = async () => {
     try {
@@ -202,13 +211,18 @@ const DocField: React.FC = () => {
           },
         },
       )
-      console.log('save success')
-      alert('문서가 저장되었습니다.')
+      ToastInfor.fire({
+        icon: 'success',
+        title: 'Document Save Successful',
+      })
       return true
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      alert('문서 저장에 실패했습니다.')
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'Document Save Failed',
+      })
       return false
     }
   }
