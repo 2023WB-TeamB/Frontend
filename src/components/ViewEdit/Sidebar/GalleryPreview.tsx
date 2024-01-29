@@ -16,9 +16,10 @@ interface GalleryPreviewProps {
 // 개별 미리보기 문서 스타일
 const PreviewContentWrapper = styled.div<{ isDarkMode: boolean, color: string }>`
   margin-block: 10px;
+  margin-left: 6px;
   width: 100%;
   height: 10rem;
-  background-color: ${(props) => props.isDarkMode ? '#222' : '#f8f8f8'};
+  background-color: ${(props) => props.isDarkMode ? '#222' : '#fff'};
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -165,7 +166,12 @@ const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
       </TitleContent>
       <TagContentWrapper>
         {content.keywords.length > 0 && content.keywords.map((item) => {
-          return <TagContent isDarkMode={isDarkMode} color={content.color}>{item.name}</TagContent>
+          return <TagContent 
+              isDarkMode={isDarkMode} 
+              color={content.color}
+            >
+              {item.name}
+            </TagContent>
         })}
       </TagContentWrapper>
     </PreviewContentWrapper>
