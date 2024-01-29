@@ -36,11 +36,12 @@ const Container = styled.div<ContainerType>`
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 255px);
-  height: 7.5vh;
-  position: absolute;
+  /* width: 100vw; */
+  height: 2rem;
+  position: fixed;
   border-color: black;
   background-color: ${(props) => (props.$isDarkMode ? '#202020' : '#fff')};
-  padding: 0 7.5rem;
+  padding: 0.5rem 7.5rem;
   z-index: 3;
   transition: ease 0.5s;
 
