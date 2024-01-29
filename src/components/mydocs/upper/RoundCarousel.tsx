@@ -72,7 +72,7 @@ const CreatedAt = styled.div`
 
 const Title = styled.div`
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.5rem;
   margin-top: 0.2rem;
@@ -90,7 +90,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   width: 100%;
-  height: 5.7rem;
+  min-height: 5.7rem;
   line-height: 1.2rem; // 한 줄당 태그의 높이를 제한
   margin-top: 0.2rem;
   overflow: hidden;
@@ -98,10 +98,10 @@ const TagWrapper = styled.div`
 
 const Tag = styled.text<{ color: string }>`
   color: ${({ color }) => color};
-  background-color: #e4e4e4;
-  font-size: 0.8rem;
-  font-weight: 300;
-  border-radius: 0.65rem;
+  background-color: #f8f8f8;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 0.58rem;
   margin-top: 0.3rem;
   margin-right: 0.2rem;
   padding: 0rem 0.3rem;
