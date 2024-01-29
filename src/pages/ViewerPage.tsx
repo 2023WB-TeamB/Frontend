@@ -51,8 +51,7 @@ function ViewerPage() {
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const { docId } = useDocIdStore()
   const openerStore = useViewerPageOpenStore()
-  const confirmBoxStore = useConfirmBoxStore()
-  const [confirmLabel, setConfirmLabel] = useState('')
+  const {openConfirm, closeConfirm, setConfirmLabel} = useConfirmBoxStore()
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
   const navigate = useNavigate()
 
@@ -82,8 +81,7 @@ function ViewerPage() {
     setConfirmAction(() => () => {
       handleDeleteDoc()
     })
-    confirmBoxStore.setConfirmLabel(confirmLabel)
-    confirmBoxStore.openConfirm()
+    openConfirm()
   }
   // 뷰어 종료 확인
   const openConfirmWithExit = () => {
@@ -91,15 +89,14 @@ function ViewerPage() {
     setConfirmAction(() => () => {
       navigate('/mydocs')
     })
-    confirmBoxStore.setConfirmLabel(confirmLabel)
-    confirmBoxStore.openConfirm()
+    openConfirm()
   }
 
   // 확인 모달창 핸들러
   const handleConfirmYes = () => {
     if (confirmAction)
       confirmAction();
-    confirmBoxStore.closeConfirm()
+    closeConfirm()
   }
 
   return (
@@ -124,11 +121,9 @@ function ViewerPage() {
       <SidebarPanel />
       <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm
-        isOpenConfirm={confirmBoxStore.isOpenConfirm}
-        label={confirmLabel}
         confirmOption={[
           ['Yes', handleConfirmYes],
-          ['No', confirmBoxStore.closeConfirm],
+          ['No', closeConfirm],
         ]}
       />
       <StyledDocFieldWrapper>

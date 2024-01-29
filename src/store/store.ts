@@ -270,8 +270,6 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   ConfirmLabel: '',
   openConfirm: () =>
     set(() => ({
-      isOpenGalleryPanel: false,
-      isOpenVersionPanel: false,
       isOpenConfirm: true,
     })),
   closeConfirm: () =>

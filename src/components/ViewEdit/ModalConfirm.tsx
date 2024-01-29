@@ -4,7 +4,7 @@ import ConfirmButton from './ConfirmButton'
 import ConfirmIcon from '../../assets/images/Viewer/confirm.svg'
 import ConfirmIcon_dark from '../../assets/images/Viewer/confirm_dark.svg'
 import BackDrop from './BackDrop'
-import { useDarkModeStore } from '../../store/store'
+import { useConfirmBoxStore, useDarkModeStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   position: fixed;
@@ -60,19 +60,17 @@ const ButtonWrapper = styled.div`
 `
 
 interface ModalConfirmProps {
-  label: string
   confirmOption: Array<
     [option: string, onClick: (event: React.MouseEvent<HTMLButtonElement>) => void]
   >
-  isOpenConfirm: boolean
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
-  isOpenConfirm,
-  label,
   confirmOption,
 }) => {
+  const {isOpenConfirm, ConfirmLabel} = useConfirmBoxStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+
   if (isOpenConfirm)
     return (
       <>
@@ -83,7 +81,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
               src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
               alt="Confirm Icon"
             />
-            <h3>{label}</h3>
+            <h3>{ConfirmLabel}</h3>
           </ContextWrapper>
           <ButtonWrapper>
             {confirmOption &&
