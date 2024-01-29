@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { projectData } from '../components/ViewEdit/Sidebar/SidebarPanel'
 import { Editor } from '@tiptap/react'
+import { projectData } from '../components/ViewEdit/Sidebar/SidebarPanel'
 
 export type Keyword = {
   name: string
