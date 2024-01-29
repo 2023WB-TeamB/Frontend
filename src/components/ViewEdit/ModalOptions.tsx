@@ -21,7 +21,7 @@ import {
   useDocIdStore,
 } from '../../store/store'
 
-const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
+const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -29,9 +29,9 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 350px;
   height: 450px;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(42, 42, 42, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
+    props.$isDarkMode ? 'rgba(42, 42, 42, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
   border: 0.5px solid;
-  border-color: ${(props) => (props.isDarkMode ? '#383838' : '#c8c8c8')};
+  border-color: ${(props) => (props.$isDarkMode ? '#383838' : '#c8c8c8')};
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.05);
   border-radius: 50px;
   display: flex;
@@ -46,7 +46,7 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
     height: 60px;
     font-size: 2em;
     font-weight: 400;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   }
   @keyframes fadeInAnimation {
     0% {
@@ -206,34 +206,34 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       })
   }
 
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
 
   if (isOpenOptions)
     return (
       <>
         <BackDrop />
-        <ModalWrapper isDarkMode={isDarkMode}>
+        <ModalWrapper $isDarkMode={$isDarkMode}>
           <CloseButton onClick={onClose}>
-            <img src={isDarkMode ? closeIcon_dark : closeIcon} alt="Close" />
+            <img src={$isDarkMode ? closeIcon_dark : closeIcon} alt="Close" />
           </CloseButton>
           <h3>Export</h3>
           <OptionsWrapper>
             <OptionButton
-              icon={isDarkMode ? pdfIcon_dark : pdfIcon}
+              icon={$isDarkMode ? pdfIcon_dark : pdfIcon}
               context="Download as PDF"
               onClick={() => downloadPdfDocument(rootElementId)}
             />
             {/* <OptionButton
-              icon={isDarkMode ? cloudIcon_dark : cloudIcon}
+              icon={$isDarkMode ? cloudIcon_dark : cloudIcon}
               context="Upload to Cloud"
             /> */}
             <OptionButton
-              icon={isDarkMode ? urlIcon_dark : urlIcon}
+              icon={$isDarkMode ? urlIcon_dark : urlIcon}
               context="Copy a URL"
               onClick={handleCopyClipBoardURL}
             />
             <OptionButton
-              icon={isDarkMode ? qrCreateIcon_dark : qrCreateIcon}
+              icon={$isDarkMode ? qrCreateIcon_dark : qrCreateIcon}
               context="Make a QR code"
               onClick={showQRCode}
             />
@@ -241,7 +241,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
         </ModalWrapper>
       </>
     )
-  return (undefined)
+  return undefined
 }
 
 export default ModalOptions

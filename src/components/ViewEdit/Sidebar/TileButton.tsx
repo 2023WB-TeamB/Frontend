@@ -10,7 +10,7 @@ const Icon = styled.img`
   background: transparent;
 `
 
-const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: boolean }>`
+const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; $isDarkMode: boolean }>`
   margin-top: ${(props) => (props.isOpenSideAlways ? '5px' : '0')};
   position: relative;
   display: flex;
@@ -25,7 +25,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   transition: ease 0.3s;
   border: none;
   ${Icon} {
-    filter: ${(props) => (props.isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)')};
+    filter: ${(props) => (props.$isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)')};
   }
 
   &:before {
@@ -44,8 +44,8 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
     filter: none;
     margin-left: 5px;
     transition: ease 0.3s;
-    border-inline-start: 3px solid ${(props) => (props.isDarkMode ? '#ddd' : '#222')};
-    background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f2f2f2')};
+    border-inline-start: 3px solid ${(props) => (props.$isDarkMode ? '#ddd' : '#222')};
+    background-color: ${(props) => (props.$isDarkMode ? '#353535' : '#f2f2f2')};
   }
 
   &:active:before {
@@ -61,7 +61,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   & h3 {
     margin-left: 15px;
     font-size: 16px;
-    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : '#202020')};
     font-weight: 400;
   }
 `
@@ -84,11 +84,14 @@ interface ButtonProps {
 
 // 사이드바 타일버튼 기본 양식
 const TileButton: React.FC<ButtonProps> = ({ icon, name, onClick }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
 
   return icon !== '' ? (
-    <StyledTileButton onClick={onClick} isOpenSideAlways={isOpenSideAlways} isDarkMode={isDarkMode}>
+    <StyledTileButton
+      onClick={onClick}
+      isOpenSideAlways={isOpenSideAlways}
+      $isDarkMode={$isDarkMode}>
       <Icon src={icon} />
       {isOpenSideAlways && <h3>{name}</h3>}
     </StyledTileButton>

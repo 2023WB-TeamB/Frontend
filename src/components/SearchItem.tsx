@@ -15,11 +15,11 @@ interface SearchItemType {
   keywords?: { name: string }[]
 }
 interface TagType {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   color: string
 }
 // 스타일
-const Container = styled.div<{ isDarkMode: boolean }>`
+const Container = styled.div<{ $isDarkMode: boolean }>`
   width: 50rem;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   cursor: pointer;
   &:hover {
     width: 50rem;
-    background: ${(props) => (props.isDarkMode ? '#414141' : '#f0f0f0')};
+    background: ${(props) => (props.$isDarkMode ? '#414141' : '#f0f0f0')};
   }
 `
 const TItleDateWrapper = styled.div`
@@ -40,7 +40,7 @@ const Date = styled.div`
   color: #c8c8c8;
   margin-left: 5px;
 `
-const Title = styled.div<{ isDarkMode: boolean }>`
+const Title = styled.div<{ $isDarkMode: boolean }>`
   max-width: 35rem;
   font-size: 1.2rem;
   font-weight: bold;
@@ -49,7 +49,7 @@ const Title = styled.div<{ isDarkMode: boolean }>`
   white-space: nowrap;
   overflow: hidden;
   margin: 0 20px;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
 `
 const TagWrapper = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const TagWrapper = styled.div`
 const Tag = styled.span<TagType>`
   /* color: #eb8698; */
   color: ${(props) => props.color};
-  background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f8f8f8')};
+  background-color: ${(props) => (props.$isDarkMode ? '#353535' : '#f8f8f8')};
   font-weight: 500;
   border-radius: 10px;
   padding: 0 10px;
@@ -70,7 +70,7 @@ const Tag = styled.span<TagType>`
 `
 // 메인
 const SearchItem: React.FC<{ getData: SearchItemType[] }> = ({ getData }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { setCardId } = cardIdStore((state) => ({ setCardId: state.setCardId }))
   const { modalOpen, setModalOpen } = modalOpenStore() // Card 모달 상태관리
   const { modalContent, setModalContent } = modalContentStore((state) => ({
@@ -97,15 +97,15 @@ const SearchItem: React.FC<{ getData: SearchItemType[] }> = ({ getData }) => {
               setModalContent(SearchedModal) // 클릭한 카드의 정보를 ModalContent에 저장
               setModalOpen(true) // 모달 open
             }}
-            isDarkMode={isDarkMode}>
+            $isDarkMode={$isDarkMode}>
             <TItleDateWrapper>
-              <Title isDarkMode={isDarkMode}> {item.title}</Title>
+              <Title $isDarkMode={$isDarkMode}> {item.title}</Title>
               <Date>{item.created_at.slice(0, 10)}</Date>
             </TItleDateWrapper>
             <TagWrapper>
               {item.keywords!.length > 0 &&
                 item.keywords!.map((tag) => (
-                  <Tag key={tag.name} color={item.color} isDarkMode={isDarkMode}>
+                  <Tag key={tag.name} color={item.color} $isDarkMode={$isDarkMode}>
                     {tag.name}
                   </Tag>
                 ))}

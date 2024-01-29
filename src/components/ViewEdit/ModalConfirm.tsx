@@ -6,7 +6,7 @@ import ConfirmIcon_dark from '../../assets/images/Viewer/confirm_dark.svg'
 import BackDrop from './BackDrop'
 import { useDarkModeStore } from '../../store/store'
 
-const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
+const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
   position: fixed;
   top: 49%;
   left: 50%;
@@ -14,11 +14,11 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 430px;
   height: 230px;
   background-color: ${(props) =>
-    props.isDarkMode ? 'rgba(44, 44, 44, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
+    props.$isDarkMode ? 'rgba(44, 44, 44, 0.98)' : 'rgba(255, 255, 255, 0.98)'};
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.05);
   border-radius: 50px;
   border: 0.5px solid;
-  border-color: ${(props) => (props.isDarkMode ? '#383838' : '#c8c8c8')};
+  border-color: ${(props) => (props.$isDarkMode ? '#383838' : '#c8c8c8')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,12 +27,12 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   transition: all ease-in-out 0.5s;
 `
 
-const ContextWrapper = styled.div<{ isDarkMode: boolean }>`
+const ContextWrapper = styled.div<{ $isDarkMode: boolean }>`
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
 
   & img {
     width: 55px;
@@ -48,7 +48,7 @@ const ContextWrapper = styled.div<{ isDarkMode: boolean }>`
     text-align: center;
     display: flex;
     align-items: center;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   }
 `
 
@@ -67,22 +67,15 @@ interface ModalConfirmProps {
   isOpenConfirm: boolean
 }
 
-const ModalConfirm: React.FC<ModalConfirmProps> = ({
-  isOpenConfirm,
-  label,
-  confirmOption,
-}) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+const ModalConfirm: React.FC<ModalConfirmProps> = ({ isOpenConfirm, label, confirmOption }) => {
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   if (isOpenConfirm)
     return (
       <>
         <BackDrop />
-        <ModalWrapper isDarkMode={isDarkMode}>
-          <ContextWrapper isDarkMode={isDarkMode}>
-            <img 
-              src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
-              alt="Confirm Icon"
-            />
+        <ModalWrapper $isDarkMode={$isDarkMode}>
+          <ContextWrapper $isDarkMode={$isDarkMode}>
+            <img src={$isDarkMode ? ConfirmIcon_dark : ConfirmIcon} alt="Confirm Icon" />
             <h3>{label}</h3>
           </ContextWrapper>
           <ButtonWrapper>
@@ -95,7 +88,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         </ModalWrapper>
       </>
     )
-  return (undefined)
+  return undefined
 }
 
 export default ModalConfirm
