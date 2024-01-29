@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDarkModeStore, useDocIdStore } from '../../../store/store'
+import { useConfirmBoxStore, useDarkModeStore, useDocContentStore, useDocIdStore, useEditorModeStore } from '../../../store/store'
 
 interface GalleryPreviewProps {
   content: {
@@ -145,9 +145,22 @@ const TagContent = styled.div<{ isDarkMode: boolean; color: string}>`
 
 const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const {setContent} = useDocContentStore()
+  const {isEditor, toggleEditorMode} = useEditorModeStore()
+  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const {setDocId} = useDocIdStore()
 
   const handlePreviewDoc = () => {
+    if (isEditor) {
+      setConfirmLabel("Are you sure you want to leave without saving?")
+      setConfirmAction(() => {
+        setContent('')
+        toggleEditorMode()
+        setDocId(content.id)
+      })
+      openConfirm()
+    }
+    else 
     setDocId(content.id)
   }
 

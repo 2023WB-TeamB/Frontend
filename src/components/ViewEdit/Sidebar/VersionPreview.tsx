@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished';
-import { useDocIdStore } from '../../../store/store'
+import { useConfirmBoxStore, useDocContentStore, useDocIdStore, useEditorModeStore } from '../../../store/store'
 import { projectData } from './SidebarPanel';
 
 interface VersionPreviewProps {
@@ -86,8 +86,22 @@ const Title = styled.div`
 // `
 
 const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
+  const {setContent} = useDocContentStore()
+  const {isEditor, toggleEditorMode} = useEditorModeStore()
+  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const {setDocId} = useDocIdStore()
+
   const handleCardClick = () => {
+    if (isEditor) {
+      setConfirmLabel("Are you sure you want to leave without saving?")
+      setConfirmAction(() => {
+        setContent('')
+        toggleEditorMode()
+        setDocId(content.id)
+      })
+      openConfirm()
+    }
+    else 
     setDocId(content.id)
   }
 

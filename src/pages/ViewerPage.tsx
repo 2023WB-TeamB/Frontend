@@ -21,7 +21,8 @@ import {
   useConfirmBoxStore,
   useDocIdStore,
   useApiUrlStore,
- useDarkModeStore } from '../store/store'
+ useDarkModeStore, 
+ useEditorModeStore} from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
 
 const StyledForm = styled.div<{ isDarkMode: boolean }>`
@@ -50,6 +51,7 @@ function ViewerPage() {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const { docId } = useDocIdStore()
+  const { isEditor, toggleEditorMode } = useEditorModeStore()
   const openerStore = useViewerPageOpenStore()
   const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const navigate = useNavigate()
@@ -66,6 +68,8 @@ function ViewerPage() {
 
   // 뷰어 나가기
   const handleExitViewer = () => {
+    if (isEditor)
+      toggleEditorMode()
     navigate('/mydocs')
   }
   
@@ -102,7 +106,10 @@ function ViewerPage() {
   }
   // 뷰어 종료 확인
   const openConfirmWithExit = () => {
-    setConfirmLabel('Are you sure you want to leave this page?')
+    setConfirmLabel(isEditor ? 
+      'Are you sure you want to leave without saving?' :
+      'Are you sure you want to leave this page?'
+    )
     setConfirmAction(handleExitViewer)
     openConfirm()
   }
