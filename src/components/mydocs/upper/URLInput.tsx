@@ -9,7 +9,8 @@ import {
   isGeneratingStore,
   useDarkModeStore,
 } from '../../../store/store'
-import colors from './defaultColors.json'
+import defaultColors from './defaultColors.json'
+import { desaturate } from 'polished'
 
 const Wrapper = styled.div`
   display: flex;
@@ -72,8 +73,10 @@ export const URLInput: React.FC = () => {
 
   // 문서 생성시 기본 색상 중 하나를 랜덤으로 지정
   const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * colors.length)
-    return colors[randomIndex].color
+    const randomIndex = Math.floor(Math.random() * defaultColors.length)
+    let color = defaultColors[randomIndex].color
+    color = desaturate(0.15, color) // 랜덤으로 선택된 색상의 채도를 15% 낮춤
+    return color
   }
 
   // 문서 생성 함수
@@ -123,7 +126,7 @@ export const URLInput: React.FC = () => {
       // 문서 생성 실패
       if (error.response) {
         setIsGenerating(false)
-        console.error('API Response: ', error.response.status)
+        console.error('API Response: ', error.response)
         Swal.fire({
           position: 'bottom-end',
           icon: 'error',

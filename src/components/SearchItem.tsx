@@ -60,7 +60,8 @@ const TagWrapper = styled.div`
 const Tag = styled.span<TagType>`
   /* color: #eb8698; */
   color: ${(props) => props.color};
-  background-color: ${(props) => (props.isDarkMode ? '#393939' : '#f8f8f8')};
+  background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f8f8f8')};
+  font-weight: 500;
   border-radius: 10px;
   padding: 0 10px;
   margin-top: 3px;
