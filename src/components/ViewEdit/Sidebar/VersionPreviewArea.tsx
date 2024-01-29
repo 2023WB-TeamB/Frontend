@@ -8,17 +8,21 @@ import RightArrowIcon_Dark from '../../../assets/images/Viewer/arrow_right_dark.
 import { useDarkModeStore } from '../../../store/store'
 import { projectData } from './SidebarPanel'
 
-const PreviewWrapper = styled.div`
-  width: 382px;
-  margin: 3px 0 30px 0;
+const PreviewWrapper = styled.div<{ isDarkMode: boolean }>`
+  width: 20rem;
+  padding: 1rem;
+  margin: 3px 0 15px 5px;
   position: relative;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid ${(props) => props.isDarkMode ? '#555' : '#ddd'};
+  border-radius: 1.5rem;
+  background: ${(props) => props.isDarkMode ? '#222' : '#fff'};
 
   h3 {
-    width: 80%;
+    width: 88%;
     text-align: left;
     margin: 0;
     overflow: hidden;
@@ -31,9 +35,10 @@ const PreviewWrapper = styled.div`
     margin-bottom: 5px;
     margin-left: 9%;
     margin-right: 9%;
-    width: 82%;
+    width: 90%;
     height: 1px;
-    background-image: linear-gradient(to right, #76cae8, #ad51de);
+    /* background-image: linear-gradient(to right, #76cae8, #ad51de); */
+    background: #ddd;
     border: none;
   }
 `
@@ -49,8 +54,8 @@ const SlideWrapper = styled.span`
 
 const Button = styled.button<{ imageUrl: string }>`
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
@@ -104,7 +109,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   }
 
   return (
-    <PreviewWrapper>
+    <PreviewWrapper isDarkMode={isDarkMode}>
       <h3>{title}</h3>
       <hr />
       <SlideWrapper>
