@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
@@ -51,8 +50,7 @@ function ViewerPage() {
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const { docId } = useDocIdStore()
   const openerStore = useViewerPageOpenStore()
-  const {openConfirm, closeConfirm, setConfirmLabel} = useConfirmBoxStore()
-  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
+  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const navigate = useNavigate()
 
   const { apiUrl } = useApiUrlStore()
@@ -78,25 +76,14 @@ function ViewerPage() {
   // 문서 삭제 확인
   const openConfirmWithDelete = () => {
     setConfirmLabel('Are you sure you want to delete this file?')
-    setConfirmAction(() => () => {
-      handleDeleteDoc()
-    })
+    setConfirmAction(handleDeleteDoc)
     openConfirm()
   }
   // 뷰어 종료 확인
   const openConfirmWithExit = () => {
     setConfirmLabel('Are you sure you want to leave this page?')
-    setConfirmAction(() => () => {
-      navigate('/mydocs')
-    })
+    setConfirmAction(handleExitViewer)
     openConfirm()
-  }
-
-  // 확인 모달창 핸들러
-  const handleConfirmYes = () => {
-    if (confirmAction)
-      confirmAction();
-    closeConfirm()
   }
 
   return (
@@ -120,12 +107,7 @@ function ViewerPage() {
       />
       <SidebarPanel />
       <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
-      <ModalConfirm
-        confirmOption={[
-          ['Yes', handleConfirmYes],
-          ['No', closeConfirm],
-        ]}
-      />
+      <ModalConfirm />
       <StyledDocFieldWrapper>
         <DocField />
       </StyledDocFieldWrapper>

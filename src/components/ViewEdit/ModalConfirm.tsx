@@ -59,17 +59,14 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
 `
 
-interface ModalConfirmProps {
-  confirmOption: Array<
-    [option: string, onClick: (event: React.MouseEvent<HTMLButtonElement>) => void]
-  >
-}
-
-const ModalConfirm: React.FC<ModalConfirmProps> = ({
-  confirmOption,
-}) => {
-  const {isOpenConfirm, ConfirmLabel} = useConfirmBoxStore()
+const ModalConfirm: React.FC = () => {
+  const {isOpenConfirm, confirmLabel, confirmAction, closeConfirm} = useConfirmBoxStore()
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+
+  const handleTrueState = () => {
+    confirmAction()
+    closeConfirm()
+  }
 
   if (isOpenConfirm)
     return (
@@ -81,14 +78,11 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
               src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
               alt="Confirm Icon"
             />
-            <h3>{ConfirmLabel}</h3>
+            <h3>{confirmLabel}</h3>
           </ContextWrapper>
           <ButtonWrapper>
-            {confirmOption &&
-              confirmOption.map((item) => {
-                const [option, onClick] = item
-                return <ConfirmButton context={option} onClick={onClick} />
-              })}
+            <ConfirmButton context="Yes" onClick={handleTrueState} />
+            <ConfirmButton context="No" onClick={closeConfirm} />
           </ButtonWrapper>
         </ModalWrapper>
       </>

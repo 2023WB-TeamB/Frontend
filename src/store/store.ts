@@ -261,14 +261,21 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
 // ? 확인 모달창
 interface ConfirmBoxState {
   isOpenConfirm: boolean
-  ConfirmLabel: string
+  confirmLabel: string
+  confirmAction: () => void
+  setConfirmAction: (newConfirmAction: () => void) => void
   openConfirm: () => void
   closeConfirm: () => void
   setConfirmLabel: (label: string) => void
 }
 export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   isOpenConfirm: false,
-  ConfirmLabel: '',
+  confirmLabel: '',
+  confirmAction: () => {},
+  setConfirmAction: (confirmAction) =>
+    set(() => ({
+      confirmAction,
+    })),
   openConfirm: () =>
     set(() => ({
       isOpenConfirm: true,
@@ -277,9 +284,9 @@ export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
     set(() => ({
       isOpenConfirm: false,
     })),
-  setConfirmLabel: (ConfirmLabel: string) =>
+  setConfirmLabel: (confirmLabel) =>
     set(() => ({
-      ConfirmLabel,
+      confirmLabel,
     })),
 }))
 
