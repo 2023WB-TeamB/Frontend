@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
 import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
@@ -55,6 +56,19 @@ function ViewerPage() {
 
   const { apiUrl } = useApiUrlStore()
 
+  // * Toast 알림창
+  const ToastInfor = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1800,
+  })
+
+  // 뷰어 나가기
+  const handleExitViewer = () => {
+    navigate('/mydocs')
+  }
+  
   // ? 문서 삭제 API
   const handleDeleteDoc = async () => {
     try {
@@ -65,11 +79,18 @@ function ViewerPage() {
           Authorization: `Bearer ${access}`,
         },
       })
-      console.log('document delete success')
+      handleExitViewer()
+      ToastInfor.fire({
+        icon: 'success',
+        title: 'Document Delete Successful',
+      })
     } catch (error: any) {
       // API 호출 실패
       console.error('API Error :', error)
-      console.log('document delete fail')
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'Document Delete Failed',
+      })
     }
   }
 
