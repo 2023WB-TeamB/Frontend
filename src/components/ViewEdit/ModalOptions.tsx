@@ -42,10 +42,10 @@ const ModalWrapper = styled.div<{ isDarkMode: boolean }>`
   animation: fadeInAnimation 0.2s ease-in-out;
 
   & h3 {
-    margin: 60px 35px 10px;
+    margin: 50px 35px 40px;
     height: 60px;
-    font-size: 2em;
-    font-weight: 400;
+    font-size: 2.5rem;
+    font-weight: 700;
     color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   }
   @keyframes fadeInAnimation {
