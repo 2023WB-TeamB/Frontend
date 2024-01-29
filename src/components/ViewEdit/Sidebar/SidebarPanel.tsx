@@ -28,7 +28,7 @@ const StyledSidebarPanel = styled.div<{
   flex-direction: column;
   align-items: flex-end;
   border-right: 0.8px solid ${(props) => (props.isDarkMode ? '#484848' : '#c8c8c8')};
-  background-color: ${(props) => (props.isDarkMode ? '#292929' : '#f0f0f0')};
+  background-color: ${(props) => (props.isDarkMode ? '#292929' : '#f8f8f8')};
   transition: ease-in-out 0.3s;
 `
 
