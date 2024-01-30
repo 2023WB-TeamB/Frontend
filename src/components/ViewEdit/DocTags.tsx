@@ -66,18 +66,36 @@ const TagWrapper = styled.div<{ $isDarkMode: boolean }>`
   }
 `
 
+const TagGuideContent = styled.div<{ $isDarkMode: boolean }>`
+  position: absolute;
+  width: 20rem;
+  height: 4rem;
+  background: ${(props) => props.$isDarkMode ? '#222' : '#fff'};;
+  outline: 1px solid ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
+  border-radius: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  font-size: .7rem;
+`
+
 const DocTags: React.FC = () => {
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { tags, addTag, removeTag } = useDocTagStore()
   const { color } = useDocContentStore()
   const { isEditor } = useEditorModeStore()
   const [inputTag, setInputTag] = useState('')
+  const [isOpenTagGuide, setIsOpenTagGuide] = useState(false)
 
-  const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       setInputTag('')
       addTag(inputTag)
     }
+    if (isOpenTagGuide)
+      setIsOpenTagGuide(false)
   }
 
   return (
@@ -93,7 +111,7 @@ const DocTags: React.FC = () => {
           </TagButton>
         ),
       )}
-      {isEditor && (
+      {isEditor &&
         <input
           value={inputTag}
           defaultValue={inputTag}
@@ -101,9 +119,20 @@ const DocTags: React.FC = () => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setInputTag(event.target.value)
           }}
-          onKeyDown={handleAddTag}
+          onKeyDown={handleKeydown}
+          onFocus={() => setIsOpenTagGuide(true)}
+          onBlur={() => setIsOpenTagGuide(false)}
         />
-      )}
+      }
+      {isOpenTagGuide && 
+        <TagGuideContent $isDarkMode={$isDarkMode}>
+          <p>
+            Enter the tag and press Enter to create it.
+            <br/>
+            And click on the created tag and it will be deleted.
+          </p>
+        </TagGuideContent>
+      }
     </TagWrapper>
   )
 }
