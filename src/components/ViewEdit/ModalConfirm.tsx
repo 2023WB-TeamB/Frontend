@@ -24,7 +24,16 @@ const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
   align-items: center;
   overflow: hidden;
   z-index: 1000;
-  transition: all ease-in-out 0.5s;
+  animation: fadeInAnimation 0.2s ease-in-out;
+  
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `
 
 const ContextWrapper = styled.div<{ $isDarkMode: boolean }>`
