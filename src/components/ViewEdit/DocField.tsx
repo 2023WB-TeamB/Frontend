@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import TextareaAutosize from 'react-textarea-autosize'
 import {
   useEditorModeStore,
   useDocContentStore,
@@ -110,7 +111,6 @@ interface TitleAreaProps {
 const TitleArea = styled.div<TitleAreaProps>`
   width: 90%;
   max-width: ${(props) => (props.isOpenSideAlways ? '75vw' : '85vw')};
-  height: 4rem;
   text-align: left;
   display: flex;
   align-items: center;
@@ -119,8 +119,9 @@ const TitleArea = styled.div<TitleAreaProps>`
   & textarea {
     margin: 0;
     padding-inline: 0;
-    padding-block: 5px;
-    font-size: 2.5rem;
+    padding-top: 0;
+    padding-bottom: .5rem;
+    font-size: 2.3rem;
     border: none;
     outline: none;
     background-color: transparent;
@@ -130,12 +131,14 @@ const TitleArea = styled.div<TitleAreaProps>`
     resize: none;
     width: 100%;
     box-sizing: border-box;
-    line-height: 1;
-    height: 3.5rem;
+    line-height: 3.2rem;
     overflow: hidden;
+    word-break: keep-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: horizontal;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: inter;
+    white-space: pre-wrap;
   }
 `
 
@@ -251,7 +254,7 @@ const DocField: React.FC = () => {
   return (
     <ViewerWrapper id="DocField">
       <TitleArea $isDarkMode={$isDarkMode} isOpenSideAlways={isOpenSideAlways}>
-        {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
+        {isEditor ? <TextareaAutosize value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
       <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
