@@ -151,8 +151,9 @@ const DocField: React.FC = () => {
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
   const { editor, setEditor } = useEditorObjectStore()
+  const { isEditor, toggleEditorMode } = useEditorModeStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
-
+  
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
     toast: true,
@@ -188,12 +189,13 @@ const DocField: React.FC = () => {
   useEffect(() => {
     handleGetDoc()
     return () => {
+      if (isEditor)
+        toggleEditorMode()
       setContent('')
       setEditor(null)
     }
   }, [docId])
 
-  const { isEditor, toggleEditorMode } = useEditorModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
