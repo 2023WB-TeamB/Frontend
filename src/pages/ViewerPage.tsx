@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { motion } from "framer-motion"
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
 import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
@@ -115,32 +116,42 @@ function ViewerPage() {
   }
 
   return (
-    <StyledForm $isDarkMode={$isDarkMode}>
-      <LittleHeader />
-      <Sidebar
-        list={[
-          [isOpenSideAlways ? double_arrow_left : double_arrow_right, '', toggleOpenSideAlways],
-          [gallery, 'Document', openerStore.openGalleryPanel],
-          [version, 'Project', openerStore.openVersionPanel],
-          [exportBtn, 'Export', openerStore.openOptions],
-          [deleteBtn, 'Delete', openConfirmWithDelete],
-          ['', undefined, () => undefined],
-          ['', undefined, () => undefined],
-          ['', undefined, () => undefined],
-          ['', undefined, () => undefined],
-          ['', undefined, () => undefined],
-          ['', undefined, () => undefined],
-          [exit, 'Exit', openConfirmWithExit],
-        ]}
-      />
-      <SidebarPanel />
-      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
-      <ModalConfirm />
-      <StyledDocFieldWrapper>
-        <DocField />
-      </StyledDocFieldWrapper>
-      <BadgeGuide />
-    </StyledForm>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        ease: "easeInOut",
+        duration: .3,
+      }}
+    >
+      <StyledForm $isDarkMode={$isDarkMode}>
+        <LittleHeader />
+        <Sidebar
+          list={[
+            [isOpenSideAlways ? double_arrow_left : double_arrow_right, '', toggleOpenSideAlways],
+            [gallery, 'Document', openerStore.openGalleryPanel],
+            [version, 'Project', openerStore.openVersionPanel],
+            [exportBtn, 'Export', openerStore.openOptions],
+            [deleteBtn, 'Delete', openConfirmWithDelete],
+            ['', undefined, () => undefined],
+            ['', undefined, () => undefined],
+            ['', undefined, () => undefined],
+            ['', undefined, () => undefined],
+            ['', undefined, () => undefined],
+            ['', undefined, () => undefined],
+            [exit, 'Exit', openConfirmWithExit],
+          ]}
+        />
+        <SidebarPanel />
+        <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
+        <ModalConfirm />
+        <StyledDocFieldWrapper>
+          <DocField />
+        </StyledDocFieldWrapper>
+        <BadgeGuide />
+      </StyledForm>
+    </motion.div>
   )
 }
 

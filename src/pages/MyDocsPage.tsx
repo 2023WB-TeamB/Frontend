@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
+import { motion } from 'framer-motion'
 import Header from '../components/Header'
 import GiToDoc from '../components/mydocs/upper/GiToDoc'
 import Documentation from '../components/mydocs/upper/Documentation'
@@ -220,7 +221,15 @@ const MyDocsPage: React.FC = () => {
   */
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        ease: "easeInOut",
+        duration: .3,
+      }}
+    >
       <Header isGetToken={isGetToken} />
       <Container>
         <ScrollSnap>
@@ -247,7 +256,7 @@ const MyDocsPage: React.FC = () => {
           )}
         </ScrollSnap>
       </Container>
-    </div>
+    </motion.div>
   )
 }
 
