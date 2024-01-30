@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Swal from 'sweetalert2'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
 import { useConfirmBoxStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
@@ -84,6 +83,8 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
   const navigate = useNavigate()
+  const openerStore = useViewerPageOpenStore()
+  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -101,11 +102,20 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const handleDarkMode = () => {
     toggleDarkMode() // prev: 이전 요소의 값, 다크모드 상태를 토글
   }
-  // 검색 모달 클릭 이벤트
+  // 검색 모달 클릭 이벤트 핸들러
   const handleClickSearch = async (e: React.MouseEvent) => {
     e.preventDefault()
     searchListOpen()
   }
+  // Signout 클릭 이벤트 핸들러
+  const handleClickSignout = () => {
+    setConfirmLabel('Are you sure you want to leave this page?')
+    setConfirmAction(() => {
+      handleSignout()
+    })
+    openConfirm()
+  }
+
   // 로그아웃 API 호출 이벤트
   const handleSignout = async () => {
     const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
@@ -177,6 +187,9 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
           </RightWrapper>
         </Container>
       )}
+      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
+      <ModalConfirm />
+
       {/* 모달 */}
       {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}

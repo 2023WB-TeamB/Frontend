@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 /*-----------------------------------------------------------*/
 import SearchItem from './SearchItem'
-import { useModalStore, useSearchStore } from './useModalStore'
+import { useModalStore, useSearchStore } from './ModalStore'
 import useDebounce from './useDebounce'
 import { docStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
@@ -102,16 +102,15 @@ const SearchList: React.FC = () => {
 
   // docs의 문서를 title, keywords로 검색
   const getDocument = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value.toLowerCase())
+    setQuery(e.target.value)
   }
   // 필터링 로직
   useEffect(() => {
     const getData = () => {
       setFilteredData(
         docs.filter((doc) => {
-          const lowerCaseQuery = query.toLowerCase() // 입력을 소문자로
-          const title = doc.title.includes(lowerCaseQuery)
-          const keywords = doc.keywords!.some((keyword) => keyword.name.includes(lowerCaseQuery))
+          const title = doc.title.includes(query)
+          const keywords = doc.keywords!.some((keyword) => keyword.name.includes(query))
           // keywords안의 elements를 keyword검색
           return title || keywords
         }),

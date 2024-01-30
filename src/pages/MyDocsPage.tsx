@@ -22,7 +22,7 @@ import {
   isLoadingStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
-import { useLocalStorageStore } from '../components/useModalStore'
+import { useLocalStorageStore } from '../components/ModalStore'
 
 const Container = styled.div`
   display: flex;
