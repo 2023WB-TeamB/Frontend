@@ -20,16 +20,16 @@ import checkbox_dark from '../../../assets/images/Viewer/check_box_dark.svg'
 import color from '../../../assets/images/Viewer/color.svg'
 import color_dark from '../../../assets/images/Viewer/color_dark.svg'
 
-const BubbleMenuWrapper = styled.div<{ isDarkMode: boolean }>`
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+const BubbleMenuWrapper = styled.div<{ $isDarkMode: boolean }>`
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
   border-radius: 10px;
   box-shadow: 0 0 2px
-    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)')};
+    ${(props) => (props.$isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)')};
   font-family: 'Inter', sans-serif;
   overflow: hidden;
 `
 
-const StyledButton = styled.button<{ isDarkMode: boolean }>`
+const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   height: 100%;
   width: auto;
   border: none;
@@ -40,7 +40,7 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
   color: black;
 
   &:hover {
-    background-color: ${(props) => (props.isDarkMode ? '#484848' : 'lightgray')};
+    background-color: ${(props) => (props.$isDarkMode ? '#484848' : 'lightgray')};
   }
 `
 
@@ -89,58 +89,38 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
 
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   return (
-    <BubbleMenuWrapper isDarkMode={isDarkMode}>
-      <StyledButton color={currentColor} onClick={handleButtonClick} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? color_dark : color}
-          alt='color'
-        />
+    <BubbleMenuWrapper $isDarkMode={$isDarkMode}>
+      <StyledButton color={currentColor} onClick={handleButtonClick} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? color_dark : color} alt="color" />
       </StyledButton>
-      <StyledButton onClick={() => editor.chain().toggleBold().run()} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? bold_dark : bold}
-          alt='bold'
-        />
+      <StyledButton onClick={() => editor.chain().toggleBold().run()} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? bold_dark : bold} alt="bold" />
       </StyledButton>
-      <StyledButton onClick={() => editor.chain().toggleItalic().run()} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? italic_dark : italic} 
-          alt='italic'
-        />
+      <StyledButton onClick={() => editor.chain().toggleItalic().run()} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? italic_dark : italic} alt="italic" />
       </StyledButton>
-      <StyledButton onClick={() => editor.chain().toggleUnderline().run()} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? underline_dark : underline} 
-          alt='underline'
-        />
+      <StyledButton
+        onClick={() => editor.chain().toggleUnderline().run()}
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? underline_dark : underline} alt="underline" />
       </StyledButton>
-      <StyledButton onClick={() => editor.chain().toggleStrike().run()} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? strikethrough_dark : strikethrough} 
-          alt='strike'
-        />
+      <StyledButton onClick={() => editor.chain().toggleStrike().run()} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? strikethrough_dark : strikethrough} alt="strike" />
       </StyledButton>
-      <StyledButton onClick={() => editor.chain().toggleCodeBlock().run()} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? code_dark : code} 
-          alt='codeblock'
-        />
+      <StyledButton
+        onClick={() => editor.chain().toggleCodeBlock().run()}
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? code_dark : code} alt="codeblock" />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().toggleTaskList().run()}
-        isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? checkbox_dark : checkbox} 
-          alt='checkbox'
-        />
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? checkbox_dark : checkbox} alt="checkbox" />
       </StyledButton>
-      <StyledButton onClick={setLink} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? link_dark : link} 
-          alt='link'
-        />
+      <StyledButton onClick={setLink} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? link_dark : link} alt="link" />
       </StyledButton>
     </BubbleMenuWrapper>
   )

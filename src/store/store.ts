@@ -184,15 +184,15 @@ export const isGeneratingStore = create<Generating>((set) => ({
 
 /* 다크모드 */
 interface State {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   toggleDarkMode: () => void
 }
 
 export const useDarkModeStore = create<State>(
   persist(
     (set) => ({
-      isDarkMode: false,
-      toggleDarkMode: () => set((state: State) => ({ isDarkMode: !state.isDarkMode })),
+      $isDarkMode: false,
+      toggleDarkMode: () => set((state: State) => ({ $isDarkMode: !state.$isDarkMode })),
     }),
     {
       name: 'dark-mode',
@@ -362,9 +362,9 @@ interface DocIdState {
 export const useDocIdStore = create<DocIdState>((set) => ({
   docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!) : null,
   setDocId: (id) => {
-    set(() => ({ docId: id }));
-    localStorage.setItem('docId', id.toString());
-  }
+    set(() => ({ docId: id }))
+    localStorage.setItem('docId', id.toString())
+  },
 }))
 
 interface ApiUrlState {

@@ -87,7 +87,7 @@ interface PreviewTileProps {
 
 // 프로젝트 미리보기 타일
 const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const [currentPage, setCurrentPage] = useState(0)
   const style = {
     transform: `translateX(${(pages.length / 2 - currentPage) * 100 - 150}px)`,
@@ -110,7 +110,8 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
       <SlideWrapper>
         <Button
           onClick={goToPreviousPage}
-          imageUrl={isDarkMode ? LeftArrowIcon_Dark : LeftArrowIcon} />
+          imageUrl={$isDarkMode ? LeftArrowIcon_Dark : LeftArrowIcon}
+        />
         <PageWrapper>
           <Slider style={style}>
             {pages.map((page, index) => (
@@ -120,7 +121,8 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
         </PageWrapper>
         <Button
           onClick={goToNextPage}
-          imageUrl={isDarkMode ? RightArrowIcon_Dark : RightArrowIcon} />
+          imageUrl={$isDarkMode ? RightArrowIcon_Dark : RightArrowIcon}
+        />
       </SlideWrapper>
     </PreviewWrapper>
   )

@@ -12,7 +12,11 @@ const WrapperArea = styled.div<{ isOpenSideAlways: boolean }>`
 `
 
 // 사이드바 스타일
-const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSideAlways: boolean }>`
+const Wrapper = styled.div<{
+  isOpenSide: boolean
+  $isDarkMode: boolean
+  isOpenSideAlways: boolean
+}>`
   position: relative;
   height: ${(props) => (props.isOpenSideAlways ? '100vh' : '80vh')};
   width: ${(props) => (props.isOpenSideAlways ? '10rem' : '5.5rem')};
@@ -31,7 +35,7 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
       border-bottom: 0.8px solid transparent;`};
   border-radius: ${(props) => (props.isOpenSideAlways ? '0' : '17px')};
   background-image: ${(props) =>
-    props.isDarkMode
+    props.$isDarkMode
       ? 'linear-gradient(#202020, #202020), linear-gradient(to bottom, #555, #555)'
       : 'linear-gradient(#fff, #fff), linear-gradient(to bottom, #ccc, #ccc)'};
   background-origin: border-box;
@@ -42,16 +46,18 @@ const Wrapper = styled.div<{ isOpenSide: boolean; isDarkMode: boolean; isOpenSid
 
 // list : [icon, name, onClick]
 interface SidebarProps {
-  list: Array<[
-    icon: string, 
-    name: string | undefined, 
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined
-  ]>
+  list: Array<
+    [
+      icon: string,
+      name: string | undefined,
+      onClick: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined,
+    ]
+  >
 }
 
 // 사이드바
 const Sidebar: React.FC<SidebarProps> = ({ list }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const isOpenSideAlways = useSidePeekStore((state) => state.isOpenSideAlways)
   const openerStore = useViewerPageOpenStore()
   const isOpenSidePanel = openerStore.isOpenGalleryPanel || openerStore.isOpenVersionPanel
@@ -82,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({ list }) => {
       isOpenSideAlways={isOpenSideAlways}>
       <Wrapper
         isOpenSide={isCursorInArea || isOpenSideAlways || isOpenSidePanel}
-        isDarkMode={isDarkMode}
+        $isDarkMode={$isDarkMode}
         isOpenSideAlways={isOpenSideAlways}>
         {list &&
           list.map((item) => {

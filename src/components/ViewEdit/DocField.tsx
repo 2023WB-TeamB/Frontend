@@ -91,7 +91,7 @@ const ViewArea = styled.div`
 
 // ? 문서 제목 폼
 interface TitleAreaProps {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   isOpenSideAlways: boolean
 }
 const TitleArea = styled.div<TitleAreaProps>`
@@ -112,7 +112,7 @@ const TitleArea = styled.div<TitleAreaProps>`
     background-color: transparent;
     font-family: Inter;
     font-weight: 600;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
     resize: none;
     width: 100%;
     box-sizing: border-box;
@@ -125,7 +125,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 `
 
 const DocField: React.FC = () => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
   const { apiUrl } = useApiUrlStore()
   const { title, content, setTitle, setContent, setColor } = useDocContentStore()
@@ -213,7 +213,7 @@ const DocField: React.FC = () => {
 
   return (
     <ViewerWrapper id="DocField">
-      <TitleArea isDarkMode={isDarkMode} isOpenSideAlways={isOpenSideAlways}>
+      <TitleArea $isDarkMode={$isDarkMode} isOpenSideAlways={isOpenSideAlways}>
         {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
       <DistributeDiv>

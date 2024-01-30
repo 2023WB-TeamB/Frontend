@@ -11,8 +11,8 @@ const LabelDiv = styled.div`
   margin-top: 0.1rem;
 `
 
-const TextWrapper = styled.p<{ isDarkMode: boolean }>`
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+const TextWrapper = styled.p<{ $isDarkMode: boolean }>`
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   /* font-family: 'Inter', sans-serif; */
   font-size: 1rem;
   font-weight: 400;
@@ -21,11 +21,11 @@ const TextWrapper = styled.p<{ isDarkMode: boolean }>`
 `
 
 export const Description: React.FC = () => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
 
   return (
     <LabelDiv>
-      <TextWrapper isDarkMode={isDarkMode}>
+      <TextWrapper $isDarkMode={$isDarkMode}>
         Create your own amazing technical documents with just a Repository URL!
       </TextWrapper>
     </LabelDiv>

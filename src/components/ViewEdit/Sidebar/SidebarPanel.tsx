@@ -19,7 +19,7 @@ import useDebounce from '../../useDebounce'
 // 확장 패널 스타일
 const StyledSidebarPanel = styled.div<{
   isOpenSidePanel: boolean
-  isDarkMode: boolean
+  $isDarkMode: boolean
   isOpenSideAlways: boolean
 }>`
   position: relative;
@@ -27,13 +27,13 @@ const StyledSidebarPanel = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  border-right: 0.8px solid ${(props) => (props.isDarkMode ? '#484848' : '#c8c8c8')};
-  background-color: ${(props) => (props.isDarkMode ? '#292929' : '#f0f0f0')};
+  border-right: 0.8px solid ${(props) => (props.$isDarkMode ? '#484848' : '#c8c8c8')};
+  background-color: ${(props) => (props.$isDarkMode ? '#292929' : '#f0f0f0')};
   transition: ease-in-out 0.3s;
 `
 
 // 미리보기 타일 묶음
-const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel: boolean }>`
+const PreviewTileWrapper = styled.div<{ $isDarkMode: boolean; isOpenGalleryPanel: boolean }>`
   margin-top: 5px;
   position: relative;
   display: flex;
@@ -42,7 +42,7 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel:
   height: 100%;
   width: ${(props) => (props.isOpenGalleryPanel ? '100%' : '85%')};
   overflow-y: auto;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   &::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -51,10 +51,10 @@ const PreviewTileWrapper = styled.div<{ isDarkMode: boolean; isOpenGalleryPanel:
 `
 
 // 검색 영역 스타일
-const SearchArea = styled.div<{ isDarkMode: boolean }>`
+const SearchArea = styled.div<{ $isDarkMode: boolean }>`
   width: 80%;
   height: 40px;
-  border: 1px solid ${(props) => (props.isDarkMode ? '#c8c8c8' : '#5e5e5e')};
+  border: 1px solid ${(props) => (props.$isDarkMode ? '#c8c8c8' : '#5e5e5e')};
   border-radius: 30px;
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@ const SearchArea = styled.div<{ isDarkMode: boolean }>`
     border: none;
     border-radius: 30px;
     font-size: 1em;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
 
     &:focus {
       outline: none;
@@ -111,7 +111,7 @@ const SidebarPanel: React.FC = () => {
   const { isOpenGalleryPanel, isOpenVersionPanel, closeSidePanel } = useViewerPageOpenStore()
   const { isOpenSideAlways } = useSidePeekStore()
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const isOpenSidePanel = isOpenGalleryPanel || isOpenVersionPanel
 
   //* 검색 관련 state
@@ -186,10 +186,10 @@ const SidebarPanel: React.FC = () => {
     <StyledSidebarPanel
       style={sidePanelStyle}
       isOpenSidePanel={isOpenSidePanel}
-      isDarkMode={isDarkMode}
+      $isDarkMode={$isDarkMode}
       isOpenSideAlways={isOpenSideAlways}>
       <SidePanelTopWrapper>
-        <SearchArea isDarkMode={isDarkMode}>
+        <SearchArea $isDarkMode={$isDarkMode}>
           <input
             ref={searchBarRef}
             onChange={getValue}
@@ -199,20 +199,16 @@ const SidebarPanel: React.FC = () => {
             }
           />
           <img
-            src={isDarkMode ? searchIcon_dark : searchIcon}
+            src={$isDarkMode ? searchIcon_dark : searchIcon}
             alt=""
-            style={{ margin: 10, width: 25 }} 
+            style={{ margin: 10, width: 25 }}
           />
         </SearchArea>
         <StyledCloseButton onClick={closeSidePanel}>
-          <img 
-            src={isDarkMode ? closeIcon_dark : closeIcon}
-            alt="" 
-            style={{ width: 40 }} 
-          />
+          <img src={$isDarkMode ? closeIcon_dark : closeIcon} alt="" style={{ width: 40 }} />
         </StyledCloseButton>
       </SidePanelTopWrapper>
-      <PreviewTileWrapper isDarkMode={isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
+      <PreviewTileWrapper $isDarkMode={$isDarkMode} isOpenGalleryPanel={isOpenGalleryPanel}>
         {isOpenGalleryPanel &&
           myDocsData.length > 0 &&
           myDocsData.map((item) => {

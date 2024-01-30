@@ -21,14 +21,14 @@ interface HeaderType {
 interface IconType {
   height: string
   width: string
-  isDarkMode?: boolean
+  $isDarkMode?: boolean
 }
 interface ContainerType {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   // showBorder: boolean
 }
 interface SignType {
-  isDarkMode: boolean
+  $isDarkMode: boolean
 }
 // 스타일
 const Container = styled.div<ContainerType>`
@@ -36,11 +36,12 @@ const Container = styled.div<ContainerType>`
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 255px);
-  height: 50px;
+  /* width: 100vw; */
+  height: 2rem;
   position: fixed;
   border-color: black;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
-  padding: 0 7.5rem;
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : '#fff')};
+  padding: 0.9rem 7.5rem;
   z-index: 3;
   transition: ease 0.5s;
 
@@ -66,35 +67,21 @@ const Icon = styled.img<IconType>`
   cursor: pointer;
   &:hover {
     border-radius: 50%;
-    background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+    background: ${(props) => (props.$isDarkMode ? '#2b2b2b' : '#F5F5F5')};
   }
 `
 const SignInOut = styled.div<SignType>`
   font-size: 1.3rem;
   font-weight: 500;
-  color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : '#C8C8C8')};
   margin-left: 10px;
-  /* align-self: flex-start; */
   cursor: pointer;
 `
 // 메인
 const Header: React.FC<HeaderType> = ({ isGetToken }) => {
-  const { isDarkMode, toggleDarkMode } = useDarkModeStore()
+  const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const navigate = useNavigate()
-
-  // 스크롤 이벤트 핸들러 함수
-  // const handleScroll = () => {
-  //   setScrollPosition(window.scrollY)
-  // }
-  // useEffect(() => {
-  //   // 컴포넌트가 마운트되면 스크롤 이벤트 리스너 등록
-  //   window.addEventListener('scroll', handleScroll)
-  //   // 컴포넌트가 언마운트되면 이벤트 리스너 제거
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, []) // 빈 배열은 마운트/언마운트 시에만 실행
 
   // 로그인 모달 클릭 이벤트
   const handleClickSignin = () => {
@@ -148,45 +135,45 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   return (
     <>
       {isGetToken ? (
-        <Container isDarkMode={isDarkMode}>
+        <Container $isDarkMode={$isDarkMode}>
           <Logo src={imgLogo} />
           <RightWrapper>
             {/* 다크모드 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgDarkMode : imgWhiteMode}
               height="2.2rem"
               width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그인 */}
-            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignin}>
+            <SignInOut $isDarkMode={$isDarkMode} onClick={handleClickSignin}>
               Sign-in
             </SignInOut>
           </RightWrapper>
         </Container>
       ) : (
-        <Container isDarkMode={isDarkMode}>
+        <Container $isDarkMode={$isDarkMode}>
           <Logo src={imgLogo} />
           <RightWrapper>
             {/* 검색 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgSearchDark : imgSearch}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgSearchDark : imgSearch}
               height="2.4rem"
               width="2.4rem"
               onClick={handleClickSearch}
             />
             {/* 다크모드 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgDarkMode : imgWhiteMode}
               height="2.2rem"
               width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그아웃 */}
-            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
+            <SignInOut $isDarkMode={$isDarkMode} onClick={handleClickSignout}>
               Sign-out
             </SignInOut>
           </RightWrapper>
