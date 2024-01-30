@@ -169,6 +169,9 @@ const SidebarPanel: React.FC = () => {
 
   useEffect(() => {
     handleGetDocVersions()
+    return () => {
+      closeSidePanel()
+    }
   }, [])
 
   //* 최초 렌더링 검색 결과 공백 방지
