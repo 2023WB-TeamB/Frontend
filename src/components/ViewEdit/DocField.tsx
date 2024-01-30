@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import TextareaAutosize from 'react-textarea-autosize'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   useEditorModeStore,
   useDocContentStore,
@@ -276,13 +277,32 @@ const DocField: React.FC = () => {
               </IconButton>
             )}
           </ButtonWrapper>
-          {isEditor && 
-          <EditMenuWrapper>
-            {editor &&
-              <FixedMenubar editor={editor} />
-            }
-          </EditMenuWrapper>
-          }
+          <AnimatePresence>
+            {isEditor && (
+              <motion.div
+                initial={{
+                  y: -25,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -15,
+                  opacity: 0,
+                }}
+                transition={{
+                  ease: "easeInOut",
+                  duration: .15,
+                }}
+              >
+                <EditMenuWrapper>
+                  {editor && <FixedMenubar editor={editor} />}
+                </EditMenuWrapper>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </DistributeContentWrappe>
       </DistributeDiv>
       <ViewArea>
