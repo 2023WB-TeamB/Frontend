@@ -7,7 +7,7 @@ import { Blue } from '../../components/MainPage/page2'
 import { Styledicon } from '../../components/MainPage/page4'
 import { useDarkModeStore } from '../../store/store'
 import Register from '../Register'
-import { useModalStore } from '../useModalStore'
+import { useModalStore } from '../ModalStore'
 import StyledStep from './styledStep'
 
 interface Page {

@@ -8,6 +8,7 @@ import {
   previewOpenStore,
   useDocIdStore,
 } from '../../store/store'
+import { useModalStore } from '../ModalStore'
 
 const ImageButton = styled.button`
   display: flex;
@@ -68,8 +69,10 @@ const ViewDetailsButton: React.FC = () => {
   }))
 
   const navigate = useNavigate() // useNavigate 추가
+  const { searchListClose } = useModalStore()
 
   const handleClick = () => {
+    searchListClose() // 검색모달 close
     // 클릭 이벤트 추가
     const path = window.location.pathname.replace('mydocs', 'viewer')
     setDocId(cardId)
