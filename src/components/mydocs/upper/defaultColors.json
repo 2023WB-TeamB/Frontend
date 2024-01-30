@@ -1,29 +1,56 @@
 [
   {
-    "color": "#1DA1F2"
+    "color": "#f44336"
   },
   {
-    "color": "#ABEBC6"
+    "color": "#e91e63"
   },
   {
-    "color": "#3498DB"
+    "color": "#9c27b0"
   },
   {
-    "color": "#9B59B6"
+    "color": "#673ab7"
   },
   {
-    "color": "#E91E63"
+    "color": "#3f51b5"
   },
   {
-    "color": "#E67E22"
+    "color": "#2196f3"
   },
   {
-    "color": "#F1C40F"
+    "color": "#03a9f4"
   },
   {
-    "color": "#E74C3C"
+    "color": "#00bcd4"
   },
   {
-    "color": "#95A5A6"
+    "color": "#009688"
+  },
+  {
+    "color": "#4caf50"
+  },
+  {
+    "color": "#8bc34a"
+  },
+  {
+    "color": "#c4d432"
+  },
+  {
+    "color": "#f6d738"
+  },
+  {
+    "color": "#ffc107"
+  },
+  {
+    "color": "#ff9800"
+  },
+  {
+    "color": "#ff5722"
+  },
+  {
+    "color": "#795548"
+  },
+  {
+    "color": "#607d8b"
   }
 ]

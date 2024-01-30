@@ -16,12 +16,12 @@ const Container = styled.div<{ previewOpen: boolean }>`
 `
 
 // 프리뷰의 실제 내용이 들어가는 부분
-const Wrapper = styled.div<{ isDarkMode: boolean }>`
+const Wrapper = styled.div<{ $isDarkMode: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${(props) => (props.isDarkMode ? '#2C2C2C' : 'white')};
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  background: ${(props) => (props.$isDarkMode ? '#2C2C2C' : 'white')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   width: 27rem;
   height: 42rem;
   padding: 0 3rem;
@@ -134,11 +134,11 @@ const TagWrapper = styled.div`
   max-height: 3.9rem;
   overflow: hidden;
 `
-const Tag = styled.div<{ color: string; isDarkMode: boolean }>`
+const Tag = styled.div<{ color: string; $isDarkMode: boolean }>`
   color: ${({ color }) => color};
-  background-color: ${(props) => (props.isDarkMode ? '#454545' : '#f8f8f8')};
+  background-color: ${(props) => (props.$isDarkMode ? '#353535' : '#f8f8f8')};
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 600;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   margin-right: 0.5rem;
@@ -186,7 +186,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
   repo,
   tags,
 }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { previewOpen } = previewOpenStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
@@ -200,7 +200,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
 
   return (
     <Container previewOpen={previewOpen} onClick={(e) => e.stopPropagation()}>
-      <Wrapper isDarkMode={isDarkMode}>
+      <Wrapper $isDarkMode={$isDarkMode}>
         <ContentArea>
           <ButtonsContainer>
             <PalleteButton />
@@ -211,7 +211,7 @@ const PreviewContent: React.FC<PreviewContentProps> = ({
             <Title>{title}</Title>
             <TagWrapper>
               {tags.map((tag, index) => (
-                <Tag key={index} color={cardColor} isDarkMode={isDarkMode}>
+                <Tag key={index} color={cardColor} $isDarkMode={$isDarkMode}>
                   {tag}
                 </Tag>
               ))}

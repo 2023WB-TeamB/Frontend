@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { desaturate } from 'polished'
 import {
   Doc,
   docStore,
@@ -9,7 +10,7 @@ import {
   isGeneratingStore,
   useDarkModeStore,
 } from '../../../store/store'
-import colors from './defaultColors.json'
+import defaultColors from './defaultColors.json'
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,8 +37,8 @@ const Wrapper = styled.div`
   }
 `
 
-const StyledInput = styled.input<{ isDarkMode: boolean }>`
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#ffffff')};
+const StyledInput = styled.input<{ $isDarkMode: boolean }>`
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : '#ffffff')};
   border: 1px solid rgb(165, 101, 224);
   border-radius: 65.5px;
   box-shadow: 0.15rem 0.3rem 0.35rem #0000001a;
@@ -49,7 +50,7 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
   -webkit-appearance: none;
   outline: none;
   text-align: center;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   transition: ease 0.5s;
   &:focus::placeholder {
     color: transparent;
@@ -60,7 +61,7 @@ export const URLInput: React.FC = () => {
   const { isEnglish } = isEnglishStore()
   const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
   const language = isEnglish ? 'ENG' : 'KOR'
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { setIsGenerating } = isGeneratingStore()
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
@@ -72,8 +73,10 @@ export const URLInput: React.FC = () => {
 
   // 문서 생성시 기본 색상 중 하나를 랜덤으로 지정
   const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * colors.length)
-    return colors[randomIndex].color
+    const randomIndex = Math.floor(Math.random() * defaultColors.length)
+    let { color } = defaultColors[randomIndex]
+    color = desaturate(0.15, color) // 랜덤으로 선택된 색상의 채도를 15% 낮춤
+    return color
   }
 
   // 문서 생성 함수
@@ -123,7 +126,7 @@ export const URLInput: React.FC = () => {
       // 문서 생성 실패
       if (error.response) {
         setIsGenerating(false)
-        console.error('API Response: ', error.response.status)
+        console.error('API Response: ', error.response)
         Swal.fire({
           position: 'bottom-end',
           icon: 'error',
@@ -147,7 +150,7 @@ export const URLInput: React.FC = () => {
   return (
     <Wrapper>
       <StyledInput
-        isDarkMode={isDarkMode}
+        $isDarkMode={$isDarkMode}
         type="text"
         value={url}
         placeholder="Please enter your GitHub repository URL here..."

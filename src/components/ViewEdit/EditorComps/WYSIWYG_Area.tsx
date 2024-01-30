@@ -1,9 +1,7 @@
-import './TiptapStyles.css'
-
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
+import "./EditorStyles.css";
+import { BubbleMenu, Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
-import styled from 'styled-components'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
@@ -26,12 +24,11 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
-import { common, createLowlight } from 'lowlight'
-import { marked } from 'marked'
-import BubbleMenubar from './BubbleMenubar'
-import BottomMenubar from './BottomMenubar'
-import { useDocContentStore, useEditorModeStore } from '../../../store/store'
-import axios from 'axios'
+import { common, createLowlight } from "lowlight";
+import { marked } from "marked";
+import styled from "styled-components";
+import { useDocContentStore, useEditorModeStore, useEditorObjectStore } from "../../../store/store";
+import BubbleMenubar from "./BubbleMenubar";
 
 const lowlight = createLowlight(common)
 
@@ -82,7 +79,7 @@ const EditorWrapper = styled.div`
   //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
-    padding: 10px;
+    padding: .1rem .1rem 0px;
     outline: 0;
     overflow: hidden;
   }
@@ -90,17 +87,16 @@ const EditorWrapper = styled.div`
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
-  const { isEditor } = useEditorModeStore()
-  const { content, setContent } = useDocContentStore()
-
+  const {editor, setEditor} = useEditorObjectStore()
+  const {isEditor} = useEditorModeStore()
+  const {content, setContent} = useDocContentStore()
+  
   useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.focus()
-    }
-  }, [])
-
-  // ? 에디터 객체 생성
-  const editor: any = useEditor({
+    if (editorRef.current) 
+      editorRef.current.focus();
+  }, []);
+  
+  const tempEditorObj: Editor | null = useEditor({
     editable: isEditor,
     extensions,
     content: marked(content),
@@ -110,16 +106,18 @@ const EditorArea: React.FC = () => {
       },
     },
     onUpdate: ({ editor }) => {
-      if (content !== '') setContent(editor.getHTML())
+      if (content !== '') 
+        setContent(editor.getHTML());
     },
   })
 
   useEffect(() => {
-    if (editor) editor.setEditable(isEditor)
+    if (editor) 
+      editor.setEditable(isEditor)
   }, [editor, isEditor])
 
-  if (!editor) {
-    return null
+  if (tempEditorObj && !editor) {
+    setEditor(tempEditorObj)
   }
 
   // 이미지 업로드 함수
@@ -143,6 +141,10 @@ const EditorArea: React.FC = () => {
     }
   }
 
+  if (!editor)
+    return null
+
+
   // 이미지 드롭 기능
   const handleDrop = async (event: any) => {
     event.preventDefault()
@@ -160,18 +162,21 @@ const EditorArea: React.FC = () => {
     }
   }
 
+  // const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
+
+  // }
+
   return (
     <EditorWrapper>
       <EditorContent
         editor={editor}
-        ref={editorRef}
+        ref={editorRef} 
         onDrop={handleDrop}
         onDragOver={(event) => event.preventDefault()}
       />
       <BubbleMenu editor={editor}>
         <BubbleMenubar editor={editor} />
       </BubbleMenu>
-      {isEditor && <BottomMenubar editor={editor} />}
     </EditorWrapper>
   )
 }

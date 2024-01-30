@@ -8,7 +8,7 @@ const Icon = styled.img`
   margin: 10px 0px 10px 25px;
 `
 
-const StyledButton = styled.button<{ isDarkMode: boolean }>`
+const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   position: relative;
   width: 260px;
   height: 60px;
@@ -17,7 +17,7 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
   border-radius: 60px;
   transition: linear 0.5s;
   background-image: ${(props) =>
-    props.isDarkMode
+    props.$isDarkMode
       ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(#5e5e5e,#5e5e5e)'
       : 'linear-gradient(#fff, #fff), linear-gradient(#c8c8c8,#c8c8c8)'};
   background-origin: border-box;
@@ -31,12 +31,12 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
     margin-right: 20px;
     width: 100%;
     text-align: center;
-    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : '#202020')};
   }
 
   &:hover {
     background-image: ${(props) =>
-      props.isDarkMode
+      props.$isDarkMode
         ? 'linear-gradient(#2c2c2c, #2c2c2c), linear-gradient(to bottom right, #76cae8, #ad51de)'
         : 'linear-gradient(#fff, #fff), linear-gradient(to bottom right, #76cae8, #ad51de)'};
   }
@@ -49,10 +49,10 @@ interface OptionProps {
 }
 
 const OptionButton: React.FC<OptionProps> = ({ icon, context, onClick }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
 
   return (
-    <StyledButton isDarkMode={isDarkMode} onClick={onClick}>
+    <StyledButton $isDarkMode={$isDarkMode} onClick={onClick}>
       <Icon src={icon} />
       <p>{context}</p>
     </StyledButton>

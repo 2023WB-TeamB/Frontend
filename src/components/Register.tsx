@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 /*-----------------------------------------------------------*/
 import GradientBtn from './GradientBtn'
 import CloseBtn from './CloseBtn'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './ModalStore'
 import { useDarkModeStore } from '../store/store'
 
 // 인터페이스
@@ -112,7 +112,7 @@ const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode
 const Register = () => {
   const [isError, setIsError] = useState(false) // 에러메세지 상태관리
   const { isSigninOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
   const [data, setData] = useState({

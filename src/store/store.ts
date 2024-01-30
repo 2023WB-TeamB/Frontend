@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { Editor } from '@tiptap/react'
 import { projectData } from '../components/ViewEdit/Sidebar/SidebarPanel'
 
 export type Keyword = {
@@ -184,15 +185,15 @@ export const isGeneratingStore = create<Generating>((set) => ({
 
 /* 다크모드 */
 interface State {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   toggleDarkMode: () => void
 }
 
 export const useDarkModeStore = create<State>(
   persist(
     (set) => ({
-      isDarkMode: false,
-      toggleDarkMode: () => set((state: State) => ({ isDarkMode: !state.isDarkMode })),
+      $isDarkMode: false,
+      toggleDarkMode: () => set((state: State) => ({ $isDarkMode: !state.$isDarkMode })),
     }),
     {
       name: 'dark-mode',
@@ -260,27 +261,32 @@ export const useViewerPageOpenStore = create<ViewerPageOpenState>((set) => ({
 // ? 확인 모달창
 interface ConfirmBoxState {
   isOpenConfirm: boolean
-  ConfirmLabel: string
+  confirmLabel: string
+  confirmAction: () => void
+  setConfirmAction: (newConfirmAction: () => void) => void
   openConfirm: () => void
   closeConfirm: () => void
   setConfirmLabel: (label: string) => void
 }
 export const useConfirmBoxStore = create<ConfirmBoxState>((set) => ({
   isOpenConfirm: false,
-  ConfirmLabel: '',
+  confirmLabel: '',
+  confirmAction: () => {},
+  setConfirmAction: (confirmAction) =>
+    set(() => ({
+      confirmAction,
+    })),
   openConfirm: () =>
     set(() => ({
-      isOpenGalleryPanel: false,
-      isOpenVersionPanel: false,
       isOpenConfirm: true,
     })),
   closeConfirm: () =>
     set(() => ({
       isOpenConfirm: false,
     })),
-  setConfirmLabel: (ConfirmLabel: string) =>
+  setConfirmLabel: (confirmLabel) =>
     set(() => ({
-      ConfirmLabel,
+      confirmLabel,
     })),
 }))
 
@@ -352,6 +358,16 @@ export const useDocTagStore = create<DocTagState>((set) => ({
     set((state) => ({
       tags: state.tags.filter((_, i) => i !== index),
     })),
+}))
+
+// ? 에디터 객체
+interface EditorObjectState {
+  editor: Editor | null
+  setEditor: (editor: Editor | null) => void
+}
+export const useEditorObjectStore = create<EditorObjectState>((set) => ({
+  editor: null,
+  setEditor: (editor) => set(() => ({ editor })),
 }))
 
 // ? 현재 문서 ID
