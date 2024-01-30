@@ -136,7 +136,7 @@ const EditorArea: React.FC = () => {
 
     try {
       const response = await axios.post('http://localhost:8000/api/v1/docs/img', formData, config)
-      return response.data.imageUrl // 서버에서 받은 CDN 이미지 URL
+      return response.data.imageUrl + '?w=400&f=webp' // 쿼리 파라미터 추가
     } catch (error) {
       console.error('Error uploading image:', error)
       return null
