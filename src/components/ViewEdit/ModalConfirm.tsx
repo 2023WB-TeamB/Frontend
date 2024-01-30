@@ -4,7 +4,7 @@ import ConfirmButton from './ConfirmButton'
 import ConfirmIcon from '../../assets/images/Viewer/confirm.svg'
 import ConfirmIcon_dark from '../../assets/images/Viewer/confirm_dark.svg'
 import BackDrop from './BackDrop'
-import { useDarkModeStore } from '../../store/store'
+import { useConfirmBoxStore, useDarkModeStore } from '../../store/store'
 
 const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
   position: fixed;
@@ -59,31 +59,30 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
 `
 
-interface ModalConfirmProps {
-  label: string
-  confirmOption: Array<
-    [option: string, onClick: (event: React.MouseEvent<HTMLButtonElement>) => void]
-  >
-  isOpenConfirm: boolean
-}
+const ModalConfirm: React.FC = () => {
+  const {isOpenConfirm, confirmLabel, confirmAction, closeConfirm} = useConfirmBoxStore()
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
 
-const ModalConfirm: React.FC<ModalConfirmProps> = ({ isOpenConfirm, label, confirmOption }) => {
-  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
+  const handleTrueState = () => {
+    confirmAction()
+    closeConfirm()
+  }
+
   if (isOpenConfirm)
     return (
       <>
         <BackDrop />
-        <ModalWrapper $isDarkMode={$isDarkMode}>
-          <ContextWrapper $isDarkMode={$isDarkMode}>
-            <img src={$isDarkMode ? ConfirmIcon_dark : ConfirmIcon} alt="Confirm Icon" />
-            <h3>{label}</h3>
+        <ModalWrapper isDarkMode={isDarkMode}>
+          <ContextWrapper isDarkMode={isDarkMode}>
+            <img 
+              src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
+              alt="Confirm Icon"
+            />
+            <h3>{confirmLabel}</h3>
           </ContextWrapper>
           <ButtonWrapper>
-            {confirmOption &&
-              confirmOption.map((item) => {
-                const [option, onClick] = item
-                return <ConfirmButton context={option} onClick={onClick} />
-              })}
+            <ConfirmButton context="Yes" onClick={handleTrueState} />
+            <ConfirmButton context="No" onClick={closeConfirm} />
           </ButtonWrapper>
         </ModalWrapper>
       </>

@@ -14,21 +14,20 @@ import photolibrary from '../../../assets/images/Viewer/photo_library.svg'
 import table_dark from '../../../assets/images/Viewer/table_dark.svg'
 import table from '../../../assets/images/Viewer/table.svg'
 
-const BottomOptionBarWrapper = styled.div<{ $isDarkMode: boolean }>`
-  position: fixed;
-  bottom: 10px;
-  width: 65%;
-  height: 40px;
+const FixedOptionBarWrapper = styled.div<{ isDarkMode: boolean }>`
+  width: 100%;
+  height: 2.7rem;
+  margin: .3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
   z-index: 1;
-  border: 0.8px solid;
-  border-color: ${(props) => (props.$isDarkMode ? '#252525' : '#c8c8c8')};
+  border: 1px solid;
+  border-color: ${(props) => (props.isDarkMode ? '#333' : '#c8c8c8')};
   border-radius: 10px;
-  background-color: ${(props) => (props.$isDarkMode ? '#303030' : '#f3f3f3')};
+  background-color: ${(props) => (props.isDarkMode ? '#222' : '#f3f3f3')};
   transition: linear 0.3s;
 `
 
@@ -36,7 +35,7 @@ const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   height: 45px;
   border: none;
   border-radius: 0px;
-  background-color: ${(props) => (props.$isDarkMode ? '#303030' : '#f3f3f3')};
+  background-color: ${(props) => (props.isDarkMode ? '#222' : '#f3f3f3')};
   font-size: 12px;
   transition: all ease 0.2s;
   color: black;
@@ -46,12 +45,12 @@ const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   }
 `
 
-interface BottomMenubarProps {
+interface FixedMenubarProps {
   editor: Editor
 }
 
-const TopMenubar = ({ editor }: BottomMenubarProps) => {
-  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
+const FixedMenubar = ({ editor }: FixedMenubarProps) => {
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const addImage = useCallback(() => {
     Swal.fire({
       title: 'Input Image URL',
@@ -78,8 +77,9 @@ const TopMenubar = ({ editor }: BottomMenubarProps) => {
   if (!editor) {
     return null
   }
+  
   return (
-    <BottomOptionBarWrapper $isDarkMode={$isDarkMode}>
+    <FixedOptionBarWrapper isDarkMode={isDarkMode}>
       <StyledButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().undo()}
@@ -103,8 +103,8 @@ const TopMenubar = ({ editor }: BottomMenubarProps) => {
       <StyledButton onClick={addTable} $isDarkMode={$isDarkMode}>
         <img src={$isDarkMode ? table_dark : table} alt="table" />
       </StyledButton>
-    </BottomOptionBarWrapper>
+    </FixedOptionBarWrapper>
   )
 }
 
-export default TopMenubar
+export default FixedMenubar

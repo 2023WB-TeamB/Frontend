@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDarkModeStore, useDocIdStore } from '../../../store/store'
+import { useConfirmBoxStore, useDarkModeStore, useDocContentStore, useDocIdStore, useEditorModeStore } from '../../../store/store'
 
 interface GalleryPreviewProps {
   content: {
@@ -16,9 +16,10 @@ interface GalleryPreviewProps {
 // 개별 미리보기 문서 스타일
 const PreviewContentWrapper = styled.div<{ $isDarkMode: boolean; color: string }>`
   margin-block: 10px;
+  margin-left: 6px;
   width: 100%;
   height: 10rem;
-  background-color: ${(props) => (props.$isDarkMode ? '#222' : '#f8f8f8')};
+  background-color: ${(props) => props.isDarkMode ? '#222' : '#fff'};
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -143,10 +144,23 @@ const TagContent = styled.div<{ $isDarkMode: boolean; color: string }>`
 // `
 
 const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
-  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
-  const { setDocId } = useDocIdStore()
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const {setContent} = useDocContentStore()
+  const {isEditor, toggleEditorMode} = useEditorModeStore()
+  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
+  const {setDocId} = useDocIdStore()
 
   const handlePreviewDoc = () => {
+    if (isEditor) {
+      setConfirmLabel("Are you sure you want to leave without saving?")
+      setConfirmAction(() => {
+        setContent('')
+        toggleEditorMode()
+        setDocId(content.id)
+      })
+      openConfirm()
+    }
+    else 
     setDocId(content.id)
   }
 
@@ -161,14 +175,14 @@ const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
       </TopContent>
       <TitleContent>{content.title}</TitleContent>
       <TagContentWrapper>
-        {content.keywords.length > 0 &&
-          content.keywords.map((item) => {
-            return (
-              <TagContent $isDarkMode={$isDarkMode} color={content.color}>
-                {item.name}
-              </TagContent>
-            )
-          })}
+        {content.keywords.length > 0 && content.keywords.map((item) => {
+          return <TagContent 
+              isDarkMode={isDarkMode} 
+              color={content.color}
+            >
+              {item.name}
+            </TagContent>
+        })}
       </TagContentWrapper>
     </PreviewContentWrapper>
   )

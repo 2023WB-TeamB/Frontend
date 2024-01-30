@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished';
-import { useDocIdStore } from '../../../store/store'
+import { useConfirmBoxStore, useDocContentStore, useDocIdStore, useEditorModeStore } from '../../../store/store'
 import { projectData } from './SidebarPanel';
 
 interface VersionPreviewProps {
@@ -17,7 +17,7 @@ const Card = styled.div<{ color: string }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   border-radius: 15px;
   color: white;
   box-sizing: border-box;
@@ -35,22 +35,31 @@ const Card = styled.div<{ color: string }>`
   }
 `
 
+const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
 const CreatedAt = styled.div`
   width: 100%;
-  text-align: right;
+  margin-top: 2px;
+  text-align: center;
   font-size: 0.5rem;
-  font-weight: 400;
+  font-weight: 300;
+  color: #ddd;
 `
 
 const Title = styled.div`
-  text-align: left;
+  text-align: center;
   font-size: .7rem;
   font-weight: 700;
   line-height: .9rem;
-  margin-top: 0.5rem;
   word-break: keep-all;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,8 +86,22 @@ const Title = styled.div`
 // `
 
 const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
+  const {setContent} = useDocContentStore()
+  const {isEditor, toggleEditorMode} = useEditorModeStore()
+  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const {setDocId} = useDocIdStore()
+
   const handleCardClick = () => {
+    if (isEditor) {
+      setConfirmLabel("Are you sure you want to leave without saving?")
+      setConfirmAction(() => {
+        setContent('')
+        toggleEditorMode()
+        setDocId(content.id)
+      })
+      openConfirm()
+    }
+    else 
     setDocId(content.id)
   }
 
@@ -88,8 +111,10 @@ const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
       color={content.color} 
       onClick={handleCardClick}
     >
-      <CreatedAt>{content.created_at.slice(0, 10)}</CreatedAt>
-      <Title>{content.title}</Title>
+      <ContentWrapper>
+        <Title>{content.title}</Title>
+        <CreatedAt>{content.created_at.slice(0, 10)}</CreatedAt>
+      </ContentWrapper>
       {/* <TagWrapper>
         {content.keywords.map((tag, index) => (
           <Tag key={index} color={content.color}>
