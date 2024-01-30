@@ -12,7 +12,7 @@ const Icon = styled.img`
 
 const StyledTileButton = styled.button<{ 
   isOpenSideAlways: boolean 
-  isDarkMode: boolean 
+  $isDarkMode: boolean 
   isBlankName: boolean
 }>`
   margin-top: ${(props) => (props.isOpenSideAlways ? '5px' : '0')};
@@ -66,7 +66,7 @@ const StyledTileButton = styled.button<{
     width: ${(props) => props.isBlankName ? '2rem' : '4rem' };
     margin-left: 1rem;
     font-size: .85rem;
-    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : '#202020')};
     font-weight: 400;
     text-align: center;
   }
@@ -97,7 +97,7 @@ const TileButton: React.FC<ButtonProps> = ({ icon, name, onClick }) => {
     <StyledTileButton 
       onClick={onClick} 
       isOpenSideAlways={isOpenSideAlways} 
-      isDarkMode={isDarkMode}
+      $isDarkMode={$isDarkMode}
       isBlankName={name === ''}
     >
       <Icon src={icon} />
