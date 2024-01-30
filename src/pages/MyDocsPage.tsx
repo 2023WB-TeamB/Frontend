@@ -109,8 +109,8 @@ const Lower = styled.div<{ isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  // const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
-  const apiUrl = 'http://localhost:8000/api/v1/docs'
+  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  // const apiUrl = 'http://localhost:8000/api/v1/docs'
   // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
