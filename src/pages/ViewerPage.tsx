@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { motion } from "framer-motion"
+import { useEffect } from 'react'
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
 import double_arrow_right from '../assets/images/Viewer/double_arrow_right.svg'
@@ -22,8 +23,11 @@ import {
   useConfirmBoxStore,
   useDocIdStore,
   useApiUrlStore,
- useDarkModeStore, 
- useEditorModeStore} from '../store/store'
+  useDarkModeStore, 
+  useEditorModeStore,
+  useDocContentStore,
+  useEditorObjectStore
+} from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
 
 const StyledForm = styled.div<{ $isDarkMode: boolean }>`
@@ -53,11 +57,30 @@ function ViewerPage() {
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const { docId } = useDocIdStore()
   const { isEditor, toggleEditorMode } = useEditorModeStore()
+  const { setContent } = useDocContentStore()
+  const { setEditor } = useEditorObjectStore()
   const openerStore = useViewerPageOpenStore()
   const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const navigate = useNavigate()
 
   const { apiUrl } = useApiUrlStore()
+
+  // 상태관리 제어
+  useEffect(() => {
+    // 마운트할 때 초기화
+    if (isEditor)
+        toggleEditorMode()
+    setContent('')
+    setEditor(null)
+    
+    return () => {
+      // 언마운트할 때 초기화
+      if (isEditor)
+        toggleEditorMode()
+      setContent('')
+      setEditor(null)
+    }
+  }, [])
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -69,8 +92,6 @@ function ViewerPage() {
 
   // 뷰어 나가기
   const handleExitViewer = () => {
-    if (isEditor)
-      toggleEditorMode()
     navigate('/mydocs')
   }
   

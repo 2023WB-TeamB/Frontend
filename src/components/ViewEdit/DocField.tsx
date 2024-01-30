@@ -188,14 +188,7 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
-    return () => {
-      if (isEditor)
-        toggleEditorMode()
-      setContent('')
-      setEditor(null)
-    }
   }, [docId])
-
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
