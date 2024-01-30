@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 /*----------------------------------------------------------*/
+import Swal from 'sweetalert2'
 import Signin from './Signin'
 import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
@@ -83,8 +84,6 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
   const navigate = useNavigate()
-  const openerStore = useViewerPageOpenStore()
-  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -187,7 +186,6 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
           </RightWrapper>
         </Container>
       )}
-      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm />
 
       {/* 모달 */}
