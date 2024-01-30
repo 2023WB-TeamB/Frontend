@@ -41,7 +41,7 @@ const Container = styled.div<ContainerType>`
   position: fixed;
   border-color: black;
   background-color: ${(props) => (props.$isDarkMode ? '#202020' : '#fff')};
-  padding: 0.5rem 7.5rem;
+  padding: 0.9rem 7.5rem;
   z-index: 3;
   transition: ease 0.5s;
 
