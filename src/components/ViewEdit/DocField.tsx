@@ -39,7 +39,7 @@ const Icon = styled.img`
   height: 2rem;
 `
 
-const IconButton = styled.button`
+const IconButton = styled.button<{ $isDarkMode: boolean }>`
   margin: 5px;
   padding: 0px;
   width: 2.7rem;
@@ -48,7 +48,7 @@ const IconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-inline: 1px solid #555;
+  border-inline: 1px solid ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
   border-radius: .5rem;
 `
 
@@ -263,15 +263,15 @@ const DocField: React.FC = () => {
           <ButtonWrapper>
             {isEditor ? (
               <>
-                <IconButton onClick={saveDoc}>
+                <IconButton onClick={saveDoc} $isDarkMode={$isDarkMode}>
                   <Icon src={SaveIcon} />
                 </IconButton>
-                <IconButton onClick={unsaveDoc}>
+                <IconButton onClick={unsaveDoc} $isDarkMode={$isDarkMode}>
                   <Icon src={CancelIcon} />
                 </IconButton>
               </>
             ) : (
-              <IconButton onClick={toggleEditorMode}>
+              <IconButton onClick={toggleEditorMode} $isDarkMode={$isDarkMode}>
                 <Icon src={EditIcon} />
               </IconButton>
             )}
