@@ -1,5 +1,4 @@
 import "./EditorStyles.css";
-
 import { BubbleMenu, Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
@@ -31,13 +30,13 @@ import styled from "styled-components";
 import { useDocContentStore, useEditorModeStore, useEditorObjectStore } from "../../../store/store";
 import BubbleMenubar from "./BubbleMenubar";
 
-const lowlight = createLowlight(common);
+const lowlight = createLowlight(common)
 
 // ? TipTap 확장 모듈
 const extensions = [
   StarterKit,
-  Document, 
-  Paragraph, 
+  Document,
+  Paragraph,
   Text,
   Bold,
   Italic,
@@ -46,7 +45,7 @@ const extensions = [
   CodeBlockLowlight.configure({
     lowlight,
   }),
-  TextStyle, 
+  TextStyle,
   Color,
   HorizontalRule,
   Typography,
@@ -76,7 +75,7 @@ const EditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
@@ -121,26 +120,47 @@ const EditorArea: React.FC = () => {
     setEditor(tempEditorObj)
   }
 
+  // 이미지 업로드 함수
+  const uploadImageToServer = async (file: any) => {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    // Set config for axios
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/v1/docs/img', formData, config)
+      return response.data.imageUrl + '?w=400&f=webp' // 쿼리 파라미터 추가
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      return null
+    }
+  }
+
   if (!editor)
     return null
 
-  // 이미지 드롭 기능
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.includes('image/')) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imageDataURL = reader.result as string;
-        insertImage(imageDataURL);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
-  const insertImage = (imageURL: string) => {
-    editor.chain().focus().setImage({ src: imageURL }).run();
-  };
+  // 이미지 드롭 기능
+  const handleDrop = async (event: any) => {
+    event.preventDefault()
+    const file = event.dataTransfer.files[0]
+
+    if (file && file.type.includes('image/')) {
+      const imageUrl = await uploadImageToServer(file)
+      // 클라이언트에서 서버에서 받은 CDN 이미지 URL 활용
+      console.log('CDN 이미지 URL:', imageUrl)
+
+      // 이미지 삽입
+      if (imageUrl) {
+        editor.chain().focus().setImage({ src: imageUrl }).run()
+      }
+    }
+  }
 
   // const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
 
@@ -155,7 +175,7 @@ const EditorArea: React.FC = () => {
         onDragOver={(event) => event.preventDefault()}
       />
       <BubbleMenu editor={editor}>
-        <BubbleMenubar editor={editor}/>
+        <BubbleMenubar editor={editor} />
       </BubbleMenu>
     </EditorWrapper>
   )
