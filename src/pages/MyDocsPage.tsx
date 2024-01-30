@@ -147,7 +147,7 @@ const MyDocsPage: React.FC = () => {
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      console.log(docs)
+      // console.log(docs)
     } catch (error) {
       const axiosError = error as AxiosError
 
