@@ -46,7 +46,7 @@ const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
     height: 60px;
     font-size: 2.5rem;
     font-weight: 700;
-    color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   }
   @keyframes fadeInAnimation {
     0% {

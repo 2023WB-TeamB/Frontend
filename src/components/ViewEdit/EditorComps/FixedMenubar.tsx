@@ -14,7 +14,7 @@ import photolibrary from '../../../assets/images/Viewer/photo_library.svg'
 import table_dark from '../../../assets/images/Viewer/table_dark.svg'
 import table from '../../../assets/images/Viewer/table.svg'
 
-const FixedOptionBarWrapper = styled.div<{ isDarkMode: boolean }>`
+const FixedOptionBarWrapper = styled.div<{ $isDarkMode: boolean }>`
   width: 100%;
   height: 2.7rem;
   margin: .3rem;
@@ -25,9 +25,9 @@ const FixedOptionBarWrapper = styled.div<{ isDarkMode: boolean }>`
   overflow: hidden;
   z-index: 1;
   border: 1px solid;
-  border-color: ${(props) => (props.isDarkMode ? '#333' : '#c8c8c8')};
+  border-color: ${(props) => (props.$isDarkMode ? '#333' : '#c8c8c8')};
   border-radius: 10px;
-  background-color: ${(props) => (props.isDarkMode ? '#222' : '#f3f3f3')};
+  background-color: ${(props) => (props.$isDarkMode ? '#222' : '#f3f3f3')};
   transition: linear 0.3s;
 `
 
@@ -35,7 +35,7 @@ const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   height: 45px;
   border: none;
   border-radius: 0px;
-  background-color: ${(props) => (props.isDarkMode ? '#222' : '#f3f3f3')};
+  background-color: ${(props) => (props.$isDarkMode ? '#222' : '#f3f3f3')};
   font-size: 12px;
   transition: all ease 0.2s;
   color: black;
@@ -50,7 +50,7 @@ interface FixedMenubarProps {
 }
 
 const FixedMenubar = ({ editor }: FixedMenubarProps) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const addImage = useCallback(() => {
     Swal.fire({
       title: 'Input Image URL',
@@ -79,7 +79,7 @@ const FixedMenubar = ({ editor }: FixedMenubarProps) => {
   }
   
   return (
-    <FixedOptionBarWrapper isDarkMode={isDarkMode}>
+    <FixedOptionBarWrapper $isDarkMode={$isDarkMode}>
       <StyledButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().undo()}
