@@ -50,10 +50,10 @@ const ModalWrapper = styled.div<{ $isDarkMode: boolean }>`
   }
   @keyframes fadeInAnimation {
     0% {
-      transform: scale(0%, 0%);
+      opacity: 0;
     }
     100% {
-      transform: scale(100%, 100%);
+      opacity: 1;
     }
   }
 `

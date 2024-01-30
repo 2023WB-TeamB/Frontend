@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Signin from '../Signin.tsx'
-import { useModalStore } from '../useModalStore.tsx'
+import { useModalStore } from '../ModalStore.tsx'
 import { useDarkModeStore } from '../../store/store.ts'
 import DoubleDownArrow from './doubleDownArrow.tsx'
 

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import TextareaAutosize from 'react-textarea-autosize'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   useEditorModeStore,
   useDocContentStore,
@@ -38,7 +40,7 @@ const Icon = styled.img`
   height: 2rem;
 `
 
-const IconButton = styled.button`
+const IconButton = styled.button<{ $isDarkMode: boolean }>`
   margin: 5px;
   padding: 0px;
   width: 2.7rem;
@@ -47,7 +49,7 @@ const IconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-inline: 1px solid #555;
+  border-inline: 1px solid ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
   border-radius: .5rem;
 `
 
@@ -110,7 +112,6 @@ interface TitleAreaProps {
 const TitleArea = styled.div<TitleAreaProps>`
   width: 90%;
   max-width: ${(props) => (props.isOpenSideAlways ? '75vw' : '85vw')};
-  height: 4rem;
   text-align: left;
   display: flex;
   align-items: center;
@@ -119,8 +120,9 @@ const TitleArea = styled.div<TitleAreaProps>`
   & textarea {
     margin: 0;
     padding-inline: 0;
-    padding-block: 5px;
-    font-size: 2.5rem;
+    padding-top: 0;
+    padding-bottom: .5rem;
+    font-size: 2.3rem;
     border: none;
     outline: none;
     background-color: transparent;
@@ -130,12 +132,14 @@ const TitleArea = styled.div<TitleAreaProps>`
     resize: none;
     width: 100%;
     box-sizing: border-box;
-    line-height: 1;
-    height: 3.5rem;
+    line-height: 3.2rem;
     overflow: hidden;
+    word-break: keep-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: horizontal;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: inter;
+    white-space: pre-wrap;
   }
 `
 
@@ -147,8 +151,9 @@ const DocField: React.FC = () => {
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
   const { editor, setEditor } = useEditorObjectStore()
+  const { isEditor, toggleEditorMode } = useEditorModeStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
-
+  
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
     toast: true,
@@ -183,13 +188,7 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
-    return () => {
-      setContent('')
-      setEditor(null)
-    }
   }, [docId])
-
-  const { isEditor, toggleEditorMode } = useEditorModeStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value)
@@ -251,7 +250,7 @@ const DocField: React.FC = () => {
   return (
     <ViewerWrapper id="DocField">
       <TitleArea $isDarkMode={$isDarkMode} isOpenSideAlways={isOpenSideAlways}>
-        {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
+        {isEditor ? <TextareaAutosize value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
       <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
@@ -260,26 +259,45 @@ const DocField: React.FC = () => {
           <ButtonWrapper>
             {isEditor ? (
               <>
-                <IconButton onClick={saveDoc}>
+                <IconButton onClick={saveDoc} $isDarkMode={$isDarkMode}>
                   <Icon src={SaveIcon} />
                 </IconButton>
-                <IconButton onClick={unsaveDoc}>
+                <IconButton onClick={unsaveDoc} $isDarkMode={$isDarkMode}>
                   <Icon src={CancelIcon} />
                 </IconButton>
               </>
             ) : (
-              <IconButton onClick={toggleEditorMode}>
+              <IconButton onClick={toggleEditorMode} $isDarkMode={$isDarkMode}>
                 <Icon src={EditIcon} />
               </IconButton>
             )}
           </ButtonWrapper>
-          {isEditor && 
-          <EditMenuWrapper>
-            {editor &&
-              <FixedMenubar editor={editor} />
-            }
-          </EditMenuWrapper>
-          }
+          <AnimatePresence>
+            {isEditor && (
+              <motion.div
+                initial={{
+                  y: -25,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -15,
+                  opacity: 0,
+                }}
+                transition={{
+                  ease: "easeInOut",
+                  duration: .15,
+                }}
+              >
+                <EditMenuWrapper>
+                  {editor && <FixedMenubar editor={editor} />}
+                </EditMenuWrapper>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </DistributeContentWrappe>
       </DistributeDiv>
       <ViewArea>
