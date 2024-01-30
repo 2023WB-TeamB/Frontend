@@ -116,6 +116,7 @@ const DocTags: React.FC = () => {
           value={inputTag}
           defaultValue={inputTag}
           placeholder="Input Tag"
+          maxLength={16}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setInputTag(event.target.value)
           }}
