@@ -25,9 +25,12 @@ const FixedOptionBarWrapper = styled.div<{ $isDarkMode: boolean }>`
   overflow: hidden;
   z-index: 1;
   border: 1px solid;
+  border-top: none;
   border-color: ${(props) => (props.$isDarkMode ? '#333' : '#c8c8c8')};
   border-radius: 10px;
-  background-color: ${(props) => (props.$isDarkMode ? '#222' : '#f3f3f3')};
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  background-color: transparent;
   transition: linear 0.3s;
 `
 
@@ -35,7 +38,7 @@ const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   height: 45px;
   border: none;
   border-radius: 0px;
-  background-color: ${(props) => (props.$isDarkMode ? '#222' : '#f3f3f3')};
+  background-color: transparent;
   font-size: 12px;
   transition: all ease 0.2s;
   color: black;
