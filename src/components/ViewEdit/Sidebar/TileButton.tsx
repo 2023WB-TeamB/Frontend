@@ -62,7 +62,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; $isDarkMode:
     width: 4.0rem;
     margin-left: 1rem;
     font-size: .85rem;
-    color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
+    color: ${(props) => (props.$isDarkMode ? 'white' : '#202020')};
     font-weight: 400;
     text-align: center;
   }
