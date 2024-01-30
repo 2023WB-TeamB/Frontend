@@ -38,7 +38,7 @@ const ScrollSnap = styled.div`
   overflow-x: hidden;
 `
 // 페이지 상단부
-const Upper = styled.div<{ isDarkMode: boolean }>`
+const Upper = styled.div<{ $isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,7 +50,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
   @media (max-width: 960px) {
     height: 25rem;
     scroll-snap-align: none;
-    background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+    background: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
   }
 
   &:before {
@@ -62,7 +62,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
     height: 100%;
     z-index: -1;
     background: linear-gradient(#202020, #202020 80%, rgb(42, 42, 42, 1));
-    opacity: ${(props) => (props.isDarkMode ? 1 : 0)};
+    opacity: ${(props) => (props.$isDarkMode ? 1 : 0)};
     transition: opacity ease 0.5s;
   }
 
@@ -75,7 +75,7 @@ const Upper = styled.div<{ isDarkMode: boolean }>`
     height: 100%;
     z-index: -1;
     background: linear-gradient(white, white 80%, rgb(240, 240, 240, 1));
-    opacity: ${(props) => (props.isDarkMode ? 0 : 1)};
+    opacity: ${(props) => (props.$isDarkMode ? 0 : 1)};
     transition: opacity ease 0.5s;
   }
 `
@@ -93,14 +93,14 @@ const Generation = styled.div`
 `
 
 // 페이지 하단부
-const Lower = styled.div<{ isDarkMode: boolean }>`
+const Lower = styled.div<{ $isDarkMode: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100vw;
   position: relative;
-  background: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  background: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
   scroll-snap-align: center;
   @media (max-width: 960px) {
     scroll-snap-align: none;
@@ -119,7 +119,7 @@ const MyDocsPage: React.FC = () => {
   const { setIsLoading } = isLoadingStore()
   const { isDelete, setIsDelete } = isDeleteStore()
   const { isGenerating } = isGeneratingStore()
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isGetToken, setisGetToken } = useLocalStorageStore()
 
   useEffect(() => {
@@ -224,7 +224,7 @@ const MyDocsPage: React.FC = () => {
       <Header isGetToken={isGetToken} />
       <Container>
         <ScrollSnap>
-          <Upper isDarkMode={isDarkMode}>
+          <Upper $isDarkMode={$isDarkMode}>
             <GiToDoc />
             {/* <Description /> */}
             <Generation>
@@ -241,7 +241,7 @@ const MyDocsPage: React.FC = () => {
             <RoundCarousel docs={docs.slice(0, 10)} />
           </Upper>
           {docs.length !== 0 && (
-            <Lower isDarkMode={isDarkMode}>
+            <Lower $isDarkMode={$isDarkMode}>
               <Gallery docs={docs} />
             </Lower>
           )}

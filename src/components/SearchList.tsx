@@ -14,13 +14,13 @@ import imgClose from '../assets/images/close.png'
 interface IconType {
   height: string
   width: string
-  isDarkMode?: boolean
+  $isDarkMode?: boolean
   onClick?: () => void
 }
 // 스타일
-const Overlay = styled.div<{ isDarkMode: boolean }>`
+const Overlay = styled.div<{ $isDarkMode: boolean }>`
   position: fixed;
-  background-color: ${(props) => (props.isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.2)')};
+  background-color: ${(props) => (props.$isDarkMode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.2)')};
   top: 0;
   left: 0;
   right: 0;
@@ -30,11 +30,11 @@ const Overlay = styled.div<{ isDarkMode: boolean }>`
   justify-content: center;
   z-index: 5; // 재훈님과 얘기해서 수치 조정
 `
-const Container = styled.div<{ isDarkMode: boolean }>`
+const Container = styled.div<{ $isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => (props.isDarkMode ? '#2C2C2C' : '#fff')};
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  background-color: ${(props) => (props.$isDarkMode ? '#2C2C2C' : '#fff')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   border-radius: 20px;
   height: 450px;
   width: 50rem;
@@ -51,7 +51,7 @@ const Container = styled.div<{ isDarkMode: boolean }>`
   }
   /* 스크롤 핸들(드래그하는 부분) */
   ::-webkit-scrollbar-thumb {
-    background-color: ${(props) => (props.isDarkMode ? '#414141' : '#f0f0f0')};
+    background-color: ${(props) => (props.$isDarkMode ? '#414141' : '#f0f0f0')};
   }
 `
 const Icon = styled.img<IconType>`
@@ -67,14 +67,14 @@ const SearchWrapper = styled.div`
   align-items: center;
   padding-bottom: 5px;
 `
-const SearchBar = styled.input<{ isDarkMode: boolean }>`
+const SearchBar = styled.input<{ $isDarkMode: boolean }>`
   width: 44rem;
   height: 40px;
   font-size: 1.2rem;
   border: none;
   outline: none;
   background-color: transparent;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   ::placeholder {
     color: #c8c8c8;
   }
@@ -92,7 +92,7 @@ const ItemWrapper = styled.div`
 `
 // 메인
 const SearchList: React.FC = () => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { searchListClose } = useModalStore() // 검색 모달 상태고나리
   const [query, setQuery] = useState('') // 검색어 상태관리
   const { filteredData, setFilteredData } = useSearchStore() // 필터링된 검색결과 상태관리
@@ -147,8 +147,8 @@ const SearchList: React.FC = () => {
     <Overlay
       onClick={handleOverlayClick}
       tabIndex={0} // keybord의 focus를 받을수 없는 div, span 요소도 focus가 가능하게 함
-      isDarkMode={isDarkMode}>
-      <Container isDarkMode={isDarkMode}>
+      $isDarkMode={$isDarkMode}>
+      <Container $isDarkMode={$isDarkMode}>
         <SearchWrapper>
           <Icon src={imgSearch} height="2rem" width="2rem" />
           <SearchBar
@@ -157,7 +157,7 @@ const SearchList: React.FC = () => {
             onChange={getDocument}
             value={query}
             placeholder="Search your Document..."
-            isDarkMode={isDarkMode}
+            $isDarkMode={$isDarkMode}
           />
           <Icon src={imgClose} height="1rem" width="1rem" onClick={handleOnClick} />
         </SearchWrapper>

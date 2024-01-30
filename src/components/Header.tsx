@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useState } from 'react'
 /*----------------------------------------------------------*/
 import Signin from './Signin'
 import { useModalStore } from './ModalStore'
@@ -23,14 +22,14 @@ interface HeaderType {
 interface IconType {
   height: string
   width: string
-  isDarkMode?: boolean
+  $isDarkMode?: boolean
 }
 interface ContainerType {
-  isDarkMode: boolean
+  $isDarkMode: boolean
   // showBorder: boolean
 }
 interface SignType {
-  isDarkMode: boolean
+  $isDarkMode: boolean
 }
 // 스타일
 const Container = styled.div<ContainerType>`
@@ -38,11 +37,12 @@ const Container = styled.div<ContainerType>`
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 255px);
-  height: 50px;
+  /* width: 100vw; */
+  height: 2rem;
   position: fixed;
   border-color: black;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : '#fff')};
-  padding: 0 7.5rem;
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : '#fff')};
+  padding: 0.9rem 7.5rem;
   z-index: 3;
   transition: ease 0.5s;
 
@@ -68,25 +68,23 @@ const Icon = styled.img<IconType>`
   cursor: pointer;
   &:hover {
     border-radius: 50%;
-    background: ${(props) => (props.isDarkMode ? '#2b2b2b' : '#F5F5F5')};
+    background: ${(props) => (props.$isDarkMode ? '#2b2b2b' : '#F5F5F5')};
   }
 `
 const SignInOut = styled.div<SignType>`
   font-size: 1.3rem;
   font-weight: 500;
-  color: ${(props) => (props.isDarkMode ? 'white' : '#C8C8C8')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : '#C8C8C8')};
   margin-left: 10px;
   cursor: pointer;
 `
 // 메인
 const Header: React.FC<HeaderType> = ({ isGetToken }) => {
-  const { isDarkMode, toggleDarkMode } = useDarkModeStore()
+  const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const navigate = useNavigate()
   const openerStore = useViewerPageOpenStore()
-  const confirmBoxStore = useConfirmBoxStore()
-  const [confirmLabel, setConfirmLabel] = useState('')
-  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null)
+  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
 
   // 로그인 모달 클릭 이벤트
   const handleClickSignin = () => {
@@ -101,19 +99,13 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     e.preventDefault()
     searchListOpen()
   }
-  // 확인 모달창 핸들러
-  const handleConfirmYes = () => {
-    if (confirmAction) confirmAction()
-    confirmBoxStore.closeConfirm()
-  }
   // Signout 클릭 이벤트 핸들러
   const handleClickSignout = () => {
     setConfirmLabel('Are you sure you want to leave this page?')
-    setConfirmAction(() => () => {
+    setConfirmAction(() => {
       handleSignout()
     })
-    confirmBoxStore.setConfirmLabel(confirmLabel)
-    confirmBoxStore.openConfirm()
+    openConfirm()
   }
 
   // 로그아웃 API 호출 이벤트
@@ -133,59 +125,53 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   return (
     <>
       {isGetToken ? (
-        <Container isDarkMode={isDarkMode}>
+        <Container $isDarkMode={$isDarkMode}>
           <Logo src={imgLogo} />
           <RightWrapper>
             {/* 다크모드 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgDarkMode : imgWhiteMode}
               height="2.2rem"
               width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그인 */}
-            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignin}>
+            <SignInOut $isDarkMode={$isDarkMode} onClick={handleClickSignin}>
               Sign-in
             </SignInOut>
           </RightWrapper>
         </Container>
       ) : (
-        <Container isDarkMode={isDarkMode}>
+        <Container $isDarkMode={$isDarkMode}>
           <Logo src={imgLogo} />
           <RightWrapper>
             {/* 검색 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgSearchDark : imgSearch}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgSearchDark : imgSearch}
               height="2.4rem"
               width="2.4rem"
               onClick={handleClickSearch}
             />
             {/* 다크모드 */}
             <Icon
-              isDarkMode={isDarkMode}
-              src={isDarkMode ? imgDarkMode : imgWhiteMode}
+              $isDarkMode={$isDarkMode}
+              src={$isDarkMode ? imgDarkMode : imgWhiteMode}
               height="2.2rem"
               width="2.2rem"
               onClick={handleDarkMode}
             />
             {/* 로그아웃 */}
-            <SignInOut isDarkMode={isDarkMode} onClick={handleClickSignout}>
+            <SignInOut $isDarkMode={$isDarkMode} onClick={handleClickSignout}>
               Sign-out
             </SignInOut>
           </RightWrapper>
         </Container>
       )}
       <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
-      <ModalConfirm
-        isOpenConfirm={confirmBoxStore.isOpenConfirm}
-        label={confirmLabel}
-        confirmOption={[
-          ['Yes', handleConfirmYes],
-          ['No', confirmBoxStore.closeConfirm],
-        ]}
-      />
+      <ModalConfirm />
+
       {/* 모달 */}
       {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}

@@ -11,7 +11,7 @@ import helpPage from '../assets/images/Viewer/Badge/helpPage.svg'
 import helpPage_dark from '../assets/images/Viewer/Badge/helpPage_dark.svg'
 import themes from '../assets/images/Viewer/Badge/themes.svg'
 
-export const Icon = styled.img<{ isDarkMode: boolean }>`
+export const Icon = styled.img<{ $isDarkMode: boolean }>`
   position: fixed;
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@ export const Icon = styled.img<{ isDarkMode: boolean }>`
   height: 30px;
   cursor: pointer;
 `
-const StyledHelpPage = styled.img<{ isDarkMode: boolean }>`
+const StyledHelpPage = styled.img<{ $isDarkMode: boolean }>`
   position: fixed;
   width: 513px;
   height: 610px;
@@ -69,12 +69,12 @@ interface FontProps {
   fontFamily?: string
 }
 const StyledFont = styled.p<
-  FontProps & { fontDark: string; fontLight: string; isDarkMode: boolean }
+  FontProps & { fontDark: string; fontLight: string; $isDarkMode: boolean }
 >`
   font-size: ${(props) => props.fontSize || '16px'};
   font-weight: ${(props) => props.fontWeight || '400'};
   font-family: ${(props) => props.fontFamily || 'Inter'};
-  color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
+  color: ${(props) => (props.$isDarkMode ? props.fontDark : props.fontLight || 'black')};
 
   height: auto;
   width: auto;
@@ -84,20 +84,20 @@ const StyledFont = styled.p<
 interface BoxProps {
   color?: string
 }
-const Box = styled.div<BoxProps & { isDarkMode: boolean; boxDark: string; boxLight: string }>`
+const Box = styled.div<BoxProps & { $isDarkMode: boolean; boxDark: string; boxLight: string }>`
   width: 395px;
   padding: 10px 15px;
 
   border-radius: 15px;
-  background-color: ${(props) => (props.isDarkMode ? props.boxDark : props.boxLight || '#FDF9E9')};
+  background-color: ${(props) => (props.$isDarkMode ? props.boxDark : props.boxLight || '#FDF9E9')};
   font-size: 11px;
   font-family: monospace;
   line-height: 1.5;
 `
 
-/*-----------Publishing-------------*/
+/* -----------Publishing-------------*/
 export const BadgeGuide = () => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isGuideOpen, openGuide, closeGuide } = useGuideStore()
   const iconRef = useRef(null)
 
@@ -113,77 +113,79 @@ export const BadgeGuide = () => {
     <>
       <Icon
         ref={iconRef}
-        isDarkMode={isDarkMode}
-        src={isDarkMode ? help_dark : help}
+        $isDarkMode={$isDarkMode}
+        src={$isDarkMode ? help_dark : help}
         onClick={toggleGuide}
         alt="badge_guide"
       />
       {isGuideOpen && (
         <div ref={modalRef} style={{ top: 0, bottom: 0, left: 0, right: 0 }}>
-          <StyledHelpPage isDarkMode={isDarkMode} src={isDarkMode ? helpPage_dark : helpPage} />
+          <StyledHelpPage $isDarkMode={$isDarkMode} src={$isDarkMode ? helpPage_dark : helpPage} />
           <Container>
             <StyledFont
-              isDarkMode={isDarkMode}
+              $isDarkMode={$isDarkMode}
               fontSize="21px"
               fontWeight="600"
               fontDark="white"
               fontLight="#202020">
               How to make badges?
             </StyledFont>
-            <div style={{ margin: 4 }}></div>
+            <div style={{ margin: 4 }} />
             <Content>
               <Instruction>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
                   &gt;
                 </StyledFont>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#202020" fontDark="white">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#202020" fontDark="white">
                   Please fill in your information in the appropriate place.
                 </StyledFont>
               </Instruction>
-              <Box isDarkMode={isDarkMode} boxLight="#fdf6db" boxDark="#413C26">
+              <Box $isDarkMode={$isDarkMode} boxLight="#fdf6db" boxDark="#413C26">
                 {'<img src="https://gtd.kro.kr/api/badge/'}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{owner}'}</span>
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{owner}'}</span>
                 {'/'}{' '}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{repository}'}</span>
-                {'/'}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{contributor}'}</span>
-                {'?theme='}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{theme_name}'}</span>
-                {'&start='}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{yyyymmdd}'}</span>
-                {'&end='}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{yyyymmdd}'}</span>
-                {'&stack1='}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{name}'}</span>
-                {'&stack2='}
-                <span style={{ color: isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{name}'}</span>
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{repository}'}</span>
+                /
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>
+                  {'{contributor}'}
+                </span>
+                ?theme=
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{theme_name}'}</span>
+                &start=
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{yyyymmdd}'}</span>
+                &end=
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{yyyymmdd}'}</span>
+                &stack1=
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{name}'}</span>
+                &stack2=
+                <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{name}'}</span>
                 {'" />'}
               </Box>
             </Content>
-            <div style={{ margin: 8 }}></div>
+            <div style={{ margin: 8 }} />
             <Content>
               <Instruction>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
                   &gt;
                 </StyledFont>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#202020" fontDark="white">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#202020" fontDark="white">
                   You have to use the stack name as we have set it.
                 </StyledFont>
               </Instruction>
-              <Box isDarkMode={isDarkMode} boxLight="#FCF3F3" boxDark="#4E3534">
-                <span style={{ color: isDarkMode ? '#FFEEEE' : '#410E0B' }}>
+              <Box $isDarkMode={$isDarkMode} boxLight="#FCF3F3" boxDark="#4E3534">
+                <span style={{ color: $isDarkMode ? '#FFEEEE' : '#410E0B' }}>
                   django, react, flutter, angular, nuxt, svelte, nodejs, springboot, spring, unity,
                   vue, fastapi, flask, next
                 </span>
               </Box>
             </Content>
-            <div style={{ margin: 8 }}></div>
+            <div style={{ margin: 8 }} />
             <Content>
               <Instruction>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#1C6EF3" fontDark="#5F7EAF">
                   &gt;
                 </StyledFont>
-                <StyledFont isDarkMode={isDarkMode} fontLight="#202020" fontDark="white">
+                <StyledFont $isDarkMode={$isDarkMode} fontLight="#202020" fontDark="white">
                   Themes
                 </StyledFont>
               </Instruction>

@@ -1,4 +1,9 @@
-/* Basic editor styles */
+/* sweetalert2 */
+.swal2-container {
+  z-index: 9999;
+}
+
+/* tiptap 관련 */
 table {
   border-collapse: collapse;
   margin: 0;
