@@ -40,6 +40,7 @@ const Section = styled.div`
   position: relative;
   width: 100vw;
   min-height: 100vh;
+  scroll-snap-align: center;
   display: flex;
   flex-direction: column;
   margin-top: 7rem;

@@ -37,6 +37,7 @@ function useOnScreen(
 const Section = styled.div`
   position: relative;
   width: 100vw;
+  scroll-snap-align: center;
   /* height: 100vh; */
   display: flex;
   flex-direction: column;
