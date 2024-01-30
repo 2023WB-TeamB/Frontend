@@ -27,9 +27,9 @@ import { Color } from '@tiptap/extension-color'
 import { common, createLowlight } from 'lowlight'
 import { marked } from 'marked'
 import styled from 'styled-components'
+import axios from 'axios'
 import { useDocContentStore, useEditorModeStore, useEditorObjectStore } from '../../../store/store'
 import BubbleMenubar from './BubbleMenubar'
-import axios from 'axios'
 
 const lowlight = createLowlight(common)
 
@@ -132,7 +132,7 @@ const EditorArea: React.FC = () => {
 
     try {
       const response = await axios.post('https://gitodoc.kro.kr/api/v1/docs/img', formData, config)
-      return response.data.imageUrl + '?w=400&f=webp' // 쿼리 파라미터 추가
+      return `${response.data.imageUrl}?w=400&f=webp` // 쿼리 파라미터 추가
     } catch (error) {
       console.error('Error uploading image:', error)
       return null
