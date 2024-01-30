@@ -25,7 +25,7 @@ import {
  useEditorModeStore} from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
 
-const StyledForm = styled.div<{ isDarkMode: boolean }>`
+const StyledForm = styled.div<{ $isDarkMode: boolean }>`
   min-width: 100vw;
   min-height: 100vh;
   position: relative;
@@ -33,8 +33,8 @@ const StyledForm = styled.div<{ isDarkMode: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   transition: ease 0.5s;
   overflow: hidden;
 `
@@ -48,7 +48,7 @@ const StyledDocFieldWrapper = styled.div`
 `
 
 function ViewerPage() {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways, toggleOpenSideAlways } = useSidePeekStore()
   const { docId } = useDocIdStore()
   const { isEditor, toggleEditorMode } = useEditorModeStore()
@@ -115,7 +115,7 @@ function ViewerPage() {
   }
 
   return (
-    <StyledForm isDarkMode={isDarkMode}>
+    <StyledForm $isDarkMode={$isDarkMode}>
       <LittleHeader />
       <Sidebar
         list={[

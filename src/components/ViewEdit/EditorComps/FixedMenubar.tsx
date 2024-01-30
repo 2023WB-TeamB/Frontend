@@ -31,7 +31,7 @@ const FixedOptionBarWrapper = styled.div<{ isDarkMode: boolean }>`
   transition: linear 0.3s;
 `
 
-const StyledButton = styled.button<{ isDarkMode: boolean }>`
+const StyledButton = styled.button<{ $isDarkMode: boolean }>`
   height: 45px;
   border: none;
   border-radius: 0px;
@@ -41,7 +41,7 @@ const StyledButton = styled.button<{ isDarkMode: boolean }>`
   color: black;
 
   &:hover {
-    background-color: ${(props) => (props.isDarkMode ? '#484848' : 'lightgray')};
+    background-color: ${(props) => (props.$isDarkMode ? '#484848' : 'lightgray')};
   }
 `
 
@@ -53,19 +53,19 @@ const FixedMenubar = ({ editor }: FixedMenubarProps) => {
   const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
   const addImage = useCallback(() => {
     Swal.fire({
-      title: "Input Image URL",
-      input: "url",
+      title: 'Input Image URL',
+      input: 'url',
       inputAttributes: {
-        autocapitalize: "off"
+        autocapitalize: 'off',
       },
       showCancelButton: true,
-      confirmButtonText: "Add",
+      confirmButtonText: 'Add',
       showLoaderOnConfirm: true,
       preConfirm: async (url) => {
         console.log(url)
         editor.chain().focus().setImage({ src: url }).run()
       },
-      allowOutsideClick: () => !Swal.isLoading()
+      allowOutsideClick: () => !Swal.isLoading(),
     })
   }, [editor])
 
@@ -83,40 +83,25 @@ const FixedMenubar = ({ editor }: FixedMenubarProps) => {
       <StyledButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().undo()}
-        isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? undo_dark : undo}
-          alt='undo' 
-        />
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? undo_dark : undo} alt="undo" />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().redo()}
-        isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? redo_dark : redo}
-          alt='redo' 
-        />
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? redo_dark : redo} alt="redo" />
       </StyledButton>
       <StyledButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? line_dark : line}
-          alt='line' 
-        />
+        $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? line_dark : line} alt="line" />
       </StyledButton>
-      <StyledButton onClick={addImage} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? photolibrary_dark : photolibrary}
-          alt='imageInput'
-        />
+      <StyledButton onClick={addImage} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? photolibrary_dark : photolibrary} alt="imageInput" />
       </StyledButton>
-      <StyledButton onClick={addTable} isDarkMode={isDarkMode}>
-        <img 
-          src={isDarkMode ? table_dark : table}
-          alt='table' 
-        />
+      <StyledButton onClick={addTable} $isDarkMode={$isDarkMode}>
+        <img src={$isDarkMode ? table_dark : table} alt="table" />
       </StyledButton>
     </FixedOptionBarWrapper>
   )

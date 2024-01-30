@@ -37,6 +37,7 @@ function useOnScreen(
 const Section = styled.div`
   position: relative;
   width: 100vw;
+  scroll-snap-align: center;
   /* height: 100vh; */
   display: flex;
   flex-direction: column;
@@ -150,7 +151,7 @@ const Smalldont = styled.span`
   }
 `
 
-const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
+const Dont = styled.h1<DontProps & { visible: boolean; $isDarkMode: boolean }>`
   margin-left: 5%;
   margin-top: 6%;
   margin-bottom: calc(6% - 3rem);
@@ -158,7 +159,7 @@ const Dont = styled.h1<DontProps & { visible: boolean; isDarkMode: boolean }>`
   font-weight: 700;
   z-index: 1;
   font-family: 'DMSerifDisplay', serif;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   top: ${(props) => props.top || '0'};
   left: 5%;
   letter-spacing: 0;
@@ -186,9 +187,9 @@ interface MonoProps {
   centered?: boolean
   hilight?: string
   color?: string
-  littleFontSize?: string
+  $littleFontSize?: string
 }
-const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
+const MonoText = styled.h1<MonoProps & { $isDarkMode: boolean }>`
   margin-left: ${(props) => props.marginleft || '5%'};
   margin-right: ${(props) => props.marginleft || '5%'};
   margin-bottom: 0;
@@ -196,24 +197,24 @@ const MonoText = styled.h1<MonoProps & { isDarkMode: boolean }>`
   font-weight: 400;
   z-index: 1;
   font-family: monospace;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   letter-spacing: 0.5px;
   line-height: 2;
   transform: ${(props) => (props.centered ? 'translateX(-50%)' : 'none')};
 
   @media (max-width: 760px) {
-    font-size: ${(props) => props.littleFontSize || props.fontSize || '0.8rem'};
+    font-size: ${(props) => props.$littleFontSize || props.fontSize || '0.8rem'};
   }
 `
 
-export const Blue = styled.span<{ isDarkMode: boolean }>`
-  color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#1c6ef3')};
+export const Blue = styled.span<{ $isDarkMode: boolean }>`
+  color: ${(props) => (props.$isDarkMode ? '#5F7EAF' : '#1c6ef3')};
 `
 const Hilight = styled.span<
-  MonoProps & { hilightDark: string; hilightLight: string; isDarkMode: boolean }
+  MonoProps & { $hilightDark: string; $hilightLight: string; $isDarkMode: boolean }
 >`
   background-color: ${(props) =>
-    props.isDarkMode ? props.hilightDark : props.hilightLight || 'black'};
+    props.$isDarkMode ? props.$hilightDark : props.$hilightLight || 'black'};
 `
 
 // Console : 위치 수정 및 리팩토링
@@ -223,16 +224,13 @@ interface ConsoleBoxProps {
   width?: string
   top?: string
   left?: string
+  $backgroundLight: string
+  $backgroundDark: string
+  $borderDark: string
+  $borderLight: string
+  $isDarkMode: boolean
 }
-const ConsoleBox = styled.div<
-  ConsoleBoxProps & {
-    backgroundLight: string
-    backgroundDark: string
-    borderDark: string
-    borderLight: string
-    isDarkMode: boolean
-  }
->`
+const ConsoleBox = styled.div<ConsoleBoxProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -242,12 +240,12 @@ const ConsoleBox = styled.div<
   top: ${(props) => props.top || '47.5%'};
   left: ${(props) => props.left || '0'};
   background: ${(props) =>
-    props.isDarkMode ? props.backgroundDark : props.backgroundLight || '#edeff6'};
+    props.$isDarkMode ? props.$backgroundDark : props.$backgroundLight || '#edeff6'};
   border-bottom: 0.1rem solid
-    ${(props) => (props.isDarkMode ? props.borderDark : props.borderLight || '#5E5E5E')};
+    ${(props) => (props.$isDarkMode ? props.$borderDark : props.$borderLight || '#5E5E5E')};
   font-size: 0.9rem;
   font-weight: 400;
-  color: ${(props) => (props.isDarkMode ? '#5F7EAF' : '#0957d0')};
+  color: ${(props) => (props.$isDarkMode ? '#5F7EAF' : '#0957d0')};
   z-index: 2;
 
   @media (max-width: 760px) {
@@ -262,54 +260,55 @@ const BlinkText = styled.p`
 // Publishing
 export const Page2: React.FC = () => {
   const [ref, visible] = useOnScreen({ threshold: 0.1 })
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
 
   return (
     <Section>
       <Wrapper>
-        <Dont ref={ref} visible={visible} isDarkMode={isDarkMode}>
+        <Dont ref={ref} visible={visible} $isDarkMode={$isDarkMode}>
           Don&apos;t just code. <br />
           <Smalldont>Document. Refine. Archive. Share.</Smalldont>
         </Dont>
         <ConsoleBox
-          isDarkMode={isDarkMode}
-          backgroundDark="#343434"
-          backgroundLight="#edeff6"
-          borderDark="#5E5E5E"
-          borderLight="#D3E2FD">
+          $isDarkMode={$isDarkMode}
+          $backgroundDark="#343434"
+          $backgroundLight="#edeff6"
+          $borderDark="#5E5E5E"
+          $borderLight="#D3E2FD">
           <ConsoleBox
-            isDarkMode={isDarkMode}
+            $isDarkMode={$isDarkMode}
             width="9rem"
             top="0"
-            backgroundDark="transparent"
-            backgroundLight="transparent"
-            borderDark="#5F7EAF"
-            borderLight="#0957D0">
+            $backgroundDark="transparent"
+            $backgroundLight="transparent"
+            $borderDark="#5F7EAF"
+            $borderLight="#0957D0">
             <Centerwrapper>GiToDoc</Centerwrapper>
           </ConsoleBox>
           <Styledicon
-            src={isDarkMode ? settings_dark : settings}
+            src={$isDarkMode ? settings_dark : settings}
             left="92%"
             animation={false}
             alt="icons"
           />
         </ConsoleBox>
-        <MonoText isDarkMode={isDarkMode}>
-          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Coding isn&apos;t the end of the journey.
+        <MonoText $isDarkMode={$isDarkMode}>
+          <Blue $isDarkMode={$isDarkMode}>&gt; </Blue>&ensp;Coding isn&apos;t the end of the
+          journey.
           <br />
-          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
+          <Blue $isDarkMode={$isDarkMode}>&gt; </Blue>&ensp;Make Your Projects perfect to the Last
           Detail.
           <br />
           <br />
-          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;With our{' '}
-          <Hilight hilightLight="#FCEBEB" hilightDark="#8A6565" isDarkMode={isDarkMode}>
+          <Blue $isDarkMode={$isDarkMode}>&gt; </Blue>&ensp;With our{' '}
+          <Hilight $hilightLight="#FCEBEB" $hilightDark="#8A6565" $isDarkMode={$isDarkMode}>
             GiToDoc;
           </Hilight>
           <br />
-          <Blue isDarkMode={isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
+          <Blue $isDarkMode={$isDarkMode}>&gt; </Blue>&ensp;We empower you to go the extra mile,
           ensuring your project is not just done, but perfected.{' '}
           <BlinkText>
-            <Hilight hilightLight="black" hilightDark="white" isDarkMode={isDarkMode} />
+            <Hilight $hilightLight="black" $hilightDark="white" $isDarkMode={$isDarkMode} />
             &ensp;
           </BlinkText>
         </MonoText>
@@ -317,16 +316,16 @@ export const Page2: React.FC = () => {
       <Centerwrapper>
         <MonoText
           fontSize="0.85rem"
-          littleFontSize="0.7rem"
+          $littleFontSize="0.7rem"
           color="#8E004B"
           marginleft="0"
           marginright="0"
-          isDarkMode={isDarkMode}>
+          $isDarkMode={$isDarkMode}>
           Keep scrolling if you want to make your project perfect
         </MonoText>
         <Styledicon src={down_arrow} width="2.2rem" height="2.2rem" animation alt="downarrow" />
       </Centerwrapper>
-      <Styledpage src={isDarkMode ? page2_dark : page2} alt="page image" />
+      <Styledpage src={$isDarkMode ? page2_dark : page2} alt="page image" />
     </Section>
   )
 }

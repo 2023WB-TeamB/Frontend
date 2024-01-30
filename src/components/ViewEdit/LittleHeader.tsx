@@ -29,23 +29,23 @@ const StyledButton = styled.button`
   background-color: transparent;
 `
 
-const Icon = styled.img<{ isDarkMode: boolean }>`
+const Icon = styled.img<{ $isDarkMode: boolean }>`
   width: 1.6rem;
   height: 1.6rem;
-  filter: ${(props) => (props.isDarkMode ? 'brightness(1)' : 'brightness(0)')};
+  filter: ${(props) => (props.$isDarkMode ? 'brightness(1)' : 'brightness(0)')};
   transition: ease 0.75s;
 `
 
 const LittleHeader = () => {
-  const { isDarkMode, toggleDarkMode } = useDarkModeStore()
+  const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
 
   return (
     <StyledLittleHeader>
       <StyledButton onClick={toggleDarkMode}>
-        <Icon 
-          src={isDarkMode ? DarkModeIcon : WhiteModeIcon} 
-          alt='darkModeChange'
-          isDarkMode={isDarkMode}
+        <Icon
+          src={$isDarkMode ? DarkModeIcon : WhiteModeIcon}
+          alt="darkModeChange"
+          $isDarkMode={$isDarkMode}
         />
       </StyledButton>
     </StyledLittleHeader>

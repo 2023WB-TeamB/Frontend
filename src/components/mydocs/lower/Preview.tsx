@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import PreviewContent from './PreviewContent'
 import { useDarkModeStore } from '../../../store/store'
 
-const PreviewWrapper = styled.div<{ previewOpen: boolean; isDarkMode: boolean }>`
+const PreviewWrapper = styled.div<{ previewOpen: boolean; $isDarkMode: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: ${(props) =>
-    props.isDarkMode ? 'rgba(32, 32, 32, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
+    props.$isDarkMode ? 'rgba(32, 32, 32, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
   display: flex; // 항상 flex를 유지
   opacity: ${({ previewOpen }) => (previewOpen ? 1 : 0)}; // previewOpen 상태에 따라 opacity 조절
   visibility: ${({ previewOpen }) =>
@@ -39,10 +39,10 @@ interface PreviewProps {
 }
 
 const Preview: React.FC<PreviewProps> = ({ previewOpen, previewContent, setPreviewOpen }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   return (
     <PreviewWrapper
-      isDarkMode={isDarkMode}
+      $isDarkMode={$isDarkMode}
       previewOpen={previewOpen}
       onClick={() => setPreviewOpen(false)}>
       {previewContent && (

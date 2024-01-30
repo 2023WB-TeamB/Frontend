@@ -40,9 +40,9 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 6;
 `
-const Content = styled.div<{ isDarkMode: boolean }>`
+const Content = styled.div<{ $isDarkMode: boolean }>`
   position: relative;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
   border-radius: 50px;
   width: 425px;
   height: 550px;
@@ -57,31 +57,31 @@ const StyledForm = styled.form`
   justify-content: center;
   align-items: center;
 `
-const StyleedTitle = styled.div<{ isDarkMode: boolean }>`
+const StyleedTitle = styled.div<{ $isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 300;
   /* font-family: 'Inter-Regular', Helvetica; */
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
 `
-const StyledName = styled.div<{ isDarkMode: boolean }>`
+const StyledName = styled.div<{ $isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
   font-weight: 200;
   /* font-family: 'Inter-Regular', Helvetica; */
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
-const StyledInput = styled.input<{ isDarkMode: boolean }>`
+const StyledInput = styled.input<{ $isDarkMode: boolean }>`
   height: 45px;
   width: 324px;
   font-size: 15px;
-  color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
+  color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   border: 0.5px solid;
-  border-color: ${(props) => (props.isDarkMode ? '#5e5e5e' : '#c8c8c8')};
+  border-color: ${(props) => (props.$isDarkMode ? '#5e5e5e' : '#c8c8c8')};
   border-radius: 15px;
-  background-color: ${(props) => (props.isDarkMode ? '#202020' : 'white')};
+  background-color: ${(props) => (props.$isDarkMode ? '#202020' : 'white')};
   padding-left: 20px;
 `
 const StyledSocial = styled.img`
@@ -90,15 +90,15 @@ const StyledSocial = styled.img`
   margin-top: 50px;
   margin: 8px;
 `
-const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
+const StyledFont = styled.span<{ fontDark: string; fontLight: string; $isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 200;
   /* font-family: 'Inter-Regular', Helvetica; */
-  color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
+  color: ${(props) => (props.$isDarkMode ? props.fontDark : props.fontLight || 'black')};
   margin-bottom: 20px;
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
 `
-const StyledDivider = styled.div<{ isDarkMode: boolean }>`
+const StyledDivider = styled.div<{ $isDarkMode: boolean }>`
   width: 300px;
   height: 16px;
   display: flex;
@@ -107,7 +107,7 @@ const StyledDivider = styled.div<{ isDarkMode: boolean }>`
   align-items: center;
   /* font-family: 'Inter'; */
   font-size: 16px;
-  color: ${(props) => (props.isDarkMode ? '#c8c8c8' : '#bbbbbb')};
+  color: ${(props) => (props.$isDarkMode ? '#c8c8c8' : '#bbbbbb')};
   font-weight: 400;
 `
 // const StyledCheckbox = styled.input`
@@ -120,7 +120,7 @@ const StyledDivider = styled.div<{ isDarkMode: boolean }>`
 // 메인
 const Signin = () => {
   // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode) // 다크모드 상태관리
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode) // 다크모드 상태관리
   const navigate = useNavigate()
   const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
   const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
@@ -219,14 +219,14 @@ const Signin = () => {
   return (
     <>
       <Overlay onClick={handleOverlayClick}>
-        <Content isDarkMode={isDarkMode} onKeyDown={handleKeyPress} ref={modalRef} tabIndex={0}>
-          <CloseBtn onClick={toggleSignin} isDarkMode={isDarkMode} />
+        <Content $isDarkMode={$isDarkMode} onKeyDown={handleKeyPress} ref={modalRef} tabIndex={0}>
+          <CloseBtn onClick={toggleSignin} isDarkMode={$isDarkMode} />
           <StyledForm onSubmit={handleSubmit}>
-            <StyleedTitle isDarkMode={isDarkMode}>Sign in</StyleedTitle>
+            <StyleedTitle $isDarkMode={$isDarkMode}>Sign in</StyleedTitle>
             {/* 이메일 */}
-            <StyledName isDarkMode={isDarkMode}>Email</StyledName>
+            <StyledName $isDarkMode={$isDarkMode}>Email</StyledName>
             <StyledInput
-              isDarkMode={isDarkMode}
+              $isDarkMode={$isDarkMode}
               type="email"
               name="email"
               value={data.email}
@@ -235,9 +235,9 @@ const Signin = () => {
             />
             {/* 비밀번호 */}
             <div style={{ margin: 8 }} />
-            <StyledName isDarkMode={isDarkMode}>Password</StyledName>
+            <StyledName $isDarkMode={$isDarkMode}>Password</StyledName>
             <StyledInput
-              isDarkMode={isDarkMode}
+              $isDarkMode={$isDarkMode}
               type="password"
               name="password"
               value={data.password}
@@ -255,7 +255,7 @@ const Signin = () => {
                 onChange={handleCheckboxChange}
               />
               <StyledFont
-                isDarkMode={isDarkMode}
+                $isDarkMode={$isDarkMode}
                 fontLight="#000"
                 fontDark="#fff"
                 onClick={handleCheckboxChange}>
@@ -264,16 +264,16 @@ const Signin = () => {
             </div> */}
             <div style={{ margin: 15 }} />
             {/* 로그인 버튼 */}
-            <GradientBtn isDarkMode={isDarkMode}>Sign in</GradientBtn>
+            <GradientBtn isDarkMode={$isDarkMode}>Sign in</GradientBtn>
             {/* 소셜 로그인 */}
             <div style={{ margin: 10 }} />
-            <StyledDivider isDarkMode>
+            <StyledDivider $isDarkMode>
               <div
                 style={{
                   position: 'absolute',
                   width: 300,
                   height: 4,
-                  borderBottom: isDarkMode ? '0.5px solid #5e5e5e' : '0.5px solid #c8c8c8',
+                  borderBottom: $isDarkMode ? '0.5px solid #5e5e5e' : '0.5px solid #c8c8c8',
                 }}
               />
               <div
@@ -282,7 +282,7 @@ const Signin = () => {
                   height: 16,
                   paddingLeft: 10,
                   paddingRight: 10,
-                  backgroundColor: isDarkMode ? '#202020' : 'white',
+                  backgroundColor: $isDarkMode ? '#202020' : 'white',
                 }}>
                 &nbsp;or&nbsp;
               </div>
@@ -299,14 +299,14 @@ const Signin = () => {
             <div style={{ margin: 4 }} />
             <div>
               <StyledFont
-                isDarkMode={isDarkMode}
+                $isDarkMode={$isDarkMode}
                 fontDark="#fff"
                 fontLight="#000"
                 onClick={handleClickJoinus}>
                 Don&apos;t have an account? {/* &apos = "'" */}
               </StyledFont>
               <StyledFont
-                isDarkMode={isDarkMode}
+                $isDarkMode={$isDarkMode}
                 fontDark="#7AC4E8"
                 fontLight="#7AC4E8"
                 onClick={handleClickJoinus}>
