@@ -29,7 +29,7 @@ const StyledTileButton = styled.button<{
   transition: ease 0.3s;
   border: none;
   ${Icon} {
-    filter: ${(props) => (props.isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)')};
+    filter: ${(props) => (props.$isDarkMode ? 'brightness(0) invert(1)' : 'brightness(0)')};
   }
 
   &:before {
@@ -48,8 +48,8 @@ const StyledTileButton = styled.button<{
     filter: none;
     margin-left: 5px;
     transition: ease 0.3s;
-    border-inline-start: 3px solid ${(props) => (props.isDarkMode ? '#ddd' : '#222')};
-    background-color: ${(props) => (props.isDarkMode ? '#353535' : '#f2f2f2')};
+    border-inline-start: 3px solid ${(props) => (props.$isDarkMode ? '#ddd' : '#222')};
+    background-color: ${(props) => (props.$isDarkMode ? '#353535' : '#f2f2f2')};
   }
 
   &:active:before {
@@ -90,7 +90,7 @@ interface ButtonProps {
 
 // 사이드바 타일버튼 기본 양식
 const TileButton: React.FC<ButtonProps> = ({ icon, name, onClick }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
 
   return icon !== '' ? (

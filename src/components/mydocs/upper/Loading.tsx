@@ -27,15 +27,15 @@ const spin = keyframes`
 `
 
 // 로딩 스피너
-const Loader = styled.div<{ isDarkMode: boolean }>`
+const Loader = styled.div<{ $isDarkMode: boolean }>`
   position: absolute;
   width: 1rem;
   top: 10.4rem;
   left: -0.5rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 0.2rem solid ${(props) => (props.isDarkMode ? '#67b0cba9' : '#76cae89d')};
-  border-right-color: ${(props) => (props.isDarkMode ? '#67b1cb' : '#76CAE8')};
+  border: 0.2rem solid ${(props) => (props.$isDarkMode ? '#67b0cba9' : '#76cae89d')};
+  border-right-color: ${(props) => (props.$isDarkMode ? '#67b1cb' : '#76CAE8')};
   animation: ${spin} 1s infinite linear;
 `
 
@@ -256,15 +256,15 @@ const Styledpage = styled.img`
 
 // Publishing
 export const Animation: React.FC = () => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isGenerating } = isGeneratingStore()
 
   return (
     <AnimationWrapper>
-      <Styledpage src={isDarkMode ? loadingpage_dark : loadingpage} alt="loadingpage" />
-      {isGenerating && <Loader isDarkMode={isDarkMode} />}
+      <Styledpage src={$isDarkMode ? loadingpage_dark : loadingpage} alt="loadingpage" />
+      {isGenerating && <Loader $isDarkMode={$isDarkMode} />}
       <Styledicon
-        src={isDarkMode ? githublogo_dark : githublogo}
+        src={$isDarkMode ? githublogo_dark : githublogo}
         visible={false}
         top="3.2rem"
         left="-15rem"
@@ -272,7 +272,7 @@ export const Animation: React.FC = () => {
         alt="githublogo"
       />
       <Styledicon
-        src={isDarkMode ? logobox_dark : logobox}
+        src={$isDarkMode ? logobox_dark : logobox}
         visible={isGenerating}
         zindex="1"
         top="3.2rem"
@@ -281,7 +281,7 @@ export const Animation: React.FC = () => {
         alt="logobox"
       />
       <Styledicon
-        src={isDarkMode ? logoboxopen_dark : logoboxopen}
+        src={$isDarkMode ? logoboxopen_dark : logoboxopen}
         visible={isGenerating}
         width="8.8rem"
         height="8.8rem"
@@ -292,7 +292,7 @@ export const Animation: React.FC = () => {
         alt="logoboxopen"
       />
       <Styledicon
-        src={isDarkMode ? documnet_dark : document}
+        src={$isDarkMode ? documnet_dark : document}
         visible={isGenerating}
         top="3.7rem"
         left="10rem"
@@ -302,7 +302,7 @@ export const Animation: React.FC = () => {
         alt="document"
       />
       <Styledicon
-        src={isDarkMode ? document1_dark : document1}
+        src={$isDarkMode ? document1_dark : document1}
         visible={isGenerating}
         top="3.7rem"
         left="10rem"
@@ -313,7 +313,7 @@ export const Animation: React.FC = () => {
         alt="document"
       />
       <Styledicon
-        src={isDarkMode ? file_dark : file}
+        src={$isDarkMode ? file_dark : file}
         visible={isGenerating}
         top="4.9rem"
         left="-14.5rem"
@@ -324,7 +324,7 @@ export const Animation: React.FC = () => {
         alt="file"
       />
       <Styledicon
-        src={isDarkMode ? file_dark : file}
+        src={$isDarkMode ? file_dark : file}
         visible={isGenerating}
         top="4.9rem"
         left="-14.5rem"
@@ -335,7 +335,7 @@ export const Animation: React.FC = () => {
         alt="file"
       />
       <Styledicon
-        src={isDarkMode ? folder_dark : folder}
+        src={$isDarkMode ? folder_dark : folder}
         visible={isGenerating}
         top="4.9rem"
         left="-14.5rem"
@@ -346,7 +346,7 @@ export const Animation: React.FC = () => {
         alt="folder"
       />
       <Styledicon
-        src={isDarkMode ? folder_dark : folder}
+        src={$isDarkMode ? folder_dark : folder}
         visible={isGenerating}
         top="4.9rem"
         left="-14.5rem"

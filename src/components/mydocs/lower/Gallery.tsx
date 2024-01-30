@@ -11,7 +11,7 @@ import getContent from './getContent'
 const GalleryWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   width: 100vw;
@@ -32,10 +32,10 @@ const Collection = styled(motion.div)`
   flex-direction: row;
   justify-content: center;
   /* justify-content: flex-start; */
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   position: relative;
-  height: 85vh;
+  height: 80vh;
   width: 80vw;
   /* margin: auto 3vw; */
 `
@@ -149,6 +149,7 @@ const PageDotContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 1.5rem;
+  margin-bottom: 6vh;
 `
 
 const PageDot = styled.div<{ active: boolean }>`
