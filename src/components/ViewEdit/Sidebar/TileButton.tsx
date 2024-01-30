@@ -10,12 +10,16 @@ const Icon = styled.img`
   background: transparent;
 `
 
-const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: boolean }>`
+const StyledTileButton = styled.button<{ 
+  isOpenSideAlways: boolean 
+  isDarkMode: boolean 
+  isBlankName: boolean
+}>`
   margin-top: ${(props) => (props.isOpenSideAlways ? '5px' : '0')};
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: ${(props) => props.isBlankName ? 'flex-end' : 'flex-start'};
   width: ${(props) => (props.isOpenSideAlways ? '120%' : '80%')};
   height: 9vh;
   min-height: 70px;
@@ -59,7 +63,7 @@ const StyledTileButton = styled.button<{ isOpenSideAlways: boolean; isDarkMode: 
   }
 
   & h3 {
-    width: 4.0rem;
+    width: ${(props) => props.isBlankName ? '2rem' : '4rem' };
     margin-left: 1rem;
     font-size: .85rem;
     color: ${(props) => (props.isDarkMode ? 'white' : '#202020')};
@@ -90,7 +94,12 @@ const TileButton: React.FC<ButtonProps> = ({ icon, name, onClick }) => {
   const { isOpenSideAlways } = useSidePeekStore()
 
   return icon !== '' ? (
-    <StyledTileButton onClick={onClick} isOpenSideAlways={isOpenSideAlways} isDarkMode={isDarkMode}>
+    <StyledTileButton 
+      onClick={onClick} 
+      isOpenSideAlways={isOpenSideAlways} 
+      isDarkMode={isDarkMode}
+      isBlankName={name === ''}
+    >
       <Icon src={icon} />
       {isOpenSideAlways && <h3>{name}</h3>}
     </StyledTileButton>
