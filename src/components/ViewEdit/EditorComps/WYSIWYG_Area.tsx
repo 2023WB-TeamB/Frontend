@@ -1,4 +1,4 @@
-import "./EditorStyles.css";
+import './EditorStyles.css'
 import { BubbleMenu, Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useRef } from 'react'
@@ -24,11 +24,12 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import { Color } from '@tiptap/extension-color'
-import { common, createLowlight } from "lowlight";
-import { marked } from "marked";
-import styled from "styled-components";
-import { useDocContentStore, useEditorModeStore, useEditorObjectStore } from "../../../store/store";
-import BubbleMenubar from "./BubbleMenubar";
+import { common, createLowlight } from 'lowlight'
+import { marked } from 'marked'
+import styled from 'styled-components'
+import { useDocContentStore, useEditorModeStore, useEditorObjectStore } from '../../../store/store'
+import BubbleMenubar from './BubbleMenubar'
+import axios from 'axios'
 
 const lowlight = createLowlight(common)
 
@@ -79,7 +80,7 @@ const EditorWrapper = styled.div`
   //* Editor Form
   & .editor-content {
     line-height: 1.5rem;
-    padding: .1rem .1rem 0px;
+    padding: 0.1rem 0.1rem 0px;
     outline: 0;
     overflow: hidden;
   }
@@ -87,15 +88,14 @@ const EditorWrapper = styled.div`
 
 const EditorArea: React.FC = () => {
   const editorRef = useRef<any>(null)
-  const {editor, setEditor} = useEditorObjectStore()
-  const {isEditor} = useEditorModeStore()
-  const {content, setContent} = useDocContentStore()
-  
+  const { editor, setEditor } = useEditorObjectStore()
+  const { isEditor } = useEditorModeStore()
+  const { content, setContent } = useDocContentStore()
+
   useEffect(() => {
-    if (editorRef.current) 
-      editorRef.current.focus();
-  }, []);
-  
+    if (editorRef.current) editorRef.current.focus()
+  }, [])
+
   const tempEditorObj: Editor | null = useEditor({
     editable: isEditor,
     extensions,
@@ -106,14 +106,12 @@ const EditorArea: React.FC = () => {
       },
     },
     onUpdate: ({ editor }) => {
-      if (content !== '') 
-        setContent(editor.getHTML());
+      if (content !== '') setContent(editor.getHTML())
     },
   })
 
   useEffect(() => {
-    if (editor) 
-      editor.setEditable(isEditor)
+    if (editor) editor.setEditable(isEditor)
   }, [editor, isEditor])
 
   if (tempEditorObj && !editor) {
@@ -133,7 +131,7 @@ const EditorArea: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/docs/img', formData, config)
+      const response = await axios.post('https://gitodoc.kro.kr/api/v1/docs/img', formData, config)
       return response.data.imageUrl + '?w=400&f=webp' // 쿼리 파라미터 추가
     } catch (error) {
       console.error('Error uploading image:', error)
@@ -141,9 +139,7 @@ const EditorArea: React.FC = () => {
     }
   }
 
-  if (!editor)
-    return null
-
+  if (!editor) return null
 
   // 이미지 드롭 기능
   const handleDrop = async (event: any) => {
@@ -170,7 +166,7 @@ const EditorArea: React.FC = () => {
     <EditorWrapper>
       <EditorContent
         editor={editor}
-        ref={editorRef} 
+        ref={editorRef}
         onDrop={handleDrop}
         onDragOver={(event) => event.preventDefault()}
       />
