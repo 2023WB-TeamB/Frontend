@@ -71,7 +71,7 @@ const DistributeContentWrappe = styled.div`
 `
 
 // ? 문서 제목 내용 구분선
-const DistributeDiv = styled.div<{ isDarkMode: boolean }>`
+const DistributeDiv = styled.div<{ $isDarkMode: boolean }>`
   width: 90%;
   padding-block-start: 1rem;
   display: flex;
@@ -81,7 +81,7 @@ const DistributeDiv = styled.div<{ isDarkMode: boolean }>`
   & span {
     width: 100%;
     min-height: 1px;
-    background: ${(props) => props.isDarkMode ? '#555' : '#ccc'};
+    background: ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
   }
 `
 
@@ -253,7 +253,7 @@ const DocField: React.FC = () => {
       <TitleArea $isDarkMode={$isDarkMode} isOpenSideAlways={isOpenSideAlways}>
         {isEditor ? <textarea value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
-      <DistributeDiv isDarkMode={isDarkMode}>
+      <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
         {isEditor || <span />}
         <DistributeContentWrappe>

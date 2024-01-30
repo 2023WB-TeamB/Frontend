@@ -16,7 +16,7 @@ const TagStyle = css<TagStyleProps>`
   max-width: 100%;
   margin: 0px 3px 8px;
   border-radius: 17px;
-  background-color: ${(props) => (props.isDarkMode ? '#282828' : '#F8F8F8')};
+  background-color: ${(props) => (props.$isDarkMode ? '#282828' : '#F8F8F8')};
   color: ${(props) => props.color};
   font-size: 1.1rem;
   font-weight: 500;

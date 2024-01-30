@@ -8,7 +8,7 @@ import RightArrowIcon_Dark from '../../../assets/images/Viewer/arrow_right_dark.
 import { useDarkModeStore } from '../../../store/store'
 import { projectData } from './SidebarPanel'
 
-const PreviewWrapper = styled.div<{ isDarkMode: boolean }>`
+const PreviewWrapper = styled.div<{ $isDarkMode: boolean }>`
   width: 20rem;
   padding: 1rem;
   margin: 3px 0 15px 5px;
@@ -17,9 +17,9 @@ const PreviewWrapper = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid ${(props) => props.isDarkMode ? '#555' : '#ddd'};
+  border: 1px solid ${(props) => props.$isDarkMode ? '#555' : '#ddd'};
   border-radius: 1.5rem;
-  background: ${(props) => props.isDarkMode ? '#222' : '#fff'};
+  background: ${(props) => props.$isDarkMode ? '#222' : '#fff'};
 
   h3 {
     width: 88%;
@@ -109,7 +109,7 @@ const VersionPreviewTile: React.FC<PreviewTileProps> = ({ title, pages }) => {
   }
 
   return (
-    <PreviewWrapper isDarkMode={isDarkMode}>
+    <PreviewWrapper $isDarkMode={$isDarkMode}>
       <h3>{title}</h3>
       <hr />
       <SlideWrapper>

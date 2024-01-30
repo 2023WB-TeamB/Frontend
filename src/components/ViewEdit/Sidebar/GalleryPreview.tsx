@@ -19,7 +19,7 @@ const PreviewContentWrapper = styled.div<{ $isDarkMode: boolean; color: string }
   margin-left: 6px;
   width: 100%;
   height: 10rem;
-  background-color: ${(props) => props.isDarkMode ? '#222' : '#fff'};
+  background-color: ${(props) => props.$isDarkMode ? '#222' : '#fff'};
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -144,7 +144,7 @@ const TagContent = styled.div<{ $isDarkMode: boolean; color: string }>`
 // `
 
 const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const {setContent} = useDocContentStore()
   const {isEditor, toggleEditorMode} = useEditorModeStore()
   const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
@@ -177,7 +177,7 @@ const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
       <TagContentWrapper>
         {content.keywords.length > 0 && content.keywords.map((item) => {
           return <TagContent 
-              isDarkMode={isDarkMode} 
+              $isDarkMode={$isDarkMode} 
               color={content.color}
             >
               {item.name}

@@ -61,7 +61,7 @@ const ButtonWrapper = styled.div`
 
 const ModalConfirm: React.FC = () => {
   const {isOpenConfirm, confirmLabel, confirmAction, closeConfirm} = useConfirmBoxStore()
-  const isDarkMode = useDarkModeStore((state) => state.isDarkMode)
+  const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
 
   const handleTrueState = () => {
     confirmAction()
@@ -72,10 +72,10 @@ const ModalConfirm: React.FC = () => {
     return (
       <>
         <BackDrop />
-        <ModalWrapper isDarkMode={isDarkMode}>
-          <ContextWrapper isDarkMode={isDarkMode}>
+        <ModalWrapper $isDarkMode={$isDarkMode}>
+          <ContextWrapper $isDarkMode={$isDarkMode}>
             <img 
-              src={isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
+              src={$isDarkMode ? ConfirmIcon_dark : ConfirmIcon}
               alt="Confirm Icon"
             />
             <h3>{confirmLabel}</h3>
