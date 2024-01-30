@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { GlobalStyle } from '../GlobalStyle'
 import Header from '../components/Header'
 import Page1 from '../components/MainPage/page1.tsx'
@@ -47,7 +48,15 @@ const MainPage: React.FC = () => {
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        ease: "easeInOut",
+        duration: .2,
+      }}
+    >
       <Header isGetToken={isGetToken} />
       <GlobalStyle />
       <Container $isDarkMode={$isDarkMode}>
@@ -57,7 +66,7 @@ const MainPage: React.FC = () => {
         <Page4 />
         <Page5 />
       </Container>
-    </>
+    </motion.div>
   )
 }
 

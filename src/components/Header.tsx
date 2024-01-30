@@ -2,18 +2,18 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 /*----------------------------------------------------------*/
+import Swal from 'sweetalert2'
 import Signin from './Signin'
 import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
-import { useDarkModeStore, useViewerPageOpenStore, useConfirmBoxStore } from '../store/store'
-import ModalOptions from '../components/ViewEdit/ModalOptions'
-import ModalConfirm from '../components/ViewEdit/ModalConfirm'
+import { useConfirmBoxStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/moon.svg'
 import imgWhiteMode from '../assets/images/sun.svg'
 import imgLogo from '../assets/images/LOGO1.svg'
 import imgSearch from '../assets/images/search.svg'
 import imgSearchDark from '../assets/images/search_dark.svg'
+import ModalConfirm from './ViewEdit/ModalConfirm'
 
 // 인터페이스
 interface HeaderType {
@@ -82,9 +82,16 @@ const SignInOut = styled.div<SignType>`
 const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
-  const navigate = useNavigate()
-  const openerStore = useViewerPageOpenStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
+  const navigate = useNavigate()
+
+  // * Toast 알림창
+  const ToastInfor = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1800,
+  })
 
   // 로그인 모달 클릭 이벤트
   const handleClickSignin = () => {
@@ -114,12 +121,22 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     const response = await axios.delete(url)
     // 로그아웃 성공 시
     if (response.status === 202) {
+      ToastInfor.fire({
+        icon: 'success',
+        title: "You're signed out of GiToDoc",
+      })
       console.log('API Response: ', response.status)
       // 로컬스토리지에서 토큰 삭제
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       navigate('/') // 메인페이지로 이동
     }
+  }
+
+  const handleConfirmSignout = () => {
+    setConfirmLabel("Do you want to signed out?")
+    setConfirmAction(handleSignout)
+    openConfirm()
   }
 
   return (
@@ -163,18 +180,18 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
               onClick={handleDarkMode}
             />
             {/* 로그아웃 */}
-            <SignInOut $isDarkMode={$isDarkMode} onClick={handleClickSignout}>
+            <SignInOut $isDarkMode={$isDarkMode} onClick={handleConfirmSignout}>
               Sign-out
             </SignInOut>
           </RightWrapper>
         </Container>
       )}
-      <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
       <ModalConfirm />
 
       {/* 모달 */}
       {isSearchListOpen && <SearchList />}
       {isSigninOpen && <Signin />}
+      <ModalConfirm />
     </>
   )
 }
