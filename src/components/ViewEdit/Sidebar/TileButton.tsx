@@ -74,7 +74,7 @@ const StyledTileButton = styled.button<{
 
 // 아이콘 없는 타일
 const DumpArea = styled.div`
-  height: 8vh;
+  height: 7vh;
   width: 80px;
   display: flex;
   align-items: center;

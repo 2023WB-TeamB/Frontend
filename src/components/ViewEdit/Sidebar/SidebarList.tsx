@@ -25,7 +25,7 @@ const Wrapper = styled.div<{
   display: flex;
   left: -50px;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: ${(props) => (props.isOpenSideAlways ? 'flex-start' : 'flex-end')};
   border-right: 0.8px solid transparent;
   ${(props) =>
