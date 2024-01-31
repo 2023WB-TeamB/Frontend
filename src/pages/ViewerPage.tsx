@@ -26,9 +26,10 @@ import {
   useDarkModeStore, 
   useEditorModeStore,
   useDocContentStore,
-  useEditorObjectStore
+  useEditorObjectStore,
 } from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
+import ExternalArea from '../components/ViewEdit/ExternalArea'
 
 const StyledForm = styled.div<{ $isDarkMode: boolean }>`
   min-width: 100vw;
@@ -171,6 +172,7 @@ function ViewerPage() {
           <DocField />
         </StyledDocFieldWrapper>
         <BadgeGuide />
+        <ExternalArea />
       </StyledForm>
     </motion.div>
   )
