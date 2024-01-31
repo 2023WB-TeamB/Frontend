@@ -104,7 +104,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
-        `${apiUrl}/share`,
+        `${apiUrl}/docs/share`,
         {
           docs_id: docId,
         },

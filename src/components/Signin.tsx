@@ -3,7 +3,7 @@ import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useDarkModeStore } from '../../src/store/store'
+import { useApiUrlStore, useDarkModeStore } from '../../src/store/store'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
@@ -121,6 +121,7 @@ const StyledDivider = styled.div<{ $isDarkMode: boolean }>`
 const Signin = () => {
   // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode) // 다크모드 상태관리
+  const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
   const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
@@ -162,11 +163,10 @@ const Signin = () => {
   }, [])
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = 'https://gitodoc.kro.kr/api/v1/auth'
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
-      const response = await axios.post(url, {
+      const response = await axios.post(`${apiUrl}/auth`, {
         email: data.email,
         password: data.password,
       })

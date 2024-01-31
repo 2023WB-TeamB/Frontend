@@ -1,13 +1,12 @@
 import axios from 'axios'
+import { useApiUrlStore } from '../../../store/store'
 
 const getContent = async (id: number) => {
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
-  // const apiUrl = 'http://localhost:8000/api/v1/docs'
+  const { apiUrl } = useApiUrlStore() 
   try {
     // API 호출, 엑세스 토큰
     const access = localStorage.getItem('accessToken')
-    const response = await axios.get(`${apiUrl}/${id}`, {
+    const response = await axios.get(`${apiUrl}/docs/${id}`, {
       headers: { Authorization: `Bearer ${access}` },
     })
     const { content } = response.data.data

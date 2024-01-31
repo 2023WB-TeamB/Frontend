@@ -167,7 +167,7 @@ const DocField: React.FC = () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/${docId}`, {
+      const response = await axios.get(`${apiUrl}/docs/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -200,7 +200,7 @@ const DocField: React.FC = () => {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       await axios.put(
-        `${apiUrl}/${docId}`,
+        `${apiUrl}/docs/${docId}`,
         {
           title,
           content,

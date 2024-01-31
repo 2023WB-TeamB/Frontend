@@ -100,7 +100,7 @@ function ViewerPage() {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}/${docId}`, {
+      await axios.delete(`${apiUrl}/docs/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },

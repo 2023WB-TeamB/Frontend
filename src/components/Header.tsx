@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import Signin from './Signin'
 import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
-import { useConfirmBoxStore, useDarkModeStore } from '../store/store'
+import { useApiUrlStore, useConfirmBoxStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/moon.svg'
 import imgWhiteMode from '../assets/images/sun.svg'
@@ -83,6 +83,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
+  const { apiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
   // * Toast 알림창
@@ -106,19 +107,10 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     e.preventDefault()
     searchListOpen()
   }
-  // Signout 클릭 이벤트 핸들러
-  const handleClickSignout = () => {
-    setConfirmLabel('Are you sure you want to leave this page?')
-    setConfirmAction(() => {
-      handleSignout()
-    })
-    openConfirm()
-  }
 
   // 로그아웃 API 호출 이벤트
   const handleSignout = async () => {
-    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
-    const response = await axios.delete(url)
+    const response = await axios.delete(`${apiUrl}/auth`)
     // 로그아웃 성공 시
     if (response.status === 202) {
       ToastInfor.fire({
