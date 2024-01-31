@@ -174,36 +174,36 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   }
 
   // ? 다운로드할 컴포넌트 ID
-  const rootElementId = 'DocField'
+  const rootElementId = 'ExternalArea'
 
   // * PDF 다운로드
-  const downloadPdfDocument = (rootElementId: string) => {
+  const downloadPdfDocument = async (rootElementId: string) => {
     const input = document.getElementById(rootElementId)
     console.log('pdf download start', input)
-    if (input != null)
-      html2canvas(input).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png')
-        // eslint-disable-next-line new-cap
-        const pdf = new jsPDF('p', 'mm', 'a4')
-        // pdf 가로 세로 사이즈
-        const pageWidth = pdf.internal.pageSize.getWidth()
-        const pageHeight = pdf.internal.pageSize.getHeight()
-        // 이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
-        const widthRatio = pageWidth / canvas.width
-        const customHeight = canvas.height * widthRatio
-        // ? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight)
-        let heightLeft = customHeight
-        let heightAdd = -pageHeight
-        // 한 페이지 이상일 경우
-        while (heightLeft >= pageHeight) {
-          pdf.addPage()
-          pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight)
-          heightLeft -= pageHeight
-          heightAdd -= pageHeight
-        }
+    if (input != null) {
+      const canvas = await html2canvas(input)
+      const imgData = canvas.toDataURL('image/png')
+      // eslint-disable-next-line new-cap
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      // pdf 가로 세로 사이즈
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
+      // 이미지의 길이와 pdf의 가로길이가 다르므로 이미지 길이를 기준으로 비율을 구함
+      const widthRatio = pageWidth / canvas.width
+      const customHeight = canvas.height * widthRatio
+      // ? pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, customHeight)
+      let heightLeft = customHeight
+      let heightAdd = -pageHeight
+      // 한 페이지 이상일 경우
+      while (heightLeft >= pageHeight) {
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, heightAdd, pageWidth, customHeight)
+        heightLeft -= pageHeight
+        heightAdd -= pageHeight
         pdf.save(`${title}.pdf`)
-      })
+      }
+    }
   }
 
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)

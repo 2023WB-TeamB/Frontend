@@ -20,6 +20,7 @@ import {
   DocData,
   Keyword,
   isLoadingStore,
+  useApiUrlStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/ModalStore'
@@ -145,7 +146,7 @@ const MyDocsPage: React.FC = () => {
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      console.log(docs)
+      // console.log(docs)
     } catch (error) {
       const axiosError = error as AxiosError
 

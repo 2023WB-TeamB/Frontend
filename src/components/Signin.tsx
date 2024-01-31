@@ -3,7 +3,7 @@ import { styled, keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useDarkModeStore } from '../../src/store/store'
+import { useApiUrlStore, useDarkModeStore } from '../../src/store/store'
 /*-----------------------------------------------------------*/
 import Register from './Register'
 import GradientBtn from './GradientBtn'
@@ -163,7 +163,6 @@ const Signin = () => {
   }, [])
   // usbmit 비동기 처리
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const url = 'https://gitodoc.kro.kr/api/v1/auth'
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출

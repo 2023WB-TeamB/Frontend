@@ -8,6 +8,7 @@ import {
   docStore,
   isEnglishStore,
   isGeneratingStore,
+  useApiUrlStore,
   useDarkModeStore,
 } from '../../../store/store'
 import defaultColors from './defaultColors.json'

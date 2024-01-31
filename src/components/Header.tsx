@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import Signin from './Signin'
 import { useModalStore } from './ModalStore'
 import SearchList from './SearchList'
-import { useConfirmBoxStore, useDarkModeStore } from '../store/store'
+import { useApiUrlStore, useConfirmBoxStore, useDarkModeStore } from '../store/store'
 /*-----------------------------------------------------------*/
 import imgDarkMode from '../assets/images/moon.svg'
 import imgWhiteMode from '../assets/images/sun.svg'
@@ -106,14 +106,6 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const handleClickSearch = async (e: React.MouseEvent) => {
     e.preventDefault()
     searchListOpen()
-  }
-  // Signout 클릭 이벤트 핸들러
-  const handleClickSignout = () => {
-    setConfirmLabel('Are you sure you want to leave this page?')
-    setConfirmAction(() => {
-      handleSignout()
-    })
-    openConfirm()
   }
 
   // 로그아웃 API 호출 이벤트

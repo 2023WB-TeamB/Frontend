@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { CirclePicker, ColorResult } from 'react-color'
 import axios from 'axios'
-import { cardColorStore, cardIdStore, docStore, previewOpenStore } from '../../store/store'
 import { desaturate } from 'polished'
+import { cardColorStore, cardIdStore, docStore, previewOpenStore, useApiUrlStore } from '../../store/store'
 
 function PaletteIcon({ color }: { color: string }) {
   return (
