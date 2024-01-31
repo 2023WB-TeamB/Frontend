@@ -8,6 +8,7 @@ import {
   docStore,
   isEnglishStore,
   isGeneratingStore,
+  useApiUrlStore,
   useDarkModeStore,
 } from '../../../store/store'
 import defaultColors from './defaultColors.json'
@@ -59,7 +60,7 @@ const StyledInput = styled.input<{ $isDarkMode: boolean }>`
 export const URLInput: React.FC = () => {
   const [url, setUrl] = useState('')
   const { isEnglish } = isEnglishStore()
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  const { apiUrl } = useApiUrlStore()
   const language = isEnglish ? 'ENG' : 'KOR'
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { setIsGenerating } = isGeneratingStore()
@@ -87,7 +88,7 @@ export const URLInput: React.FC = () => {
       const access = localStorage.getItem('accessToken')
       const color = getRandomColor()
       const response = await axios.post(
-        `${apiUrl}`,
+        `${apiUrl}/docs`,
         { repository_url: url, language, color },
         {
           headers: { Authorization: `Bearer ${access}` },

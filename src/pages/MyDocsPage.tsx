@@ -20,6 +20,7 @@ import {
   DocData,
   Keyword,
   isLoadingStore,
+  useApiUrlStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/ModalStore'
@@ -110,9 +111,7 @@ const Lower = styled.div<{ $isDarkMode: boolean }>`
 
 const MyDocsPage: React.FC = () => {
   const { docs, setDocs } = docStore()
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
-  // const apiUrl = 'http://localhost:8000/api/v1/docs'
-  // const apiUrl = 'https://gtd.kro.kr/api/v1/docs'
+  const { apiUrl } = useApiUrlStore()
   const { cardId } = cardIdStore((state) => ({
     cardId: state.cardId,
     setCardId: state.setCardId,
@@ -136,7 +135,7 @@ const MyDocsPage: React.FC = () => {
       setIsLoading(true)
       // API 호출, 엑세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}`, {
+      const response = await axios.get(`${apiUrl}/docs`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       const docsData: DocData[] = response.data.data
@@ -147,7 +146,7 @@ const MyDocsPage: React.FC = () => {
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      console.log(docs)
+      // console.log(docs)
     } catch (error) {
       const axiosError = error as AxiosError
 
@@ -185,7 +184,7 @@ const MyDocsPage: React.FC = () => {
   const deleteDoc = async () => {
     try {
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}/${cardId}`, {
+      await axios.delete(`${apiUrl}/docs/${cardId}`, {
         headers: { Authorization: `Bearer ${access}` },
       })
       setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제

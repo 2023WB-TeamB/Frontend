@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { CirclePicker, ColorResult } from 'react-color'
 import axios from 'axios'
-import { cardColorStore, cardIdStore, docStore, previewOpenStore } from '../../store/store'
 import { desaturate } from 'polished'
+import { cardColorStore, cardIdStore, docStore, previewOpenStore, useApiUrlStore } from '../../store/store'
 
 function PaletteIcon({ color }: { color: string }) {
   return (
@@ -82,7 +82,7 @@ const Overlay = styled.div`
 `
 
 function PalleteButton() {
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  const { apiUrl } = useApiUrlStore()
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
   const { previewOpen } = previewOpenStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
@@ -118,7 +118,7 @@ function PalleteButton() {
       // DB에 있는 문서 색상 변경
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `${apiUrl}/${cardId}`,
+        `${apiUrl}/docs/${cardId}`,
         { color: `${color}` },
         {
           headers: { Authorization: `Bearer ${access}` },

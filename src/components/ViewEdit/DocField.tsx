@@ -15,7 +15,7 @@ import {
   useEditorObjectStore,
   useConfirmBoxStore,
 } from '../../store/store'
-import EditIcon from '../../assets/images/Viewer/edit.svg'
+import EditIcon from '../../assets/images/Viewer/edit.png'
 import SaveIcon from '../../assets/images/Viewer/save.svg'
 import CancelIcon from '../../assets/images/Viewer/cancel.svg'
 import EditorArea from './EditorComps/WYSIWYG_Area'
@@ -35,27 +35,34 @@ const ViewerWrapper = styled.div`
   transition: ease-in-out 0.3s;
 `
 
-const Icon = styled.img`
+const Icon = styled.img<{ $isDarkMode: boolean }>`
   width: 2rem;
   height: 2rem;
+  filter: brightness(0) ${(props) => props.$isDarkMode ? 'invert(90%)' : 'invert(20%)'};
 `
 
 const IconButton = styled.button<{ $isDarkMode: boolean }>`
-  margin: 5px;
-  padding: 0px;
+  margin-inline: .4rem;
+  padding: 0;
   width: 2.7rem;
   height: 2.7rem;
-  background-color: transparent;
+  background: ${(props) => props.$isDarkMode ? '#333' : '#f2f2f2'};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-inline: 1px solid ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
-  border-radius: .5rem;
+  border-radius: .4rem;
+  transition: ease-in-out .3s;
+
+  &:hover {
+    background: ${(props) => props.$isDarkMode ? '#555' : '#ddd'};
+    transition: ease-in-out .3s;
+  }
 `
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
+  padding: .5rem;
 `
 
 const EditMenuWrapper = styled.div`
@@ -118,6 +125,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 
   & h2,
   & textarea {
+    height: max-content;
     margin: 0;
     padding-inline: 0;
     padding-top: 0;
@@ -167,7 +175,7 @@ const DocField: React.FC = () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/${docId}`, {
+      const response = await axios.get(`${apiUrl}/docs/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -200,7 +208,7 @@ const DocField: React.FC = () => {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       await axios.put(
-        `${apiUrl}/${docId}`,
+        `${apiUrl}/docs/${docId}`,
         {
           title,
           content,
@@ -248,27 +256,29 @@ const DocField: React.FC = () => {
   }
 
   return (
-    <ViewerWrapper id="DocField">
+    <ViewerWrapper>
       <TitleArea $isDarkMode={$isDarkMode} isOpenSideAlways={isOpenSideAlways}>
         {isEditor ? <TextareaAutosize value={title} onChange={handleChange} /> : <h2>{title}</h2>}
       </TitleArea>
       <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
-        {isEditor || <span />}
+        <span />
+        {/* {isEditor || <span />} */}
         <DistributeContentWrappe>
           <ButtonWrapper>
             {isEditor ? (
               <>
                 <IconButton onClick={saveDoc} $isDarkMode={$isDarkMode}>
-                  <Icon src={SaveIcon} />
+                  <Icon src={SaveIcon} $isDarkMode={$isDarkMode} />
                 </IconButton>
                 <IconButton onClick={unsaveDoc} $isDarkMode={$isDarkMode}>
-                  <Icon src={CancelIcon} />
+                  <Icon src={CancelIcon} $isDarkMode={$isDarkMode} />
                 </IconButton>
               </>
             ) : (
               <IconButton onClick={toggleEditorMode} $isDarkMode={$isDarkMode}>
-                <Icon src={EditIcon} />
+                <Icon src={EditIcon} $isDarkMode={$isDarkMode} />
+                {/* <p>Edit</p> */}
               </IconButton>
             )}
           </ButtonWrapper>

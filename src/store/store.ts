@@ -370,6 +370,18 @@ export const useEditorObjectStore = create<EditorObjectState>((set) => ({
   setEditor: (editor) => set(() => ({ editor })),
 }))
 
+// ? PDF 다운로드 컴포넌트 활성 상태
+// interface DownloadComponentState {
+//   isRender: boolean
+//   enableIsRender: () => void
+//   disableIsRender: () => void
+// }
+// export const useDownloadComponentStore = create<DownloadComponentState>((set) => ({
+//   isRender: false,
+//   enableIsRender: () => set(() => ({ isRender: true })),
+//   disableIsRender: () => set(() => ({ isRender: false })),
+// }))
+
 // ? 현재 문서 ID
 interface DocIdState {
   docId: number | null
@@ -388,12 +400,9 @@ interface ApiUrlState {
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
-  // apiUrl: 'http://localhost:8000/api/v1/docs',
-  setApiUrl: (url: string) =>
-    set(() => ({
-      apiUrl: url,
-    })),
+  apiUrl: 'https://gitodoc.kro.kr/api/v1',
+  // apiUrl: 'http://localhost:8000/api/v1',
+  setApiUrl: (url: string) => set({ apiUrl: url }),
 }))
 
 // BadgeGuide Modal

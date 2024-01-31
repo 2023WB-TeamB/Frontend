@@ -26,9 +26,10 @@ import {
   useDarkModeStore, 
   useEditorModeStore,
   useDocContentStore,
-  useEditorObjectStore
+  useEditorObjectStore,
 } from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
+import ExternalArea from '../components/ViewEdit/ExternalArea'
 
 const StyledForm = styled.div<{ $isDarkMode: boolean }>`
   min-width: 100vw;
@@ -100,7 +101,7 @@ function ViewerPage() {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}/${docId}`, {
+      await axios.delete(`${apiUrl}/docs/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -171,6 +172,7 @@ function ViewerPage() {
           <DocField />
         </StyledDocFieldWrapper>
         <BadgeGuide />
+        <ExternalArea />
       </StyledForm>
     </motion.div>
   )

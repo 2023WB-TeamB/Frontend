@@ -158,9 +158,15 @@ const EditorArea: React.FC = () => {
     }
   }
 
-  // const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
-
-  // }
+  const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Tab') {
+      if (!editor.can().liftListItem('listItem'))
+        editor.chain().focus().toggleBulletList().run()
+      else
+        editor.chain().focus().sinkListItem('listItem').run()
+      event.preventDefault()
+    }
+  }
 
   return (
     <EditorWrapper>
@@ -169,6 +175,7 @@ const EditorArea: React.FC = () => {
         ref={editorRef}
         onDrop={handleDrop}
         onDragOver={(event) => event.preventDefault()}
+        onKeyDown={handleKeyEvent}
       />
       <BubbleMenu editor={editor}>
         <BubbleMenubar editor={editor} />
