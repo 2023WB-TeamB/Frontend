@@ -107,7 +107,7 @@ export interface projectData {
 
 // 사이드바 확장 패널
 const SidebarPanel: React.FC = () => {
-  const { apiUrl } = useApiUrlStore()
+  const { docsApiUrl } = useApiUrlStore()
   const { isOpenGalleryPanel, isOpenVersionPanel, closeSidePanel } = useViewerPageOpenStore()
   const { isOpenSideAlways } = useSidePeekStore()
   const [myDocsData, setMyDocsData] = useState<Array<[string, projectData[]]>>([])
@@ -155,7 +155,7 @@ const SidebarPanel: React.FC = () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/version`, {
+      const response = await axios.get(`${docsApiUrl}/version`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },

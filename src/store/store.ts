@@ -385,16 +385,28 @@ export const useDocIdStore = create<DocIdState>((set) => ({
 
 interface ApiUrlState {
   apiUrl: string
+  docsApiUrl: string
+  authApiUrl: string
+  registerApiUrl: string
   setApiUrl: (url: string) => void
 }
 export const useApiUrlStore = create<ApiUrlState>((set) => ({
-  apiUrl: 'https://gitodoc.kro.kr/api/v1/docs',
-  // apiUrl: 'http://localhost:8000/api/v1/docs',
-  setApiUrl: (url: string) =>
-    set(() => ({
-      apiUrl: url,
-    })),
-}))
+  apiUrl: 'https://gitodoc.kro.kr/api/v1',
+  // apiUrl: 'http://localhost:8000/api/v1',
+  docsApiUrl: '',
+  authApiUrl: '',
+  registerApiUrl: '',
+  setApiUrl: (url: string) => set((state) => ({ ...state, apiUrl: url })),
+}));
+
+// API 초기값 설정
+const store = useApiUrlStore.getState();
+const {apiUrl} = store;
+useApiUrlStore.setState({
+  docsApiUrl: `${apiUrl}/docs`,
+  authApiUrl: `${apiUrl}/auth`,
+  registerApiUrl: `${apiUrl}/register`,
+});
 
 // BadgeGuide Modal
 interface GuideStore {

@@ -146,7 +146,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 const DocField: React.FC = () => {
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
-  const { apiUrl } = useApiUrlStore()
+  const { docsApiUrl } = useApiUrlStore()
   const { title, content, setTitle, setContent, setColor } = useDocContentStore()
   const { tags, setTag, addTag } = useDocTagStore()
   const { docId } = useDocIdStore()
@@ -167,7 +167,7 @@ const DocField: React.FC = () => {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      const response = await axios.get(`${apiUrl}/${docId}`, {
+      const response = await axios.get(`${docsApiUrl}/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -188,6 +188,10 @@ const DocField: React.FC = () => {
 
   useEffect(() => {
     handleGetDoc()
+    return () => {
+      setContent('')
+      setEditor(null)
+    }
   }, [docId])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -200,7 +204,7 @@ const DocField: React.FC = () => {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       await axios.put(
-        `${apiUrl}/${docId}`,
+        `${docsApiUrl}/${docId}`,
         {
           title,
           content,

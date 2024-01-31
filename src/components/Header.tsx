@@ -83,6 +83,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   const { $isDarkMode, toggleDarkMode } = useDarkModeStore()
   const { isSigninOpen, toggleSignin, isSearchListOpen, searchListOpen } = useModalStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
+  const { authApiUrl } = useApiUrlStore()
   const navigate = useNavigate()
 
   // * Toast 알림창
@@ -117,8 +118,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
 
   // 로그아웃 API 호출 이벤트
   const handleSignout = async () => {
-    const url = 'https://gitodoc.kro.kr/api/v1/auth' // 배포 서버
-    const response = await axios.delete(url)
+    const response = await axios.delete(`${authApiUrl}`)
     // 로그아웃 성공 시
     if (response.status === 202) {
       ToastInfor.fire({

@@ -112,6 +112,7 @@ const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode
 const Register = () => {
   const [isError, setIsError] = useState(false) // 에러메세지 상태관리
   const { isSigninOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
+  const { registerApiUrl } = useApiUrlStore()
   const isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
 
@@ -176,7 +177,7 @@ const Register = () => {
     }
     try {
       // API 호출
-      const response = await axios.post(url, {
+      const response = await axios.post(`${registerApiUrl}`, {
         email: data.email,
         nickname: data.nickname,
         password: data.password,

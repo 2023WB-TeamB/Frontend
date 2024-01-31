@@ -82,7 +82,7 @@ const Overlay = styled.div`
 `
 
 function PalleteButton() {
-  const apiUrl = 'https://gitodoc.kro.kr/api/v1/docs'
+  const { docsApiUrl } = useApiUrlStore()
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
   const { previewOpen } = previewOpenStore()
   const { cardColor, setCardColor } = cardColorStore((state) => ({
@@ -118,7 +118,7 @@ function PalleteButton() {
       // DB에 있는 문서 색상 변경
       const access = localStorage.getItem('accessToken')
       const response = await axios.put(
-        `${apiUrl}/${cardId}`,
+        `${docsApiUrl}/${cardId}`,
         { color: `${color}` },
         {
           headers: { Authorization: `Bearer ${access}` },

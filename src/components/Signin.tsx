@@ -121,6 +121,7 @@ const StyledDivider = styled.div<{ $isDarkMode: boolean }>`
 const Signin = () => {
   // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode) // 다크모드 상태관리
+  const { authApiUrl } = useApiUrlStore()
   const navigate = useNavigate()
   const { isRegisterOpen, toggleRegister, toggleSignin } = useModalStore() // 모달 상태관리
   const modalRef = useRef<HTMLDivElement>(null) // DOM 이나 react Element 요소에 대한 참조를 생성한다
@@ -166,7 +167,7 @@ const Signin = () => {
     e.preventDefault() // 리렌더링 방지
     try {
       // API 호출
-      const response = await axios.post(url, {
+      const response = await axios.post(`${authApiUrl}`, {
         email: data.email,
         password: data.password,
       })

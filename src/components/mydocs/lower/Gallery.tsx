@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
 import { useMediaQuery } from 'react-responsive'
-import { Doc, cardIdStore, previewContentStore, previewOpenStore } from '../../../store/store'
+import { Doc, cardIdStore, previewContentStore, previewOpenStore, useApiUrlStore } from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import Preview from './Preview'
 import getContent from './getContent'
@@ -175,6 +175,7 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
     previewContent: state.previewContent,
     setPreviewContent: state.setPreviewContent,
   }))
+  const { docsApiUrl } = useApiUrlStore()
 
   // const cardsPerPage = 8 // 한 페이지당 카드 수
   const isNotebook = useMediaQuery({
@@ -204,7 +205,8 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
       content: '',
     }) // content 없이 item 저장
     setPreviewOpen(true)
-    const content = await getContent(item.id) // content 불러오기
+    console.log(docsApiUrl)
+    const content = await getContent(item.id, docsApiUrl) // content 불러오기
     setPreviewContent({
       ...item,
       content,

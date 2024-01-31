@@ -85,7 +85,7 @@ interface ModalOptionsProps {
 }
 
 const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) => {
-  const { apiUrl } = useApiUrlStore()
+  const { docsApiUrl } = useApiUrlStore()
   const { docId } = useDocIdStore()
   const { title } = useDocContentStore()
 
@@ -104,7 +104,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
       const response = await axios.post(
-        `${apiUrl}/share`,
+        `${docsApiUrl}/share`,
         {
           docs_id: docId,
         },

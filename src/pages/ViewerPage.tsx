@@ -63,7 +63,7 @@ function ViewerPage() {
   const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
   const navigate = useNavigate()
 
-  const { apiUrl } = useApiUrlStore()
+  const { docsApiUrl } = useApiUrlStore()
 
   // 상태관리 제어
   useEffect(() => {
@@ -100,7 +100,7 @@ function ViewerPage() {
     try {
       // API 호출, 액세스 토큰
       const access = localStorage.getItem('accessToken')
-      await axios.delete(`${apiUrl}/${docId}`, {
+      await axios.delete(`${docsApiUrl}/${docId}`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
