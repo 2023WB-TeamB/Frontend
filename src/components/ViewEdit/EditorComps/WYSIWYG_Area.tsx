@@ -57,7 +57,7 @@ const EditorWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 
   //* Editor Form
   & .editor-content {
