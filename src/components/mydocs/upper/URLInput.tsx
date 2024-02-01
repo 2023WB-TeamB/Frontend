@@ -9,6 +9,7 @@ import {
   isEnglishStore,
   isGeneratingStore,
   useApiUrlStore,
+  notificationStore,
   useDarkModeStore,
 } from '../../../store/store'
 import defaultColors from './defaultColors.json'
@@ -64,6 +65,7 @@ export const URLInput: React.FC = () => {
   const language = isEnglish ? 'ENG' : 'KOR'
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { setIsGenerating } = isGeneratingStore()
+  const { setNotification } = notificationStore()
 
   // 입력값은 이 함수를 벗어나면 알 수 없으므로 state로 관리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,15 +115,7 @@ export const URLInput: React.FC = () => {
         }
 
         addDoc(newDoc)
-
-        Swal.fire({
-          position: 'bottom-end',
-          icon: 'success',
-          title: 'Successfully created document!',
-          showConfirmButton: false,
-          timer: 3000,
-          toast: true,
-        })
+        setNotification('Successfully created document!')
       }
     } catch (error: any) {
       // 문서 생성 실패
