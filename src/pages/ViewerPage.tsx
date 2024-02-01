@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import Sidebar from '../components/ViewEdit/Sidebar/SidebarList'
 import double_arrow_left from '../assets/images/Viewer/double_arrow_left.svg'
@@ -23,10 +23,11 @@ import {
   useConfirmBoxStore,
   useDocIdStore,
   useApiUrlStore,
-  useDarkModeStore, 
+  useDarkModeStore,
   useEditorModeStore,
   useDocContentStore,
   useEditorObjectStore,
+  notificationStore,
 } from '../store/store'
 import { BadgeGuide } from '../components/BadgeGuide'
 import ExternalArea from '../components/ViewEdit/ExternalArea'
@@ -61,7 +62,7 @@ function ViewerPage() {
   const { setContent } = useDocContentStore()
   const { setEditor } = useEditorObjectStore()
   const openerStore = useViewerPageOpenStore()
-  const {setConfirmAction, openConfirm, setConfirmLabel} = useConfirmBoxStore()
+  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
   const navigate = useNavigate()
 
   const { docsApiUrl } = useApiUrlStore()
@@ -69,15 +70,13 @@ function ViewerPage() {
   // 상태관리 제어
   useEffect(() => {
     // 마운트할 때 초기화
-    if (isEditor)
-        toggleEditorMode()
+    if (isEditor) toggleEditorMode()
     setContent('')
     setEditor(null)
-    
+
     return () => {
       // 언마운트할 때 초기화
-      if (isEditor)
-        toggleEditorMode()
+      if (isEditor) toggleEditorMode()
       setContent('')
       setEditor(null)
     }
@@ -95,7 +94,7 @@ function ViewerPage() {
   const handleExitViewer = () => {
     navigate('/mydocs')
   }
-  
+
   // ? 문서 삭제 API
   const handleDeleteDoc = async () => {
     try {
@@ -129,13 +128,30 @@ function ViewerPage() {
   }
   // 뷰어 종료 확인
   const openConfirmWithExit = () => {
-    setConfirmLabel(isEditor ? 
-      'Are you sure you want to leave without saving?' :
-      'Are you sure you want to leave this page?'
+    setConfirmLabel(
+      isEditor
+        ? 'Are you sure you want to leave without saving?'
+        : 'Are you sure you want to leave this page?',
     )
     setConfirmAction(handleExitViewer)
     openConfirm()
   }
+
+  // 문서 생성 알림
+  const { notification, setNotification } = notificationStore()
+  useEffect(() => {
+    if (notification) {
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: notification,
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+      })
+      setNotification('')
+    }
+  }, [notification])
 
   return (
     <motion.div
@@ -143,10 +159,9 @@ function ViewerPage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{
-        ease: "easeInOut",
-        duration: .3,
-      }}
-    >
+        ease: 'easeInOut',
+        duration: 0.3,
+      }}>
       <StyledForm $isDarkMode={$isDarkMode}>
         <LittleHeader />
         <Sidebar
@@ -166,7 +181,10 @@ function ViewerPage() {
           ]}
         />
         <SidebarPanel />
-        <ModalOptions isOpenOptions={openerStore.isOpenOptions} onClose={openerStore.closeOptions} />
+        <ModalOptions
+          isOpenOptions={openerStore.isOpenOptions}
+          onClose={openerStore.closeOptions}
+        />
         <ModalConfirm />
         <StyledDocFieldWrapper>
           <DocField />
