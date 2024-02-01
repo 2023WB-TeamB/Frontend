@@ -1,11 +1,10 @@
 import axios from 'axios'
-import { useApiUrlStore } from '../../../store/store'
 
 const getContent = async (id: number, apiUrl: string) => {
   try {
     // API 호출, 엑세스 토큰
     const access = localStorage.getItem('accessToken')
-    const response = await axios.get(`${apiUrl}/docs/${id}`, {
+    const response = await axios.get(`${apiUrl}/${id}`, {
       headers: { Authorization: `Bearer ${access}` },
     })
     const { content } = response.data.data
