@@ -163,7 +163,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   // * QR 조회창
   const showQRCodeModal = () => {
-    console.log(docUrl)
     Swal.fire({
       text: title,
       imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
@@ -178,7 +177,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   // * PDF 다운로드
   const downloadPdfDocument = async (rootElementId: string) => {
     const input = document.getElementById(rootElementId)
-    console.log('pdf download start', input)
     if (input != null) {
       const canvas = await html2canvas(input)
       const imgData = canvas.toDataURL('image/png')
@@ -222,10 +220,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
               context="Download as PDF"
               onClick={() => downloadPdfDocument(rootElementId)}
             />
-            {/* <OptionButton
-              icon={$isDarkMode ? cloudIcon_dark : cloudIcon}
-              context="Upload to Cloud"
-            /> */}
             <OptionButton
               icon={$isDarkMode ? urlIcon_dark : urlIcon}
               context="Copy a URL"
