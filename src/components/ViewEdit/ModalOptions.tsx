@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -88,6 +88,11 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   const { docsApiUrl } = useApiUrlStore()
   const { docId } = useDocIdStore()
   const { title } = useDocContentStore()
+  let docUrl: string | undefined
+
+  useEffect(() => {
+    docUrl = undefined
+  }, [docId])
 
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
@@ -98,7 +103,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   })
 
   // * URL 할당 -> docUrl
-  let docUrl = ''
   const handleUrlShare = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -117,7 +121,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       docUrl = response.data.share_url
     } catch (error: any) {
       // API 호출 실패
-      if (error.response.status === 409) docUrl = error.response.data.existing_url
       console.error('API Error :', error)
     }
   }
@@ -126,7 +129,10 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   const handleCopyClipBoardURL = async () => {
     try {
       await handleUrlShare()
-      await navigator.clipboard.writeText(docUrl)
+      if (docUrl) 
+        await navigator.clipboard.writeText(docUrl)
+      else 
+        throw(Error)
       ToastInfor.fire({
         icon: 'success',
         title: 'URL이 복사되었습니다!',
@@ -141,17 +147,15 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   // * QR 로딩창
   const showQRCode = async () => {
-    if (docUrl === '') {
+    if (!docUrl) {
       Swal.fire({
         title: 'Loading...',
         allowOutsideClick: false,
         didOpen: async () => {
           try {
             await handleUrlShare()
-            setTimeout(() => {
-              Swal.close()
-              showQRCodeModal()
-            }, 1000)
+            Swal.close()
+            showQRCodeModal()
           } catch (error) {
             console.log(error)
           }
@@ -164,13 +168,18 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   // * QR 조회창
   const showQRCodeModal = () => {
-    console.log(docUrl)
-    Swal.fire({
-      text: title,
-      imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
-      imageAlt: 'QR Code',
-      showConfirmButton: true,
-    })
+    if (docUrl)
+      Swal.fire({
+        text: title,
+        imageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${docUrl}`,
+        imageAlt: 'QR Code',
+        showConfirmButton: true,
+      })
+    else
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'QR 생성 실패',
+      })
   }
 
   // ? 다운로드할 컴포넌트 ID
@@ -179,7 +188,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   // * PDF 다운로드
   const downloadPdfDocument = async (rootElementId: string) => {
     const input = document.getElementById(rootElementId)
-    console.log('pdf download start', input)
     if (input != null) {
       const canvas = await html2canvas(input)
       const imgData = canvas.toDataURL('image/png')
@@ -223,10 +231,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
               context="Download as PDF"
               onClick={() => downloadPdfDocument(rootElementId)}
             />
-            {/* <OptionButton
-              icon={$isDarkMode ? cloudIcon_dark : cloudIcon}
-              context="Upload to Cloud"
-            /> */}
             <OptionButton
               icon={$isDarkMode ? urlIcon_dark : urlIcon}
               context="Copy a URL"

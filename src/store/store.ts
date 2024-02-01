@@ -388,7 +388,7 @@ interface DocIdState {
   setDocId: (id: number) => void
 }
 export const useDocIdStore = create<DocIdState>((set) => ({
-  docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!) : null,
+  docId: localStorage.getItem('docId') ? parseInt(localStorage.getItem('docId')!, 10) : null,
   setDocId: (id) => {
     set(() => ({ docId: id }))
     localStorage.setItem('docId', id.toString())
