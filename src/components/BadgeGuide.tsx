@@ -140,7 +140,7 @@ export const BadgeGuide = () => {
                 </StyledFont>
               </Instruction>
               <Box $isDarkMode={$isDarkMode} boxLight="#fdf6db" boxDark="#413C26">
-                {'<img src="https://gtd.kro.kr/api/badge/'}
+                {'<img src="https://gitodoc.kro.kr/api/badge/'}
                 <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{owner}'}</span>
                 {'/'}{' '}
                 <span style={{ color: $isDarkMode ? '#E69B9B' : '#CE0A0A' }}>{'{repository}'}</span>
