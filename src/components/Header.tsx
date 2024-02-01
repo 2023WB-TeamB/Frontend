@@ -55,6 +55,26 @@ const Logo = styled.img`
   width: 2rem;
   height: 2rem;
 `
+const TextLogo = styled.p`
+  font-size: 0.6rem;
+  font-weight: 400;
+  font-family: 'DMSerifDisplay', serif;
+  background: linear-gradient(270deg, rgb(173, 81, 222) 0%, rgb(118, 202, 232) 100%);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  margin: 0 0 0 0.1rem;
+  letter-spacing: 0.1rem;
+`
+const LeftWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+`
 const RightWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -126,7 +146,7 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
   }
 
   const handleConfirmSignout = () => {
-    setConfirmLabel("Do you want to signed out?")
+    setConfirmLabel('Do you want to signed out?')
     setConfirmAction(handleSignout)
     openConfirm()
   }
@@ -135,7 +155,10 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
     <>
       {isGetToken ? (
         <Container $isDarkMode={$isDarkMode}>
-          <Logo src={imgLogo} />
+          <LeftWrapper>
+            <Logo src={imgLogo} />
+            <TextLogo>GTD</TextLogo>
+          </LeftWrapper>
           <RightWrapper>
             {/* 다크모드 */}
             <Icon
@@ -153,7 +176,10 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
         </Container>
       ) : (
         <Container $isDarkMode={$isDarkMode}>
-          <Logo src={imgLogo} />
+          <LeftWrapper>
+            <Logo src={imgLogo} />
+            <TextLogo>GTD</TextLogo>
+          </LeftWrapper>
           <RightWrapper>
             {/* 검색 */}
             <Icon
