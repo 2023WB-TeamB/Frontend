@@ -196,16 +196,16 @@ export const notificationStore = create<Notification>((set) => ({
 }))
 
 /* 다크모드 */
-interface State {
+interface DarkModeState {
   $isDarkMode: boolean
   toggleDarkMode: () => void
 }
 
-export const useDarkModeStore = create<State>(
+export const useDarkModeStore = create<DarkModeState>(
   persist(
     (set) => ({
       $isDarkMode: false,
-      toggleDarkMode: () => set((state: State) => ({ $isDarkMode: !state.$isDarkMode })),
+      toggleDarkMode: () => set((state: DarkModeState) => ({ $isDarkMode: !state.$isDarkMode })),
     }),
     {
       name: 'dark-mode',
