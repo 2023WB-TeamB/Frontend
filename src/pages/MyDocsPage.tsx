@@ -22,6 +22,8 @@ import {
   isLoadingStore,
   useApiUrlStore,
   notificationStore,
+  previewOpenStore,
+  modalOpenStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/ModalStore'
@@ -122,6 +124,16 @@ const MyDocsPage: React.FC = () => {
   const { isGenerating } = isGeneratingStore()
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isGetToken, setisGetToken } = useLocalStorageStore()
+  const { setPreviewOpen } = previewOpenStore()
+  const { setModalOpen } = modalOpenStore()
+
+  // * Toast 알림창
+  const ToastInfor = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1800,
+  })
 
   useEffect(() => {
     if (localStorage.getItem('accessToken') !== null) {
@@ -189,17 +201,18 @@ const MyDocsPage: React.FC = () => {
         headers: { Authorization: `Bearer ${access}` },
       })
       setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제
-      Swal.fire({
-        position: 'bottom-end',
+      setPreviewOpen(false)
+      setModalOpen(false)
+      ToastInfor.fire({
         icon: 'success',
-        title: 'Successfully deleted.',
-        showConfirmButton: false,
-        timer: 3000,
-        toast: true,
+        title: 'Document Delete Successful',
       })
     } catch (error) {
       console.error('API Error: ', error)
-      alert('문서 삭제에 실패하였습니다.')
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'Document Delete Failed',
+      })
     }
   }
 

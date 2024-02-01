@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import Swal from 'sweetalert2'
-import { cardColorStore, isDeleteStore, modalOpenStore, previewOpenStore } from '../../store/store'
+import { cardColorStore, isDeleteStore, useConfirmBoxStore } from '../../store/store'
 
 // SVG 파일의 내용을 아래와 같이 React 컴포넌트로 변환합니다.
 function DeleteIcon({ color }: { color: string }) {
@@ -36,29 +35,19 @@ const ButtonWrapper = styled.button`
 `
 
 function DeleteButton() {
-  const { setModalOpen } = modalOpenStore()
-  const { setPreviewOpen } = previewOpenStore()
   const { setIsDelete } = isDeleteStore()
   const { cardColor } = cardColorStore((state) => ({
     cardColor: state.cardColor,
   }))
+  const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
 
   // 삭제 핸들링
   const handleDelete = () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Delete it',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setIsDelete(true)
-        setPreviewOpen(false)
-        setModalOpen(false)
-      }
+    setConfirmLabel('Are you sure you want to delete this file?')
+    setConfirmAction(() => {
+      setIsDelete(true)
     })
+    openConfirm()
   }
 
   return (
