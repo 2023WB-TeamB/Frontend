@@ -1,8 +1,7 @@
 import { useRef } from 'react'
 import styled from 'styled-components'
 /*------------------------------------------------*/
-import { useGuideStore } from '../store/store'
-import { useDarkModeStore } from '../store/store'
+import { useGuideStore, useDarkModeStore } from '../store/store'
 import { useOutsideClick } from './useOutsideClick'
 /*------------------------------------------------*/
 import help from '../assets/images/Viewer/Badge/help.svg'
