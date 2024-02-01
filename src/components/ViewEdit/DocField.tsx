@@ -267,7 +267,6 @@ const DocField: React.FC = () => {
       <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
         <span />
-        {/* {isEditor || <span />} */}
         <DistributeContentWrappe>
           <ButtonWrapper>
             {isEditor ? (
@@ -282,7 +281,6 @@ const DocField: React.FC = () => {
             ) : (
               <IconButton onClick={toggleEditorMode} $isDarkMode={$isDarkMode}>
                 <Icon src={EditIcon} $isDarkMode={$isDarkMode} />
-                {/* <p>Edit</p> */}
               </IconButton>
             )}
           </ButtonWrapper>

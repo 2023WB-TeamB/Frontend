@@ -80,10 +80,8 @@ const BubbleMenubar = ({ editor }: BubbleMenubarProps) => {
       confirmButtonText: "Link",
       showLoaderOnConfirm: true,
       preConfirm: async (url) => {
-        console.log(url)
         if (url === '') {
           editor.chain().focus().extendMarkRange('link').unsetLink().run()
-    
           return
         }
         editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()

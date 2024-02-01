@@ -124,7 +124,6 @@ const MyDocsPage: React.FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('accessToken') !== null) {
-      // console.log('토큰있음')
       setisGetToken(false)
     } else setisGetToken(true)
   }, ['accessToken'])
@@ -146,7 +145,6 @@ const MyDocsPage: React.FC = () => {
         tags: doc.keywords.map((keyword: Keyword) => keyword.name),
       }))
       setDocs(docs)
-      // console.log(docs)
     } catch (error) {
       const axiosError = error as AxiosError
 
@@ -198,7 +196,6 @@ const MyDocsPage: React.FC = () => {
       })
     } catch (error) {
       console.error('API Error: ', error)
-      alert('문서 삭제에 실패하였습니다.')
     }
   }
 

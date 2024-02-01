@@ -117,23 +117,17 @@ function PalleteButton() {
     try {
       // DB에 있는 문서 색상 변경
       const access = localStorage.getItem('accessToken')
-      const response = await axios.put(
+      await axios.put(
         `${docsApiUrl}/${cardId}`,
         { color: `${color}` },
         {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      // 문서 수정 성공
-      if (response.status === 200) {
-        // console.log('API Response: ', response)
-      }
     } catch (error: any) {
       // 문서 수정 실패
-      if (error.response) {
+      if (error.response)
         console.error('API Response: ', error.response)
-        // alert(error.response.message)
-      }
     }
   }
 

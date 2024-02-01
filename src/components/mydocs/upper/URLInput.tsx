@@ -94,13 +94,11 @@ export const URLInput: React.FC = () => {
           headers: { Authorization: `Bearer ${access}` },
         },
       )
-      console.log(response)
       setUrl('')
 
       // 문서 생성 성공
       if (response.status === 201) {
         setIsGenerating(false)
-        console.log('API Response: ', response)
 
         // response.data.data에서 Doc 인터페이스에 맞는 데이터만 추출
         const newDoc: Doc = {

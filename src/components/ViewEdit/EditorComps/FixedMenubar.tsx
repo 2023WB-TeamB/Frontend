@@ -65,7 +65,6 @@ const FixedMenubar = ({ editor }: FixedMenubarProps) => {
       confirmButtonText: 'Add',
       showLoaderOnConfirm: true,
       preConfirm: async (url) => {
-        console.log(url)
         editor.chain().focus().setImage({ src: url }).run()
       },
       allowOutsideClick: () => !Swal.isLoading(),

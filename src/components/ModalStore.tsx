@@ -20,7 +20,7 @@ interface SearchState {
   filteredData: Doc[]
   setFilteredData: (data: Doc[]) => void
 }
-//
+
 export const useModalStore = create<modalState>((set) => ({
   // 로그인 모달 상태고나리
   isSigninOpen: false,

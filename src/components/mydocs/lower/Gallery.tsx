@@ -31,13 +31,11 @@ const Collection = styled(motion.div)`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* justify-content: flex-start; */
   align-items: flex-start;
   flex-wrap: wrap;
   position: relative;
   height: 80vh;
   width: 80vw;
-  /* margin: auto 3vw; */
 `
 
 const Card = styled.div<{ backgroundColor: string }>`
@@ -79,7 +77,6 @@ const Title = styled.div`
   font-size: 1.26rem;
   font-weight: 700;
   line-height: 1.7rem;
-  /* font-family: 'Inter'; */
   margin-top: 0.5rem;
   word-break: keep-all;
   display: -webkit-box;
@@ -177,18 +174,15 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }))
   const { docsApiUrl } = useApiUrlStore()
 
-  // const cardsPerPage = 8 // 한 페이지당 카드 수
   const isNotebook = useMediaQuery({
     query: '(min-width:1211px) and (max-width:1535px)', // 6장
   })
   const isTablet = useMediaQuery({ query: '(min-width:770px) and (max-width:1210px)' }) // 4장
   const isMobile = useMediaQuery({ query: '(max-width:769px)' }) // 2장
 
-  // console.log(isTablet)
   const cardsPerPage = () => {
     return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
   }
-  // console.log(cardsPerPage())
   const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 
   const handleCardClick = async (item: {
@@ -205,7 +199,6 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
       content: '',
     }) // content 없이 item 저장
     setPreviewOpen(true)
-    console.log(docsApiUrl)
     const content = await getContent(item.id, docsApiUrl) // content 불러오기
     setPreviewContent({
       ...item,

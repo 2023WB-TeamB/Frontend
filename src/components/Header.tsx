@@ -26,7 +26,6 @@ interface IconType {
 }
 interface ContainerType {
   $isDarkMode: boolean
-  // showBorder: boolean
 }
 interface SignType {
   $isDarkMode: boolean
@@ -37,7 +36,6 @@ const Container = styled.div<ContainerType>`
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 255px);
-  /* width: 100vw; */
   height: 2rem;
   position: fixed;
   border-color: black;
@@ -137,7 +135,6 @@ const Header: React.FC<HeaderType> = ({ isGetToken }) => {
         icon: 'success',
         title: "You're signed out of GiToDoc",
       })
-      console.log('API Response: ', response.status)
       // 로컬스토리지에서 토큰 삭제
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')

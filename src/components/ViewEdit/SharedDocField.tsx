@@ -127,12 +127,10 @@ const SharedDocField: React.FC = () => {
   const { setTag, addTag } = useDocTagStore()
 
   const params = useParams()
-  console.log(params.id)
   const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
       const response = await axios.get(`${docsApiUrl}/share?uuid=${params.id}`)
-      console.log(response)
 
       setTitle(response.data.data.title)
       setContent(response.data.data.content)

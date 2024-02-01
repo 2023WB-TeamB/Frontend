@@ -37,7 +37,6 @@ const PreviewWrapper = styled.div<{ $isDarkMode: boolean }>`
     margin-right: 9%;
     width: 90%;
     height: 1px;
-    /* background-image: linear-gradient(to right, #76cae8, #ad51de); */
     background: #ddd;
     border: none;
   }

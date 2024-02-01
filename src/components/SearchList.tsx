@@ -28,7 +28,7 @@ const Overlay = styled.div<{ $isDarkMode: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5; // 재훈님과 얘기해서 수치 조정
+  z-index: 5;
 `
 const Container = styled.div<{ $isDarkMode: boolean }>`
   display: flex;

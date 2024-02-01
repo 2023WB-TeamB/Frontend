@@ -100,49 +100,6 @@ const TagContent = styled.div<{ $isDarkMode: boolean; color: string }>`
   color: ${(props) => props.color};
 `
 
-// 버튼형 디자인
-// const PreviewContentInside = styled.div<{ $isDarkMode: boolean, color: string }>`
-//   width: 98%;
-//   height: 96%;
-//   background-color: ${(props) => (props.color)};
-//   display: flex;
-//   border-radius: 1rem;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 1rem;
-//   line-height: 1.5;
-//   transition: ease 0.3s;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-//   white-space: pre-wrap;
-//   transition: ease .3s;
-
-//   // 호버시 확장
-//   &:hover {
-//     transform: translate(-3px, -3px);
-//     box-shadow: 3px 3px 1px;
-//     transition: transform ease 0.5s, box-shadow ease 0.5s;
-//   }
-
-//   &:active {
-//     transform: translate(0);
-//     box-shadow: 3px 3px 2px inset;
-//     transition: transform ease-out .1s, box-shadow ease-out .2s;
-//   }
-// `
-// const PreviewContentOutside = styled.div<{ color: string }>`
-//   position: relative;
-//   margin: 10px 0;
-//   width: 17rem;
-//   height: 10rem;
-//   background-color: white;
-//   border: 3px solid ${(props) => props.color};
-//   border-radius: 1rem;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `
-
 const GalleryPreview: React.FC<GalleryPreviewProps> = ({ content }) => {
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const {setContent} = useDocContentStore()

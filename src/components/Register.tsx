@@ -56,7 +56,6 @@ const StyledForm = styled.form`
 const StyledTitle = styled.div<{ isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 300;
-  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
@@ -70,7 +69,6 @@ const StyledName = styled.span<NameType & { isDarkMode: boolean }>`
   width: 170px;
   float: left;
   font-weight: 200;
-  /* font-family: 'Inter-Regular', Helvetica; */
   text-align: left;
   font-size: 20px;
   color: ${(props) => (props.isDarkMode ? 'white' : 'black')};
@@ -81,7 +79,6 @@ const StyledName2 = styled.span<NameType>`
   height: 20px;
   float: right;
   font-weight: 400;
-  /* font-family: 'Inter-Regular', Helvetica; */
   text-align: right;
   font-size: 13px;
   color: #cf4e4e;
@@ -103,7 +100,6 @@ const StyledInput = styled.input<{ isDarkMode: boolean }>`
 const StyledFont = styled.span<{ fontDark: string; fontLight: string; isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 200;
-  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.isDarkMode ? props.fontDark : props.fontLight || 'black')};
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
   margin-bottom: 20px;
@@ -183,8 +179,6 @@ const Register = () => {
       })
       // 회원가입 성공 시
       if (response.status === 200) {
-        // console.log(response.data)
-        console.log('API Response: ', response.status)
         Toast.fire({
           icon: 'success',
           title: 'Registration successful!',

@@ -28,8 +28,6 @@ const TagStyle = css<TagStyleProps>`
   padding-block: 6px;
   padding-inline: 12px;
   transition: ease .3s;
-  /* border-block-end: 1px solid #eee;
-  border-inline-end: 1px solid #eee; */
 `
 const TagButton = styled.button<TagStyleProps>`
   ${TagStyle}

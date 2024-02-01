@@ -17,7 +17,6 @@ import imgNaver from '../assets/images/logo_naver.png'
 
 // 애니메이션
 const modalOpenAnimation = keyframes`
-//위에서 아래로 이동
   0% {
     transform: translateY(-100%) scale(0);
     opacity: 0;
@@ -60,7 +59,6 @@ const StyledForm = styled.form`
 const StyleedTitle = styled.div<{ $isDarkMode: boolean }>`
   font-size: 30px;
   font-weight: 300;
-  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   margin-top: 50px;
   margin-bottom: 10px;
@@ -69,7 +67,6 @@ const StyledName = styled.div<{ $isDarkMode: boolean }>`
   width: 80%;
   font-size: 20px;
   font-weight: 200;
-  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   margin-bottom: 3px;
 `
@@ -93,7 +90,6 @@ const StyledSocial = styled.img`
 const StyledFont = styled.span<{ fontDark: string; fontLight: string; $isDarkMode: boolean }>`
   font-size: 15px;
   font-weight: 200;
-  /* font-family: 'Inter-Regular', Helvetica; */
   color: ${(props) => (props.$isDarkMode ? props.fontDark : props.fontLight || 'black')};
   margin-bottom: 20px;
   cursor: pointer; /* 마우스를 손가락 형태로 변환 */
@@ -105,21 +101,13 @@ const StyledDivider = styled.div<{ $isDarkMode: boolean }>`
   position: relative;
   justify-content: center;
   align-items: center;
-  /* font-family: 'Inter'; */
   font-size: 16px;
   color: ${(props) => (props.$isDarkMode ? '#c8c8c8' : '#bbbbbb')};
   font-weight: 400;
 `
-// const StyledCheckbox = styled.input`
-//   width: 15px;
-//   height: 10px;
-
-//   background-color: blue;
-// `
 
 // 메인
 const Signin = () => {
-  // const [rememberMe, setRememberMe] = useState(false) // remember me 상태
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode) // 다크모드 상태관리
   const { authApiUrl } = useApiUrlStore()
   const navigate = useNavigate()
@@ -175,7 +163,6 @@ const Signin = () => {
         // 로컬 스토리지에 토큰 저장, response.data.token.[토큰이름] 은 서버에서 전달됨
         localStorage.setItem('accessToken', response.data.token.access)
         localStorage.setItem('refreshToken', response.data.token.refresh)
-        console.log('API Response: ', response.status)
         Toast.fire({
           icon: 'success',
           title: 'Welcome!',
@@ -212,10 +199,7 @@ const Signin = () => {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     },
   })
-  // 체크박스 상태관리
-  // const handleCheckboxChange = () => {
-  //   setRememberMe(!rememberMe) // TODO: true면 로그인 유지가 되게끔 api 연동
-  // }
+
   return (
     <>
       <Overlay onClick={handleOverlayClick}>
@@ -245,23 +229,6 @@ const Signin = () => {
               placeholder="Enter Password"
               autoComplete="off"
             />
-            {/* Remember me */}
-            {/* <div style={{ margin: 8 }}></div>
-            <div>
-              <StyledCheckbox
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={handleCheckboxChange}
-              />
-              <StyledFont
-                $isDarkMode={$isDarkMode}
-                fontLight="#000"
-                fontDark="#fff"
-                onClick={handleCheckboxChange}>
-                Rememeber me
-              </StyledFont>
-            </div> */}
             <div style={{ margin: 15 }} />
             {/* 로그인 버튼 */}
             <GradientBtn isDarkMode={$isDarkMode}>Sign in</GradientBtn>

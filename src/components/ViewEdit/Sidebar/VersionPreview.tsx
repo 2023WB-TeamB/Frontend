@@ -65,26 +65,6 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `
 
-// const TagWrapper = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   align-content: flex-start;
-//   width: 100%;
-//   line-height: .75rem; // 한 줄당 태그의 높이를 제어합니다.
-//   margin-top: 0.3rem;
-//   overflow: hidden; // 내용이 넘치면 숨깁니다.
-// `
-
-// const Tag = styled.text<{ color: string }>`
-//   color: ${({ color }) => color};
-//   background-color: #f1f1f1;
-//   font-size: 0.47rem;
-//   border-radius: 0.65rem;
-//   margin-top: 0.2rem;
-//   margin-right: 0.15rem;
-//   padding: 0rem 0.2rem;
-// `
-
 const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
   const {setContent} = useDocContentStore()
   const {isEditor, toggleEditorMode} = useEditorModeStore()
@@ -115,13 +95,6 @@ const VersionPreview: React.FC<VersionPreviewProps> = ({ content }) => {
         <Title>{content.title}</Title>
         <CreatedAt>{content.created_at.slice(0, 10)}</CreatedAt>
       </ContentWrapper>
-      {/* <TagWrapper>
-        {content.keywords.map((tag, index) => (
-          <Tag key={index} color={content.color}>
-            {tag.name}
-          </Tag>
-        ))}
-      </TagWrapper> */}
     </Card>
   )
 }

@@ -130,8 +130,6 @@ const EditorArea: React.FC = () => {
 
     if (file && file.type.includes('image/')) {
       const imageUrl = await uploadImageToServer(file)
-      // 클라이언트에서 서버에서 받은 CDN 이미지 URL 활용
-      console.log('CDN 이미지 URL:', imageUrl)
 
       // 이미지 삽입
       if (imageUrl) {
