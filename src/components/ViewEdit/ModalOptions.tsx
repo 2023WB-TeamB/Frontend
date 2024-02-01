@@ -98,7 +98,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
   })
 
   // * URL 할당 -> docUrl
-  let docUrl = ''
+  let docUrl: string
   const handleUrlShare = async () => {
     try {
       // API 호출, 액세스 토큰
@@ -140,7 +140,7 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
 
   // * QR 로딩창
   const showQRCode = async () => {
-    if (docUrl === '') {
+    if (docUrl) {
       Swal.fire({
         title: 'Loading...',
         allowOutsideClick: false,
