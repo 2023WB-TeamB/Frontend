@@ -101,7 +101,7 @@ const TitleArea = styled.div<TitleAreaProps>`
 const SharedDocField: React.FC = () => {
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isOpenSideAlways } = useSidePeekStore()
-  const { apiUrl } = useApiUrlStore()
+  const { docsApiUrl } = useApiUrlStore()
   const { title, content, setTitle, setContent, setColor } = useDocContentStore()
   const { setTag, addTag } = useDocTagStore()
 
@@ -110,7 +110,7 @@ const SharedDocField: React.FC = () => {
   const handleGetDoc = async () => {
     try {
       // API 호출, 액세스 토큰
-      const response = await axios.get(`${apiUrl}/share?uuid=${params.id}`)
+      const response = await axios.get(`${docsApiUrl}/share?uuid=${params.id}`)
       console.log(response)
 
       setTitle(response.data.data.title)
