@@ -117,7 +117,6 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
       docUrl = response.data.share_url
     } catch (error: any) {
       // API 호출 실패
-      if (error.response.status === 409) docUrl = error.response.data.existing_url
       console.error('API Error :', error)
     }
   }
