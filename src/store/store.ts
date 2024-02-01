@@ -183,6 +183,18 @@ export const isGeneratingStore = create<Generating>((set) => ({
   setIsGenerating: (isGenerating) => set({ isGenerating }),
 }))
 
+type Notification = {
+  notification: string | null
+  setNotification: (message: string) => void
+  clearNotification: () => void
+}
+
+export const notificationStore = create<Notification>((set) => ({
+  notification: null,
+  setNotification: (message: any) => set(() => ({ notification: message })),
+  clearNotification: () => set(() => ({ notification: null })),
+}))
+
 /* 다크모드 */
 interface State {
   $isDarkMode: boolean

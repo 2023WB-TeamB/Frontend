@@ -50,6 +50,7 @@ const Container = styled.div<ContainerType>`
   }
 `
 const Logo = styled.img`
+  margin-top: 0.8rem;
   width: 2rem;
   height: 2rem;
 `

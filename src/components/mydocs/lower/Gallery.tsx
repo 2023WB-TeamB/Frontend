@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { motion, AnimatePresence } from 'framer-motion'
 import { darken } from 'polished'
-import { useMediaQuery } from 'react-responsive'
-import { Doc, cardIdStore, previewContentStore, previewOpenStore, useApiUrlStore } from '../../../store/store'
+import {
+  Doc,
+  cardIdStore,
+  previewContentStore,
+  previewOpenStore,
+  useApiUrlStore,
+} from '../../../store/store'
 import btn from '../../../assets/images/mydocs/btn.svg'
 import Preview from './Preview'
 import getContent from './getContent'
@@ -174,14 +179,27 @@ const Gallery: React.FC<{ docs: Doc[] }> = ({ docs }) => {
   }))
   const { docsApiUrl } = useApiUrlStore()
 
-  const isNotebook = useMediaQuery({
-    query: '(min-width:1211px) and (max-width:1535px)', // 6장
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
   })
-  const isTablet = useMediaQuery({ query: '(min-width:770px) and (max-width:1210px)' }) // 4장
-  const isMobile = useMediaQuery({ query: '(max-width:769px)' }) // 2장
+
+  useEffect(() => {
+    const handleResize = () =>
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const cardsPerPage = () => {
-    return isNotebook ? 6 : isTablet ? 4 : isMobile ? 2 : 8
+    const ratio = (0.8 * windowSize.width) / (0.38 * windowSize.height)
+    return 2 * Math.floor(ratio)
   }
   const totalPageNum = Math.ceil(docs.length / cardsPerPage()) // 총 페이지 수를 계산합니다.
 

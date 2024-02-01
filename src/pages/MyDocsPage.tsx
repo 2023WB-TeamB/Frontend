@@ -21,6 +21,9 @@ import {
   Keyword,
   isLoadingStore,
   useApiUrlStore,
+  notificationStore,
+  previewOpenStore,
+  modalOpenStore,
 } from '../store/store'
 import { Animation } from '../components/mydocs/upper/Loading'
 import { useLocalStorageStore } from '../components/ModalStore'
@@ -121,6 +124,16 @@ const MyDocsPage: React.FC = () => {
   const { isGenerating } = isGeneratingStore()
   const $isDarkMode = useDarkModeStore((state) => state.$isDarkMode)
   const { isGetToken, setisGetToken } = useLocalStorageStore()
+  const { setPreviewOpen } = previewOpenStore()
+  const { setModalOpen } = modalOpenStore()
+
+  // * Toast 알림창
+  const ToastInfor = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1800,
+  })
 
   useEffect(() => {
     if (localStorage.getItem('accessToken') !== null) {
@@ -186,16 +199,18 @@ const MyDocsPage: React.FC = () => {
         headers: { Authorization: `Bearer ${access}` },
       })
       setDocs(docs.filter((doc) => doc.id !== cardId)) // 클라이언트에서 문서 카드 삭제
-      Swal.fire({
-        position: 'bottom-end',
+      setPreviewOpen(false)
+      setModalOpen(false)
+      ToastInfor.fire({
         icon: 'success',
-        title: 'Successfully deleted.',
-        showConfirmButton: false,
-        timer: 3000,
-        toast: true,
+        title: 'Document Delete Successful',
       })
     } catch (error) {
       console.error('API Error: ', error)
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'Document Delete Failed',
+      })
     }
   }
 
@@ -207,14 +222,21 @@ const MyDocsPage: React.FC = () => {
     }
   }, [isDelete])
 
-  /* Upper
-  GiToDoc 로고 (GiToDoc)
-  로고 하단 설명 (Description)
-  문서화 아이콘 (Documentation)
-  언어 토글 (LanguageToggle)
-  URL 입력창 (URLInput)
-  캐러셀 (RoundCarousel, Card)
-  */
+  // 문서 생성 알림
+  const { notification, setNotification } = notificationStore()
+  useEffect(() => {
+    if (notification) {
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: notification,
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+      })
+      setNotification('')
+    }
+  }, [notification])
 
   return (
     <motion.div
@@ -222,10 +244,9 @@ const MyDocsPage: React.FC = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{
-        ease: "easeInOut",
-        duration: .3,
-      }}
-    >
+        ease: 'easeInOut',
+        duration: 0.3,
+      }}>
       <Header isGetToken={isGetToken} />
       <Container>
         <ScrollSnap>
