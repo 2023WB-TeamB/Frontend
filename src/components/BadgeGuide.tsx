@@ -101,6 +101,7 @@ export const BadgeGuide = () => {
   const iconRef = useRef(null)
 
   const toggleGuide = () => {
+    // eslint-disable-next-line no-unused-expressions
     isGuideOpen ? closeGuide() : openGuide()
   }
 
