@@ -176,7 +176,10 @@ const ModalOptions: React.FC<ModalOptionsProps> = ({ isOpenOptions, onClose }) =
         showConfirmButton: true,
       })
     else
-      showQRCode()
+      ToastInfor.fire({
+        icon: 'error',
+        title: 'QR 생성 실패',
+      })
   }
 
   // ? 다운로드할 컴포넌트 ID
