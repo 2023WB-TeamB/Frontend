@@ -23,12 +23,12 @@ const ViewerWrapper = styled.div`
   align-items: center;
   padding: 1rem;
   transition: ease-in-out 0.3s;
-`
-const DistributeContentWrappe = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+  @media (max-width: 720px) {
+    position: fixed;
+    top : 5rem;
+    max-width: 100vw;
+    height: 100%;
+  }
 `
 
 // ? 문서 제목 내용 구분선
@@ -61,6 +61,15 @@ const ViewArea = styled.div`
     border-radius: 2px;
     background: #ccc;
   }
+  @media (max-width: 720px) {
+    position: relative;
+    padding: 0 5px;
+    width: 120%;
+    max-width: 100vw;
+    max-height: 80vh;
+    font-size: .8rem;
+    transform: scale(88%);
+  }
 `
 
 // ? 문서 제목 폼
@@ -76,8 +85,7 @@ const TitleArea = styled.div<TitleAreaProps>`
   display: flex;
   align-items: center;
 
-  & h2,
-  & textarea {
+  & h2 {
     margin: 2px 2px 20px 2px;
     padding: 2px;
     font-size: 2.2rem;
@@ -95,6 +103,19 @@ const TitleArea = styled.div<TitleAreaProps>`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    height: 4rem;
+    max-width: 96vw;
+
+    & h2 {
+      height: 4rem;
+      font-size: 2rem;
+      overflow-y: auto;
+      text-overflow: clip;
+      white-space: pre-wrap;
+    }
   }
 `
 
@@ -138,7 +159,7 @@ const SharedDocField: React.FC = () => {
       </TitleArea>
       <DistributeDiv $isDarkMode={$isDarkMode}>
         <DocTags />
-        <DistributeContentWrappe />
+        <span/>
       </DistributeDiv>
       <ViewArea>{content && <EditorArea />}</ViewArea>
     </ViewerWrapper>
