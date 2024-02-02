@@ -202,7 +202,6 @@ const URLtext = styled.p<URLprops>`
   font-size: 1rem;
   top: 2.85rem;
   left: 12rem;
-  /* font-family: 'Inter', sans-serif; */
   position: absolute;
   white-space: nowrap;
   color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
