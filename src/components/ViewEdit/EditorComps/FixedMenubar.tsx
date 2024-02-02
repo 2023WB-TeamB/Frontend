@@ -7,23 +7,31 @@ import undo_dark from '../../../assets/images/Viewer/undo_dark.svg'
 import undo from '../../../assets/images/Viewer/undo.svg'
 import redo_dark from '../../../assets/images/Viewer/redo_dark.svg'
 import redo from '../../../assets/images/Viewer/redo.svg'
-import line_dark from '../../../assets/images/Viewer/line_dark.svg'
-import line from '../../../assets/images/Viewer/line.svg'
+import line_dark from '../../../assets/images/Viewer/horizontal-rule_dark.png'
+import line from '../../../assets/images/Viewer/horizontal-rule.png'
 import photolibrary_dark from '../../../assets/images/Viewer/photo_library_dark.svg'
 import photolibrary from '../../../assets/images/Viewer/photo_library.svg'
 import table_dark from '../../../assets/images/Viewer/table_dark.svg'
 import table from '../../../assets/images/Viewer/table.svg'
+import mergeCells from '../../../assets/images/Viewer/MergeCells.png'
+import mergeCells_dark from '../../../assets/images/Viewer/MergeCells_dark.png'
+import splitCells from '../../../assets/images/Viewer/SplitCells.png'
+import splitCells_dark from '../../../assets/images/Viewer/SplitCells_dark.png'
+import insertColum from '../../../assets/images/Viewer/InsertColum.png'
+import insertColum_dark from '../../../assets/images/Viewer/InsertColum_dark.png'
+import insertRow from '../../../assets/images/Viewer/InsertRow.png'
+import insertRow_dark from '../../../assets/images/Viewer/InsertRow_dark.png'
+import FixedMenubarButton from './FixedMenubarButton'
 
 const FixedOptionBarWrapper = styled.div<{ $isDarkMode: boolean }>`
-  width: 100%;
-  height: 2.7rem;
-  margin: .3rem;
+  width: max-content;
+  height: max-content;
+  margin: 0.3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-  z-index: 1;
   border: 1px solid;
   border-top: none;
   border-color: ${(props) => (props.$isDarkMode ? '#333' : '#c8c8c8')};
@@ -32,20 +40,6 @@ const FixedOptionBarWrapper = styled.div<{ $isDarkMode: boolean }>`
   border-top-left-radius: 0;
   background-color: transparent;
   transition: linear 0.3s;
-`
-
-const StyledButton = styled.button<{ $isDarkMode: boolean }>`
-  height: 45px;
-  border: none;
-  border-radius: 0px;
-  background-color: transparent;
-  font-size: 12px;
-  transition: all ease 0.2s;
-  color: black;
-
-  &:hover {
-    background-color: ${(props) => (props.$isDarkMode ? '#484848' : 'lightgray')};
-  }
 `
 
 interface FixedMenubarProps {
@@ -73,38 +67,54 @@ const FixedMenubar = ({ editor }: FixedMenubarProps) => {
 
   // ? 테이블 추가
   const addTable = () => {
-    editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run()
+    editor.chain().focus().insertTable().run()
   }
 
   if (!editor) {
     return null
   }
-  
+
   return (
     <FixedOptionBarWrapper $isDarkMode={$isDarkMode}>
-      <StyledButton
+      <FixedMenubarButton
+        icon={$isDarkMode ? undo_dark : undo}
+        disable={!editor.can().undo()}
         onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().undo()}
-        $isDarkMode={$isDarkMode}>
-        <img src={$isDarkMode ? undo_dark : undo} alt="undo" />
-      </StyledButton>
-      <StyledButton
+      />
+      <FixedMenubarButton
+        icon={$isDarkMode ? redo_dark : redo}
+        disable={!editor.can().redo()}
         onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().redo()}
-        $isDarkMode={$isDarkMode}>
-        <img src={$isDarkMode ? redo_dark : redo} alt="redo" />
-      </StyledButton>
-      <StyledButton
+      />
+      <FixedMenubarButton
+        icon={$isDarkMode ? line_dark : line}
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        $isDarkMode={$isDarkMode}>
-        <img src={$isDarkMode ? line_dark : line} alt="line" />
-      </StyledButton>
-      <StyledButton onClick={addImage} $isDarkMode={$isDarkMode}>
-        <img src={$isDarkMode ? photolibrary_dark : photolibrary} alt="imageInput" />
-      </StyledButton>
-      <StyledButton onClick={addTable} $isDarkMode={$isDarkMode}>
-        <img src={$isDarkMode ? table_dark : table} alt="table" />
-      </StyledButton>
+      />
+      <FixedMenubarButton
+        icon={$isDarkMode ? photolibrary_dark : photolibrary}
+        onClick={addImage}
+      />
+      <FixedMenubarButton icon={$isDarkMode ? table_dark : table} onClick={addTable} />
+      <FixedMenubarButton
+        icon={
+          editor.can().splitCell()
+            ? $isDarkMode
+              ? splitCells_dark
+              : splitCells
+            : $isDarkMode
+              ? mergeCells_dark
+              : mergeCells
+        }
+        onClick={() => editor.chain().focus().mergeOrSplit().run()}
+      />
+      <FixedMenubarButton
+        icon={$isDarkMode ? insertColum_dark : insertColum}
+        onClick={() => editor.chain().focus().addColumnAfter().run()}
+      />
+      <FixedMenubarButton
+        icon={$isDarkMode ? insertRow_dark : insertRow}
+        onClick={() => editor.chain().focus().addRowAfter().run()}
+      />
     </FixedOptionBarWrapper>
   )
 }

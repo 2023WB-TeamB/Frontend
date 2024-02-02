@@ -38,31 +38,31 @@ const ViewerWrapper = styled.div`
 const Icon = styled.img<{ $isDarkMode: boolean }>`
   width: 2rem;
   height: 2rem;
-  filter: brightness(0) ${(props) => props.$isDarkMode ? 'invert(90%)' : 'invert(20%)'};
+  filter: brightness(0) ${(props) => (props.$isDarkMode ? 'invert(90%)' : 'invert(20%)')};
 `
 
 const IconButton = styled.button<{ $isDarkMode: boolean }>`
-  margin-inline: .4rem;
+  margin-inline: 0.4rem;
   padding: 0;
   width: 2.7rem;
   height: 2.7rem;
-  background: ${(props) => props.$isDarkMode ? '#333' : '#f2f2f2'};
+  background: ${(props) => (props.$isDarkMode ? '#333' : '#f2f2f2')};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: .4rem;
-  transition: ease-in-out .3s;
+  border-radius: 0.4rem;
+  transition: ease-in-out 0.3s;
 
   &:hover {
-    background: ${(props) => props.$isDarkMode ? '#555' : '#ddd'};
-    transition: ease-in-out .3s;
+    background: ${(props) => (props.$isDarkMode ? '#555' : '#ddd')};
+    transition: ease-in-out 0.3s;
   }
 `
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  padding: .5rem;
+  padding: 0.5rem;
 `
 
 const EditMenuWrapper = styled.div`
@@ -72,11 +72,13 @@ const EditMenuWrapper = styled.div`
 
 const DistributeContentWrappe = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  transition: ease .2s;
+  transition: ease 0.2s;
+  overflow: hidden;
 `
 
 // ? 문서 제목 내용 구분선
@@ -90,7 +92,7 @@ const DistributeDiv = styled.div<{ $isDarkMode: boolean }>`
   & span {
     width: 100%;
     min-height: 1px;
-    background: ${(props) => props.$isDarkMode ? '#555' : '#ccc'};
+    background: ${(props) => (props.$isDarkMode ? '#555' : '#ccc')};
   }
 `
 
@@ -129,7 +131,7 @@ const TitleArea = styled.div<TitleAreaProps>`
     margin: 0;
     padding-inline: 0;
     padding-top: 0;
-    padding-bottom: .5rem;
+    padding-bottom: 0.5rem;
     font-size: 2.3rem;
     border: none;
     outline: none;
@@ -161,7 +163,7 @@ const DocField: React.FC = () => {
   const { editor, setEditor } = useEditorObjectStore()
   const { isEditor, toggleEditorMode } = useEditorModeStore()
   const { setConfirmAction, openConfirm, setConfirmLabel } = useConfirmBoxStore()
-  
+
   // * Toast 알림창
   const ToastInfor = Swal.mixin({
     toast: true,
@@ -248,7 +250,7 @@ const DocField: React.FC = () => {
 
   const unsaveDoc = async () => {
     // 취소 확인
-    setConfirmLabel("Are you sure you want to cancel without saving your modifications?")
+    setConfirmLabel('Are you sure you want to cancel without saving your modifications?')
     setConfirmAction(async () => {
       // 문서 정보 다시 가져오며 뷰어로 전환
       setContent('')
@@ -300,21 +302,16 @@ const DocField: React.FC = () => {
                   opacity: 0,
                 }}
                 transition={{
-                  ease: "easeInOut",
-                  duration: .15,
-                }}
-              >
-                <EditMenuWrapper>
-                  {editor && <FixedMenubar editor={editor} />}
-                </EditMenuWrapper>
+                  ease: 'easeInOut',
+                  duration: 0.15,
+                }}>
+                <EditMenuWrapper>{editor && <FixedMenubar editor={editor} />}</EditMenuWrapper>
               </motion.div>
             )}
           </AnimatePresence>
         </DistributeContentWrappe>
       </DistributeDiv>
-      <ViewArea>
-        {content && <EditorArea />}
-      </ViewArea>
+      <ViewArea>{content && <EditorArea />}</ViewArea>
     </ViewerWrapper>
   )
 }

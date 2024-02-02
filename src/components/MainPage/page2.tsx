@@ -38,7 +38,6 @@ const Section = styled.div`
   position: relative;
   width: 100vw;
   scroll-snap-align: center;
-  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,7 +99,6 @@ const down_down = keyframes`
 
 // Page.svg
 const Styledpage = styled.img`
-  /* width: 85vw; */
   width: 70vw;
   height: 35rem;
   position: absolute;
