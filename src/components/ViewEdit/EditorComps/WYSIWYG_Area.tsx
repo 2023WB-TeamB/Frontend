@@ -114,7 +114,7 @@ const EditorArea: React.FC = () => {
 
     try {
       const response = await axios.post('https://gitodoc.kro.kr/api/v1/docs/img', formData, config)
-      return `${response.data.imageUrl}?w=400&f=webp` // 쿼리 파라미터 추가
+      return `${response.data.imageUrl}?f=webp` // 쿼리 파라미터 추가
     } catch (error) {
       console.error('Error uploading image:', error)
       return null
@@ -142,10 +142,8 @@ const EditorArea: React.FC = () => {
 
   const handleKeyEvent = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Tab') {
-      if (!editor.can().liftListItem('listItem'))
-        editor.chain().focus().toggleBulletList().run()
-      else
-        editor.chain().focus().sinkListItem('listItem').run()
+      if (!editor.can().liftListItem('listItem')) editor.chain().focus().toggleBulletList().run()
+      else editor.chain().focus().sinkListItem('listItem').run()
       event.preventDefault()
     }
   }
