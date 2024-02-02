@@ -23,7 +23,6 @@ const LogoWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin-bottom: 20vw; */
   gap: 1rem;
 `
 
@@ -55,7 +54,6 @@ const Smalli = styled.span`
 export const Sub = styled.h1<{ $isDarkMode: boolean }>`
   font-size: 1.2rem;
   font-weight: 400;
-  /* font-family: 'Inter', sans-serif; */
   color: ${(props) => (props.$isDarkMode ? 'white' : 'black')};
   white-space: nowrap;
 
@@ -120,7 +118,6 @@ const Page1: React.FC = () => {
               $isDarkMode={$isDarkMode}
               type="text"
               onKeyDown={handleEnter}
-              // placeholder="Please enter your GitHub repository URL here..."
             />
           </InputBoxWrapper>
         </LogoWrapper>

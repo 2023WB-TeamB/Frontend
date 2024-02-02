@@ -173,7 +173,6 @@ const Guagebar = styled.div<{ visible: boolean; $isDarkMode: boolean }>`
   border-radius: 6.5rem;
   background: linear-gradient(270deg, rgb(118, 202, 232) 0%, rgb(173, 81, 222) 100%);
 
-  /* border: #7cc0e8; */
   animation: ${(props) =>
     props.visible
       ? css`
